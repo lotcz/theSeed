@@ -1,0 +1,5 @@
+achievements
+
+- flower is symmetric
+- finish in a time limit (n. of rounds/steps)
+- 
