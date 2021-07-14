@@ -17,7 +17,7 @@ export default class Renderer {
 	renderPath(start, end) {
 		const startRadius = start.power * 4;
 		const endRadius = end.power * 4;
-		const middleRadius = ((end.power + start.power) / 2) * 3;
+		const middleRadius = 5 + Math.min(25, Math.min(end.power, start.power));
 		const startCoord = this.grid.getCoordinates(start.position);
 		const endCoord = this.grid.getCoordinates(end.position);
 

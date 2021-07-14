@@ -30,8 +30,12 @@ export class TreeNode {
 		this.children = [];
 	}
 
+	isRoot() {
+		return (this.parent === null);
+	}
+
 	findRoot() {
-		if (this.parent === null) return this;
+		if (this.isRoot()) return this;
 		return this.parent.findRoot();
 	}
 

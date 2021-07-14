@@ -20,6 +20,12 @@ renderer.render(roots);
 
 let tile = null;
 let lastPos = null;
+
+function spawnRoot(parent, position) {
+	parent.addChild(new TreeNode(position));
+	renderer.render(roots);
+}
+
 const onMouseMove = function(e) {
 	const position = grid.getPosition(new Vector2(e.offsetX, e.offsetY));
 	if (lastPos == null || position.distanceTo(lastPos) > 0) {
@@ -35,9 +41,20 @@ const onClick = function(e) {
 	const position = grid.getPosition(new Vector2(e.offsetX, e.offsetY));
 	const node = roots.findNodeOnPos(position);
 	if (node == null) {
-		const nodes = roots.findNodesCloseTo(position, 1.5);
-		nodes[0].addChild(new TreeNode(position));
-		renderer.render(roots);
+		const above = roots.findNodeOnPos(new Vector2(position.x, position.y - 1));
+		if (above !== null) {
+			spawnRoot(above, position);
+		} else {
+			const nodes = roots.findNodesCloseTo(position, 1.5);
+			if (nodes.length > 0) {
+				const validnodes = nodes
+					.filter((n) => n.position.y < position.y && (!n.isRoot()))
+					.sort((a, b) => a.position.y - b.position.y);
+				if (validnodes.length > 0) {
+					spawnRoot(validnodes[0], position);
+				}
+			}
+		}
 	}
 }
 draw.node.addEventListener('click', onClick);
