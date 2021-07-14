@@ -33,4 +33,9 @@ export class Vector2 {
 	distanceTo(v) {
 		return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
 	}
+
+	set(x, y) {
+		this.x = x;
+		this.y = y;
+	}
 }
