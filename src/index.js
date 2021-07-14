@@ -17,6 +17,7 @@ const roots = new Tree(root);
 let viewBoxScale = 1;
 const viewBoxSize = new Vector2(100, 100);
 const viewBoxPosition = new Vector2(250, 150);
+const gutterWidth = 50;
 
 const grid = new Grid(new Vector2(100, 100), new Vector2(120, 80));
 const draw = SVG().addTo('body');
@@ -24,12 +25,15 @@ const renderer = new Renderer(draw, grid);
 
 function spawnRoot(parent, position) {
 	parent.addChild(new TreeNode(position));
-	renderer.render(roots);
+	renderRoots();
 }
 
-function render() {
+function renderViewBox() {
 	draw.size(viewBoxSize.x, viewBoxSize.y);
 	draw.viewbox(viewBoxPosition.x, viewBoxPosition.y, viewBoxSize.x * viewBoxScale, viewBoxSize.y * viewBoxScale);
+}
+
+function renderRoots() {
 	renderer.render(roots);
 }
 
@@ -39,8 +43,38 @@ function getCursorGridPosition(offsetX, offsetY) {
 
 let tile = null;
 let lastPos = null;
+let lastTime = null;
+const scrolling = new Vector2(0, 0);
+
+function update() {
+	const time = performance.now();
+	if (!lastTime) lastTime = time;
+	const delta = (time - lastTime) / 1000;
+	lastTime = time;
+	if (scrolling.size() > 0) {
+		viewBoxPosition.x += scrolling.x * Math.abs(scrolling.x) * delta;
+		viewBoxPosition.y += scrolling.y * Math.abs(scrolling.y) * delta;
+		renderViewBox();
+	}
+	requestAnimationFrame(() => update());
+}
 
 const onMouseMove = function(e) {
+	if (e.offsetX < gutterWidth) {
+		scrolling.x = e.offsetX - gutterWidth;
+	} else if ((viewBoxSize.x - e.offsetX) < gutterWidth) {
+		scrolling.x = gutterWidth - (viewBoxSize.x - e.offsetX);
+	} else {
+		scrolling.x = 0;
+	}
+	if (e.offsetY < gutterWidth) {
+		scrolling.y = e.offsetY - gutterWidth;
+	} else if ((viewBoxSize.y - e.offsetY) < gutterWidth) {
+		scrolling.y = gutterWidth - (viewBoxSize.y - e.offsetY);
+	} else {
+		scrolling.y = 0;
+	}
+
 	const position = getCursorGridPosition(e.offsetX, e.offsetY);
 	if (lastPos == null || position.distanceTo(lastPos) > 0) {
 		if (tile) tile.remove();
@@ -74,16 +108,19 @@ const onClick = function(e) {
 draw.node.addEventListener('click', onClick);
 
 const onZoom = function(e) {
-	viewBoxScale = Math.max( 0.1, Math.min(100, viewBoxScale += (e.deltaY * 0.001)));
-	render();
+	viewBoxScale = Math.max( 0.1, Math.min(100, viewBoxScale += (e.deltaY * 0.002)));
+	renderViewBox();
 }
 
 draw.node.addEventListener('wheel', onZoom);
 
 const onResize = function(e) {
 	viewBoxSize.set(window.innerWidth, window.innerHeight);
-	render();
+	renderViewBox();
 }
 
 window.addEventListener('resize', onResize);
+
 onResize();
+renderRoots();
+update();

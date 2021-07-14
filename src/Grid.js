@@ -38,4 +38,8 @@ export class Vector2 {
 		this.x = x;
 		this.y = y;
 	}
+
+	size() {
+		return this.distanceTo(new Vector2(0, 0));
+	}
 }
