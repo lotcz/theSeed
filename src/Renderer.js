@@ -24,7 +24,7 @@ export default class Renderer {
 		if (start.power > end.power) this.group.line(startCoord.x, startCoord.y, endCoord.x, endCoord.y).stroke({ width: 2, color: '#f0f' });
 
 		const down = (startCoord.y < endCoord.y);
-		const left = (startCoord.x < endCoord.x);
+		const left = (startCoord.x > endCoord.x);
 
 		const a = Math.abs(endCoord.x - startCoord.x);
 		const c = startCoord.distanceTo(endCoord);
@@ -34,8 +34,8 @@ export default class Renderer {
 		const dx = middleRadius * Math.cos(y);
 		const dy = middleRadius * Math.sin(y);
 
-		const middleCoordX = (startCoord.x + endCoord.x) / 2 + ((down) ? -dx : dx);
-		const middleCoordY = (startCoord.y + endCoord.y) / 2 + ((down) ? dy : -dy);
+		const middleCoordX = (startCoord.x + endCoord.x) / 2 + (down ? -dx : dx);
+		const middleCoordY = (startCoord.y + endCoord.y) / 2 + (left ? -dy : dy);
 		this.group.circle().radius(5).attr({fill: down ? '#f00' : '#0f0'}).move(middleCoordX - 5, middleCoordY - 5);
 
 		this.path += `${startCoord.x} ${startCoord.y}, ${middleCoordX} ${middleCoordY},`;
