@@ -1,5 +1,14 @@
-achievements
+# Stages
+
+- seed
+- germination (can only grow roots, free Carbon)
+- grow leaves
+- reproduction, pollination, and seed spreading
+
+
+
+# Achievements
 
 - flower is symmetric
 - finish in a time limit (n. of rounds/steps)
-- 
+-

@@ -21,21 +21,21 @@ export default class Renderer {
 		const startCoord = this.grid.getCoordinates(start.position);
 		const endCoord = this.grid.getCoordinates(end.position);
 
-		const down = (start.power > end.power);
-		if (down) this.group.line(startCoord.x, startCoord.y, endCoord.x, endCoord.y).stroke({ width: 2, color: '#f0f' });
+		if (start.power > end.power) this.group.line(startCoord.x, startCoord.y, endCoord.x, endCoord.y).stroke({ width: 2, color: '#f0f' });
 
-		const a = endCoord.x - startCoord.x;
+		const down = (startCoord.y < endCoord.y);
+		const left = (startCoord.x < endCoord.x);
+
+		const a = Math.abs(endCoord.x - startCoord.x);
 		const c = startCoord.distanceTo(endCoord);
 		const cosX = (a / c);
 		const x = Math.acos(cosX);
 		const y = (Math.PI/2) - x;
-		const cosY = Math.cos(y);
-		const dx = middleRadius * cosY;
+		const dx = middleRadius * Math.cos(y);
 		const dy = middleRadius * Math.sin(y);
 
-		const left = (startCoord.x - endCoord.x) > 0;
 		const middleCoordX = (startCoord.x + endCoord.x) / 2 + ((down) ? -dx : dx);
-		const middleCoordY = (startCoord.y + endCoord.y) / 2 + ((down) ? dy : dy);
+		const middleCoordY = (startCoord.y + endCoord.y) / 2 + ((down) ? dy : -dy);
 		this.group.circle().radius(5).attr({fill: down ? '#f00' : '#0f0'}).move(middleCoordX - 5, middleCoordY - 5);
 
 		this.path += `${startCoord.x} ${startCoord.y}, ${middleCoordX} ${middleCoordY},`;
