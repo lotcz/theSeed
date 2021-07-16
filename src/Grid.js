@@ -42,4 +42,8 @@ export class Vector2 {
 	size() {
 		return this.distanceTo(new Vector2(0, 0));
 	}
+
+	subtract(v) {
+		return new Vector2(this.x - v.x, this.y - v.y);
+	}
 }

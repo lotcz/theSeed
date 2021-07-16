@@ -1,5 +1,5 @@
 import "./style.css";
-import { SVG } from '@svgdotjs/svg.js';
+import {off, SVG} from '@svgdotjs/svg.js';
 import Grid, {Vector2} from "./Grid";
 import Tree from "./Tree";
 import {TreeNode} from "./Tree";
@@ -17,7 +17,7 @@ const roots = new Tree(root);
 let viewBoxScale = 1;
 const viewBoxSize = new Vector2(100, 100);
 const viewBoxPosition = new Vector2(250, 150);
-const gutterWidth = 50;
+const gutterWidth = 150;
 
 const grid = new Grid(new Vector2(100, 100), new Vector2(120, 80));
 const draw = SVG().addTo('body');
@@ -37,8 +37,12 @@ function renderRoots() {
 	renderer.render(roots);
 }
 
+function getCursorAbsolutePosition(offsetX, offsetY) {
+	return new Vector2(viewBoxPosition.x + (offsetX * viewBoxScale), viewBoxPosition.y + (offsetY * viewBoxScale));
+}
+
 function getCursorGridPosition(offsetX, offsetY) {
-	return grid.getPosition(new Vector2((offsetX * viewBoxScale) + viewBoxPosition.x, (offsetY * viewBoxScale) + viewBoxPosition.y));
+	return grid.getPosition(getCursorAbsolutePosition(offsetX, offsetY));
 }
 
 let tile = null;
@@ -52,8 +56,8 @@ function update() {
 	const delta = (time - lastTime) / 1000;
 	lastTime = time;
 	if (scrolling.size() > 0) {
-		viewBoxPosition.x += scrolling.x * Math.abs(scrolling.x) * delta;
-		viewBoxPosition.y += scrolling.y * Math.abs(scrolling.y) * delta;
+		viewBoxPosition.x += scrolling.x * delta;
+		viewBoxPosition.y += scrolling.y * delta;
 		renderViewBox();
 	}
 	requestAnimationFrame(() => update());
@@ -108,7 +112,15 @@ const onClick = function(e) {
 draw.node.addEventListener('click', onClick);
 
 const onZoom = function(e) {
-	viewBoxScale = Math.max( 0.1, Math.min(100, viewBoxScale += (e.deltaY * 0.002)));
+	const before = getCursorAbsolutePosition(e.offsetX, e.offsetY);
+	const delta = (viewBoxScale / 10) * (e.deltaY > 0 ? 1 : -1);
+	viewBoxScale = Math.max( 0.1, Math.min(100, viewBoxScale + delta));
+
+	const after = getCursorAbsolutePosition(e.offsetX, e.offsetY);
+	const diff = after.subtract(before);
+	viewBoxPosition.x -= diff.x;
+	viewBoxPosition.y -= diff.y;
+
 	renderViewBox();
 }
 
