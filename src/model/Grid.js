@@ -1,3 +1,5 @@
+import Vector2 from "../class/Vector2";
+
 export default class Grid {
 	size;
 	scale;
@@ -21,29 +23,4 @@ export default class Grid {
 
 }
 
-export class Vector2 {
-	x;
-	y;
 
-	constructor(x, y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	distanceTo(v) {
-		return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
-	}
-
-	set(x, y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	size() {
-		return this.distanceTo(new Vector2(0, 0));
-	}
-
-	subtract(v) {
-		return new Vector2(this.x - v.x, this.y - v.y);
-	}
-}

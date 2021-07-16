@@ -1,15 +1,11 @@
-import Grid, {Vector2} from "./Grid";
-import {SVG} from "@svgdotjs/svg.js";
-import Tree from "./Tree";
-import {TreeNode} from "./Tree";
+import SvgRenderer from "./SvgRenderer";
 
-export default class Renderer {
-	draw;
+export default class RootsRenderer extends SvgRenderer {
 	path;
 	animation;
 
-	constructor(draw, grid) {
-		this.draw = draw;
+	constructor(draw, model, grid) {
+		super(draw, model);
 		this.grid = grid;
 		this.group = null;
 	}
@@ -46,7 +42,6 @@ export default class Renderer {
 		const nodeCoord = this.grid.getCoordinates(node.position);
 		const radius = 4;
 		const circle = this.group.circle().radius(radius).attr({r: radius, fill: '#00f'}).move(nodeCoord.x - radius, nodeCoord.y - radius);
-		//circle.animate(2000).attr({r: radius + 1}).loop(true, true);
 
 		for (let i = 0, max = node.children.length; i < max; i++) {
 			const child = node.children[i];
@@ -59,14 +54,14 @@ export default class Renderer {
 		}
 	}
 
-	render(tree) {
+	renderInternal() {
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
-		const rootCoord = this.grid.getCoordinates(tree.root.position);
+		const rootCoord = this.grid.getCoordinates(this.model.position);
 		this.path = `M${rootCoord.x - 40} ${rootCoord.y} S`;
 		this.animation = `M${rootCoord.x - 20} ${rootCoord.y} S`;
 
-		this.renderNode(tree.root);
+		this.renderNode(this.model);
 
 		this.path += `${rootCoord.x} ${rootCoord.y}, ${rootCoord.x + 40} ${rootCoord.y}`;
 		this.animation += `${rootCoord.x} ${rootCoord.y}, ${rootCoord.x + 20} ${rootCoord.y}`;

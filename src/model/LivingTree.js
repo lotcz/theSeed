@@ -1,42 +1,13 @@
-import Grid, {Vector2} from "./Grid";
+import ModelBase from "./ModelBase";
 
-export default class Tree {
-	root;
-
-	constructor(root) {
-		this.root = root;
-	}
-
-	findNodeOnPos(position) {
-		return this.root.findNodeOnPos(position);
-	}
-
-	findNodesCloseTo(position, distance) {
-		return this.root.findNodesCloseTo(position, distance);
-	}
-
-}
-
-export class TreeNode {
-	children;
+export default class LivingTree extends ModelBase {
 	position;
-	parent;
 	power;
 
 	constructor(position) {
+		super();
 		this.position = position;
-		this.parent = null;
 		this.power = 1;
-		this.children = [];
-	}
-
-	isRoot() {
-		return (this.parent === null);
-	}
-
-	findRoot() {
-		if (this.isRoot()) return this;
-		return this.parent.findRoot();
 	}
 
 	powerUpdateRequested() {
@@ -51,19 +22,21 @@ export class TreeNode {
 			child.updatePower();
 			power += child.power;
 		}
-		this.power = power;
+		if (this.power !== power) {
+			this.power = power;
+			this.makeDirty();
+		}
 	}
 
 	addChild(node) {
-		node.parent = this;
-		this.children.push(node);
+		super.addChild(node);
 		this.children = this.children.sort((a, b) => a.position.x - b.position.x);
 		this.powerUpdateRequested();
 		return node;
 	}
 
 	findNodeOnPos(position) {
-		if (this.position.distanceTo(position) == 0) return this;
+		if (this.position.distanceTo(position) === 0) return this;
 		for (let i = 0, max = this.children.length; i < max; i++) {
 			let result = this.children[i].findNodeOnPos(position);
 			if (result) return result;
