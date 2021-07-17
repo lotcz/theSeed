@@ -23,8 +23,11 @@ export default class GameRenderer extends SvgRenderer {
 		}
 		if (this.model.highlightedTilePosition.isDirty()) {
 			if (this.highlightedTile) this.highlightedTile.remove();
-			const box = this.model.grid.getBox(this.model.highlightedTilePosition);
-			this.highlightedTile = this.draw.rect(box.w, box.h).move(box.x, box.y).fill('transparent').stroke({ width: 2, color: 'blue'});
+			const corners = this.model.grid
+				.getCorners(this.model.highlightedTilePosition)
+				.map((c) => [c.x, c.y]);
+			corners.push(corners[0]);
+			this.highlightedTile = this.draw.polyline(corners).fill('transparent').stroke({ width: 2, color: 'blue'});
 			this.model.highlightedTilePosition.clean();
 		}
 	}

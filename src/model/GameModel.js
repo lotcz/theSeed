@@ -1,4 +1,4 @@
-import Grid from "./Grid";
+import HexGrid from "./HexGrid";
 import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
 import DirtyValue from "../class/DirtyValue";
@@ -14,7 +14,7 @@ export default class GameModel extends ModelBase {
 
 	constructor() {
 		super();
-		this.grid = new Grid(new Vector2(100, 100), new Vector2(120, 80));
+		this.grid = new HexGrid(new Vector2(100, 100), 80);
 		this.plant = new PlantModel(new Vector2(15, 15));
 		this.plant.restoreState(null);
 		this.viewBoxScale = new DirtyValue(1);

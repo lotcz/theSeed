@@ -1,6 +1,6 @@
-import Vector2 from "../class/Vector2";
+import Vector2 from "./Vector2";
 
-export default class Grid {
+export default class BoxGrid {
 	size;
 	scale;
 
