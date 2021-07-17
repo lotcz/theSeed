@@ -1,12 +1,12 @@
 import Grid from "./Grid";
 import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
-import RootsModel from "./RootsModel";
 import DirtyValue from "../class/DirtyValue";
+import PlantModel from "./PlantModel";
 
 export default class GameModel extends ModelBase {
 	grid;
-	roots;
+	plant;
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxPosition;
@@ -15,8 +15,8 @@ export default class GameModel extends ModelBase {
 	constructor() {
 		super();
 		this.grid = new Grid(new Vector2(100, 100), new Vector2(120, 80));
-		this.roots = new RootsModel(new Vector2(15, 15));
-		this.roots.restoreState(null);
+		this.plant = new PlantModel(new Vector2(15, 15));
+		this.plant.restoreState(null);
 		this.viewBoxScale = new DirtyValue(1);
 		this.viewBoxSize = new Vector2(100, 100);
 		this.viewBoxPosition = new Vector2(250, 150);
@@ -24,7 +24,7 @@ export default class GameModel extends ModelBase {
 	}
 
 	isDirty() {
-		return this.roots.isDirty() || this.viewBoxPosition.isDirty() || this.viewBoxSize.isDirty() || this.viewBoxScale.isDirty() || this.highlightedTilePosition.isDirty();
+		return this.plant.isDirty() || this.viewBoxPosition.isDirty() || this.viewBoxSize.isDirty() || this.viewBoxScale.isDirty() || this.highlightedTilePosition.isDirty();
 	}
 }
 

@@ -88,19 +88,36 @@ export default class GameController {
 
 	onClick(mouseCoords) {
 		const position = this.getCursorGridPosition(mouseCoords);
-		const node = this.model.roots.findNodeOnPos(position);
-		if (node == null) {
-			const above = this.model.roots.findNodeOnPos(new Vector2(position.x, position.y - 1));
+		const root = this.model.plant.roots.findNodeOnPos(position);
+		const stem = this.model.plant.stem.findNodeOnPos(position);
+		if (root === null && stem === null) {
+			// ROOTS
+			const above = this.model.plant.roots.findNodeOnPos(new Vector2(position.x, position.y - 1));
 			if (above !== null) {
-				this.model.roots.addRoot(above, position);
+				this.model.plant.roots.addRoot(above, position);
 			} else {
-				const nodes = this.model.roots.findNodesCloseTo(position, 1.5);
+				const nodes = this.model.plant.roots.findNodesCloseTo(position, 1.5);
 				if (nodes.length > 0) {
 					const validnodes = nodes
 						.filter((n) => n.position.y < position.y && (!n.isRoot()))
 						.sort((a, b) => a.position.y - b.position.y);
 					if (validnodes.length > 0) {
-						this.model.roots.addRoot(validnodes[0], position);
+						this.model.plant.roots.addRoot(validnodes[0], position);
+					}
+				}
+			}
+			// STEM
+			const below = this.model.plant.stem.findNodeOnPos(new Vector2(position.x, position.y + 1));
+			if (below !== null) {
+				this.model.plant.stem.addStem(below, position);
+			} else {
+				const neighbors = this.model.plant.stem.findNodesCloseTo(position, 1.5);
+				if (neighbors.length > 0) {
+					const valids = neighbors
+						.filter((n) => n.position.y > position.y && (!n.isRoot()))
+						.sort((a, b) => b.position.y - a.position.y);
+					if (valids.length > 0) {
+						this.model.plant.stem.addStem(valids[0], position);
 					}
 				}
 			}

@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import RootsRenderer from "./RootsRenderer";
+import PlantRenderer from "./PlantRenderer";
 
 export default class GameRenderer extends SvgRenderer {
 	ui;
@@ -8,8 +9,8 @@ export default class GameRenderer extends SvgRenderer {
 	constructor(draw, model) {
 		super(draw, model);
 		this.highlightedTile = null;
-		this.rootsRenderer = new RootsRenderer(draw, model.roots, model.grid);
-		this.addChild(this.rootsRenderer);
+		this.plantRenderer = new PlantRenderer(draw, model.plant, model.grid);
+		this.addChild(this.plantRenderer);
 	}
 
 	renderInternal() {

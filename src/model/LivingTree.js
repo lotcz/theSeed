@@ -1,4 +1,5 @@
 import ModelBase from "./ModelBase";
+import Vector2 from "../class/Vector2";
 
 export default class LivingTree extends ModelBase {
 	position;
@@ -52,6 +53,10 @@ export default class LivingTree extends ModelBase {
 			if (results.length > 0)	result = result.concat(results);
 		}
 		return result;
+	}
+
+	nodeExists(position) {
+		return this.findNodeOnPos(position) !== null;
 	}
 
 }
