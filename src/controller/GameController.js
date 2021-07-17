@@ -25,21 +25,33 @@ export default class GameController {
 			plant: {
 				roots: {
 					position: start.toArray(),
-					power: 2,
+					power: 3,
 					children: [
 						{
 							position: new Vector2(start.x, start.y + 1).toArray(),
-							power: 1
+							power: 2,
+							children: [
+								{
+									position: new Vector2(start.x, start.y + 2).toArray(),
+									power: 1
+								}
+							]
 						}
 					]
 				},
 				stem: {
 					position: start.toArray(),
-					power: 2,
+					power: 3,
 					children: [
 						{
 							position: new Vector2(start.x, start.y - 1).toArray(),
-							power: 1
+							power: 2,
+							children: [
+								{
+									position: new Vector2(start.x, start.y - 2).toArray(),
+									power: 1
+								}
+							]
 						}
 					]
 				},

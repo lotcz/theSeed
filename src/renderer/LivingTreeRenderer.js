@@ -1,19 +1,25 @@
 import SvgRenderer from "./SvgRenderer";
 
-const DEBUG_LIVING_TREE = true;
+const DEBUG_LIVING_TREE = false;
+
+export const CURVES_STANDARD = 0;
+export const CURVES_WAVY = 1;
 
 export default class LivingTreeRenderer extends SvgRenderer {
 	path;
 	upwards;
 	fill;
 	stroke;
+	curves;
+	group;
 
-	constructor(draw, model, grid, upwards, fill, stroke) {
+	constructor(draw, model, grid, upwards, fill, stroke, curves) {
 		super(draw, model);
 		this.upwards = upwards;
 		this.fill = fill;
 		this.stroke = stroke;
 		this.grid = grid;
+		this.curves = curves;
 		this.group = null;
 	}
 
@@ -38,7 +44,17 @@ export default class LivingTreeRenderer extends SvgRenderer {
 		}
 
 		if (end.isRoot()) {
-			this.path += `${startCoord.x} ${startCoord.y}, ${endCoord.x + this.getNodeRadius(end)} ${endCoord.y}`;
+			switch (this.curves) {
+				case CURVES_STANDARD:
+					this.path += `${startCoord.x} ${startCoord.y}, ${endCoord.x + this.getNodeRadius(end)} ${endCoord.y}`;
+					break;
+				case CURVES_WAVY:
+					this.path += `T ${endCoord.x + this.getNodeRadius(end)} ${endCoord.y}`;
+					break;
+				default:
+					console.error(`Unknown curves type ${this.curves}`);
+			}
+
 			return;
 		}
 
@@ -60,7 +76,16 @@ export default class LivingTreeRenderer extends SvgRenderer {
 			this.group.circle().radius(5).attr({fill: down ? '#f00' : '#0f0'}).move(middleCoordX - 5, middleCoordY - 5);
 		}
 
-		this.path += `${startCoord.x} ${startCoord.y}, ${middleCoordX} ${middleCoordY},`;
+		switch (this.curves) {
+			case CURVES_STANDARD:
+				this.path += `${startCoord.x} ${startCoord.y}, ${middleCoordX} ${middleCoordY},`;
+				break;
+			case CURVES_WAVY:
+				this.path += `T ${middleCoordX} ${middleCoordY} `;
+				break;
+			default:
+				console.error(`Unknown curves type ${this.curves}`);
+		}
 	}
 
 	renderNode(node) {
@@ -90,12 +115,20 @@ export default class LivingTreeRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 		const root = this.model;
 		const rootCoord = this.grid.getCoordinates(root.position);
-		this.path = `M${rootCoord.x - this.getNodeRadius(root)} ${rootCoord.y} S`;
+
+		switch (this.curves) {
+			case CURVES_STANDARD:
+				this.path = `M${rootCoord.x - this.getNodeRadius(root)} ${rootCoord.y} S`;
+				break;
+			case CURVES_WAVY:
+				this.path = `M${rootCoord.x - this.getNodeRadius(root)} ${rootCoord.y} `;
+				break;
+			default:
+				console.error(`Unknown curves type ${this.curves}`);
+		}
 
 		// first child must be rendering root
 		this.renderNode(root.children[0]);
-
-		//this.path += `L ${rootCoord.x + this.getNodeRadius(root)} ${rootCoord.y}`;
 
 		const path = this.group.path(this.path).stroke(this.stroke).fill(this.fill);
 		path.back();
