@@ -3,6 +3,7 @@ import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
 import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
+import ButterflyModel from "./ButterflyModel";
 
 export default class GameModel extends ModelBase {
 	grid;
@@ -26,7 +27,9 @@ export default class GameModel extends ModelBase {
 
 	getState() {
 		return {
+			grid: this.grid.getState(),
 			plant: this.plant.getState(),
+			butterfly: this.butterfly.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxPosition: this.viewBoxPosition.toArray()
@@ -34,18 +37,17 @@ export default class GameModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.grid = new HexGrid(new Vector2(100, 100), 80);
-		this.plant = new PlantModel();
-		this.viewBoxScale = new DirtyValue(1);
-		this.viewBoxSize = new Vector2(100, 100);
-		this.viewBoxPosition = new Vector2(0, 0);
+		this.grid = new HexGrid(state.grid);
+		this.plant = new PlantModel(state.plant);
+		this.butterfly = new ButterflyModel(state.butterfly);
+		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
+		this.viewBoxSize = new Vector2();
+		this.viewBoxSize.fromArray(state.viewBoxSize);
+		this.viewBoxPosition = new Vector2();
+		this.viewBoxPosition.fromArray(state.viewBoxPosition);
+
 		this.highlightedTilePosition = new Vector2();
 		this.highlightedTilePosition.clean();
-
-		this.plant.restoreState(state.plant);
-		this.viewBoxScale.set(state.viewBoxScale);
-		this.viewBoxSize.fromArray(state.viewBoxSize);
-		this.viewBoxPosition.fromArray(state.viewBoxPosition);
 	}
 
 }

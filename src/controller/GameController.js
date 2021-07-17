@@ -4,6 +4,7 @@ import GameModel from "../model/GameModel";
 import Controls from "../class/Controls";
 import {SVG} from "@svgdotjs/svg.js";
 import LivingTreeModel from "../model/LivingTreeModel";
+import HexGrid from "../class/HexGrid";
 
 const GUTTER_WIDTH = 150;
 
@@ -20,8 +21,16 @@ export default class GameController {
 		this.draw = SVG().addTo(dom);
 		this.controls = new Controls(this.draw.node);
 
-		const start = new Vector2(15, 10);
+		const size = new Vector2(100, 100);
+		const grid = new HexGrid({ size: size.toArray(), scale: 80});
+		const start = new Vector2(size.x / 2, size.y / 2);
+		const startCoords = grid.getCoordinates(start);
+		const viewboxScale = 5;
+		const viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
+		const viewboxPosition = new Vector2(startCoords.x - (viewboxScale * viewboxSize.x / 2), startCoords.y - (viewboxScale * viewboxSize.y / 2));
+
 		const state = {
+			grid: grid.getState(),
 			plant: {
 				roots: {
 					position: start.toArray(),
@@ -56,9 +65,12 @@ export default class GameController {
 					]
 				},
 			},
-			viewBoxScale: 3,
-			viewBoxSize: new Vector2(100, 100).toArray(),
-			viewBoxPosition: new Vector2(0, 0).toArray()
+			butterfly: {
+				position: [start.x - 10, start.y - 10]
+			},
+			viewBoxScale: viewboxScale,
+			viewBoxSize: viewboxSize.toArray(),
+			viewBoxPosition: viewboxPosition.toArray()
 		}
 		this.model = new GameModel(state);
 		this.renderer = new GameRenderer(this.draw, this.model);

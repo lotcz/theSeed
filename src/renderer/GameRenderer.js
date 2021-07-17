@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
 import Vector2 from "../class/Vector2";
+import ButterflyRenderer from "./ButterflyRenderer";
 
 export default class GameRenderer extends SvgRenderer {
 	ui;
@@ -9,8 +10,16 @@ export default class GameRenderer extends SvgRenderer {
 	constructor(draw, model) {
 		super(draw, model);
 		this.highlightedTiles = null;
-		this.plantRenderer = new PlantRenderer(draw, model.plant, model.grid);
+		this.foreground = this.draw.group();
+		this.plantRenderer = new PlantRenderer(this.foreground, model.plant, model.grid);
 		this.addChild(this.plantRenderer);
+		this.butterflyRenderer = new ButterflyRenderer(this.foreground, model.butterfly, model.grid);
+		this.addChild(this.butterflyRenderer);
+
+		this.background = this.draw.group();
+		const max = this.model.grid.getMaxCoordinates();
+		this.background.rect(max.x, max.y).fill('lightblue');
+		this.background.back();
 	}
 
 	renderGridTile(position, stroke) {
@@ -48,6 +57,7 @@ export default class GameRenderer extends SvgRenderer {
 			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}
+
 	}
 
 }

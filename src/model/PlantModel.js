@@ -7,6 +7,10 @@ export default class PlantModel extends ModelBase {
 
 	constructor(state) {
 		super(state);
+
+		if (state) {
+			this.restoreState(state);
+		}
 	}
 
 	isDirty() {

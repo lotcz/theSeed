@@ -10,15 +10,17 @@ export default class HexGrid {
 	scale;
 	tileSize;
 
-	constructor(size, scale) {
-		this.size = size;
-		this.scale = scale;
-		this.tileSize = new Vector2(2 * this.scale, Math.sqrt(3) * this.scale);
+	constructor(state) {
+		if (state) this.restoreState(state);
 	}
 
 	getCoordinates(position) {
 		const offset = (position.x % 2) === 0 ? 0 : this.tileSize.y / 2;
 		return new Vector2(position.x * this.tileSize.x * 3/4, offset + (position.y * this.tileSize.y));
+	}
+
+	getMaxCoordinates() {
+		return new Vector2(this.size.x * this.tileSize.x * 3/4, this.size.y * this.tileSize.y);
 	}
 
 	getPosition(coordinates) {
@@ -64,6 +66,20 @@ export default class HexGrid {
 
 	getNeighborLowerRight(position) {
 		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT : NEIGHBOR_RIGHT.addY(1));
+	}
+
+	getState() {
+		return {
+			size: this.size.toArray(),
+			scale: this.scale
+		}
+	}
+
+	restoreState(state) {
+		this.size = new Vector2();
+		this.size.fromArray(state.size);
+		this.scale = state.scale;
+		this.tileSize = new Vector2(2 * this.scale, Math.sqrt(3) * this.scale);
 	}
 
 }
