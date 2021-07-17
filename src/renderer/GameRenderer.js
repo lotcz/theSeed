@@ -1,7 +1,8 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
-import Vector2 from "../class/Vector2";
 import ButterflyRenderer from "./ButterflyRenderer";
+import {BROWN_DARK, BROWN_LIGHT, GROUND_DARK, GROUND_LIGHT, SKY_DARK, SKY_LIGHT} from "./Palette";
+import GroundRenderer from "./GroundRenderer";
 
 export default class GameRenderer extends SvgRenderer {
 	ui;
@@ -10,16 +11,32 @@ export default class GameRenderer extends SvgRenderer {
 	constructor(draw, model) {
 		super(draw, model);
 		this.highlightedTiles = null;
+
+		this.background = this.draw.group();
+		const max = this.model.grid.getMaxCoordinates();
+		const linear = draw.gradient('linear', function(add) {
+			add.stop(0, SKY_LIGHT);
+			add.stop(1, SKY_DARK);
+			add.from(0, 0);
+			add.to(0,1);
+		})
+		this.background.rect(max.x, max.y).fill(linear);
+		this.background.back();
+
+		const groundGradient = draw.gradient('linear', function(add) {
+			add.stop(0, GROUND_LIGHT);
+			add.stop(1, GROUND_DARK);
+			add.from(0, 0);
+			add.to(0,1);
+		})
+		this.groundRenderer = new GroundRenderer(this.background, model.ground, model.grid, groundGradient, { width: 4, color: BROWN_LIGHT});
+		this.addChild(this.groundRenderer);
+
 		this.foreground = this.draw.group();
 		this.plantRenderer = new PlantRenderer(this.foreground, model.plant, model.grid);
 		this.addChild(this.plantRenderer);
 		this.butterflyRenderer = new ButterflyRenderer(this.foreground, model.butterfly, model.grid);
 		this.addChild(this.butterflyRenderer);
-
-		this.background = this.draw.group();
-		const max = this.model.grid.getMaxCoordinates();
-		this.background.rect(max.x, max.y).fill('lightblue');
-		this.background.back();
 	}
 
 	renderGridTile(position, stroke) {

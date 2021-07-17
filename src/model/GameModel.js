@@ -4,10 +4,13 @@ import ModelBase from "./ModelBase";
 import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
 import ButterflyModel from "./ButterflyModel";
+import PositionedTreeModel from "./PositionedTreeModel";
+import GroundModel from "./GroundModel";
 
 export default class GameModel extends ModelBase {
 	grid;
 	plant;
+	ground;
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxPosition;
@@ -29,6 +32,7 @@ export default class GameModel extends ModelBase {
 		return {
 			grid: this.grid.getState(),
 			plant: this.plant.getState(),
+			ground: this.ground.getState(),
 			butterfly: this.butterfly.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
@@ -39,6 +43,7 @@ export default class GameModel extends ModelBase {
 	restoreState(state) {
 		this.grid = new HexGrid(state.grid);
 		this.plant = new PlantModel(state.plant);
+		this.ground = new GroundModel(state.ground);
 		this.butterfly = new ButterflyModel(state.butterfly);
 		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
 		this.viewBoxSize = new Vector2();

@@ -5,6 +5,7 @@ import Controls from "../class/Controls";
 import {SVG} from "@svgdotjs/svg.js";
 import LivingTreeModel from "../model/LivingTreeModel";
 import HexGrid from "../class/HexGrid";
+import GroundModel from "../model/GroundModel";
 
 const GUTTER_WIDTH = 150;
 
@@ -29,8 +30,12 @@ export default class GameController {
 		const viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
 		const viewboxPosition = new Vector2(startCoords.x - (viewboxScale * viewboxSize.x / 2), startCoords.y - (viewboxScale * viewboxSize.y / 2));
 
+		const ground = new GroundModel( { position: start.toArray(), points: []});
+		ground.generateRandom(grid, start);
+
 		const state = {
 			grid: grid.getState(),
+			ground: ground.getState(),
 			plant: {
 				roots: {
 					position: start.toArray(),

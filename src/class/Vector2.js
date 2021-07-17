@@ -71,4 +71,8 @@ export default class Vector2 extends Dirty {
 			this.setY(arr[1]);
 		}
 	}
+
+	clone() {
+		return new Vector2(this.x, this.y);
+	}
 }

@@ -14,7 +14,6 @@ export default class ButterflyRenderer extends SvgRenderer {
 
 	renderInternal() {
 		const coords = this.grid.getCoordinates(this.model.position);
-		console.log(coords);
 		this.group.move(coords.x, coords.y);
 	}
 
