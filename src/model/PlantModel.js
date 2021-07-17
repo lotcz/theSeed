@@ -1,17 +1,12 @@
 import ModelBase from "./ModelBase";
-import RootsModel from "./RootsModel";
-import StemModel from "./StemModel";
+import LivingTreeModel from "./LivingTreeModel";
 
 export default class PlantModel extends ModelBase {
-	position;
 	roots;
 	stem;
 
-	constructor(position) {
-		super();
-
-		this.roots = new RootsModel(position);
-		this.stem = new StemModel(position);
+	constructor(state) {
+		super(state);
 	}
 
 	isDirty() {
@@ -19,7 +14,18 @@ export default class PlantModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.roots.restoreState(state);
-		this.stem.restoreState(state);
+		this.roots = new LivingTreeModel(state.roots);
+		this.stem = new LivingTreeModel(state.stem);
+		this.makeDirty();
+		//this.roots.restoreState(state);
+		//this.stem.restoreState(state);
 	}
+
+	getState() {
+		return {
+			roots: this.roots.getState(),
+			stem: this.stem.getState()
+		}
+	}
+
 }

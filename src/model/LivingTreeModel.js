@@ -1,14 +1,16 @@
 import ModelBase from "./ModelBase";
 import Vector2 from "../class/Vector2";
 
-export default class LivingTree extends ModelBase {
+export default class LivingTreeModel extends ModelBase {
 	position;
 	power;
 
-	constructor(position) {
-		super();
-		this.position = position;
-		this.power = 1;
+	constructor(state) {
+		super(state);
+
+		if (state) {
+			this.restoreState(state);
+		}
 	}
 
 	powerUpdateRequested() {
@@ -37,7 +39,7 @@ export default class LivingTree extends ModelBase {
 	}
 
 	findNodeOnPos(position) {
-		if (this.position.distanceTo(position) === 0) return this;
+		if (this.position.equalsTo(position)) return this;
 		for (let i = 0, max = this.children.length; i < max; i++) {
 			let result = this.children[i].findNodeOnPos(position);
 			if (result) return result;
@@ -57,6 +59,23 @@ export default class LivingTree extends ModelBase {
 
 	nodeExists(position) {
 		return this.findNodeOnPos(position) !== null;
+	}
+
+	restoreState(state) {
+		this.position = new Vector2();
+		this.position.fromArray(state.position);
+		this.power = state.power;
+		if (state.children) {
+			this.restoreChildren(state.children, (childState) => new LivingTreeModel(childState));
+		}
+	}
+
+	getState() {
+		return {
+			position: this.position.toArray(),
+			power: this.power,
+			children: this.getChildrenState()
+		}
 	}
 
 }

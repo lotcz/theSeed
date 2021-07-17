@@ -3,6 +3,7 @@ import GameRenderer from "../renderer/GameRenderer";
 import GameModel from "../model/GameModel";
 import Controls from "../class/Controls";
 import {SVG} from "@svgdotjs/svg.js";
+import LivingTreeModel from "../model/LivingTreeModel";
 
 const GUTTER_WIDTH = 150;
 
@@ -18,7 +19,36 @@ export default class GameController {
 		this.lastTime = null;
 		this.draw = SVG().addTo(dom);
 		this.controls = new Controls(this.draw.node);
-		this.model = new GameModel();
+
+		const start = new Vector2(15, 10);
+		const state = {
+			plant: {
+				roots: {
+					position: start.toArray(),
+					power: 2,
+					children: [
+						{
+							position: new Vector2(start.x, start.y + 1).toArray(),
+							power: 1
+						}
+					]
+				},
+				stem: {
+					position: start.toArray(),
+					power: 2,
+					children: [
+						{
+							position: new Vector2(start.x, start.y - 1).toArray(),
+							power: 1
+						}
+					]
+				},
+			},
+			viewBoxScale: 3,
+			viewBoxSize: new Vector2(100, 100).toArray(),
+			viewBoxPosition: new Vector2(0, 0).toArray()
+		}
+		this.model = new GameModel(state);
 		this.renderer = new GameRenderer(this.draw, this.model);
 		this.updateLoop = () => this.update();
 		window.addEventListener('resize', (e) => this.onResize());
@@ -86,6 +116,10 @@ export default class GameController {
 		}
 	}
 
+	addNode(parent, position) {
+		parent.addChild(new LivingTreeModel({position: position.toArray(), power: 1}));
+	}
+
 	onClick(mouseCoords) {
 		const position = this.getCursorGridPosition(mouseCoords);
 		const root = this.model.plant.roots.findNodeOnPos(position);
@@ -94,7 +128,7 @@ export default class GameController {
 			// ROOTS
 			const above = this.model.plant.roots.findNodeOnPos(new Vector2(position.x, position.y - 1));
 			if (above !== null) {
-				this.model.plant.roots.addRoot(above, position);
+				this.addNode(above, position);
 			} else {
 				const nodes = this.model.plant.roots.findNodesCloseTo(position, 1.5);
 				if (nodes.length > 0) {
@@ -102,14 +136,14 @@ export default class GameController {
 						.filter((n) => n.position.y < position.y && (!n.isRoot()))
 						.sort((a, b) => a.position.y - b.position.y);
 					if (validnodes.length > 0) {
-						this.model.plant.roots.addRoot(validnodes[0], position);
+						this.addNode(validnodes[0], position);
 					}
 				}
 			}
 			// STEM
 			const below = this.model.plant.stem.findNodeOnPos(new Vector2(position.x, position.y + 1));
 			if (below !== null) {
-				this.model.plant.stem.addStem(below, position);
+				this.addNode(below, position);
 			} else {
 				const neighbors = this.model.plant.stem.findNodesCloseTo(position, 1.5);
 				if (neighbors.length > 0) {
@@ -117,7 +151,7 @@ export default class GameController {
 						.filter((n) => n.position.y > position.y && (!n.isRoot()))
 						.sort((a, b) => b.position.y - a.position.y);
 					if (valids.length > 0) {
-						this.model.plant.stem.addStem(valids[0], position);
+						this.addNode(valids[0], position);
 					}
 				}
 			}

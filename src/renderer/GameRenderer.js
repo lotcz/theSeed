@@ -1,16 +1,32 @@
 import SvgRenderer from "./SvgRenderer";
-import RootsRenderer from "./RootsRenderer";
 import PlantRenderer from "./PlantRenderer";
 
 export default class GameRenderer extends SvgRenderer {
 	ui;
-	highlightedTile;
+	highlightedTiles;
 
 	constructor(draw, model) {
 		super(draw, model);
-		this.highlightedTile = null;
+		this.highlightedTiles = null;
 		this.plantRenderer = new PlantRenderer(draw, model.plant, model.grid);
 		this.addChild(this.plantRenderer);
+	}
+
+	renderGridTile(position, stroke) {
+		const corners = this.model.grid
+			.getCorners(position)
+			.map((c) => [c.x, c.y]);
+		corners.push(corners[0]);
+		this.highlightedTiles.polyline(corners).fill('transparent').stroke(stroke);
+	}
+
+	renderHighlights(position) {
+		this.renderGridTile(position, { width: 2, color: 'blue'});
+
+		this.renderGridTile(position.addX(1), { width: 2, color: 'orange'});
+		this.renderGridTile(position.addX(-1), { width: 2, color: 'red'});
+		this.renderGridTile(position.addY(1), { width: 2, color: 'lightgreen'});
+		this.renderGridTile(position.addY(-1), { width: 2, color: 'darkgreen'});
 	}
 
 	renderInternal() {
@@ -22,12 +38,9 @@ export default class GameRenderer extends SvgRenderer {
 			this.model.viewBoxScale.clean();
 		}
 		if (this.model.highlightedTilePosition.isDirty()) {
-			if (this.highlightedTile) this.highlightedTile.remove();
-			const corners = this.model.grid
-				.getCorners(this.model.highlightedTilePosition)
-				.map((c) => [c.x, c.y]);
-			corners.push(corners[0]);
-			this.highlightedTile = this.draw.polyline(corners).fill('transparent').stroke({ width: 2, color: 'blue'});
+			if (this.highlightedTiles) this.highlightedTiles.remove();
+			this.highlightedTiles = this.draw.group();
+			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}
 	}
