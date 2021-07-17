@@ -1,4 +1,4 @@
-import HexGrid from "./HexGrid";
+import HexGrid from "../class/HexGrid";
 import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
 import DirtyValue from "../class/DirtyValue";

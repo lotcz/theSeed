@@ -90,7 +90,7 @@ export default class LivingTreeRenderer extends SvgRenderer {
 		// first child must be rendering root
 		this.renderNode(root.children[0]);
 
-		this.path += `${rootCoord.x} ${rootCoord.y}, ${rootCoord.x + this.getNodeRadius(root)} ${rootCoord.y}`;
+		this.path += `L ${rootCoord.x + this.getNodeRadius(root)} ${rootCoord.y}`;
 
 		const path = this.group.path(this.path).stroke(this.stroke).fill(this.fill);
 		path.back();

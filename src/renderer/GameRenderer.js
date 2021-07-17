@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
+import Vector2 from "../class/Vector2";
 
 export default class GameRenderer extends SvgRenderer {
 	ui;
@@ -23,10 +24,14 @@ export default class GameRenderer extends SvgRenderer {
 	renderHighlights(position) {
 		this.renderGridTile(position, { width: 2, color: 'blue'});
 
-		this.renderGridTile(position.addX(1), { width: 2, color: 'orange'});
-		this.renderGridTile(position.addX(-1), { width: 2, color: 'red'});
-		this.renderGridTile(position.addY(1), { width: 2, color: 'lightgreen'});
-		this.renderGridTile(position.addY(-1), { width: 2, color: 'darkgreen'});
+		this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), { width: 2, color: 'orange'});
+		this.renderGridTile(this.model.grid.getNeighborUpperRight(position), { width: 2, color: 'red'});
+
+		this.renderGridTile(this.model.grid.getNeighborLowerLeft(position), { width: 2, color: 'magenta'});
+		this.renderGridTile(this.model.grid.getNeighborLowerRight(position), { width: 2, color: 'cyan'});
+
+		this.renderGridTile(this.model.grid.getNeighborDown(position), { width: 2, color: 'lightgreen'});
+		this.renderGridTile(this.model.grid.getNeighborUp(position), { width: 2, color: 'darkgreen'});
 	}
 
 	renderInternal() {

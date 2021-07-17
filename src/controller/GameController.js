@@ -120,40 +120,54 @@ export default class GameController {
 		parent.addChild(new LivingTreeModel({position: position.toArray(), power: 1}));
 	}
 
+	findRootCandidate(position) {
+		const node = this.model.plant.roots.findNodeOnPos(position);
+		if (node && !node.isRoot()) return node;
+		return null;
+	}
+
+	findStemCandidate(position) {
+		const node = this.model.plant.stem.findNodeOnPos(position);
+		if (node && !node.isRoot()) return node;
+		return null;
+	}
+
 	onClick(mouseCoords) {
 		const position = this.getCursorGridPosition(mouseCoords);
 		const root = this.model.plant.roots.findNodeOnPos(position);
 		const stem = this.model.plant.stem.findNodeOnPos(position);
 		if (root === null && stem === null) {
 			// ROOTS
-			const above = this.model.plant.roots.findNodeOnPos(new Vector2(position.x, position.y - 1));
+			const above = this.findRootCandidate(this.model.grid.getNeighborUp(position));
 			if (above !== null) {
 				this.addNode(above, position);
-			} else {
-				const nodes = this.model.plant.roots.findNodesCloseTo(position, 1.5);
-				if (nodes.length > 0) {
-					const validnodes = nodes
-						.filter((n) => n.position.y < position.y && (!n.isRoot()))
-						.sort((a, b) => a.position.y - b.position.y);
-					if (validnodes.length > 0) {
-						this.addNode(validnodes[0], position);
-					}
-				}
+				return;
+			}
+			const upperLeft = this.findRootCandidate(this.model.grid.getNeighborUpperLeft(position));
+			if (upperLeft !== null) {
+				this.addNode(upperLeft, position);
+				return;
+			}
+			const upperRight = this.findRootCandidate(this.model.grid.getNeighborUpperRight(position));
+			if (upperRight !== null) {
+				this.addNode(upperRight, position);
+				return;
 			}
 			// STEM
-			const below = this.model.plant.stem.findNodeOnPos(new Vector2(position.x, position.y + 1));
+			const below = this.findStemCandidate(this.model.grid.getNeighborDown(position));
 			if (below !== null) {
 				this.addNode(below, position);
-			} else {
-				const neighbors = this.model.plant.stem.findNodesCloseTo(position, 1.5);
-				if (neighbors.length > 0) {
-					const valids = neighbors
-						.filter((n) => n.position.y > position.y && (!n.isRoot()))
-						.sort((a, b) => b.position.y - a.position.y);
-					if (valids.length > 0) {
-						this.addNode(valids[0], position);
-					}
-				}
+				return;
+			}
+			const lowerLeft = this.findStemCandidate(this.model.grid.getNeighborLowerLeft(position));
+			if (lowerLeft !== null) {
+				this.addNode(lowerLeft, position);
+				return;
+			}
+			const lowerRight = this.findStemCandidate(this.model.grid.getNeighborLowerRight(position));
+			if (lowerRight !== null) {
+				this.addNode(lowerRight, position);
+				return;
 			}
 		}
 	}

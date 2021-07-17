@@ -1,4 +1,9 @@
-import Vector2 from "../class/Vector2";
+import Vector2 from "./Vector2";
+
+const NEIGHBOR_UP = new Vector2(0, -1);
+const NEIGHBOR_DOWN = new Vector2(0, 1);
+const NEIGHBOR_LEFT = new Vector2(-1, 0);
+const NEIGHBOR_RIGHT = new Vector2(1, 0);
 
 export default class HexGrid {
 	size;
@@ -35,6 +40,30 @@ export default class HexGrid {
 	pointCorner(center, i) {
 		const angle_rad = (Math.PI/3 * i);
 		return new Vector2(center.x + this.scale * Math.cos(angle_rad), center.y + this.scale * Math.sin(angle_rad));
+	}
+
+	getNeighborUp(position) {
+		return position.add(NEIGHBOR_UP);
+	}
+
+	getNeighborDown(position) {
+		return position.add(NEIGHBOR_DOWN);
+	}
+
+	getNeighborUpperLeft(position) {
+		return position.add(position.x % 2 === 0 ? NEIGHBOR_LEFT.addY(-1) : NEIGHBOR_LEFT);
+	}
+
+	getNeighborUpperRight(position) {
+		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT.addY(-1) : NEIGHBOR_RIGHT);
+	}
+
+	getNeighborLowerLeft(position) {
+		return position.add(position.x % 2 === 0 ? NEIGHBOR_LEFT : NEIGHBOR_LEFT.addY(1));
+	}
+
+	getNeighborLowerRight(position) {
+		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT : NEIGHBOR_RIGHT.addY(1));
 	}
 
 }
