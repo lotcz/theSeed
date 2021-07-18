@@ -1,5 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import Vector2 from "../class/Vector2";
 
 export default class GroundRenderer extends SvgRenderer {
 	path;

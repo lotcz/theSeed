@@ -6,6 +6,9 @@ import {SVG} from "@svgdotjs/svg.js";
 import LivingTreeModel from "../model/LivingTreeModel";
 import HexGrid from "../class/HexGrid";
 import GroundModel from "../model/GroundModel";
+import ButterflyImage from '../../res/img/butterfly.svg';
+import BugImage from '../../res/img/bug.svg';
+import BugController from "./BugController";
 
 const GUTTER_WIDTH = 150;
 
@@ -71,14 +74,29 @@ export default class GameController {
 				},
 			},
 			butterfly: {
-				position: [start.x - 10, start.y - 10]
+				position: [start.x - 10, start.y - 10],
+				scale: 1,
+				flipped: false,
+				rotation: 45,
+				path: ButterflyImage
+			},
+			bug: {
+				position: [start.x + 10, start.y],
+				scale: 1,
+				flipped: true,
+				rotation: 0,
+				path: BugImage
 			},
 			viewBoxScale: viewboxScale,
 			viewBoxSize: viewboxSize.toArray(),
 			viewBoxPosition: viewboxPosition.toArray()
 		}
+
 		this.model = new GameModel(state);
 		this.renderer = new GameRenderer(this.draw, this.model);
+
+		this.bugController = new BugController(grid, this.model.ground, this.controls, this.model.bug);
+
 		this.updateLoop = () => this.update();
 		window.addEventListener('resize', (e) => this.onResize());
 		this.onResize();
@@ -87,7 +105,7 @@ export default class GameController {
 	update() {
 		const time = performance.now();
 		if (!this.lastTime) this.lastTime = time;
-		const delta = (time - this.lastTime) / 1000;
+		const delta = (time - this.lastTime);
 		this.lastTime = time;
 
 		if (this.controls.isDirty()) {
@@ -109,6 +127,9 @@ export default class GameController {
 		if (this.controls.mouseOver) {
 			this.scroll(delta);
 		}
+
+		this.bugController.update(delta);
+
 		this.renderer.render();
 		requestAnimationFrame(this.updateLoop);
 	}
@@ -128,6 +149,7 @@ export default class GameController {
 
 	scroll(delta) {
 		const mouseCoords = this.controls.mouseCoords;
+		const speed = delta / 100;
 		const scrolling = new Vector2();
 		if (mouseCoords.x < GUTTER_WIDTH) {
 			scrolling.x = mouseCoords.x - GUTTER_WIDTH;
@@ -141,7 +163,7 @@ export default class GameController {
 		}
 
 		if (scrolling.size() > 0) {
-			this.model.viewBoxPosition.set(this.model.viewBoxPosition.x + (scrolling.x * delta), this.model.viewBoxPosition.y + (scrolling.y * delta));
+			this.model.viewBoxPosition.set(this.model.viewBoxPosition.x + (scrolling.x * speed), this.model.viewBoxPosition.y + (scrolling.y * speed));
 		}
 	}
 

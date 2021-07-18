@@ -1,6 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
-import ButterflyRenderer from "./ButterflyRenderer";
+import ImageRenderer from "./ImageRenderer";
 import {BROWN_DARK, BROWN_LIGHT, GROUND_DARK, GROUND_LIGHT, SKY_DARK, SKY_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
 
@@ -35,8 +35,10 @@ export default class GameRenderer extends SvgRenderer {
 		this.foreground = this.draw.group();
 		this.plantRenderer = new PlantRenderer(this.foreground, model.plant, model.grid);
 		this.addChild(this.plantRenderer);
-		this.butterflyRenderer = new ButterflyRenderer(this.foreground, model.butterfly, model.grid);
+		this.butterflyRenderer = new ImageRenderer(this.foreground, model.butterfly, model.grid);
 		this.addChild(this.butterflyRenderer);
+		this.bugRenderer = new ImageRenderer(this.foreground, model.bug, model.grid);
+		this.addChild(this.bugRenderer);
 	}
 
 	renderGridTile(position, stroke) {

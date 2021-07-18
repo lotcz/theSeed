@@ -57,6 +57,10 @@ export default class Vector2 extends Dirty {
 		return new Vector2(this.x, this.y + y);
 	}
 
+	multiply(s) {
+		return new Vector2(this.x * s, this.y * s);
+	}
+
 	subtract(v) {
 		return new Vector2(this.x - v.x, this.y - v.y);
 	}
