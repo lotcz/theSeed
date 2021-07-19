@@ -33,6 +33,10 @@ energy from sunlight, carbon dioxide, and water into sugars
 
 Transpiration – the loss of water vapor to cool the plant
 
+# Regeneration
+
+Regenerate eaten parts or even repel bugs
+
 # Achievements
 
 - flower is symmetric

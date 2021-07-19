@@ -41,9 +41,15 @@ export default class BugController {
 		const a = this.grid.getCoordinates(this.ground.points[this.gi]);
 		const b = this.grid.getCoordinates(this.ground.points[this.target]);
 
-		const v = a.add(b.subtract(a).multiply(progress));
-
+		const diff = b.subtract(a);
+		const v = a.add(diff.multiply(progress));
 		this.model.coordinates.set(v);
+
+		const o = diff.multiply(-1);
+		const sinX = o.y / o.size();
+		const x = Math.asin(sinX);
+		const angle = x * 180/Math.PI;
+		this.model.rotation.set(angle);
 
 
 	}

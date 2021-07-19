@@ -30,6 +30,10 @@ export default class HexGrid {
 		return new Vector2(x, y);
 	}
 
+	getMaxPosition() {
+		return this.size.clone();
+	}
+
 	getCorners(position) {
 		const corners = [];
 		const coordinates = this.getCoordinates(position);

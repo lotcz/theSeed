@@ -13,7 +13,7 @@ export default class GameModel extends ModelBase {
 	ground;
 	viewBoxScale;
 	viewBoxSize;
-	viewBoxPosition;
+	viewBoxCoordinates;
 	highlightedTilePosition;
 
 	constructor(state) {
@@ -25,7 +25,7 @@ export default class GameModel extends ModelBase {
 	}
 
 	isDirty() {
-		return this.plant.isDirty() || this.bug.isDirty() || this.viewBoxPosition.isDirty() || this.viewBoxSize.isDirty() || this.viewBoxScale.isDirty() || this.highlightedTilePosition.isDirty();
+		return this.plant.isDirty() || this.ladybug.isDirty() || this.viewBoxCoordinates.isDirty() || this.viewBoxSize.isDirty() || this.viewBoxScale.isDirty() || this.highlightedTilePosition.isDirty();
 	}
 
 	getState() {
@@ -34,10 +34,13 @@ export default class GameModel extends ModelBase {
 			plant: this.plant.getState(),
 			ground: this.ground.getState(),
 			butterfly: this.butterfly.getState(),
-			bug: this.bug.getState(),
+			ladybug: this.ladybug.getState(),
+			bug1: this.bug1.getState(),
+			beetle: this.beetle.getState(),
+			coccinelle: this.coccinelle.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
-			viewBoxPosition: this.viewBoxPosition.toArray()
+			viewBoxCoordinates: this.viewBoxCoordinates.toArray()
 		}
 	}
 
@@ -46,12 +49,15 @@ export default class GameModel extends ModelBase {
 		this.plant = new PlantModel(state.plant);
 		this.ground = new GroundModel(state.ground);
 		this.butterfly = new ImageModel(state.butterfly);
-		this.bug = new ImageModel(state.bug);
+		this.ladybug = new ImageModel(state.ladybug);
+		this.bug1 = new ImageModel(state.bug1);
+		this.beetle = new ImageModel(state.beetle);
+		this.coccinelle = new ImageModel(state.coccinelle);
 		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
 		this.viewBoxSize = new Vector2();
 		this.viewBoxSize.fromArray(state.viewBoxSize);
-		this.viewBoxPosition = new Vector2();
-		this.viewBoxPosition.fromArray(state.viewBoxPosition);
+		this.viewBoxCoordinates = new Vector2();
+		this.viewBoxCoordinates.fromArray(state.viewBoxCoordinates);
 
 		this.highlightedTilePosition = new Vector2();
 		this.highlightedTilePosition.clean();

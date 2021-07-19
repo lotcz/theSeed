@@ -3,11 +3,16 @@ import GameRenderer from "../renderer/GameRenderer";
 import GameModel from "../model/GameModel";
 import Controls from "../class/Controls";
 import {SVG} from "@svgdotjs/svg.js";
+import {} from "@svgdotjs/svg.filter.js"
 import LivingTreeModel from "../model/LivingTreeModel";
 import HexGrid from "../class/HexGrid";
 import GroundModel from "../model/GroundModel";
 import ButterflyImage from '../../res/img/butterfly.svg';
-import BugImage from '../../res/img/bug.svg';
+import LadybugImage from '../../res/img/ladybug.svg';
+import MyLadybugImage from '../../res/img/my-lady-bug.svg';
+import BeetleImage from '../../res/img/beetle.svg';
+import Bug1Image from '../../res/img/bug-1.svg';
+import CoccinelleImage from '../../res/img/coccinelle.svg';
 import BugController from "./BugController";
 
 const GUTTER_WIDTH = 150;
@@ -31,7 +36,7 @@ export default class GameController {
 		const startCoords = grid.getCoordinates(start);
 		const viewboxScale = 5;
 		const viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
-		const viewboxPosition = new Vector2(startCoords.x - (viewboxScale * viewboxSize.x / 2), startCoords.y - (viewboxScale * viewboxSize.y / 2));
+		const viewboxCoordinates = new Vector2(startCoords.x - (viewboxScale * viewboxSize.x / 2), startCoords.y - (viewboxScale * viewboxSize.y / 2));
 
 		const ground = new GroundModel( { position: start.toArray(), points: []});
 		ground.generateRandom(grid, start);
@@ -77,25 +82,49 @@ export default class GameController {
 				position: [start.x - 10, start.y - 10],
 				scale: 1,
 				flipped: false,
-				rotation: 45,
+				rotation: 0,
 				path: ButterflyImage
 			},
-			bug: {
+			ladybug: {
 				position: [start.x + 10, start.y],
 				scale: 1,
 				flipped: true,
 				rotation: 0,
-				path: BugImage
+				path: LadybugImage
+			},
+			bug1: {
+				position: [start.x + 10, start.y],
+				scale: 0.7,
+				flipped: false,
+				rotation: -90,
+				path: Bug1Image
+			},
+			beetle: {
+				position: [start.x + 10, start.y],
+				scale: 0.5,
+				flipped: false,
+				rotation: -90,
+				path: BeetleImage
+			},
+			coccinelle: {
+				position: [start.x + 10, start.y],
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: CoccinelleImage
 			},
 			viewBoxScale: viewboxScale,
 			viewBoxSize: viewboxSize.toArray(),
-			viewBoxPosition: viewboxPosition.toArray()
+			viewBoxCoordinates: viewboxCoordinates.toArray()
 		}
 
 		this.model = new GameModel(state);
 		this.renderer = new GameRenderer(this.draw, this.model);
 
-		this.bugController = new BugController(grid, this.model.ground, this.controls, this.model.bug);
+		this.ladybugController = new BugController(grid, this.model.ground, this.controls, this.model.ladybug);
+		this.bug1Controller = new BugController(grid, this.model.ground, this.controls, this.model.bug1);
+		this.beetleController = new BugController(grid, this.model.ground, this.controls, this.model.beetle);
+		this.coccinelleController = new BugController(grid, this.model.ground, this.controls, this.model.coccinelle);
 
 		this.updateLoop = () => this.update();
 		window.addEventListener('resize', (e) => this.onResize());
@@ -128,14 +157,17 @@ export default class GameController {
 			this.scroll(delta);
 		}
 
-		this.bugController.update(delta);
+		this.ladybugController.update(delta);
+		this.bug1Controller.update(delta);
+		this.beetleController.update(delta);
+		this.coccinelleController.update(delta);
 
 		this.renderer.render();
 		requestAnimationFrame(this.updateLoop);
 	}
 
 	getCursorAbsolutePosition(offset) {
-		return new Vector2(this.model.viewBoxPosition.x + (offset.x * this.model.viewBoxScale.get()), this.model.viewBoxPosition.y + (offset.y * this.model.viewBoxScale.get()));
+		return new Vector2(this.model.viewBoxCoordinates.x + (offset.x * this.model.viewBoxScale.get()), this.model.viewBoxCoordinates.y + (offset.y * this.model.viewBoxScale.get()));
 	}
 
 	getCursorGridPosition(offset) {
@@ -163,7 +195,7 @@ export default class GameController {
 		}
 
 		if (scrolling.size() > 0) {
-			this.model.viewBoxPosition.set(this.model.viewBoxPosition.x + (scrolling.x * speed), this.model.viewBoxPosition.y + (scrolling.y * speed));
+			this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
 		}
 	}
 
@@ -230,7 +262,7 @@ export default class GameController {
 
 		const after = this.getCursorAbsolutePosition(this.controls.mouseCoords);
 		const diff = after.subtract(before);
-		this.model.viewBoxPosition.set(this.model.viewBoxPosition.x - diff.x, this.model.viewBoxPosition.y - diff.y);
+		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
 	}
 
 	onResize() {
