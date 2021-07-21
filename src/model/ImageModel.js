@@ -17,10 +17,6 @@ export default class ImageModel extends ModelBase {
 		}
 	}
 
-	isDirty() {
-		return this.position.isDirty() || this.coordinates.isDirty() || this.flipped.isDirty() || this.rotation.isDirty() || this.scale.isDirty();
-	}
-
 	getState() {
 		return {
 			position: this.position.toArray(),
@@ -35,11 +31,16 @@ export default class ImageModel extends ModelBase {
 	restoreState(state) {
 		this.position = new Vector2();
 		this.position.fromArray(state.position);
+		this.addChild(this.position);
 		this.coordinates = new Vector2();
 		this.coordinates.fromArray(state.coordinates);
+		this.addChild(this.coordinates);
 		this.flipped = new DirtyValue(state.flipped);
+		this.addChild(this.flipped);
 		this.rotation = new DirtyValue(state.rotation);
+		this.addChild(this.rotation);
 		this.scale = new DirtyValue(state.scale);
+		this.addChild(this.scale);
 		this.path = state.path;
 	}
 

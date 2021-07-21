@@ -1,6 +1,6 @@
-import Dirty from "./Dirty";
+import Tree from "./Tree";
 
-export default class DirtyValue extends Dirty {
+export default class DirtyValue extends Tree {
 	value;
 
 	constructor(value) {

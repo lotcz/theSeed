@@ -10,19 +10,10 @@ export default class ModelBase extends Tree {
 		}
 	}
 
-	/***
-	 * Override this.
-	 * @param state
-	 */
 	restoreState(state) {
-		// restore state
+		this.children = [];
 	}
 
-	/***
-	 * Override this.
-	 * @param state
-	 * @param restoreFunc (state) => return Node
-	 */
 	restoreChildren(state, restoreFunc) {
 		this.children = [];
 		for (let i = 0, max = state.length; i < max; i++) {
@@ -30,12 +21,24 @@ export default class ModelBase extends Tree {
 		}
 	}
 
-	/***
-	* Override this.
-	* @param state
-	*/
+	static restoreArray(state, restoreFunc) {
+		const children = [];
+		for (let i = 0, max = state.length; i < max; i++) {
+			children.push(restoreFunc(state[i]));
+		}
+		return children;
+	}
+
+	static getArrayState(arr) {
+		const children = [];
+		for (let i = 0, max = arr.length; i < max; i++) {
+			children.push(arr[i].getState());
+		}
+		return children;
+	}
+
 	getState() {
-		return null;
+		return {children: this.getChildrenState()};
 	}
 
 	getChildrenState() {

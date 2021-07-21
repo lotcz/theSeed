@@ -3,6 +3,7 @@ import Dirty from "./Dirty";
 export default class Tree extends Dirty {
 	children;
 	parent;
+	dirtyParent;
 
 	constructor() {
 		super();
@@ -12,8 +13,8 @@ export default class Tree extends Dirty {
 
 	makeDirty() {
 		this.is_dirty = true;
-		if (!this.isRoot()) {
-			this.parent.makeDirty();
+		if (this.dirtyParent) {
+			this.dirtyParent.makeDirty();
 		}
 	}
 
@@ -27,8 +28,27 @@ export default class Tree extends Dirty {
 
 	addChild(node) {
 		node.parent = this;
+		node.dirtyParent = this;
 		this.children.push(node);
+		this.makeDirty();
 		return node;
+	}
+
+	removeChild(node) {
+		const index = this.children.indexOf(node);
+		if (index >= 0) {
+			this.children = this.children.slice(0, index).concat(this.children.slice(index, this.children.length - index - 1));
+			this.makeDirty();
+			return node;
+		}
+		for (let i = 0, max = this.children.length; i < max; i++) {
+			const child = this.children[i];
+			const result = child.removeChild(node);
+			if (result) {
+				return result;
+			}
+		}
+		return null;
 	}
 
 	forEach(func) {
@@ -37,6 +57,10 @@ export default class Tree extends Dirty {
 			const child = this.children[i];
 			func(child);
 		}
+	}
+
+	resetChildren() {
+		this.children = [];
 	}
 
 }

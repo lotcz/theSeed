@@ -8,6 +8,14 @@ export default class RendererBase extends Tree {
 		this.model = model;
 	}
 
+	activate() {
+
+	}
+
+	deactivate() {
+
+	}
+
 	render() {
 		if (this.isDirty() || this.model.isDirty()) {
 			this.renderInternal();

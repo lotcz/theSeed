@@ -1,272 +1,31 @@
-import Vector2 from "../class/Vector2";
-import GameRenderer from "../renderer/GameRenderer";
-import GameModel from "../model/GameModel";
-import Controls from "../class/Controls";
-import {SVG} from "@svgdotjs/svg.js";
-import {} from "@svgdotjs/svg.filter.js"
-import LivingTreeModel from "../model/LivingTreeModel";
-import HexGrid from "../class/HexGrid";
-import GroundModel from "../model/GroundModel";
-import ButterflyImage from '../../res/img/butterfly.svg';
-import LadybugImage from '../../res/img/ladybug.svg';
-import MyLadybugImage from '../../res/img/my-lady-bug.svg';
-import BeetleImage from '../../res/img/beetle.svg';
-import Bug1Image from '../../res/img/bug-1.svg';
-import CoccinelleImage from '../../res/img/coccinelle.svg';
-import BugController from "./BugController";
+import ControllerBase from "./ControllerBase";
+import LevelController from "./LevelController";
 
-const GUTTER_WIDTH = 150;
+export default class GameController extends ControllerBase {
+	constructor(grid, model, controls) {
+		super(grid, model, controls);
 
-export default class GameController {
-	draw;
-	dom;
-	renderer;
-	model;
-	controls;
+		this.levelController = new LevelController(grid, model.level, controls);
 
-	constructor(dom) {
-		this.dom = dom;
-		this.lastTime = null;
-		this.draw = SVG().addTo(dom);
-		this.controls = new Controls(this.draw.node);
-
-		const size = new Vector2(100, 100);
-		const grid = new HexGrid({ size: size.toArray(), scale: 80});
-		const start = new Vector2(size.x / 2, size.y / 2);
-		const startCoords = grid.getCoordinates(start);
-		const viewboxScale = 5;
-		const viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
-		const viewboxCoordinates = new Vector2(startCoords.x - (viewboxScale * viewboxSize.x / 2), startCoords.y - (viewboxScale * viewboxSize.y / 2));
-
-		const ground = new GroundModel( { position: start.toArray(), points: []});
-		ground.generateRandom(grid, start);
-
-		const state = {
-			grid: grid.getState(),
-			ground: ground.getState(),
-			plant: {
-				roots: {
-					position: start.toArray(),
-					power: 3,
-					children: [
-						{
-							position: new Vector2(start.x, start.y + 1).toArray(),
-							power: 2,
-							children: [
-								{
-									position: new Vector2(start.x, start.y + 2).toArray(),
-									power: 1
-								}
-							]
-						}
-					]
-				},
-				stem: {
-					position: start.toArray(),
-					power: 3,
-					children: [
-						{
-							position: new Vector2(start.x, start.y - 1).toArray(),
-							power: 2,
-							children: [
-								{
-									position: new Vector2(start.x, start.y - 2).toArray(),
-									power: 1
-								}
-							]
-						}
-					]
-				},
-			},
-			butterfly: {
-				position: [start.x - 10, start.y - 10],
-				scale: 1,
-				flipped: false,
-				rotation: 0,
-				path: ButterflyImage
-			},
-			ladybug: {
-				position: [start.x + 10, start.y],
-				scale: 1,
-				flipped: true,
-				rotation: 0,
-				path: LadybugImage
-			},
-			bug1: {
-				position: [start.x + 10, start.y],
-				scale: 0.7,
-				flipped: false,
-				rotation: -90,
-				path: Bug1Image
-			},
-			beetle: {
-				position: [start.x + 10, start.y],
-				scale: 0.5,
-				flipped: false,
-				rotation: -90,
-				path: BeetleImage
-			},
-			coccinelle: {
-				position: [start.x + 10, start.y],
-				scale: 1,
-				flipped: false,
-				rotation: 0,
-				path: CoccinelleImage
-			},
-			viewBoxScale: viewboxScale,
-			viewBoxSize: viewboxSize.toArray(),
-			viewBoxCoordinates: viewboxCoordinates.toArray()
-		}
-
-		this.model = new GameModel(state);
-		this.renderer = new GameRenderer(this.draw, this.model);
-
-		this.ladybugController = new BugController(grid, this.model.ground, this.controls, this.model.ladybug);
-		this.bug1Controller = new BugController(grid, this.model.ground, this.controls, this.model.bug1);
-		this.beetleController = new BugController(grid, this.model.ground, this.controls, this.model.beetle);
-		this.coccinelleController = new BugController(grid, this.model.ground, this.controls, this.model.coccinelle);
-
-		this.updateLoop = () => this.update();
-		window.addEventListener('resize', (e) => this.onResize());
+		this.onResizeEvent = () => this.onResize();
 		this.onResize();
 	}
 
-	update() {
-		const time = performance.now();
-		if (!this.lastTime) this.lastTime = time;
-		const delta = (time - this.lastTime);
-		this.lastTime = time;
-
-		if (this.controls.isDirty()) {
-			if (this.controls.mouseCoords.isDirty()) {
-				this.onMouseMove();
-				this.controls.mouseCoords.clean();
-			}
-			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
-				this.onClick(this.controls.mouseClick);
-				this.controls.mouseClick.clean();
-			}
-			if (this.controls.zoom.isDirty()) {
-				this.onZoom();
-				this.controls.resetZoom();
-			}
-			this.controls.clean();
-		}
-
-		if (this.controls.mouseOver) {
-			this.scroll(delta);
-		}
-
-		this.ladybugController.update(delta);
-		this.bug1Controller.update(delta);
-		this.beetleController.update(delta);
-		this.coccinelleController.update(delta);
-
-		this.renderer.render();
-		requestAnimationFrame(this.updateLoop);
+	activate() {
+		window.addEventListener('resize', this.onResizeEvent);
+		this.onResize();
 	}
 
-	getCursorAbsolutePosition(offset) {
-		return new Vector2(this.model.viewBoxCoordinates.x + (offset.x * this.model.viewBoxScale.get()), this.model.viewBoxCoordinates.y + (offset.y * this.model.viewBoxScale.get()));
+	deactivate() {
+		window.removeEventListener('resize', this.onResizeEvent);
 	}
 
-	getCursorGridPosition(offset) {
-		return this.model.grid.getPosition(this.getCursorAbsolutePosition(offset));
-	}
-
-	onMouseMove() {
-		const mousePosition = this.getCursorGridPosition(this.controls.mouseCoords);
-		this.model.highlightedTilePosition.set(mousePosition);
-	}
-
-	scroll(delta) {
-		const mouseCoords = this.controls.mouseCoords;
-		const speed = delta / 100;
-		const scrolling = new Vector2();
-		if (mouseCoords.x < GUTTER_WIDTH) {
-			scrolling.x = mouseCoords.x - GUTTER_WIDTH;
-		} else if ((this.model.viewBoxSize.x - mouseCoords.x) < GUTTER_WIDTH) {
-			scrolling.x = GUTTER_WIDTH - this.model.viewBoxSize.x + mouseCoords.x;
-		}
-		if (mouseCoords.y < GUTTER_WIDTH) {
-			scrolling.y = mouseCoords.y - GUTTER_WIDTH;
-		} else if ((this.model.viewBoxSize.y - mouseCoords.y) < GUTTER_WIDTH) {
-			scrolling.y = GUTTER_WIDTH - this.model.viewBoxSize.y + mouseCoords.y;
-		}
-
-		if (scrolling.size() > 0) {
-			this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
-		}
-	}
-
-	addNode(parent, position) {
-		parent.addChild(new LivingTreeModel({position: position.toArray(), power: 1}));
-	}
-
-	findRootCandidate(position) {
-		const node = this.model.plant.roots.findNodeOnPos(position);
-		if (node && !node.isRoot()) return node;
-		return null;
-	}
-
-	findStemCandidate(position) {
-		const node = this.model.plant.stem.findNodeOnPos(position);
-		if (node && !node.isRoot()) return node;
-		return null;
-	}
-
-	onClick(mouseCoords) {
-		const position = this.getCursorGridPosition(mouseCoords);
-		const root = this.model.plant.roots.findNodeOnPos(position);
-		const stem = this.model.plant.stem.findNodeOnPos(position);
-		if (root === null && stem === null) {
-			// ROOTS
-			const above = this.findRootCandidate(this.model.grid.getNeighborUp(position));
-			if (above !== null) {
-				this.addNode(above, position);
-				return;
-			}
-			const upperLeft = this.findRootCandidate(this.model.grid.getNeighborUpperLeft(position));
-			if (upperLeft !== null) {
-				this.addNode(upperLeft, position);
-				return;
-			}
-			const upperRight = this.findRootCandidate(this.model.grid.getNeighborUpperRight(position));
-			if (upperRight !== null) {
-				this.addNode(upperRight, position);
-				return;
-			}
-			// STEM
-			const below = this.findStemCandidate(this.model.grid.getNeighborDown(position));
-			if (below !== null) {
-				this.addNode(below, position);
-				return;
-			}
-			const lowerLeft = this.findStemCandidate(this.model.grid.getNeighborLowerLeft(position));
-			if (lowerLeft !== null) {
-				this.addNode(lowerLeft, position);
-				return;
-			}
-			const lowerRight = this.findStemCandidate(this.model.grid.getNeighborLowerRight(position));
-			if (lowerRight !== null) {
-				this.addNode(lowerRight, position);
-				return;
-			}
-		}
-	}
-
-	onZoom() {
-		const before = this.getCursorAbsolutePosition(this.controls.mouseCoords);
-		const delta = (this.model.viewBoxScale.get() / 10) * this.controls.zoom.get();
-		this.model.viewBoxScale.set(Math.max( 0.1, Math.min(100, this.model.viewBoxScale.get() + delta)));
-
-		const after = this.getCursorAbsolutePosition(this.controls.mouseCoords);
-		const diff = after.subtract(before);
-		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
+	update(delta) {
+		this.levelController.update(delta);
 	}
 
 	onResize() {
-		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
+		this.model.level.viewBoxSize.set(window.innerWidth, window.innerHeight);
 	}
 
 }

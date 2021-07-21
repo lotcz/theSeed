@@ -1,16 +1,18 @@
-import Vector2 from "./Vector2";
+import Vector2 from "../class/Vector2";
+import ModelBase from "./ModelBase";
 
 const NEIGHBOR_UP = new Vector2(0, -1);
 const NEIGHBOR_DOWN = new Vector2(0, 1);
 const NEIGHBOR_LEFT = new Vector2(-1, 0);
 const NEIGHBOR_RIGHT = new Vector2(1, 0);
 
-export default class HexGrid {
+export default class HexGridModel extends ModelBase {
 	size;
 	scale;
 	tileSize;
 
 	constructor(state) {
+		super();
 		if (state) this.restoreState(state);
 	}
 
@@ -31,7 +33,7 @@ export default class HexGrid {
 	}
 
 	getMaxPosition() {
-		return this.size.clone();
+		return this.size.subtract(new Vector2(1, 1));
 	}
 
 	getCorners(position) {
@@ -46,6 +48,17 @@ export default class HexGrid {
 	pointCorner(center, i) {
 		const angle_rad = (Math.PI/3 * i);
 		return new Vector2(center.x + this.scale * Math.cos(angle_rad), center.y + this.scale * Math.sin(angle_rad));
+	}
+
+	getNeighbors(position) {
+		return [
+			this.getNeighborUp(position),
+			this.getNeighborUpperRight(position),
+			this.getNeighborLowerRight(position),
+			this.getNeighborDown(position),
+			this.getNeighborLowerLeft(position),
+			this.getNeighborUpperLeft(position)
+		];
 	}
 
 	getNeighborUp(position) {

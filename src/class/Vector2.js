@@ -1,6 +1,7 @@
 import Dirty from "./Dirty";
+import Tree from "./Tree";
 
-export default class Vector2 extends Dirty {
+export default class Vector2 extends Tree {
 	x;
 	y;
 

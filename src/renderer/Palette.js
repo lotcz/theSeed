@@ -6,3 +6,5 @@ export const BROWN_DARK = '#302811';
 export const GROUND_DARK = '#000';
 export const GROUND_LIGHT = '#313131';
 
+export const GREEN_DARK = '#2b592a';
+export const GREEN_LIGHT = '#326522';

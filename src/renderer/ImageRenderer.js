@@ -17,14 +17,11 @@ export default class ImageRenderer extends SvgRenderer {
 			this.image.flip('x');
 		}
 		this.model.flipped.clean();
-
-		if (DEBUG_IMAGE)
-			this.circle = this.draw.circle(14).fill('red');
 	}
 
 	render() {
 		if (this.model.position.isDirty()) {
-			this.model.coordinates = this.grid.getCoordinates(this.model.position);
+			this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
 			this.model.position.clean();
 		}
 		if (this.model.scale.isDirty()) {
