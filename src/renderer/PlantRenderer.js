@@ -4,10 +4,10 @@ import {BROWN_DARK, BROWN_LIGHT, GREEN_DARK, GREEN_LIGHT} from "./Palette";
 
 export default class PlantRenderer extends SvgRenderer {
 
-	constructor(draw, model, grid) {
-		super(draw, model);
-		this.addChild(new LivingTreeRenderer(draw, model.roots, grid, false, BROWN_LIGHT, {width: 5, color: BROWN_DARK}, CURVES_STANDARD));
-		this.addChild(new LivingTreeRenderer(draw, model.stem, grid, true, GREEN_LIGHT, {width: 5, color: GREEN_DARK}, CURVES_WAVY));
+	constructor(game, model, draw) {
+		super(game, model, draw);
+		this.addChild(new LivingTreeRenderer(game, model.roots, draw, false, BROWN_LIGHT, {width: 5, color: BROWN_DARK}, CURVES_STANDARD));
+		this.addChild(new LivingTreeRenderer(game, model.stem, draw, true, GREEN_LIGHT, {width: 5, color: GREEN_DARK}, CURVES_WAVY));
 	}
 
 }

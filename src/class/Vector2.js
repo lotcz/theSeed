@@ -16,7 +16,7 @@ export default class Vector2 extends Tree {
 	}
 
 	equalsTo(v) {
-		return this.x === v.x && this.y === v.y;
+		return (v) ? this.x === v.x && this.y === v.y : false;
 	}
 
 	set(x, y) {
@@ -80,4 +80,20 @@ export default class Vector2 extends Tree {
 	clone() {
 		return new Vector2(this.x, this.y);
 	}
+
+	/***
+	 * Return angle between AB and Y axis
+	 * @param target
+	 * @returns {number}
+	 */
+	getAngleToY(b) {
+		const diff = this.subtract(b);
+		const left = diff.x > 0;
+		const down = diff.y < 0;
+		const sinX = diff.x / diff.size();
+		const x = Math.asin(sinX);
+		const angle = -x * 180 / Math.PI;
+		return down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+	}
+
 }

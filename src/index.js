@@ -20,8 +20,8 @@ game.level = level;
 const draw = SVG().addTo(window.document.body);
 const controls = new Controls(draw.node);
 
-const controller = new GameController(game.level.grid, game, controls);
-const renderer = new GameRenderer(draw, game);
+const controller = new GameController(game, controls);
+const renderer = new GameRenderer(game, draw);
 
 let lastTime = null;
 

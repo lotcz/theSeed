@@ -1,23 +1,28 @@
 import Tree from "../class/Tree";
 
 export default class ControllerBase extends Tree {
-	grid;
+	game;
 	model;
 	controls;
 
-	constructor(grid, model, controls) {
+	constructor(game, model, controls) {
 		super();
-		this.grid = grid;
+		this.game = game;
 		this.model = model;
 		this.controls = controls;
 
 	}
 
+	activate() {
+
+	}
+
+	deactivate() {
+
+	}
 
 	update(delta) {
 
 	}
-
-
 
 }

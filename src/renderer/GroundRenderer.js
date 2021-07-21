@@ -11,11 +11,10 @@ export default class GroundRenderer extends SvgRenderer {
 	stroke;
 	group;
 
-	constructor(draw, model, grid, fill, stroke) {
-		super(draw, model);
+	constructor(game, model, draw, fill, stroke) {
+		super(game, model, draw);
 		this.fill = fill;
 		this.stroke = stroke;
-		this.grid = grid;
 		this.group = null;
 	}
 

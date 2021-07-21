@@ -2,8 +2,6 @@ import ModelBase from "./ModelBase";
 import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 
-export const STRATEGY_BUG = 0;
-
 export default class SpriteModel extends ModelBase {
 	image;
 	strategy;

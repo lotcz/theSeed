@@ -2,10 +2,10 @@ import ControllerBase from "./ControllerBase";
 import LevelController from "./LevelController";
 
 export default class GameController extends ControllerBase {
-	constructor(grid, model, controls) {
-		super(grid, model, controls);
+	constructor(model, controls) {
+		super(model, model, controls);
 
-		this.levelController = new LevelController(grid, model.level, controls);
+		this.levelController = new LevelController(model, model.level, controls);
 
 		this.onResizeEvent = () => this.onResize();
 		this.onResize();

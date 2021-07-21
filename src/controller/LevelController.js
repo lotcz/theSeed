@@ -7,10 +7,10 @@ import SpriteCollectionController from "./SpriteCollectionController";
 const GUTTER_WIDTH = 150;
 
 export default class LevelController extends ControllerBase {
-	constructor(grid, model, controls) {
-		super(grid, model, controls);
+	constructor(game, model, controls) {
+		super(game, model, controls);
 
-		this.spritesController = new SpriteCollectionController(grid, model.sprites, controls);
+		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
 	}
 
 	update(delta) {

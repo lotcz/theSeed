@@ -3,16 +3,14 @@ import ImageRenderer from "./ImageRenderer";
 import SpriteRenderer from "./SpriteRenderer";
 
 export default class SpriteCollectionRenderer extends SvgRenderer {
-	constructor(draw, model, grid) {
-		super(draw, model);
-
-		this.grid = grid;
+	constructor(game, model, draw) {
+		super(game, model, draw);
 
 		this.model.children.forEach((m) => this.addRenderer(m));
 	}
 
 	addRenderer(model) {
-		const renderer = new SpriteRenderer(this.draw, model ,this.grid);
+		const renderer = new SpriteRenderer(this.game, model, this.draw);
 		model._renderer = renderer;
 		this.addChild(renderer);
 	}

@@ -42,7 +42,6 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
 		this.addChild(this.ground);
-		this.grid.ground = this.ground;
 		this.sprites = new Collection();
 		this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		this.addChild(this.sprites);

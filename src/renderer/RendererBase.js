@@ -1,11 +1,15 @@
 import Tree from "../class/Tree";
 
 export default class RendererBase extends Tree {
+	game;
 	model;
+	grid;
 
-	constructor(model) {
+	constructor(game, model) {
 		super();
+		this.game = game;
 		this.model = model;
+		this.grid = this.game.level.grid;
 	}
 
 	activate() {

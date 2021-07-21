@@ -2,8 +2,8 @@ import ControllerBase from "./ControllerBase";
 import SpriteController from "./SpriteController";
 
 export default class SpriteCollectionController extends ControllerBase {
-	constructor(grid, model, controls) {
-		super(grid, model, controls);
+	constructor(game, model, controls) {
+		super(game, model, controls);
 
 		this.controllers = [];
 		this.model.children.forEach((m) => this.addController(m));
@@ -11,7 +11,7 @@ export default class SpriteCollectionController extends ControllerBase {
 	}
 
 	addController(model) {
-		this.controllers.push(new SpriteController(this.grid, model, this.controls));
+		this.controllers.push(new SpriteController(this.game, model, this.controls));
 	}
 
 	update(delta) {

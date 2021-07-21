@@ -25,8 +25,8 @@ const PARALLAX_SIZE = 10;
 
 export default class LevelRenderer extends SvgRenderer {
 
-	constructor(draw, model) {
-		super(draw, model);
+	constructor(game, model, draw) {
+		super(game, model, draw);
 
 		this.background = this.draw.group();
 		const max = this.model.grid.getMaxCoordinates();
@@ -41,7 +41,7 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// parallax
 		this.parallax = this.draw.group();
-		this.parallax.opacity(0.5);
+		this.parallax.opacity(0.1);
 		/*
 		this.parallax.filterWith(function(add) {
 			add.gaussianBlur(30)
@@ -83,7 +83,7 @@ export default class LevelRenderer extends SvgRenderer {
 
 		const layers = new Array(PARALLAX_SIZE + 1);
 
-		layers[PARALLAX_SIZE] = RockImage;
+		layers[PARALLAX_SIZE-1] = RockImage;
 		//layers[8] = HillImage;
 		layers[4] = TreesImage;
 		layers[5] = GrassImage;
@@ -116,7 +116,7 @@ export default class LevelRenderer extends SvgRenderer {
 			add.from(0, 0);
 			add.to(0,1);
 		})
-		this.groundRenderer = new GroundRenderer(this.ground, model.ground, model.grid, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
+		this.groundRenderer = new GroundRenderer(this.game, model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
 		this.addChild(this.groundRenderer);
 
 		// SOME WATER
@@ -142,10 +142,10 @@ export default class LevelRenderer extends SvgRenderer {
 		);
 
 		this.foreground = this.draw.group();
-		this.plantRenderer = new PlantRenderer(this.foreground, model.plant, model.grid);
+		this.plantRenderer = new PlantRenderer(this.game, model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
 
-		this.spritesRenderer = new SpriteCollectionRenderer(draw, model.sprites, model.grid);
+		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.foreground);
 
 	}
 
@@ -207,8 +207,6 @@ export default class LevelRenderer extends SvgRenderer {
 			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}
-
-		console.log('rendering');
 		this.spritesRenderer.render();
 	}
 

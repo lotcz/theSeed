@@ -13,12 +13,11 @@ export default class LivingTreeRenderer extends SvgRenderer {
 	curves;
 	group;
 
-	constructor(draw, model, grid, upwards, fill, stroke, curves) {
-		super(draw, model);
+	constructor(game, model, draw, upwards, fill, stroke, curves) {
+		super(game, model, draw);
 		this.upwards = upwards;
 		this.fill = fill;
 		this.stroke = stroke;
-		this.grid = grid;
 		this.curves = curves;
 		this.group = null;
 	}
