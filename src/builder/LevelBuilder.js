@@ -1,4 +1,4 @@
-import Vector2 from "./Vector2";
+import Vector2 from "../class/Vector2";
 import GroundModel from "../model/GroundModel";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/ladybug.svg";
@@ -12,19 +12,27 @@ import HexGridModel from "../model/HexGridModel";
 import LevelModel from "../model/LevelModel";
 import SpriteModel from "../model/SpriteModel";
 import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
-import Pixies from "./Pixies";
+import Pixies from "../class/Pixies";
+import GroundBuilder from "./GroundBuilder";
 
 export default class LevelBuilder {
 	grid;
 
 	constructor(size, scale) {
-		this.grid = new HexGridModel({ size: size.toArray(), scale: scale});;
-		this.startPosition = new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2));
-		this.startCoords = this.grid.getCoordinates(this.startPosition);
-		this.viewboxScale = 5;
+
+		this.viewboxScale = 1;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
-		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * this.viewboxSize.y / 2));
+
+		this.grid = new HexGridModel({ size: size.toArray(), scale: scale});;
+		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
+
 		this.sprites = [];
+	}
+
+	setStart(position) {
+		this.startPosition = position.clone();
+		this.startCoords = this.grid.getCoordinates(this.startPosition);
+		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * this.viewboxSize.y / 2));
 	}
 
 	plant() {
@@ -34,11 +42,11 @@ export default class LevelBuilder {
 					power: 3,
 					children: [
 					{
-						position: new Vector2(this.startPosition.x, this.startPosition.y + 1).toArray(),
+						position: [this.startPosition.x, this.startPosition.y + 1],
 						power: 2,
 						children: [
 							{
-								position: new Vector2(this.startPosition.x, this.startPosition.y + 2).toArray(),
+								position: [this.startPosition.x, this.startPosition.y + 2],
 								power: 1
 							}
 						]
@@ -50,11 +58,11 @@ export default class LevelBuilder {
 					power: 3,
 					children: [
 					{
-						position: new Vector2(this.startPosition.x, this.startPosition.y - 1).toArray(),
+						position: [this.startPosition.x, this.startPosition.y - 1],
 						power: 2,
 						children: [
 							{
-								position: new Vector2(this.startPosition.x, this.startPosition.y - 2).toArray(),
+								position: [this.startPosition.x, this.startPosition.y - 2],
 								power: 1
 							}
 						]
@@ -66,13 +74,13 @@ export default class LevelBuilder {
 
 	bugs() {
 		const bugCount = 10;
-		const images = [CoccinelleImage, Bug1Image, BeetleImage, LadybugImage, MyLadybugImage];
+		const images = [MyLadybugImage];
 		for (let i = 0, max = bugCount; i < max; i++) {
 			const state = {
 				image: {
 					position: [0, 0],
-					scale: 1,
-					flipped: false,
+					scale: 0.2 + (Math.random() * 2),
+					flipped: (0.5 > Math.random()),
 					rotation: 0,
 					path: Pixies.randomElement(images)
 				},
@@ -82,12 +90,12 @@ export default class LevelBuilder {
 		}
 
 		const fliesCount = 10;
-		const flyImages = [ButterflyImage, DragonflyImage];
+		const flyImages = [ButterflyImage];
 		for (let i = 0, max = fliesCount; i < max; i++) {
 			const state = {
 				image: {
 					position: [0, 0],
-					scale: 1,
+					scale: 0.5 + Math.random(),
 					flipped: false,
 					rotation: 0,
 					path: Pixies.randomElement(flyImages)
@@ -103,7 +111,7 @@ export default class LevelBuilder {
 			const state = {
 				image: {
 					position: [0, 0],
-					scale: 1,
+					scale: 0.5 + Math.random(),
 					flipped: false,
 					rotation: 0,
 					path: Pixies.randomElement(wormsImages)
@@ -126,18 +134,29 @@ export default class LevelBuilder {
 		this.sprites.push(new SpriteModel(turner));
 	}
 
+	ground(preset) {
+		const builder = new GroundBuilder(this.grid);
+		if (preset) {
+			builder.generateFromPreset(this.startPosition, preset);
+		} else {
+			builder.generateRandom(this.startPosition);
+		}
+		this.g = builder.build();
+	}
+
 	build() {
+
 		this.bugs();
-		if (!this.ground) {
-			this.ground = new GroundModel({position: this.startPosition.toArray(), points: []});
-			this.ground.generateRandom(this.grid, this.startPosition);
+
+		if (!this.g) {
+			this.ground();
 		}
 		if (!this.plantState) {
 			this.plant();
 		}
 		const state = {
 			grid: this.grid.getState(),
-			ground: this.ground.getState(),
+			ground: this.g.getState(),
 			plant: this.plantState,
 			sprites: SpriteModel.getArrayState(this.sprites),
 			viewBoxScale: this.viewboxScale,

@@ -38,8 +38,7 @@ export default class LivingTreeModel extends PositionedTreeModel {
 	}
 
 	restoreState(state) {
-		this.position = new Vector2();
-		this.position.fromArray(state.position);
+		this.position = Vector2.fromArray(state.position);
 		this.power = state.power;
 		if (state.children) {
 			this.restoreChildren(state.children, (childState) => new LivingTreeModel(childState));

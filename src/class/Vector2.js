@@ -70,11 +70,17 @@ export default class Vector2 extends Tree {
 		return [this.x, this.y];
 	}
 
-	fromArray(arr) {
+	setFromArray(arr) {
 		if (typeof arr === 'object' && arr.length === 2) {
 			this.setX(arr[0]);
 			this.setY(arr[1]);
 		}
+	}
+
+	static fromArray(arr) {
+		const v = new Vector2();
+		v.setFromArray(arr);
+		return v;
 	}
 
 	clone() {

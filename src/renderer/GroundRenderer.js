@@ -32,7 +32,7 @@ export default class GroundRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 
 		if (DEBUG_GROUND) {
-			for (let i = 1, max = this.model.points.length; i < max; i++) {
+			for (let i = 0, max = this.model.points.length; i < max; i++) {
 				this.renderGridTile(this.model.points[i]);
 			}
 		}
@@ -43,15 +43,17 @@ export default class GroundRenderer extends SvgRenderer {
 		for (let i = 0, max = points.length - 1; i < max; i++) {
 			const middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
 			this.path += `S ${middle.x} ${middle.y}, ${points[i+1].x} ${points[i+1].y} `;
+			if (DEBUG_GROUND) {
+				this.group.circle(15).fill('blue').center(middle.x, middle.y);
+			}
 		}
 
 		const gridSize = this.grid.getMaxCoordinates();
-		this.path += `L 0 ${gridSize.y} `;
-		this.path += `L ${gridSize.x} ${gridSize.y} Z`;
+		this.path += `L ${gridSize.x} ${gridSize.y} `;
+		this.path += `L 0 ${gridSize.y} Z`;
 
 		const path = this.group.path(this.path).stroke(this.stroke).fill(this.fill);
-		//path.back();
-
+		path.back();
 	}
 
 }

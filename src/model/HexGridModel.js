@@ -93,8 +93,7 @@ export default class HexGridModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.size = new Vector2();
-		this.size.fromArray(state.size);
+		this.size = Vector2.fromArray(state.size);
 		this.scale = state.scale;
 		this.tileSize = new Vector2(2 * this.scale, Math.sqrt(3) * this.scale);
 	}

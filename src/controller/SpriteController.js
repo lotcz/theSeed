@@ -1,8 +1,8 @@
 import ControllerBase from "./ControllerBase";
-import BugStrategy from "./BugStrategy";
-import ButterflyStrategy from "./ButterflyStrategy";
-import TurnerStrategy from "./TurnerStrategy";
-import WormStrategy from "./WormStrategy";
+import BugStrategy from "../strategy/BugStrategy";
+import ButterflyStrategy from "../strategy/ButterflyStrategy";
+import TurnerStrategy from "../strategy/TurnerStrategy";
+import WormStrategy from "../strategy/WormStrategy";
 
 export const STRATEGY_BUG = 0;
 export const STRATEGY_BUTTERFLY = 1;

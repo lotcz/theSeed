@@ -30,11 +30,9 @@ export default class ImageModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.position = new Vector2();
-		this.position.fromArray(state.position);
+		this.position = Vector2.fromArray(state.position);
 		this.addChild(this.position);
-		this.coordinates = new Vector2();
-		this.coordinates.fromArray(state.coordinates);
+		this.coordinates = Vector2.fromArray(state.coordinates);
 		this.addChild(this.coordinates);
 		this.flipped = new DirtyValue(state.flipped);
 		this.addChild(this.flipped);

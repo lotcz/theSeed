@@ -1,13 +1,14 @@
 import "./style.css";
 import GameController from "./controller/GameController";
 import ButterflyImage from "../res/img/butterfly.svg";
-import LevelBuilder from "./class/LevelBuilder";
-import HexGridModel from "./model/HexGridModel";
+import LevelBuilder from "./builder/LevelBuilder";
 import Vector2 from "./class/Vector2";
 import {SVG} from "@svgdotjs/svg.js";
 import Controls from "./class/Controls";
 import GameModel from "./model/GameModel";
 import GameRenderer from "./renderer/GameRenderer";
+
+const MAX_DELTA = 500;
 
 const size = new Vector2(320, 240);
 const scale = 80;
@@ -31,11 +32,13 @@ const updateLoop = function ()
 	if (!lastTime) lastTime = time;
 	const delta = (time - lastTime);
 	lastTime = time;
-	controller.update(delta);
+	if (delta < MAX_DELTA) {
+		controller.update(delta);
+	}
 	renderer.render();
 	requestAnimationFrame(updateLoop);
 }
 
 requestAnimationFrame(updateLoop);
 
-console.log(game.getState());
+//console.log(game.getState());

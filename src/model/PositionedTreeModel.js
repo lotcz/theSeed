@@ -36,8 +36,7 @@ export default class PositionedTreeModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.position = new Vector2();
-		this.position.fromArray(state.position);
+		this.position = Vector2.fromArray(state.position);
 		if (state.children) {
 			this.restoreChildren(state.children, (childState) => new PositionedTreeModel(childState));
 		}

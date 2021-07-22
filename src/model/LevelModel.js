@@ -48,11 +48,9 @@ export default class LevelModel extends ModelBase {
 
 		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
 		this.addChild(this.viewBoxScale);
-		this.viewBoxSize = new Vector2();
-		this.viewBoxSize.fromArray(state.viewBoxSize);
+		this.viewBoxSize = Vector2.fromArray(state.viewBoxSize);
 		this.addChild(this.viewBoxSize);
-		this.viewBoxCoordinates = new Vector2();
-		this.viewBoxCoordinates.fromArray(state.viewBoxCoordinates);
+		this.viewBoxCoordinates = Vector2.fromArray(state.viewBoxCoordinates);
 		this.addChild(this.viewBoxCoordinates);
 
 		this.highlightedTilePosition = new Vector2();
