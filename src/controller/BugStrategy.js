@@ -1,13 +1,15 @@
 import MovementStrategy from "./MovementStrategy";
-import Random from "../class/Random";
+import Pixies from "../class/Pixies";
 
 const BUG_TIMEOUT = 500;
 
 export default class BugStrategy extends MovementStrategy {
-	constructor(game, model, controls) {
-		super(game, model, controls, model.image.position, model.image.coordinates, BUG_TIMEOUT);
+	direction;
 
-		this.gi = Random.randomIndex(this.game.level.ground.points.length);
+	constructor(game, model, controls) {
+		super(game, model.image, controls, BUG_TIMEOUT);
+
+		this.gi = Pixies.randomIndex(this.game.level.ground.points.length);
 		this.setPosition(this.game.level.ground.points[this.gi]);
 		this.direction = 1;
 	}
@@ -20,12 +22,5 @@ export default class BugStrategy extends MovementStrategy {
 		}
 	}
 
-	updateInternal(delta) {
-		if (this.target && !this.position.equalsTo(this.target)) {
-			this.model.image.rotation.set(this.position.getAngleToY(this.target));
-		} else {
-			this.model.image.rotation.set(0);
-		}
-	}
 
 }

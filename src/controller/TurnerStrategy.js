@@ -1,12 +1,12 @@
 import MovementStrategy from "./MovementStrategy";
-import Random from "../class/Random";
+import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 
 const TURNER_TIMEOUT = -1;
 
 export default class TurnerStrategy extends MovementStrategy {
 	constructor(game, model, controls) {
-		super(game, model, controls, model.image.position, model.image.coordinates, TURNER_TIMEOUT);
+		super(game, model.image, controls, TURNER_TIMEOUT);
 
 		this.start = this.game.level.plant.roots.position.addX(-5).addY(-10);
 	}
@@ -17,9 +17,7 @@ export default class TurnerStrategy extends MovementStrategy {
 
 	updateInternal(delta) {
 		this.setPosition(this.start);
-		if (this.target && !this.position.equalsTo(this.target)) {
-			this.model.image.rotation.set(this.position.getAngleToY(this.target));
-		}
+
 	}
 
 }

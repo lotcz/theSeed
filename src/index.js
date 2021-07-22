@@ -37,3 +37,5 @@ const updateLoop = function ()
 }
 
 requestAnimationFrame(updateLoop);
+
+console.log(game.getState());

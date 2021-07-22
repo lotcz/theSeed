@@ -6,12 +6,13 @@ import MyLadybugImage from "../../res/img/my-lady-bug.svg";
 import Bug1Image from "../../res/img/bug-1.svg";
 import BeetleImage from "../../res/img/beetle.svg";
 import DragonflyImage from "../../res/img/dragonfly.svg";
+import WormImage from "../../res/img/worm.svg";
 import CoccinelleImage from "../../res/img/coccinelle.svg";
 import HexGridModel from "../model/HexGridModel";
 import LevelModel from "../model/LevelModel";
 import SpriteModel from "../model/SpriteModel";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER} from "../controller/SpriteController";
-import Random from "./Random";
+import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
+import Pixies from "./Pixies";
 
 export default class LevelBuilder {
 	grid;
@@ -64,7 +65,7 @@ export default class LevelBuilder {
 	}
 
 	bugs() {
-		const bugCount = 15;
+		const bugCount = 10;
 		const images = [CoccinelleImage, Bug1Image, BeetleImage, LadybugImage, MyLadybugImage];
 		for (let i = 0, max = bugCount; i < max; i++) {
 			const state = {
@@ -73,14 +74,14 @@ export default class LevelBuilder {
 					scale: 1,
 					flipped: false,
 					rotation: 0,
-					path: Random.randomElement(images)
+					path: Pixies.randomElement(images)
 				},
 				strategy: STRATEGY_BUG
 			};
 			this.sprites.push(new SpriteModel(state));
 		}
 
-		const fliesCount = 35;
+		const fliesCount = 10;
 		const flyImages = [ButterflyImage, DragonflyImage];
 		for (let i = 0, max = fliesCount; i < max; i++) {
 			const state = {
@@ -89,9 +90,25 @@ export default class LevelBuilder {
 					scale: 1,
 					flipped: false,
 					rotation: 0,
-					path: Random.randomElement(flyImages)
+					path: Pixies.randomElement(flyImages)
 				},
 				strategy: STRATEGY_BUTTERFLY
+			};
+			this.sprites.push(new SpriteModel(state));
+		}
+
+		const wormsCount = 10;
+		const wormsImages = [WormImage];
+		for (let i = 0, max = wormsCount; i < max; i++) {
+			const state = {
+				image: {
+					position: [0, 0],
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: Pixies.randomElement(wormsImages)
+				},
+				strategy: STRATEGY_WORM
 			};
 			this.sprites.push(new SpriteModel(state));
 		}

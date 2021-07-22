@@ -1,26 +1,34 @@
 import ControllerBase from "./ControllerBase";
-import Random from "../class/Random";
+import Pixies from "../class/Pixies";
+import DirtyValue from "../class/DirtyValue";
+import RotationValue from "../class/RotationValue";
+
+const ROTATION_SPEED = 1000;
 
 export default class MovementStrategy extends ControllerBase {
 	position;
 	coordinates;
+	rotation;
 	defaultTimeout;
 	timeout;
 	target;
+	targetRotation;
 
-	constructor(game, model, controls, position, coordinates, timeout) {
+	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
-		this.position = position;
+		this.position = model.position;
 		this.target = null;
-		this.coordinates = coordinates;
+		this.coordinates = model.coordinates;
+		this.rotation = model.rotation;
+		this.targetRotation = new RotationValue(this.rotation.get());
 		this.defaultTimeout = timeout;
 		this.timeout = this.defaultTimeout;
 	}
 
 	selectRandomTarget() {
 		const neighbors = this.game.level.grid.getNeighbors(this.position);
-		this.setTarget(Random.randomElement(neighbors));
+		this.setTarget(Pixies.randomElement(neighbors));
 	}
 
 	setTarget(target) {
@@ -40,6 +48,13 @@ export default class MovementStrategy extends ControllerBase {
 	}
 
 	update(delta) {
+		if (this.targetRotation.get() !== this.rotation.get()) {
+			let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
+
+			const step = Pixies.between(-diff, diff, (diff > 0 ? -1 : 1) * 360 * (delta / ROTATION_SPEED));
+			this.rotation.set((this.rotation.get() + step));
+		}
+
 		if (this.timeout <= 0 || this.target === null) {
 			if (this.target) this.setPosition(this.target);
 			this.selectTargetInternal();
@@ -57,6 +72,11 @@ export default class MovementStrategy extends ControllerBase {
 			const diff = b.subtract(a);
 			const v = a.add(diff.multiply(progress));
 			this.coordinates.set(v);
+
+			this.targetRotation.set(a.getAngleToY(b));
+
+		} else {
+			this.targetRotation.set(0);
 		}
 
 	}

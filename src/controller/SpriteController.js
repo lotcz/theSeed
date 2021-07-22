@@ -2,10 +2,12 @@ import ControllerBase from "./ControllerBase";
 import BugStrategy from "./BugStrategy";
 import ButterflyStrategy from "./ButterflyStrategy";
 import TurnerStrategy from "./TurnerStrategy";
+import WormStrategy from "./WormStrategy";
 
 export const STRATEGY_BUG = 0;
 export const STRATEGY_BUTTERFLY = 1;
-export const STRATEGY_TURNER = 2;
+export const STRATEGY_WORM = 2;
+export const STRATEGY_TURNER = 99;
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -24,6 +26,8 @@ export default class SpriteController extends ControllerBase {
 				return new ButterflyStrategy(this.game, model, this.controls);
 			case STRATEGY_TURNER:
 				return new TurnerStrategy(this.game, model, this.controls);
+			case STRATEGY_WORM:
+				return new WormStrategy(this.game, model, this.controls);
 		}
 	}
 

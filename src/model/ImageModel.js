@@ -1,6 +1,7 @@
 import ModelBase from "./ModelBase";
 import Vector2 from "../class/Vector2";
 import DirtyValue from "../class/DirtyValue";
+import RotationValue from "../class/RotationValue";
 
 export default class ImageModel extends ModelBase {
 	position;
@@ -37,7 +38,7 @@ export default class ImageModel extends ModelBase {
 		this.addChild(this.coordinates);
 		this.flipped = new DirtyValue(state.flipped);
 		this.addChild(this.flipped);
-		this.rotation = new DirtyValue(state.rotation);
+		this.rotation = new RotationValue(state.rotation);
 		this.addChild(this.rotation);
 		this.scale = new DirtyValue(state.scale);
 		this.addChild(this.scale);

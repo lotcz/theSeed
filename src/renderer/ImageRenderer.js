@@ -10,12 +10,12 @@ export default class ImageRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.group =  this.draw.group();
-		this.image = this.group.image(model.path);
+		const ref = this.getRef(model.path, () => this.group.image(model.path));
+		this.image = this.group.use(ref);
 		if (this.model.flipped.get()) {
 			this.image.flip('x');
 		}
 		this.model.flipped.clean();
-		this.rotation = 0;
 	}
 
 	render() {

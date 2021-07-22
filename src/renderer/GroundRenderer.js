@@ -1,6 +1,5 @@
 import SvgRenderer from "./SvgRenderer";
 import {BROWN_DARK, GROUND_DARK} from "./Palette";
-import Vector2 from "../class/Vector2";
 
 const DEBUG_GROUND = false;
 
@@ -24,27 +23,26 @@ export default class GroundRenderer extends SvgRenderer {
 			.map((c) => [c.x, c.y]);
 		corners.push(corners[0]);
 		this.group.polyline(corners).fill(BROWN_DARK).stroke({width: 1, color: GROUND_DARK});
+		const coordinates = this.grid.getCoordinates(position);
+		this.group.circle(25).fill('red').center(coordinates.x, coordinates.y);
 	}
 
 	renderInternal() {
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
-/*
-		const size = this.grid.getMaxPosition();
-		for (let i = 1, max = this.model.points.length; i < max; i++) {
-			for (let ih = this.model.points[i].y, max = size.y; ih <= max; ih++) {
-				this.renderGridTile(new Vector2(this.model.points[i].x, ih));
+
+		if (DEBUG_GROUND) {
+			for (let i = 1, max = this.model.points.length; i < max; i++) {
+				this.renderGridTile(this.model.points[i]);
 			}
 		}
-		*/
 
 		const points = this.model.points.map((p) => this.grid.getCoordinates(p));
 
-		this.path = `M${points[0].x} ${points[0].y} S`;
-		for (let i = 1, max = points.length; i < max; i++) {
-			this.path += `${points[i].x} ${points[i].y}, `;
-			if (DEBUG_GROUND)
-				this.group.circle(25).fill('red').move(points[i].x - 12, points[i].y - 12);
+		this.path = `M${points[0].x} ${points[0].y} `;
+		for (let i = 0, max = points.length - 1; i < max; i++) {
+			const middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
+			this.path += `S ${middle.x} ${middle.y}, ${points[i+1].x} ${points[i+1].y} `;
 		}
 
 		const gridSize = this.grid.getMaxCoordinates();
