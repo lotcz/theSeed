@@ -8,10 +8,14 @@ export default class WormStrategy extends MovementStrategy {
 	constructor(game, model, controls) {
 		super(game, model.image, controls, WORM_TIMEOUT);
 
-		const max = this.game.level.grid.getMaxPosition();
-		this.setPosition(new Vector2(Pixies.randomIndex(max.x + 1), Pixies.randomIndex(max.y + 1)));
 	}
 
-
+	selectTargetInternal() {
+		const neighbors = this.game.level.grid.getValidNeighbors(this.position);
+		const groundNeighbors = neighbors.filter((n) => this.game.level.isUnderGround(n));
+		if (groundNeighbors.length > 0) {
+			this.setTarget(Pixies.randomElement(groundNeighbors));
+		}
+	}
 
 }

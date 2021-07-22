@@ -8,8 +8,14 @@ export default class ButterflyStrategy extends MovementStrategy {
 	constructor(game, model, controls) {
 		super(game, model.image, controls, BUTTERFLY_TIMEOUT);
 
-		const max = this.game.level.grid.getMaxPosition();
-		this.setPosition(new Vector2(Pixies.randomIndex(max.x + 1), Pixies.randomIndex(max.y + 1)));
+	}
+
+	selectTargetInternal() {
+		const neighbors = this.game.level.grid.getValidNeighbors(this.position);
+		const airNeighbors = neighbors.filter((n) => this.game.level.isAboveGround(n));
+		if (airNeighbors.length > 0) {
+			this.setTarget(Pixies.randomElement(airNeighbors));
+		}
 	}
 
 }

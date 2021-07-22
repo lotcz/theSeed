@@ -8,7 +8,7 @@ import BeetleImage from "../../res/img/beetle.svg";
 import DragonflyImage from "../../res/img/dragonfly.svg";
 import WormImage from "../../res/img/worm.svg";
 import CoccinelleImage from "../../res/img/coccinelle.svg";
-import HexGridModel from "../model/HexGridModel";
+import GridModel from "../model/GridModel";
 import LevelModel from "../model/LevelModel";
 import SpriteModel from "../model/SpriteModel";
 import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
@@ -23,10 +23,9 @@ export default class LevelBuilder {
 		this.viewboxScale = 1;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
 
-		this.grid = new HexGridModel({ size: size.toArray(), scale: scale});;
+		this.grid = new GridModel({ size: size.toArray(), scale: scale});
 		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
 
-		this.sprites = [];
 	}
 
 	setStart(position) {
@@ -72,68 +71,6 @@ export default class LevelBuilder {
 		};
 	}
 
-	bugs() {
-		const bugCount = 10;
-		const images = [MyLadybugImage];
-		for (let i = 0, max = bugCount; i < max; i++) {
-			const state = {
-				image: {
-					position: [0, 0],
-					scale: 0.2 + (Math.random() * 2),
-					flipped: (0.5 > Math.random()),
-					rotation: 0,
-					path: Pixies.randomElement(images)
-				},
-				strategy: STRATEGY_BUG
-			};
-			this.sprites.push(new SpriteModel(state));
-		}
-
-		const fliesCount = 10;
-		const flyImages = [ButterflyImage];
-		for (let i = 0, max = fliesCount; i < max; i++) {
-			const state = {
-				image: {
-					position: [0, 0],
-					scale: 0.5 + Math.random(),
-					flipped: false,
-					rotation: 0,
-					path: Pixies.randomElement(flyImages)
-				},
-				strategy: STRATEGY_BUTTERFLY
-			};
-			this.sprites.push(new SpriteModel(state));
-		}
-
-		const wormsCount = 10;
-		const wormsImages = [WormImage];
-		for (let i = 0, max = wormsCount; i < max; i++) {
-			const state = {
-				image: {
-					position: [0, 0],
-					scale: 0.5 + Math.random(),
-					flipped: false,
-					rotation: 0,
-					path: Pixies.randomElement(wormsImages)
-				},
-				strategy: STRATEGY_WORM
-			};
-			this.sprites.push(new SpriteModel(state));
-		}
-
-		const turner = {
-			image: {
-				position: [0, 0],
-				scale: 1,
-				flipped: false,
-				rotation: 0,
-				path: ButterflyImage
-			},
-			strategy: STRATEGY_TURNER
-		};
-		this.sprites.push(new SpriteModel(turner));
-	}
-
 	ground(preset) {
 		const builder = new GroundBuilder(this.grid);
 		if (preset) {
@@ -145,9 +82,6 @@ export default class LevelBuilder {
 	}
 
 	build() {
-
-		this.bugs();
-
 		if (!this.g) {
 			this.ground();
 		}
@@ -158,7 +92,7 @@ export default class LevelBuilder {
 			grid: this.grid.getState(),
 			ground: this.g.getState(),
 			plant: this.plantState,
-			sprites: SpriteModel.getArrayState(this.sprites),
+			sprites: [],
 			viewBoxScale: this.viewboxScale,
 			viewBoxSize: this.viewboxSize.toArray(),
 			viewBoxCoordinates: this.viewboxCoordinates.toArray()

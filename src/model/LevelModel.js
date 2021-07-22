@@ -1,4 +1,4 @@
-import HexGridModel from "./HexGridModel";
+import GridModel from "./GridModel";
 import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
 import DirtyValue from "../class/DirtyValue";
@@ -37,7 +37,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.grid = new HexGridModel(state.grid);
+		this.grid = new GridModel(state.grid);
 		this.plant = new PlantModel(state.plant);
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
@@ -56,6 +56,26 @@ export default class LevelModel extends ModelBase {
 		this.highlightedTilePosition = new Vector2();
 		this.highlightedTilePosition.clean();
 		this.addChild(this.highlightedTilePosition);
+	}
+
+	isValidPosition(position) {
+		return this.grid.isValidPosition(position);
+	}
+
+	getGroundY(x) {
+		return this.ground.points[x].y;
+	}
+
+	isGround(position) {
+		return position.y === this.getGroundY(position.x);
+	}
+
+	isAboveGround(position) {
+		return position.y < this.getGroundY(position.x);
+	}
+
+	isUnderGround(position) {
+		return position.y > this.getGroundY(position.x);
 	}
 
 }

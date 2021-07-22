@@ -5,6 +5,7 @@ import DirtyValue from "../class/DirtyValue";
 export default class SpriteModel extends ModelBase {
 	image;
 	strategy;
+	data;
 
 	constructor(state) {
 		super();
@@ -17,7 +18,8 @@ export default class SpriteModel extends ModelBase {
 	getState() {
 		return {
 			image: this.image.getState(),
-			strategy: this.strategy.get()
+			strategy: this.strategy.get(),
+			data: this.data
 		}
 	}
 
@@ -26,6 +28,7 @@ export default class SpriteModel extends ModelBase {
 		this.addChild(this.image);
 		this.strategy = new DirtyValue(state.strategy);
 		this.addChild(this.strategy);
+		this.data = state.data;
 	}
 
 }

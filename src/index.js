@@ -7,13 +7,18 @@ import {SVG} from "@svgdotjs/svg.js";
 import Controls from "./class/Controls";
 import GameModel from "./model/GameModel";
 import GameRenderer from "./renderer/GameRenderer";
+import SpriteBuilder from "./builder/SpriteBuilder";
 
 const MAX_DELTA = 500;
 
-const size = new Vector2(320, 240);
+const size = new Vector2(80, 60);
 const scale = 80;
 const levelBuilder = new LevelBuilder(size, scale);
 const level = levelBuilder.build();
+
+const spriteBuilder = new SpriteBuilder(level);
+spriteBuilder.addBugs();
+spriteBuilder.addTurner();
 
 const game = new GameModel();
 game.level = level;

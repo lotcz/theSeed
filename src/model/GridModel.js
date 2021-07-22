@@ -6,7 +6,7 @@ const NEIGHBOR_DOWN = new Vector2(0, 1);
 const NEIGHBOR_LEFT = new Vector2(-1, 0);
 const NEIGHBOR_RIGHT = new Vector2(1, 0);
 
-export default class HexGridModel extends ModelBase {
+export default class GridModel extends ModelBase {
 	size;
 	scale;
 	tileSize;
@@ -83,6 +83,15 @@ export default class HexGridModel extends ModelBase {
 
 	getNeighborLowerRight(position) {
 		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT : NEIGHBOR_RIGHT.addY(1));
+	}
+
+	isValidPosition(position) {
+		return position.x >= 0 && position.x < this.size.x && position.y >- 0 && position.y <= this.size.y;
+	}
+
+	getValidNeighbors(position) {
+		const neighbors = this.getNeighbors(position);
+		return neighbors.filter((n) => this.isValidPosition(n));
 	}
 
 	getState() {
