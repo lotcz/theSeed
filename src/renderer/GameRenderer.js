@@ -14,6 +14,7 @@ export default class GameRenderer extends SvgRenderer {
 		super(model, model, draw);
 
 		this.levelRenderer = new LevelRenderer(model, model.level, draw);
+		this.addChild(this.levelRenderer);
 
 		if (DEBUG_FPS) {
 			this.stats = new Stats();
@@ -22,9 +23,7 @@ export default class GameRenderer extends SvgRenderer {
 
 	}
 
-	render() {
-		this.levelRenderer.render();
-
+	renderInternal() {
 		if (DEBUG_FPS) {
 			this.stats.update();
 		}

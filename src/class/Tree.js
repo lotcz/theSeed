@@ -1,6 +1,7 @@
 import Dirty from "./Dirty";
 
 export default class Tree extends Dirty {
+	is_deleted;
 	children;
 	parent;
 	dirtyParent;
@@ -9,6 +10,18 @@ export default class Tree extends Dirty {
 		super();
 		this.parent = null;
 		this.children = [];
+		this.is_deleted = false;
+	}
+
+	isDeleted() {
+		return this.is_deleted;
+	}
+
+	setDeleted(deleted) {
+		if (this.is_deleted !== deleted) {
+			this.is_deleted = deleted;
+			this.makeDirty();
+		}
 	}
 
 	makeDirty() {
@@ -37,7 +50,8 @@ export default class Tree extends Dirty {
 	removeChild(node) {
 		const index = this.children.indexOf(node);
 		if (index >= 0) {
-			this.children = this.children.slice(0, index).concat(this.children.slice(index, this.children.length - index - 1));
+			this.children.splice(index, 1);
+			node.setDeleted(true);
 			this.makeDirty();
 			return node;
 		}

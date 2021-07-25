@@ -19,10 +19,12 @@ export default class GameModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.level = new LevelModel(state.level);
-		this.addChild(this.level);
-
+		this.setLevel(new LevelModel(state.level))
 	}
 
+	setLevel(level) {
+		this.level = level;
+		this.addChild(level);
+	}
 }
 

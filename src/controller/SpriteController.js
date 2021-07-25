@@ -3,10 +3,12 @@ import BugStrategy from "../strategy/BugStrategy";
 import ButterflyStrategy from "../strategy/ButterflyStrategy";
 import TurnerStrategy from "../strategy/TurnerStrategy";
 import WormStrategy from "../strategy/WormStrategy";
+import WaterStrategy from "../strategy/WaterStrategy";
 
 export const STRATEGY_BUG = 0;
 export const STRATEGY_BUTTERFLY = 1;
 export const STRATEGY_WORM = 2;
+export const STRATEGY_WATER = 3;
 export const STRATEGY_TURNER = 99;
 
 export default class SpriteController extends ControllerBase {
@@ -16,6 +18,7 @@ export default class SpriteController extends ControllerBase {
 		super(game, model, controls);
 
 		this.strategy = this.createStrategy(model);
+		//this.addChild(this.strategy);
 	}
 
 	createStrategy(model) {
@@ -28,11 +31,10 @@ export default class SpriteController extends ControllerBase {
 				return new TurnerStrategy(this.game, model, this.controls);
 			case STRATEGY_WORM:
 				return new WormStrategy(this.game, model, this.controls);
+			case STRATEGY_WATER:
+				return new WaterStrategy(this.game, model, this.controls);
 		}
 	}
 
-	update(delta) {
-		this.strategy.update(delta);
-	}
 
 }

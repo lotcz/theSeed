@@ -7,15 +7,6 @@ export default class SvgRenderer extends RendererBase {
 	constructor(game, model, draw) {
 		super(game, model);
 		this.draw = draw;
-
-		this.refs = [];
-	}
-
-	setDraw(draw) {
-		if (this.draw !== draw) {
-			this.draw = draw;
-			this.makeDirty();
-		}
 	}
 
 	getRef(name, construct) {

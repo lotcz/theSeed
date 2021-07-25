@@ -5,7 +5,7 @@ import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
-import Collection from "../class/Collection";
+import CollectionModel from "./CollectionModel";
 
 export default class LevelModel extends ModelBase {
 	grid;
@@ -42,7 +42,7 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
 		this.addChild(this.ground);
-		this.sprites = new Collection();
+		this.sprites = new CollectionModel();
 		this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		this.addChild(this.sprites);
 

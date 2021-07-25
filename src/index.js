@@ -1,6 +1,5 @@
 import "./style.css";
 import GameController from "./controller/GameController";
-import ButterflyImage from "../res/img/butterfly.svg";
 import LevelBuilder from "./builder/LevelBuilder";
 import Vector2 from "./class/Vector2";
 import {SVG} from "@svgdotjs/svg.js";
@@ -11,7 +10,7 @@ import SpriteBuilder from "./builder/SpriteBuilder";
 
 const MAX_DELTA = 500;
 
-const size = new Vector2(80, 60);
+const size = new Vector2(160, 60);
 const scale = 80;
 const levelBuilder = new LevelBuilder(size, scale);
 const level = levelBuilder.build();
@@ -19,15 +18,18 @@ const level = levelBuilder.build();
 const spriteBuilder = new SpriteBuilder(level);
 spriteBuilder.addBugs();
 spriteBuilder.addTurner();
+spriteBuilder.addWater();
 
 const game = new GameModel();
-game.level = level;
+game.setLevel(level);
 
 const draw = SVG().addTo(window.document.body);
 const controls = new Controls(draw.node);
 
 const controller = new GameController(game, controls);
+controller.activate();
 const renderer = new GameRenderer(game, draw);
+renderer.activate();
 
 let lastTime = null;
 

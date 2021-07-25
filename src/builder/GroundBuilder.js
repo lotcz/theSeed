@@ -57,7 +57,7 @@ export default class GroundBuilder {
 
 		this.points.push(position);
 
-		while (position.x < this.grid.size.x) {
+		while (position.x < (this.grid.size.x - 1)) {
 			position = Math.random() < preset.right.up ? this.grid.getNeighborUpperRight(position) : this.grid.getNeighborLowerRight(position);
 			this.points.push(position);
 		}

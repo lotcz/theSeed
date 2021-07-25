@@ -119,34 +119,12 @@ export default class LevelRenderer extends SvgRenderer {
 		this.groundRenderer = new GroundRenderer(this.game, model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
 		this.addChild(this.groundRenderer);
 
-		// SOME WATER
-
-		const water = this.water = this.draw.group();
-		const defs = this.draw.root().defs();
-		const ref = defs.image(
-			WaterImage,
-			function(e) {
-				for (let i = 0, max = model.ground.points.length; i < max; i++) {
-					const groundPos = model.ground.points[i];
-					const maxDepth = model.grid.size.y - groundPos.y;
-					let depth = Math.round(Math.random() * maxDepth / 3);
-					while (depth < maxDepth) {
-						const waterCoords = model.grid.getCoordinates(new Vector2(groundPos.x, groundPos.y + depth));
-						const img = water.use(ref);
-						img.move(waterCoords.x - (ref.height() / 2), waterCoords.y - (ref.width() / 2));
-						img.scale(Math.random());
-						depth += Math.round(Math.random() * maxDepth );
-					}
-				}
-			}
-		);
-
 		this.foreground = this.draw.group();
 		this.plantRenderer = new PlantRenderer(this.game, model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
 
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.foreground);
-
+		this.addChild(this.spritesRenderer);
 	}
 
 	renderParallax() {
@@ -175,6 +153,9 @@ export default class LevelRenderer extends SvgRenderer {
 	}
 
 	renderHighlights(position) {
+		if (this.highlightedTiles) this.highlightedTiles.remove();
+		this.highlightedTiles = this.draw.group();
+
 		this.renderGridTile(position, { width: 2, color: 'blue'});
 
 		this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), { width: 2, color: 'orange'});
@@ -202,12 +183,9 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.viewBoxScale.clean();
 		}
 		if (this.model.highlightedTilePosition.isDirty()) {
-			if (this.highlightedTiles) this.highlightedTiles.remove();
-			this.highlightedTiles = this.draw.group();
 			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}
-		this.spritesRenderer.render();
 	}
 
 }

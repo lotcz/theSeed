@@ -3,8 +3,15 @@ import ButterflyImage from "../../res/img/butterfly.svg";
 import MyLadybugImage from "../../res/img/my-lady-bug.svg";
 import WormImage from "../../res/img/worm.svg";
 import SpriteModel from "../model/SpriteModel";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
+import {
+	STRATEGY_BUG,
+	STRATEGY_BUTTERFLY,
+	STRATEGY_TURNER,
+	STRATEGY_WATER,
+	STRATEGY_WORM
+} from "../controller/SpriteController";
 import Pixies from "../class/Pixies";
+import WaterImage from "../../res/img/water.svg";
 
 export default class SpriteBuilder {
 	level;
@@ -74,6 +81,30 @@ export default class SpriteBuilder {
 				strategy: STRATEGY_WORM
 			};
 			this.level.sprites.add(new SpriteModel(state));
+		}
+	}
+
+	addWater() {
+		const waterDensity = 0.02;
+		const max = this.level.grid.getMaxPosition();
+		for (let i = 0; i <= max.x; i++) {
+			const groundY = this.level.getGroundY(i);
+			const limit = max.y - groundY;
+			const amount = Math.ceil(limit * waterDensity);
+
+			for (let ii = 0; ii < amount; ii++) {
+				const state = {
+					image: {
+						position: [i, groundY + Pixies.randomIndex(limit)],
+						scale: 0.5 + Math.random(),
+						flipped: false,
+						rotation: 0,
+						path: WaterImage
+					},
+					strategy: STRATEGY_WATER
+				};
+				this.level.sprites.add(new SpriteModel(state));
+			}
 		}
 	}
 

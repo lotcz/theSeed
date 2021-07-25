@@ -9,8 +9,11 @@ export default class ImageRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+	}
+
+	activateInternal() {
 		this.group =  this.draw.group();
-		const ref = this.getRef(model.path, () => this.group.image(model.path));
+		const ref = this.getRef(this.model.path, () => this.group.image(this.model.path));
 		this.image = this.group.use(ref);
 		if (this.model.flipped.get()) {
 			this.image.flip('x');
@@ -18,7 +21,13 @@ export default class ImageRenderer extends SvgRenderer {
 		this.model.flipped.clean();
 	}
 
-	render() {
+	deactivateInternal() {
+		if (this.group) {
+			this.group.remove();
+		}
+	}
+
+	renderInternal() {
 		if (this.model.position.isDirty()) {
 			this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
 			this.model.position.clean();
@@ -34,7 +43,7 @@ export default class ImageRenderer extends SvgRenderer {
 				this.model.coordinates.y
 			);
 			if (DEBUG_IMAGE)
-				this.circle.move(-14 + this.model.coordinates.x, - 14 + this.model.coordinates.y);
+				this.draw.circle(14).center(this.model.coordinates.x, this.model.coordinates.y);
 			this.model.coordinates.clean();
 		}
 		if (this.model.flipped.isDirty()) {

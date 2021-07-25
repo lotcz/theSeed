@@ -6,22 +6,19 @@ export default class GameController extends ControllerBase {
 		super(model, model, controls);
 
 		this.levelController = new LevelController(model, model.level, controls);
+		this.addChild(this.levelController);
 
 		this.onResizeEvent = () => this.onResize();
 		this.onResize();
 	}
 
-	activate() {
+	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
 	}
 
-	deactivate() {
+	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
-	}
-
-	update(delta) {
-		this.levelController.update(delta);
 	}
 
 	onResize() {

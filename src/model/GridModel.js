@@ -6,6 +6,7 @@ const NEIGHBOR_DOWN = new Vector2(0, 1);
 const NEIGHBOR_LEFT = new Vector2(-1, 0);
 const NEIGHBOR_RIGHT = new Vector2(1, 0);
 
+
 export default class GridModel extends ModelBase {
 	size;
 	scale;
@@ -22,7 +23,8 @@ export default class GridModel extends ModelBase {
 	}
 
 	getMaxCoordinates() {
-		return new Vector2(this.size.x * this.tileSize.x * 3/4, this.size.y * this.tileSize.y);
+		const maxPos = this.getMaxPosition();
+		return new Vector2(maxPos.x * this.tileSize.x * 3/4, maxPos.y * this.tileSize.y);
 	}
 
 	getPosition(coordinates) {
@@ -86,7 +88,7 @@ export default class GridModel extends ModelBase {
 	}
 
 	isValidPosition(position) {
-		return position.x >= 0 && position.x < this.size.x && position.y >- 0 && position.y <= this.size.y;
+		return position.x >= 0 && position.x < this.size.x && position.y >- 0 && position.y < this.size.y;
 	}
 
 	getValidNeighbors(position) {

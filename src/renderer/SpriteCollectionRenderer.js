@@ -1,5 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import ImageRenderer from "./ImageRenderer";
 import SpriteRenderer from "./SpriteRenderer";
 
 export default class SpriteCollectionRenderer extends SvgRenderer {
@@ -7,6 +6,8 @@ export default class SpriteCollectionRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.model.children.forEach((m) => this.addRenderer(m));
+		this.model.addOnAddListener((a) => this.addRenderer(a));
+		this.model.addOnRemoveListener((a) => this.removeRenderer(a));
 	}
 
 	addRenderer(model) {
@@ -15,8 +16,10 @@ export default class SpriteCollectionRenderer extends SvgRenderer {
 		this.addChild(renderer);
 	}
 
-	render() {
-		this.renderChildren();
+	removeRenderer(model) {
+		const renderer = model._renderer;
+		renderer.deactivate();
+		this.removeChild(renderer);
 	}
 
 }
