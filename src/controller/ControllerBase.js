@@ -1,6 +1,6 @@
-import Tree from "../class/Tree";
+import ActivatedTree from "../class/ActivatedTree";
 
-export default class ControllerBase extends Tree {
+export default class ControllerBase extends ActivatedTree {
 	game;
 	model;
 	controls;
@@ -13,15 +13,21 @@ export default class ControllerBase extends Tree {
 
 	}
 
-	activate() {
-
-	}
-
-	deactivate() {
-
-	}
-
 	update(delta) {
+		if (this.model.isDeleted()) {
+			this.setDeleted(true);
+			return;
+		}
+
+		if (!this.isActivated()) {
+			return;
+		}
+
+		this.children.forEach((c) => c.update(delta));
+		this.updateInternal(delta);
+	}
+
+	updateInternal(delta) {
 
 	}
 

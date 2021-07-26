@@ -1,7 +1,6 @@
 import Tree from "../class/Tree";
 
 export default class ModelBase extends Tree {
-
 	constructor(state) {
 		super();
 

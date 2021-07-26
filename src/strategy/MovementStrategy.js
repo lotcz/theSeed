@@ -55,7 +55,7 @@ export default class MovementStrategy extends ControllerBase {
 			this.rotation.set((this.rotation.get() + step));
 		}
 
-		if (this.timeout <= 0 || this.target === null) {
+		if (this.timeout <= 0) {
 			if (this.target) this.setPosition(this.target);
 			this.selectTargetInternal();
 			this.timeout = this.defaultTimeout;
@@ -76,6 +76,7 @@ export default class MovementStrategy extends ControllerBase {
 			this.targetRotation.set(a.getAngleToY(b));
 
 		} else {
+			this.coordinates.set(this.game.level.grid.getCoordinates(this.position));
 			this.targetRotation.set(0);
 		}
 

@@ -1,0 +1,46 @@
+import ModelBase from "./ModelBase";
+import Vector2 from "../class/Vector2";
+import DirtyValue from "../class/DirtyValue";
+import RotationValue from "../class/RotationValue";
+
+export const RESOURCE_TYPE_GROUP = 'group';
+export const RESOURCE_TYPE_IMAGE = 'image';
+
+export default class ResourceModel extends ModelBase {
+	uri;
+	data;
+	resType;
+
+	constructor(state) {
+		super();
+
+		if (state) {
+			this.restoreState(state);
+		}
+	}
+
+	getState() {
+		return {
+			uri: this.uri,
+			data: this.data,
+			resType: this.resType,
+			children: this.getChildrenState()
+		}
+	}
+
+	restoreState(state) {
+		this.uri = state.uri;
+		this.data = state.data;
+		this.resType = state.resType;
+		if (state.children) this.restoreChildren(state.children, (ch) => new ResourceModel(ch));
+	}
+
+	find(uri) {
+		if (this.uri === uri) return this;
+	}
+
+	exists(uri) {
+		return this.find(uri) !== null;
+	}
+
+}

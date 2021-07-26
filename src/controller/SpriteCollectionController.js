@@ -5,20 +5,19 @@ export default class SpriteCollectionController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
-		this.controllers = [];
 		this.model.children.forEach((m) => this.addController(m));
-		this.model.clean();
+		this.model.addOnAddListener((a) => this.addController(a));
+		this.model.addOnRemoveListener((r) => this.removeController(r));
 	}
 
 	addController(model) {
-		this.controllers.push(new SpriteController(this.game, model, this.controls));
+		const controller = new SpriteController(this.game, model, this.controls);
+		model._controller = controller;
+		this.addChild(controller);
 	}
 
-	update(delta) {
-		this.model.added.forEach((a) => this.addController(a));
-		this.model.clean();
-
-		this.controllers.forEach((c) => c.update(delta));
+	removeController(model) {
+		this.removeChild(model._controller);
 	}
 
 }

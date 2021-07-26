@@ -11,9 +11,10 @@ export default class LevelController extends ControllerBase {
 		super(game, model, controls);
 
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
+		this.addChild(this.spritesController);
 	}
 
-	update(delta) {
+	updateInternal(delta) {
 
 		if (this.controls.isDirty()) {
 			if (this.controls.mouseCoords.isDirty()) {
@@ -34,16 +35,14 @@ export default class LevelController extends ControllerBase {
 		if (this.controls.mouseOver) {
 			this.scroll(delta);
 		}
-
-		this.spritesController.update(delta);
 	}
 
-	getCursorAbsolutePosition(offset) {
+	getCursorAbsoluteCoordinates(offset) {
 		return new Vector2(this.model.viewBoxCoordinates.x + (offset.x * this.model.viewBoxScale.get()), this.model.viewBoxCoordinates.y + (offset.y * this.model.viewBoxScale.get()));
 	}
 
 	getCursorGridPosition(offset) {
-		return this.model.grid.getPosition(this.getCursorAbsolutePosition(offset));
+		return this.model.grid.getPosition(this.getCursorAbsoluteCoordinates(offset));
 	}
 
 	onMouseMove() {
@@ -128,11 +127,11 @@ export default class LevelController extends ControllerBase {
 	}
 
 	onZoom() {
-		const before = this.getCursorAbsolutePosition(this.controls.mouseCoords);
+		const before = this.getCursorAbsoluteCoordinates(this.controls.mouseCoords);
 		const delta = (this.model.viewBoxScale.get() / 10) * this.controls.zoom.get();
 		this.model.viewBoxScale.set(Math.max( 0.1, Math.min(100, this.model.viewBoxScale.get() + delta)));
 
-		const after = this.getCursorAbsolutePosition(this.controls.mouseCoords);
+		const after = this.getCursorAbsoluteCoordinates(this.controls.mouseCoords);
 		const diff = after.subtract(before);
 		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
 	}

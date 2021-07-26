@@ -5,12 +5,14 @@ import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
-import Collection from "../class/Collection";
+import CollectionModel from "./CollectionModel";
+import ResourceModel from "./ResourceModel";
 
 export default class LevelModel extends ModelBase {
 	grid;
 	plant;
 	sprites;
+	resources;
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxCoordinates;
@@ -30,6 +32,7 @@ export default class LevelModel extends ModelBase {
 			plant: this.plant.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
+			resources: this.resources.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray()
@@ -42,9 +45,12 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
 		this.addChild(this.ground);
-		this.sprites = new Collection();
+		this.sprites = new CollectionModel();
 		this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		this.addChild(this.sprites);
+
+		this.resources = new ResourceModel(state.resources);
+		this.addChild(this.resources);
 
 		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
 		this.addChild(this.viewBoxScale);

@@ -1,43 +1,35 @@
-import Tree from "../class/Tree";
+import ActivatedTree from "../class/ActivatedTree";
 
-export default class RendererBase extends Tree {
+export default class RendererBase extends ActivatedTree {
 	game;
 	model;
-	grid;
 
 	constructor(game, model) {
 		super();
 		this.game = game;
 		this.model = model;
-		this.grid = this.game.level.grid;
-	}
-
-	activate() {
-
-	}
-
-	deactivate() {
-
 	}
 
 	render() {
+		if (this.model.isDeleted()) {
+			this.setDeleted(true);
+			return;
+		}
+
+		if (!this.isActivated()) {
+			return;
+		}
+
 		if (this.isDirty() || this.model.isDirty()) {
 			this.renderInternal();
-			this.renderChildren();
+			this.children.forEach((r) => r.render());
 			this.clean();
 			this.model.clean();
 		}
 	}
 
-	renderChildren() {
-		for (let i = 0, max = this.children.length; i < max; i++) {
-			const child = this.children[i];
-			child.render();
-		}
-	}
-
 	renderInternal() {
-		// override this method
+
 	}
 
 }
