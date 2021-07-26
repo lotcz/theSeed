@@ -7,6 +7,7 @@ export default class ImageRenderer extends SvgRenderer {
 	image;
 	lastRotation;
 	grid;
+
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
@@ -16,7 +17,7 @@ export default class ImageRenderer extends SvgRenderer {
 
 	activateInternal() {
 		if (this.isActivated())	this.deactivateInternal();
-		this.group =  this.draw.group();
+		this.group = this.draw.group();
 		const ref = this.getRef(this.model.path);
 		this.image = this.group.use(ref);
 		if (this.model.flipped.get()) {
@@ -31,20 +32,40 @@ export default class ImageRenderer extends SvgRenderer {
 		}
 	}
 
-	renderInternal() {
-		if (this.model.position.isDirty()) {
-			this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
-			this.model.position.clean();
+	render() {
+		if (this.model.isDeleted()) {
+			this.setDeleted(true);
+			return;
 		}
+
+		if (!this.isActivated()) {
+			return;
+		}
+
+		if (this.isDirty() || this.model.isDirty()) {
+			if (this.game.level.isCoordinateInView(this.model.coordinates)) {
+				if (!this.group.visible()) {
+					this.group.show();
+				}
+				this.renderInternal();
+				//this.children.forEach((r) => r.render());
+				this.clean();
+				this.model.clean();
+			} else {
+				if (this.group.visible()) {
+					this.group.hide();
+				}
+			}
+		}
+	}
+
+	renderInternal() {
 		if (this.model.scale.isDirty()) {
 			this.image.scale(this.model.scale.get());
 			this.model.scale.clean();
 			this.model.coordinates.makeDirty();
 		}
 		if (this.model.coordinates.isDirty()) {
-			if (!(this.model.coordinates.x > 0)) {
-				console.log(this.model);
-			}
 			this.group.center(
 				this.model.coordinates.x,
 				this.model.coordinates.y

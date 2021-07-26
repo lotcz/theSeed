@@ -9,7 +9,7 @@ import GameRenderer from "./renderer/GameRenderer";
 import SpriteBuilder from "./builder/SpriteBuilder";
 
 const MAX_DELTA = 500;
-const size = new Vector2(160, 60);
+const size = new Vector2(320, 240);
 const scale = 80;
 
 const levelBuilder = new LevelBuilder(size, scale);

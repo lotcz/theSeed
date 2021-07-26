@@ -43,7 +43,7 @@ export default class ResourceLoader extends Tree {
 				const token = Pixies.token(this.model.uri);
 				this.resource = defs.findOne('#' + token);
 				if (!this.resource) {
-					this.resource = this.draw.image(
+					this.resource = defs.image(
 						this.model.data,
 						() => {
 							this.loaded = true;
@@ -51,7 +51,7 @@ export default class ResourceLoader extends Tree {
 						}
 					);
 					this.resource.attr({id:token});
-					defs.add(this.resource);
+					//defs.add(this.resource);
 				}
 				break;
 		}

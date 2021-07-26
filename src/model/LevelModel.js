@@ -64,6 +64,17 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.highlightedTilePosition);
 	}
 
+	isPositionInView(position) {
+		const coords = this.grid.getCoordinates(position);
+		return this.isCoordinateInView(coords);
+	}
+
+	isCoordinateInView(coords) {
+		const min = this.viewBoxCoordinates.clone();
+		const max = min.add(this.viewBoxSize.multiply(this.viewBoxScale.get()));
+		return coords.x >= min.x && coords.x <= max.x && coords.y >= min.y && coords.y <= max.y;
+	}
+
 	isValidPosition(position) {
 		return this.grid.isValidPosition(position);
 	}

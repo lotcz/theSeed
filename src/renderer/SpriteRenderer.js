@@ -10,5 +10,8 @@ export default class SpriteRenderer extends SvgRenderer {
 
 	}
 
+	render() {
+		this.imageRenderer.render();
+	}
 
 }
