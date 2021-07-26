@@ -72,7 +72,7 @@ export default class LevelModel extends ModelBase {
 	isCoordinateInView(coords) {
 		const min = this.viewBoxCoordinates.clone();
 		const max = min.add(this.viewBoxSize.multiply(this.viewBoxScale.get()));
-		return coords.x >= min.x && coords.x <= max.x && coords.y >= min.y && coords.y <= max.y;
+		return coords.x >= (min.x - this.grid.tileSize.x) && coords.x <= (max.x + this.grid.tileSize.x) && coords.y >= (min.y - this.grid.tileSize.y) && coords.y <= (max.y + this.grid.tileSize.y);
 	}
 
 	isValidPosition(position) {
@@ -93,6 +93,30 @@ export default class LevelModel extends ModelBase {
 
 	isUnderGround(position) {
 		return position.y > this.getGroundY(position.x);
+	}
+
+	sanitizeViewBox() {
+		const max = this.grid.getMaxCoordinates();
+		if ((this.viewBoxSize.x * this.viewBoxScale.get()) > max.x) {
+			this.viewBoxScale.set(max.x / this.viewBoxSize.x);
+		}
+		if ((this.viewBoxSize.y * this.viewBoxScale.get()) > max.y) {
+			this.viewBoxScale.set(max.y / this.viewBoxSize.y);
+		}
+		if (this.viewBoxCoordinates.x < 0) {
+			this.viewBoxCoordinates.setX(0);
+		}
+		const maxX = max.x - (this.viewBoxSize.x * this.viewBoxScale.get());
+		if (this.viewBoxCoordinates.x > maxX) {
+			this.viewBoxCoordinates.setX(maxX);
+		}
+		if (this.viewBoxCoordinates.y < 0) {
+			this.viewBoxCoordinates.setY(0);
+		}
+		const maxY = max.y - (this.viewBoxSize.y * this.viewBoxScale.get());
+		if (this.viewBoxCoordinates.y > maxY) {
+			this.viewBoxCoordinates.setY(maxY);
+		}
 	}
 
 }

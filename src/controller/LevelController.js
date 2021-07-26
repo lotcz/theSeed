@@ -67,6 +67,7 @@ export default class LevelController extends ControllerBase {
 
 		if (scrolling.size() > 0) {
 			this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
+			this.model.sanitizeViewBox();
 		}
 	}
 
@@ -134,6 +135,8 @@ export default class LevelController extends ControllerBase {
 		const after = this.getCursorAbsoluteCoordinates(this.controls.mouseCoords);
 		const diff = after.subtract(before);
 		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
+
+		this.model.sanitizeViewBox();
 	}
 
 }
