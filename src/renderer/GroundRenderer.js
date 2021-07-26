@@ -9,12 +9,14 @@ export default class GroundRenderer extends SvgRenderer {
 	fill;
 	stroke;
 	group;
+	grid;
 
 	constructor(game, model, draw, fill, stroke) {
 		super(game, model, draw);
 		this.fill = fill;
 		this.stroke = stroke;
 		this.group = null;
+		this.grid = game.level.grid;
 	}
 
 	renderGridTile(position) {

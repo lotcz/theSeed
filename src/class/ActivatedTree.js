@@ -32,4 +32,9 @@ export default class ActivatedTree extends Tree {
 
 	}
 
+	removeChild(node) {
+		node.deactivate();
+		return super.removeChild(node);
+	}
+
 }

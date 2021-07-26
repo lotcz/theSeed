@@ -3,13 +3,11 @@ import ActivatedTree from "../class/ActivatedTree";
 export default class RendererBase extends ActivatedTree {
 	game;
 	model;
-	grid;
 
 	constructor(game, model) {
 		super();
 		this.game = game;
 		this.model = model;
-		this.grid = this.game.level.grid;
 	}
 
 	render() {

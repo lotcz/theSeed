@@ -5,15 +5,19 @@ const DEBUG_IMAGE = false;
 export default class ImageRenderer extends SvgRenderer {
 	group;
 	image;
-
+	lastRotation;
+	grid;
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		this.grid = game.level.grid;
+		this.lastRotation = 0;
 	}
 
 	activateInternal() {
+		if (this.isActivated())	this.deactivateInternal();
 		this.group =  this.draw.group();
-		const ref = this.getRef(this.model.path, () => this.group.image(this.model.path));
+		const ref = this.getRef(this.model.path);
 		this.image = this.group.use(ref);
 		if (this.model.flipped.get()) {
 			this.image.flip('x');
@@ -38,6 +42,9 @@ export default class ImageRenderer extends SvgRenderer {
 			this.model.coordinates.makeDirty();
 		}
 		if (this.model.coordinates.isDirty()) {
+			if (!(this.model.coordinates.x > 0)) {
+				console.log(this.model);
+			}
 			this.group.center(
 				this.model.coordinates.x,
 				this.model.coordinates.y
@@ -51,9 +58,9 @@ export default class ImageRenderer extends SvgRenderer {
 			this.model.flipped.clean();
 		}
 		if (this.model.rotation.isDirty()) {
-			this.image.rotate(-this.rotation);
-			this.rotation = this.model.rotation.get();
-			this.image.rotate(this.rotation);
+			this.image.rotate(-this.lastRotation);
+			this.lastRotation = this.model.rotation.get();
+			this.image.rotate(this.lastRotation);
 			this.model.rotation.clean();
 		}
 

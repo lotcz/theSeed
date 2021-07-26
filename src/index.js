@@ -9,27 +9,27 @@ import GameRenderer from "./renderer/GameRenderer";
 import SpriteBuilder from "./builder/SpriteBuilder";
 
 const MAX_DELTA = 500;
-
 const size = new Vector2(160, 60);
 const scale = 80;
+
 const levelBuilder = new LevelBuilder(size, scale);
 const level = levelBuilder.build();
-
 const spriteBuilder = new SpriteBuilder(level);
 spriteBuilder.addBugs();
 spriteBuilder.addTurner();
 spriteBuilder.addWater();
-
 const game = new GameModel();
-game.setLevel(level);
 
 const draw = SVG().addTo(window.document.body);
 const controls = new Controls(draw.node);
 
 const controller = new GameController(game, controls);
 controller.activate();
+
 const renderer = new GameRenderer(game, draw);
 renderer.activate();
+
+controller.loadLevel(level);
 
 let lastTime = null;
 

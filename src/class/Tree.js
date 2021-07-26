@@ -73,8 +73,4 @@ export default class Tree extends Dirty {
 		}
 	}
 
-	resetChildren() {
-		this.children = [];
-	}
-
 }

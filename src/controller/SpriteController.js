@@ -18,7 +18,7 @@ export default class SpriteController extends ControllerBase {
 		super(game, model, controls);
 
 		this.strategy = this.createStrategy(model);
-		//this.addChild(this.strategy);
+		this.addChild(this.strategy);
 	}
 
 	createStrategy(model) {

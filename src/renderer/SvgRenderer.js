@@ -9,14 +9,12 @@ export default class SvgRenderer extends RendererBase {
 		this.draw = draw;
 	}
 
-	getRef(name, construct) {
-		const token = Pixies.token(name);
+	getRef(uri) {
+		const token = Pixies.token(uri);
 		const defs = this.draw.root().defs();
 		let ref = defs.findOne('#' + token);
 		if (!ref) {
-			ref = construct();
-			ref.attr({id:token});
-			this.draw.root().defs().add(ref);
+			console.error(`Resource ${uri} (token: ${token}) not found!`)
 		}
 		return ref;
 	}

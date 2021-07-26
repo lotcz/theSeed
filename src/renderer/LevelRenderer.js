@@ -20,6 +20,7 @@ import {} from "@svgdotjs/svg.filter.js"
 import Stats from "../class/stats.module";
 import * as dat from 'dat.gui';
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
+import ResourceLoader from "../class/ResourceLoader";
 
 const PARALLAX_SIZE = 10;
 
@@ -42,11 +43,11 @@ export default class LevelRenderer extends SvgRenderer {
 		// parallax
 		this.parallax = this.draw.group();
 		this.parallax.opacity(0.1);
-		/*
+/*
 		this.parallax.filterWith(function(add) {
-			add.gaussianBlur(30)
+			add.gaussianBlur(50)
 		})
-		*/
+*/
 
 		/*
 		// SEPIA
@@ -119,6 +120,7 @@ export default class LevelRenderer extends SvgRenderer {
 		this.groundRenderer = new GroundRenderer(this.game, model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
 		this.addChild(this.groundRenderer);
 
+		// FOREGROUND
 		this.foreground = this.draw.group();
 		this.plantRenderer = new PlantRenderer(this.game, model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
@@ -178,7 +180,6 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
 			this.renderParallax();
-			this.model.viewBoxSize.clean();
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}

@@ -5,7 +5,8 @@ export default class SpriteRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
-		this.addChild(new ImageRenderer(game, model.image, draw));
+		this.imageRenderer = new ImageRenderer(game, model.image, draw);
+		this.addChild(this.imageRenderer);
 
 	}
 

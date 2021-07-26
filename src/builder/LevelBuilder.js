@@ -14,6 +14,7 @@ import SpriteModel from "../model/SpriteModel";
 import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
 import Pixies from "../class/Pixies";
 import GroundBuilder from "./GroundBuilder";
+import {RESOURCE_TYPE_GROUP} from "../model/ResourceModel";
 
 export default class LevelBuilder {
 	grid;
@@ -93,6 +94,9 @@ export default class LevelBuilder {
 			ground: this.g.getState(),
 			plant: this.plantState,
 			sprites: [],
+			resources: {
+				resType: RESOURCE_TYPE_GROUP
+			},
 			viewBoxScale: this.viewboxScale,
 			viewBoxSize: this.viewboxSize.toArray(),
 			viewBoxCoordinates: this.viewboxCoordinates.toArray()
