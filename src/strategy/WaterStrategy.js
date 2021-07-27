@@ -11,11 +11,12 @@ export default class WaterStrategy extends MovementStrategy {
 		super(game, model.image, controls, WATER_TIMEOUT);
 
 		this.sprite = model;
+		this.turningEnabled = false;
 	}
 
 	selectTargetInternal() {
 
-		if (Math.random() < 0.99) return;
+		if (Math.random() < 0.9) return;
 
 		const down = this.game.level.grid.getNeighborDown(this.position);
 		if (!this.game.level.isValidPosition(down)) {
