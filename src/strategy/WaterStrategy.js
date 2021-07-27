@@ -1,16 +1,14 @@
-import MovementStrategy from "./MovementStrategy";
+import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 
 const WATER_TIMEOUT = 3000;
 
-export default class WaterStrategy extends MovementStrategy {
-	sprite;
+export default class WaterStrategy extends SpriteControllerStrategy {
 
 	constructor(game, model, controls) {
-		super(game, model.image, controls, WATER_TIMEOUT);
+		super(game, model, controls, WATER_TIMEOUT);
 
-		this.sprite = model;
 		this.turningEnabled = false;
 	}
 
@@ -20,7 +18,7 @@ export default class WaterStrategy extends MovementStrategy {
 
 		const down = this.game.level.grid.getNeighborDown(this.position);
 		if (!this.game.level.isValidPosition(down)) {
-			this.game.level.sprites.remove(this.sprite);
+			this.game.level.sprites.remove(this.model);
 		}
 		this.setTarget(down);
 

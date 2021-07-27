@@ -5,7 +5,7 @@ import RotationValue from "../class/RotationValue";
 
 const ROTATION_SPEED = 1000;
 
-export default class MovementStrategy extends ControllerBase {
+export default class SpriteControllerStrategy extends ControllerBase {
 	position;
 	coordinates;
 	rotation;
@@ -19,16 +19,18 @@ export default class MovementStrategy extends ControllerBase {
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
-		this.position = model.position;
+		this.position = model.image.position;
 		this.target = null;
-		this.coordinates = model.coordinates;
-		this.rotation = model.rotation;
+		this.coordinates = model.image.coordinates;
+		this.rotation = model.image.rotation;
 		this.targetRotation = new RotationValue(this.rotation.get());
 		this.defaultTimeout = timeout;
 		this.timeout = this.defaultTimeout;
 
 		this.movementEnabled = true;
 		this.turningEnabled = true;
+
+		this.game.level.grid.chessboard.addVisitor(this.position, this);
 	}
 
 	selectRandomTarget() {
@@ -37,7 +39,9 @@ export default class MovementStrategy extends ControllerBase {
 	}
 
 	setTarget(target) {
+		this.game.level.grid.chessboard.removeVisitor(this.position, this);
 		this.target = target;
+		this.game.level.grid.chessboard.addVisitor(this.target, this);
 	}
 
 	setPosition(position) {

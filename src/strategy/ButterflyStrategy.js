@@ -1,12 +1,12 @@
-import MovementStrategy from "./MovementStrategy";
+import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 
 const BUTTERFLY_TIMEOUT = 300;
 
-export default class ButterflyStrategy extends MovementStrategy {
+export default class ButterflyStrategy extends SpriteControllerStrategy {
 	constructor(game, model, controls) {
-		super(game, model.image, controls, BUTTERFLY_TIMEOUT);
+		super(game, model, controls, BUTTERFLY_TIMEOUT);
 
 		this.lastDirection = null;
 	}

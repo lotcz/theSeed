@@ -1,12 +1,12 @@
-import MovementStrategy from "./MovementStrategy";
+import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 
 const TURNER_TIMEOUT = 100;
 
-export default class TurnerStrategy extends MovementStrategy {
+export default class TurnerStrategy extends SpriteControllerStrategy {
 	constructor(game, model, controls) {
-		super(game, model.image, controls, TURNER_TIMEOUT);
+		super(game, model, controls, TURNER_TIMEOUT);
 
 		this.start = this.game.level.plant.roots.position.addX(-5).addY(-10);
 		this.movementEnabled = false;

@@ -46,7 +46,7 @@ export default class SpriteBuilder {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM, WormImage);
 
-		const bugCount = 10;
+		const bugCount = 30;
 		for (let i = 0, max = bugCount; i < max; i++) {
 			const state = {
 				image: {
@@ -79,7 +79,7 @@ export default class SpriteBuilder {
 			this.level.sprites.add(new SpriteModel(state));
 		}
 
-		const wormsCount = 10;
+		const wormsCount = 50;
 		for (let i = 0, max = wormsCount; i < max; i++) {
 			const state = {
 				image: {

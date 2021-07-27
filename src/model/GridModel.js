@@ -1,5 +1,6 @@
 import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
+import Chessboard from "../class/Chessboard";
 
 const NEIGHBOR_UP = new Vector2(0, -1);
 const NEIGHBOR_DOWN = new Vector2(0, 1);
@@ -11,9 +12,11 @@ export default class GridModel extends ModelBase {
 	size;
 	scale;
 	tileSize;
+	chessboard;
 
 	constructor(state) {
 		super();
+		this.chessboard = new Chessboard();
 		if (state) this.restoreState(state);
 	}
 
