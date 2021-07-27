@@ -7,9 +7,11 @@ import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
 import ResourceModel from "./ResourceModel";
+import ParallaxModel from "./ParallaxModel";
 
 export default class LevelModel extends ModelBase {
 	grid;
+	parallax;
 	plant;
 	sprites;
 	resources;
@@ -29,6 +31,7 @@ export default class LevelModel extends ModelBase {
 	getState() {
 		return {
 			grid: this.grid.getState(),
+			parallax: this.parallax.getState(),
 			plant: this.plant.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
@@ -41,6 +44,7 @@ export default class LevelModel extends ModelBase {
 
 	restoreState(state) {
 		this.grid = new GridModel(state.grid);
+		this.parallax = new ParallaxModel(state.parallax);
 		this.plant = new PlantModel(state.plant);
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);

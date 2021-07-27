@@ -15,7 +15,7 @@ export default class WaterStrategy extends MovementStrategy {
 
 	selectTargetInternal() {
 
-		if (Math.random() < 0.8) return;
+		if (Math.random() < 0.99) return;
 
 		const down = this.game.level.grid.getNeighborDown(this.position);
 		if (!this.game.level.isValidPosition(down)) {

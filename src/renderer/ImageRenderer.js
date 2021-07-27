@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 
 const DEBUG_IMAGE = false;
+const HIDE_WHEN_OUTTA_SIGHT = true;
 
 export default class ImageRenderer extends SvgRenderer {
 	group;
@@ -43,18 +44,23 @@ export default class ImageRenderer extends SvgRenderer {
 		}
 
 		if (this.isDirty() || this.model.isDirty()) {
-			if (this.game.level.isCoordinateInView(this.model.coordinates)) {
-				if (!this.group.visible()) {
-					this.group.show();
+			if (HIDE_WHEN_OUTTA_SIGHT) {
+				if (this.game.level.isCoordinateInView(this.model.coordinates)) {
+					if (!this.group.visible()) {
+						this.group.show();
+					}
+					this.renderInternal();
+					this.clean();
+					this.model.clean();
+				} else {
+					if (this.group.visible()) {
+						this.group.hide();
+					}
 				}
+			} else {
 				this.renderInternal();
-				//this.children.forEach((r) => r.render());
 				this.clean();
 				this.model.clean();
-			} else {
-				if (this.group.visible()) {
-					this.group.hide();
-				}
 			}
 		}
 	}

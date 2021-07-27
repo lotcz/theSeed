@@ -1,11 +1,11 @@
 import "./style.css";
-import GameController from "./controller/GameController";
-import LevelBuilder from "./builder/LevelBuilder";
 import Vector2 from "./class/Vector2";
 import {SVG} from "@svgdotjs/svg.js";
 import Controls from "./class/Controls";
+import GameController from "./controller/GameController";
 import GameModel from "./model/GameModel";
 import GameRenderer from "./renderer/GameRenderer";
+import LevelBuilder from "./builder/LevelBuilder";
 import SpriteBuilder from "./builder/SpriteBuilder";
 
 const MAX_DELTA = 500;

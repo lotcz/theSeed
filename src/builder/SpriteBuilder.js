@@ -3,7 +3,7 @@ import Vector2 from "../class/Vector2";
 import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import WaterImage from "../../res/img/water.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
-import MyLadybugImage from "../../res/img/my-lady-bug.svg";
+import LadybugImage from "../../res/img/my-lady-bug.svg";
 import WormImage from "../../res/img/worm.svg";
 import SpriteModel from "../model/SpriteModel";
 import {
@@ -42,7 +42,7 @@ export default class SpriteBuilder {
 	}
 
 	addBugs() {
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, MyLadybugImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM, WormImage);
 

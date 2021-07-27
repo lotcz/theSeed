@@ -1,20 +1,15 @@
 import Vector2 from "../class/Vector2";
-import GroundModel from "../model/GroundModel";
-import ButterflyImage from "../../res/img/butterfly.svg";
-import LadybugImage from "../../res/img/ladybug.svg";
-import MyLadybugImage from "../../res/img/my-lady-bug.svg";
-import Bug1Image from "../../res/img/bug-1.svg";
-import BeetleImage from "../../res/img/beetle.svg";
-import DragonflyImage from "../../res/img/dragonfly.svg";
-import WormImage from "../../res/img/worm.svg";
-import CoccinelleImage from "../../res/img/coccinelle.svg";
 import GridModel from "../model/GridModel";
 import LevelModel from "../model/LevelModel";
-import SpriteModel from "../model/SpriteModel";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TURNER, STRATEGY_WORM} from "../controller/SpriteController";
-import Pixies from "../class/Pixies";
 import GroundBuilder from "./GroundBuilder";
 import {RESOURCE_TYPE_GROUP} from "../model/ResourceModel";
+import HillImage from "../../res/img/hill.svg";
+import StalkImage from "../../res/img/stalk.svg";
+import GrassImage from "../../res/img/grass.svg";
+import TreesImage from "../../res/img/trees.svg";
+import BulbsImage from "../../res/img/bulbs.svg";
+import PlantImage from '../../res/img/plant.svg';
+import RockImage from '../../res/img/rock.svg';
 
 export default class LevelBuilder {
 	grid;
@@ -82,6 +77,24 @@ export default class LevelBuilder {
 		this.g = builder.build();
 	}
 
+	parallax() {
+		this.parallaxState = {
+			layers: [
+				false,
+				false,
+				TreesImage,
+				false,
+				false,
+				false,
+				GrassImage,
+				StalkImage,
+				BulbsImage,
+				false,
+				false
+			]
+		}
+	}
+
 	build() {
 		if (!this.g) {
 			this.ground();
@@ -89,8 +102,12 @@ export default class LevelBuilder {
 		if (!this.plantState) {
 			this.plant();
 		}
+		if (!this.parallaxState) {
+			this.parallax();
+		}
 		const state = {
 			grid: this.grid.getState(),
+			parallax: this.parallaxState,
 			ground: this.g.getState(),
 			plant: this.plantState,
 			sprites: [],
