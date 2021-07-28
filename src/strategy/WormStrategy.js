@@ -17,22 +17,21 @@ export default class WormStrategy extends SpriteControllerStrategy {
 			this.model.data.wormLength = 1;
 		}
 
-		if (this.model.data.head) {
-			this.defaultTimeout = WORM_TIMEOUT / this.model.data.wormLength;
-			this.timeout = 0;
-		}
+		this.defaultTimeout = WORM_TIMEOUT / this.model.data.wormLength;
+
 		this.butt = null;
 	}
 
 	addButt() {
+		this.model.data.wormLength += 1;
 		const spriteBuilder = new SpriteBuilder(this.game.level);
 		const image = (this.butt) ? IMAGE_WORM_BODY : IMAGE_WORM_BUTT;
-		const butt = spriteBuilder.addSprite(this.position, this.model.image.scale.get(), false, this.model.image.rotation, image, STRATEGY_WORM, {head:this.model});
+		const butt = spriteBuilder.addSprite(this.position, this.model.image.scale.get(), false, this.model.image.rotation.get(), image, STRATEGY_WORM, {head:this.model, wormLength:this.model.data.wormLength});
 		if (this.butt) {
 			this.butt.data.head = butt;
 		}
 		this.butt = butt;
-		this.model.data.wormLength += 1;
+
 	}
 
 	selectTargetHead() {
@@ -44,6 +43,7 @@ export default class WormStrategy extends SpriteControllerStrategy {
 			const position = Pixies.randomElement(groundNeighbors);
 			const visitors = this.game.level.grid.chessboard.getTile(position);
 			if (visitors.length === 0) {
+				this.model.data.lastPosition = this.position.clone();
 				this.setTarget(position);
 				if (this.model.data.wormLength < MAX_WORM_LENGTH) {
 					if (Math.random() < 0.2) {
@@ -55,9 +55,11 @@ export default class WormStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetBody() {
-		const position = this.model.data.head.image.position;
+		const position = this.model.data.head.data.lastPosition;
+		if (!position) return;
 		const visitors = this.game.level.grid.chessboard.getTile(position);
 		if (visitors.length === 0) {
+			this.model.data.lastPosition = this.position.clone();
 			this.setTarget(position);
 		} else {
 			this.setTarget(null);

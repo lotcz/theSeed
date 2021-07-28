@@ -42,7 +42,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 	visit(position) {
 		if (this.lastVisited) this.game.level.grid.chessboard.removeVisitor(this.lastVisited, this.model);
-		this.lastVisited = position;
+		this.lastVisited = position.clone();
 		this.game.level.grid.chessboard.addVisitor(position, this.model);
 	}
 
@@ -52,7 +52,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 			return;
 		}
 		if (target) {
-			this.target = target;
+			this.target = target.clone();
 			this.visit(target);
 		}
 	}
