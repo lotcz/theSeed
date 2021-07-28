@@ -5,32 +5,10 @@
    shape-rendering="geometricPrecision"
    text-rendering="geometricPrecision"
    version="1.1"
-   sodipodi:docname="stalk.svg"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs6" />
-  <sodipodi:namedview
-     id="namedview4"
-     pagecolor="#505050"
-     bordercolor="#ffffff"
-     borderopacity="1"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="1"
-     showgrid="false"
-     inkscape:zoom="1.653125"
-     inkscape:cx="319.69754"
-     inkscape:cy="239.84877"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1272"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="eQSfiZcXOJw1" />
   <path
      id="eQSfiZcXOJw2"
      d="m 412.87567,0.60491493 h 40.54521 c 1.75317,10.52492707 -0.0516,31.22252507 9.17643,34.95765907 27.99641,11.331883 71.41257,-34.95765907 61.99206,-34.95765907 -7.99897,0 29.99616,-11.03645393 26.66326,0 C 539.34282,40.042577 471.26286,58.226339 468.55466,110.23393 c -1.95263,37.49754 -5.95735,69.97679 -5.95735,88.48963 -2.30563,26.06893 -16.9081,65.22921 -25.76311,126.24304 q -6.71564,46.27295 8.29334,155.63831 H 285.71115 q 42.9593,-60.27678 56.8029,-88.67451 c 11.0785,-22.7256 53.98794,-61.30297 41.853,-119.28103 C 365.5332,182.66543 273.45662,0.60491493 273.45662,0.60491493 c 0,0 7.66944,-8.83545503 12.25453,0 C 322.63388,71.755002 391.68584,227.94725 395.87662,224.51842 430.40534,196.26765 419.80735,92.230901 419.37564,84.224806 418.03213,59.309602 415.86548,31.436305 412.87567,0.60491493 Z"

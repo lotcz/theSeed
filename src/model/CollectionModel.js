@@ -23,6 +23,7 @@ export default class CollectionModel extends ModelBase {
 	add(element) {
 		this.addChild(element);
 		this.on_add.forEach((a) => a(element));
+		return element;
 	}
 
 	remove(element) {

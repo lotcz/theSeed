@@ -4,7 +4,9 @@ import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import WaterImage from "../../res/img/water.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/my-lady-bug.svg";
-import WormImage from "../../res/img/worm.svg";
+import WormHeadImage from "../../res/img/worm-head.svg";
+import WormBodyImage from "../../res/img/worm-body.svg";
+import WormButtImage from "../../res/img/worm-butt.svg";
 import SpriteModel from "../model/SpriteModel";
 import {
 	STRATEGY_BUG,
@@ -17,7 +19,9 @@ import {
 const IMAGE_WATER = 'img/water.svg';
 const IMAGE_BUG = 'img/ladybug.svg';
 const IMAGE_BUTTERFLY = 'img/butterfly.svg';
-const IMAGE_WORM = 'img/worm.svg';
+export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
+export const IMAGE_WORM_BODY = 'img/worm-body.svg';
+export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export default class SpriteBuilder {
 	level;
@@ -44,7 +48,9 @@ export default class SpriteBuilder {
 	addBugs() {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM, WormImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_HEAD, WormHeadImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BODY, WormBodyImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BUTT, WormButtImage);
 
 		const bugCount = 30;
 		for (let i = 0, max = bugCount; i < max; i++) {
@@ -81,18 +87,31 @@ export default class SpriteBuilder {
 
 		const wormsCount = 50;
 		for (let i = 0, max = wormsCount; i < max; i++) {
-			const state = {
-				image: {
-					position: this.getRandomPosition(true).toArray(),
-					scale: 0.5 + Math.random(),
-					flipped: false,
-					rotation: 0,
-					path: IMAGE_WORM
-				},
-				strategy: STRATEGY_WORM
-			};
-			this.level.sprites.add(new SpriteModel(state));
+			this.addSprite(
+				this.getRandomPosition(true),
+				0.5 + Math.random(),
+				false,
+				0,
+				IMAGE_WORM_HEAD,
+				STRATEGY_WORM,
+				{}
+			);
 		}
+	}
+
+	addSprite(position, scale, flipped, rotation, path, strategy, data) {
+		const state = {
+			image: {
+				position: position.toArray(),
+				scale: scale,
+				flipped: false,
+				rotation: 0,
+				path: path
+			},
+			strategy: strategy,
+			data: data
+		};
+		return this.level.sprites.add(new SpriteModel(state));
 	}
 
 	addWater() {

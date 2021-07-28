@@ -125,6 +125,10 @@ export default class LevelController extends ControllerBase {
 				return;
 			}
 		}
+
+		console.log(position.toArray());
+		const visitors = this.model.grid.chessboard.getTile(position);
+		console.log(visitors);
 	}
 
 	onZoom() {

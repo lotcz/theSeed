@@ -15,11 +15,13 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	targetRotation;
 	movementEnabled;
 	turningEnabled;
+	lastVisited;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
 		this.position = model.image.position;
+		this.lastVisited = null;
 		this.target = null;
 		this.coordinates = model.image.coordinates;
 		this.rotation = model.image.rotation;
@@ -30,7 +32,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.movementEnabled = true;
 		this.turningEnabled = true;
 
-		this.game.level.grid.chessboard.addVisitor(this.position, this);
+		this.visit(this.position);
 	}
 
 	selectRandomTarget() {
@@ -38,14 +40,28 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.setTarget(Pixies.randomElement(neighbors));
 	}
 
+	visit(position) {
+		if (this.lastVisited) this.game.level.grid.chessboard.removeVisitor(this.lastVisited, this.model);
+		this.lastVisited = position;
+		this.game.level.grid.chessboard.addVisitor(position, this.model);
+	}
+
 	setTarget(target) {
-		this.game.level.grid.chessboard.removeVisitor(this.position, this);
-		this.target = target;
-		this.game.level.grid.chessboard.addVisitor(this.target, this);
+		if (this.position.equalsTo(target)) {
+			this.target = null;
+			return;
+		}
+		if (target) {
+			this.target = target;
+			this.visit(target);
+		}
 	}
 
 	setPosition(position) {
+		//this.game.level.grid.chessboard.removeVisitor(this.position, this.model);
+		//if (this.target) this.game.level.grid.chessboard.removeVisitor(this.target, this.model);
 		this.position.set(position);
+		//this.game.level.grid.chessboard.addVisitor(this.position, this.model);
 	}
 
 	updateInternal(delta) {
@@ -60,7 +76,6 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		if (this.turningEnabled) {
 			if (this.targetRotation.get() !== this.rotation.get()) {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
-
 				const step = Pixies.between(-diff, diff, (diff > 0 ? -1 : 1) * 360 * (delta / ROTATION_SPEED));
 				this.rotation.set((this.rotation.get() + step));
 			}
@@ -93,7 +108,6 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		} else {
 			this.coordinates.set(this.game.level.grid.getCoordinates(this.position));
-			this.targetRotation.set(0);
 		}
 
 	}

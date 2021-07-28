@@ -14,7 +14,9 @@ export default class SpriteCollectionRenderer extends SvgRenderer {
 		const renderer = new SpriteRenderer(this.game, model, this.draw);
 		model._renderer = renderer;
 		this.addChild(renderer);
-		renderer.activate();
+		if (this.isActivated()) {
+			renderer.activate();
+		}
 	}
 
 	removeRenderer(model) {
