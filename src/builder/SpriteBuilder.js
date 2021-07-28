@@ -16,9 +16,9 @@ import {
 	STRATEGY_WORM
 } from "../controller/SpriteController";
 
-const IMAGE_WATER = 'img/water.svg';
-const IMAGE_BUG = 'img/ladybug.svg';
-const IMAGE_BUTTERFLY = 'img/butterfly.svg';
+export const IMAGE_WATER = 'img/water.svg';
+export const IMAGE_BUG = 'img/ladybug.svg';
+export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
@@ -128,12 +128,13 @@ export default class SpriteBuilder {
 				const state = {
 					image: {
 						position: [i, groundY + Pixies.randomIndex(limit)],
-						scale: 0.5 + Math.random(),
+						scale: 1 ,
 						flipped: false,
 						rotation: 0,
 						path: IMAGE_WATER
 					},
-					strategy: STRATEGY_WATER
+					strategy: STRATEGY_WATER,
+					data: {amount: Pixies.randomIndex(11)/10 }
 				};
 				this.level.sprites.add(new SpriteModel(state));
 			}

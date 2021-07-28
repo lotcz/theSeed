@@ -3,6 +3,7 @@ import {} from "@svgdotjs/svg.filter.js"
 import LivingTreeModel from "../model/LivingTreeModel";
 import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
+import PlantController from "./PlantController";
 
 const GUTTER_WIDTH = 150;
 
@@ -10,8 +11,12 @@ export default class LevelController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.plantController = new PlantController(game, model.plant, controls);
+		this.addChild(this.plantController);
+
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
 		this.addChild(this.spritesController);
+
 	}
 
 	updateInternal(delta) {
@@ -22,7 +27,8 @@ export default class LevelController extends ControllerBase {
 				this.controls.mouseCoords.clean();
 			}
 			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
-				this.onClick(this.controls.mouseClick);
+				const position = this.getCursorGridPosition(this.controls.mouseClick);
+				this.plantController.onClick(position);
 				this.controls.mouseClick.clean();
 			}
 			if (this.controls.zoom.isDirty()) {
@@ -69,66 +75,6 @@ export default class LevelController extends ControllerBase {
 			this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
 			this.model.sanitizeViewBox();
 		}
-	}
-
-	addNode(parent, position) {
-		parent.addChild(new LivingTreeModel({position: position.toArray(), power: 1}));
-	}
-
-	findRootCandidate(position) {
-		const node = this.model.plant.roots.findNodeOnPos(position);
-		if (node && !node.isRoot()) return node;
-		return null;
-	}
-
-	findStemCandidate(position) {
-		const node = this.model.plant.stem.findNodeOnPos(position);
-		if (node && !node.isRoot()) return node;
-		return null;
-	}
-
-	onClick(mouseCoords) {
-		const position = this.getCursorGridPosition(mouseCoords);
-		const root = this.model.plant.roots.findNodeOnPos(position);
-		const stem = this.model.plant.stem.findNodeOnPos(position);
-		if (root === null && stem === null) {
-			// ROOTS
-			const above = this.findRootCandidate(this.model.grid.getNeighborUp(position));
-			if (above !== null) {
-				this.addNode(above, position);
-				return;
-			}
-			const upperLeft = this.findRootCandidate(this.model.grid.getNeighborUpperLeft(position));
-			if (upperLeft !== null) {
-				this.addNode(upperLeft, position);
-				return;
-			}
-			const upperRight = this.findRootCandidate(this.model.grid.getNeighborUpperRight(position));
-			if (upperRight !== null) {
-				this.addNode(upperRight, position);
-				return;
-			}
-			// STEM
-			const below = this.findStemCandidate(this.model.grid.getNeighborDown(position));
-			if (below !== null) {
-				this.addNode(below, position);
-				return;
-			}
-			const lowerLeft = this.findStemCandidate(this.model.grid.getNeighborLowerLeft(position));
-			if (lowerLeft !== null) {
-				this.addNode(lowerLeft, position);
-				return;
-			}
-			const lowerRight = this.findStemCandidate(this.model.grid.getNeighborLowerRight(position));
-			if (lowerRight !== null) {
-				this.addNode(lowerRight, position);
-				return;
-			}
-		}
-
-		console.log(position.toArray());
-		const visitors = this.model.grid.chessboard.getTile(position);
-		console.log(visitors);
 	}
 
 	onZoom() {

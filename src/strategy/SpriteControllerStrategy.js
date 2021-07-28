@@ -27,7 +27,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.rotation = model.image.rotation;
 		this.targetRotation = new RotationValue(this.rotation.get());
 		this.defaultTimeout = timeout;
-		this.timeout = this.defaultTimeout;
+		this.timeout = Math.random() * this.defaultTimeout;
 
 		this.movementEnabled = true;
 		this.turningEnabled = true;

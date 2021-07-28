@@ -33,7 +33,9 @@ export default class LevelRenderer extends SvgRenderer {
 		this.plantRenderer = new PlantRenderer(this.game, model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
 
-		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.foreground);
+		// SPRITES
+		this.sprites = this.draw.group();
+		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 	}
 

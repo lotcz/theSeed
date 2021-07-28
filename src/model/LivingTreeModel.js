@@ -3,6 +3,7 @@ import PositionedTreeModel from "./PositionedTreeModel";
 
 export default class LivingTreeModel extends PositionedTreeModel {
 	power;
+	_is_plant;
 
 	constructor(state) {
 		super();
@@ -10,6 +11,9 @@ export default class LivingTreeModel extends PositionedTreeModel {
 		if (state) {
 			this.restoreState(state);
 		}
+
+		// for visitor to be recognized as plant
+		this._is_plant = true;
 	}
 
 	powerUpdateRequested() {

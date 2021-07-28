@@ -47,6 +47,10 @@ export default class Tree extends Dirty {
 		return node;
 	}
 
+	hasChildren() {
+		return this.children.length > 0;
+	}
+
 	removeChild(node) {
 		const index = this.children.indexOf(node);
 		if (index >= 0) {
@@ -69,7 +73,7 @@ export default class Tree extends Dirty {
 		func(this);
 		for (let i = 0, max = this.children.length; i < max; i++) {
 			const child = this.children[i];
-			func(child);
+			child.forEach(func);
 		}
 	}
 

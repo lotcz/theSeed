@@ -7,6 +7,7 @@ export default class ImageRenderer extends SvgRenderer {
 	group;
 	image;
 	lastRotation;
+	lastScale;
 	grid;
 
 	constructor(game, model, draw) {
@@ -14,6 +15,7 @@ export default class ImageRenderer extends SvgRenderer {
 
 		this.grid = game.level.grid;
 		this.lastRotation = 0;
+		this.lastScale = 1;
 	}
 
 	activateInternal() {
@@ -67,7 +69,9 @@ export default class ImageRenderer extends SvgRenderer {
 
 	renderInternal() {
 		if (this.model.scale.isDirty()) {
-			this.image.scale(this.model.scale.get());
+			this.image.scale(1 / this.lastScale);
+			this.lastScale = this.model.scale.get();
+			this.image.scale(this.lastScale);
 			this.model.scale.clean();
 			this.model.coordinates.makeDirty();
 		}
