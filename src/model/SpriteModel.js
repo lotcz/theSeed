@@ -6,13 +6,17 @@ export default class SpriteModel extends ModelBase {
 	image;
 	strategy;
 	data;
+	_is_sprite;
 
 	constructor(state) {
 		super();
 
+		this._is_sprite = true;
+
 		if (state) {
 			this.restoreState(state);
 		}
+
 	}
 
 	getState() {

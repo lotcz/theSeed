@@ -52,7 +52,7 @@ export default class SpriteBuilder {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BODY, WormBodyImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BUTT, WormButtImage);
 
-		const bugCount = 30;
+		const bugCount = 10;
 		for (let i = 0, max = bugCount; i < max; i++) {
 			const state = {
 				image: {
@@ -85,7 +85,7 @@ export default class SpriteBuilder {
 			this.level.sprites.add(new SpriteModel(state));
 		}
 
-		const wormsCount = 50;
+		const wormsCount = 5;
 		for (let i = 0, max = wormsCount; i < max; i++) {
 			this.addSprite(
 				this.getRandomPosition(true),
