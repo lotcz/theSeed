@@ -6,6 +6,7 @@ import GroundRenderer from "./GroundRenderer";
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ParallaxRenderer from "./ParallaxRenderer";
 import Vector2 from "../class/Vector2";
+import InventoryRenderer from "./InventoryRenderer";
 
 export default class LevelRenderer extends SvgRenderer {
 
@@ -37,6 +38,11 @@ export default class LevelRenderer extends SvgRenderer {
 		this.sprites = this.draw.group();
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
+
+		// INVENTORY
+		this.inventory = this.draw.group();
+		this.inventoryRenderer = new InventoryRenderer(this.game, model.inventory, this.inventory);
+		this.addChild(this.inventoryRenderer);
 	}
 
 	renderGridTile(position, stroke) {

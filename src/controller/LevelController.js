@@ -4,6 +4,7 @@ import LivingTreeModel from "../model/LivingTreeModel";
 import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 import PlantController from "./PlantController";
+import {STRATEGY_WATER} from "./SpriteController";
 
 const GUTTER_WIDTH = 150;
 
@@ -29,6 +30,11 @@ export default class LevelController extends ControllerBase {
 			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
 				const position = this.getCursorGridPosition(this.controls.mouseClick);
 				this.plantController.onClick(position);
+
+				const visitors = this.model.grid.chessboard.getTile(position);
+				const water = visitors.filter((v) => v.strategy !== undefined && v.strategy.get() === STRATEGY_WATER);
+				water.forEach((w) => this.model.inventory.water.set(this.model.inventory.water.get() + w.data.amount));
+
 				this.controls.mouseClick.clean();
 			}
 			if (this.controls.zoom.isDirty()) {

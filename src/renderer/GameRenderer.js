@@ -6,6 +6,7 @@ import Stats from "../class/stats.module";
 import * as dat from 'dat.gui';
 import LevelRenderer from "./LevelRenderer";
 import ResourceLoader from "../class/ResourceLoader";
+import InventoryRenderer from "./InventoryRenderer";
 
 const DEBUG_FPS = true;
 

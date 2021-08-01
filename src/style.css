@@ -3,3 +3,9 @@ html, body, * {
 	padding: 0;
 	overflow: hidden;
 }
+
+.inventory {
+	position: fixed;
+	top: 0;
+	right: 0;
+}

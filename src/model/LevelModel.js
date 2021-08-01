@@ -8,6 +8,7 @@ import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
 import ResourceModel from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
+import InventoryModel from "./InventoryModel";
 
 export default class LevelModel extends ModelBase {
 	grid;
@@ -19,6 +20,7 @@ export default class LevelModel extends ModelBase {
 	viewBoxSize;
 	viewBoxCoordinates;
 	highlightedTilePosition;
+	inventory;
 
 	constructor(state) {
 		super();
@@ -38,7 +40,8 @@ export default class LevelModel extends ModelBase {
 			resources: this.resources.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
-			viewBoxCoordinates: this.viewBoxCoordinates.toArray()
+			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
+			inventory: this.inventory.getState()
 		}
 	}
 
@@ -62,6 +65,9 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.viewBoxSize);
 		this.viewBoxCoordinates = Vector2.fromArray(state.viewBoxCoordinates);
 		this.addChild(this.viewBoxCoordinates);
+
+		this.inventory = new InventoryModel(state.inventory);
+		this.addChild(this.inventory);
 
 		this.highlightedTilePosition = new Vector2();
 		this.highlightedTilePosition.clean();
