@@ -4,6 +4,7 @@ import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import WaterImage from "../../res/img/water.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/my-lady-bug.svg";
+import GrasshopperImage from "../../res/img/grasshopper.svg";
 import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
@@ -19,6 +20,7 @@ import {
 export const IMAGE_WATER = 'img/water.svg';
 export const IMAGE_BUG = 'img/ladybug.svg';
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
+export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
@@ -51,6 +53,7 @@ export default class SpriteBuilder {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_HEAD, WormHeadImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BODY, WormBodyImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BUTT, WormButtImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_GRASSHOPPER, GrasshopperImage);
 
 		const bugCount = 10;
 		for (let i = 0, max = bugCount; i < max; i++) {
@@ -94,6 +97,19 @@ export default class SpriteBuilder {
 				0,
 				IMAGE_WORM_HEAD,
 				STRATEGY_WORM,
+				{}
+			);
+		}
+
+		const grasshoppersCount = 5;
+		for (let i = 0, max = grasshoppersCount; i < max; i++) {
+			this.addSprite(
+				this.getRandomPosition(false),
+				0.5 + Math.random(),
+				false,
+				0,
+				IMAGE_GRASSHOPPER,
+				STRATEGY_BUTTERFLY,
 				{}
 			);
 		}
