@@ -18,6 +18,7 @@ export default class LevelController extends ControllerBase {
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
 		this.addChild(this.spritesController);
 
+		this.lastMouseCoords = null;
 	}
 
 	updateInternal(delta) {
@@ -59,23 +60,37 @@ export default class LevelController extends ControllerBase {
 	}
 
 	scroll(delta) {
-		const mouseCoords = this.controls.mouseCoords;
-		const speed = delta / 100;
-		const scrolling = new Vector2();
-		if (mouseCoords.x < GUTTER_WIDTH) {
-			scrolling.x = mouseCoords.x - GUTTER_WIDTH;
-		} else if ((this.model.viewBoxSize.x - mouseCoords.x) < GUTTER_WIDTH) {
-			scrolling.x = GUTTER_WIDTH - this.model.viewBoxSize.x + mouseCoords.x;
-		}
-		if (mouseCoords.y < GUTTER_WIDTH) {
-			scrolling.y = mouseCoords.y - GUTTER_WIDTH;
-		} else if ((this.model.viewBoxSize.y - mouseCoords.y) < GUTTER_WIDTH) {
-			scrolling.y = GUTTER_WIDTH - this.model.viewBoxSize.y + mouseCoords.y;
-		}
+		const speed = this.model.viewBoxScale.get(); //delta / 100;
 
-		if (scrolling.size() > 0) {
-			this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
-			this.model.sanitizeViewBox();
+		if (this.controls.mouseDown) {
+			if (this.lastMouseCoords !== null) {
+				const diff = this.lastMouseCoords.subtract(this.controls.mouseCoords);
+				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (diff.x * speed), this.model.viewBoxCoordinates.y + (diff.y * speed));
+				this.model.sanitizeViewBox();
+			}
+			this.lastMouseCoords = this.controls.mouseCoords;
+		} else {
+			this.lastMouseCoords = null;
+/*
+			const mouseCoords = this.controls.mouseCoords;
+			const scrolling = new Vector2();
+			if (mouseCoords.x < GUTTER_WIDTH) {
+				scrolling.x = mouseCoords.x - GUTTER_WIDTH;
+			} else if ((this.model.viewBoxSize.x - mouseCoords.x) < GUTTER_WIDTH) {
+				scrolling.x = GUTTER_WIDTH - this.model.viewBoxSize.x + mouseCoords.x;
+			}
+			if (mouseCoords.y < GUTTER_WIDTH) {
+				scrolling.y = mouseCoords.y - GUTTER_WIDTH;
+			} else if ((this.model.viewBoxSize.y - mouseCoords.y) < GUTTER_WIDTH) {
+				scrolling.y = GUTTER_WIDTH - this.model.viewBoxSize.y + mouseCoords.y;
+			}
+
+			if (scrolling.size() > 0) {
+				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
+				this.model.sanitizeViewBox();
+			}
+
+ */
 		}
 	}
 
@@ -83,7 +98,7 @@ export default class LevelController extends ControllerBase {
 		const zoomIn = this.controls.zoom.get() < 0;
 		const delta = (this.model.viewBoxScale.get() / 10) * this.controls.zoom.get();
 		const before = this.model.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.model.viewBoxSize.multiply(0.5));
-		
+
 		this.model.viewBoxScale.set(Math.max( 0.1, Math.min(100, this.model.viewBoxScale.get() + delta)));
 
 		const after = this.model.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.model.viewBoxSize.multiply(0.5));
