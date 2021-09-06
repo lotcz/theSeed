@@ -49,12 +49,8 @@ export default class LevelController extends ControllerBase {
 		}
 	}
 
-	getCursorAbsoluteCoordinates(offset) {
-		return new Vector2(this.model.viewBoxCoordinates.x + (offset.x * this.model.viewBoxScale.get()), this.model.viewBoxCoordinates.y + (offset.y * this.model.viewBoxScale.get()));
-	}
-
 	getCursorGridPosition(offset) {
-		return this.model.grid.getPosition(this.getCursorAbsoluteCoordinates(offset));
+		return this.model.grid.getPosition(this.model.getAbsoluteCoordinates(offset));
 	}
 
 	onMouseMove() {
@@ -84,11 +80,13 @@ export default class LevelController extends ControllerBase {
 	}
 
 	onZoom() {
-		const before = this.getCursorAbsoluteCoordinates(this.controls.mouseCoords);
+		const zoomIn = this.controls.zoom.get() < 0;
 		const delta = (this.model.viewBoxScale.get() / 10) * this.controls.zoom.get();
+		const before = this.model.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.model.viewBoxSize.multiply(0.5));
+		
 		this.model.viewBoxScale.set(Math.max( 0.1, Math.min(100, this.model.viewBoxScale.get() + delta)));
 
-		const after = this.getCursorAbsoluteCoordinates(this.controls.mouseCoords);
+		const after = this.model.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.model.viewBoxSize.multiply(0.5));
 		const diff = after.subtract(before);
 		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
 

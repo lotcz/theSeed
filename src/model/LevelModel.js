@@ -89,6 +89,9 @@ export default class LevelModel extends ModelBase {
 		return this.grid.isValidPosition(position);
 	}
 
+	getAbsoluteCoordinates(offset) {
+		return new Vector2(this.viewBoxCoordinates.x + (offset.x * this.viewBoxScale.get()), this.viewBoxCoordinates.y + (offset.y * this.viewBoxScale.get()));
+	}
 	getGroundY(x) {
 		return this.ground.points[x].y;
 	}
@@ -111,7 +114,14 @@ export default class LevelModel extends ModelBase {
 			this.viewBoxScale.set(max.x / this.viewBoxSize.x);
 		}
 		if ((this.viewBoxSize.y * this.viewBoxScale.get()) > max.y) {
+			const before = this.getAbsoluteCoordinates(this.viewBoxSize.multiply(0.5));
+
 			this.viewBoxScale.set(max.y / this.viewBoxSize.y);
+
+			const after = this.getAbsoluteCoordinates(this.viewBoxSize.multiply(0.5));
+			const diff = after.subtract(before);
+			this.viewBoxCoordinates.set(this.viewBoxCoordinates.x - diff.x, this.viewBoxCoordinates.y - diff.y);
+
 		}
 		if (this.viewBoxCoordinates.x < 0) {
 			this.viewBoxCoordinates.setX(0);
