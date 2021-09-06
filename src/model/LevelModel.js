@@ -92,6 +92,7 @@ export default class LevelModel extends ModelBase {
 	getAbsoluteCoordinates(offset) {
 		return new Vector2(this.viewBoxCoordinates.x + (offset.x * this.viewBoxScale.get()), this.viewBoxCoordinates.y + (offset.y * this.viewBoxScale.get()));
 	}
+
 	getGroundY(x) {
 		return this.ground.points[x].y;
 	}

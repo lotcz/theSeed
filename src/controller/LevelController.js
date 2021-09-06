@@ -62,7 +62,7 @@ export default class LevelController extends ControllerBase {
 	scroll(delta) {
 		const speed = this.model.viewBoxScale.get(); //delta / 100;
 
-		if (this.controls.mouseDown) {
+		if (this.controls.mouseDownLeft) {
 			if (this.lastMouseCoords !== null) {
 				const diff = this.lastMouseCoords.subtract(this.controls.mouseCoords);
 				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (diff.x * speed), this.model.viewBoxCoordinates.y + (diff.y * speed));

@@ -13,7 +13,8 @@ export default class Controls extends Dirty {
 		super();
 		this.dom = dom || window.document.body;
 		this.mouseClick = null;
-		this.mouseDown = false;
+		this.mouseDownLeft = false;
+		this.mouseDownRight = false;
 		this.mouseOver = false;
 		this.mouseCoords = new Vector2(0, 0);
 		this.zoom = new DirtyValue(0);
@@ -38,7 +39,7 @@ export default class Controls extends Dirty {
 			this.mouseOver = true;
 			this.makeDirty();
 		}
-		this.mouseDown = ((e.buttons == 1) || (e.buttons == 3));
+		this.onMouseDown(e);
 	}
 
 	onMouseLeave(e) {
@@ -54,13 +55,13 @@ export default class Controls extends Dirty {
 	}
 
 	onMouseDown(e) {
-		this.mouseDown = true;
+		this.mouseDownLeft = ((e.buttons == 1) || (e.buttons == 3));
+		this.mouseDownRight = (e.buttons == 2);
 		this.makeDirty();
 	}
 
 	onMouseUp(e) {
-		this.mouseDown = false;
-		this.makeDirty();
+		this.onMouseDown(e);
 	}
 
 	onZoom(e) {
