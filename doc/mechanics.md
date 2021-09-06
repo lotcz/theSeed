@@ -1,101 +1,102 @@
 # Stats
 
-- Sugars
-- Water (H2O)
-- Nitrogen (N-7)
-- Potassium (K-19)
-- Phosphorus (P-15)
+## Non-Mineral Nutrients
 
-Sixteen chemical elements are vital to a plant's growth and survival;
-divided into two main groups: non-mineral and mineral.
+### Water (H2O)
 
-# Non-Mineral Nutrients
-The Non-Mineral Nutrients are hydrogen (H-1), oxygen (O-8), & carbon (C-6).
+![](../res/img/water.svg)
 
-In a process called photosynthesis, plants use energy from the sun (or aquarium lighting) to change carbon dioxide (CO2 - carbon and oxygen) and water (H2O- hydrogen and oxygen) into starches and sugars. These starches and sugars are the plant's food.
+Important for photosynthesis.
 
-# Mineral Nutrients
-The 13 mineral nutrients, which are absorbed through a plant's roots. There are not always enough of these nutrients available for a plant to grow healthy. This is why we use fertilizers to add the nutrients.
+### Chloroplasts
 
-The mineral nutrients are divided into two groups: macronutrients and micronutrients.
+![](../res/img/chloroplast.svg)
 
-## Micronutrients
-Micronutrients are those elements essential for plant growth which are needed in only very small (micro) quantities. These elements are sometimes called trace elements. The micronutrients are boron (B), copper (Cu), iron (Fe), chloride (Cl), manganese (Mn), molybdenum (Mo) and zinc (Zn).
+Present in leaves. Produce sugars from water and sunlight.
 
-### Boron (B-5)
-Helps in the use of nutrients and regulates other nutrients.
+### Sugars (C,H,O)
 
-Aids production of sugar and carbohydrates.
+![](../res/img/sugar.svg)
 
-Essential for seed and fruit development.
+Used for growing almost anything.
 
-### Copper (Cu-29)
-Important for reproductive growth.
+## Mineral Nutrients
 
-Aids in root metabolism and helps in the utilization of proteins.
+### Macronutrients
 
-### Chloride (Cl)
-Aids plant metabolism.
+ #### Calcium (Ca-20)
 
-### Iron (Fe-26)
-Essential for formation of chlorophyll.
+![](../res/img/calcium.svg)
 
-### Manganese (Mn-25)
-Functions with enzyme systems involved in breakdown of carbohydrates, and nitrogen metabolism.
+Used to grow roots.
 
-### Molybdenum (Mo)
-Helps in the use of nitrogen
+#### Nitrogen (N-7)
 
-### Zinc (Zn)
-Essential for the transformation of carbohydrates.
+![](../res/img/nitrogen.svg)
 
-Regulates consumption of sugars.
+Used to grow leaves.
 
-Part of the enzyme systems which regulate plant growth.
+#### Potassium (K-19)
 
-## Macronutrients
-Macronutrients can be broken into two more groups: primary and secondary nutrients.
+![](../res/img/potassium.svg)
 
-The primary nutrients are nitrogen (N), phosphorus (P), and potassium (K). These major nutrients usually are lacking because plants use large amounts for their growth and survival.
+Used to grow stalks
 
-The secondary nutrients are calcium (Ca), magnesium (Mg), and sulfur (S).
+#### Phosphorus (P-15)
 
-### Nitrogen (N-7)
-Nitrogen is a part of all living cells and is a necessary part of all proteins, enzymes and metabolic processes involved in the synthesis and transfer of energy.
+![](../res/img/phosphorus.svg)
 
-Nitrogen is a part of chlorophyll, the green pigment of the plant that is responsible for photosynthesis.
+Used for flowering.
 
-Helps plants with rapid growth, leaf quality
+ #### Sulfur (S-16)
 
-### Phosphorus (P-15)
-Like nitrogen, phosphorus (P) is an essential part of the process of photosynthesis.
+![](../res/img/sulfur.svg)
 
-Involved in the formation of all oils, sugars, starches, etc.
+Used to grow seeds.
 
-Helps with the transformation of solar energy into chemical energy; proper plant maturation; withstanding stress.
+#### Magnesium (Mg-25)
 
-Effects rapid growth.
+![](../res/img/magnesium.svg)
 
-Encourages blooming and root growth.
+Used for immunity.
 
-### Potassium (K-19)
-Potassium is absorbed by plants in larger amounts than any other mineral element except nitrogen and, in some cases, calcium.
 
-Helps in the building of protein, photosynthesis, fruit quality and reduction of diseases.
+### Micronutrients
 
-### Calcium (Ca)
-Calcium, an essential part of plant cell wall structure, provides for normal transport and retention of other elements as well as strength in the plant. It is also thought to counteract the effect of alkali salts and organic acids within a plant.
+ - Boron (B-5) --> Strychnine
+ - Copper (Cu-29) --> Trap
+ - Chloride (Cl-17) --> Caffeine
+ - Iron (Fe-26) --> Thorns
+ - Manganese (Mn-25) -->
+ - Molybdenum (Mo-42) --> Trap
+ - Zinc (Zn-30) --> Strychnine
 
-### Magnesium (Mg)
-Magnesium is part of the chlorophyll in all green plants and essential for photosynthesis. It also helps activate many plant enzymes needed for growth.
+# Mechanics
 
-### Sulfur (S)
-Essential plant food for production of protein.
+energy from sunlight + carbon dioxide + water => sugars
 
-Promotes activity and development of enzymes and vitamins.
+sugars + K => stalk
+sugars + N => leaves
+sugars + Ca => roots
+sugars + P => blossoms
+sugars + K, N, Ca + S => seeds
 
-Helps in chlorophyll formation.
+sugars + K + N => Hair
+sugars + K + Ca + Fe => Thorns
+sugars + P + S + Cu + Mo => Trap
 
-Improves root growth and seed production.
+seed + K + N => Flyhair
+seed + K + N + Fe => Flywings
+seed + P + S + macronutrient + micronutrient => Fruit (several types)
 
-Helps with vigorous plant growth and resistance.
+sugars + N + Mg => Nicotine
+sugars + N + Mg + Cl => Caffeine
+sugars + N + Mg + Zn + B => Strychnine
+
+
+
+
+
+
+
+

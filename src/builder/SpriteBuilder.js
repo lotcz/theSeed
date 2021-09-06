@@ -2,6 +2,13 @@ import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import WaterImage from "../../res/img/water.svg";
+import NitrogenImage from "../../res/img/nitrogen.svg";
+import CalciumImage from "../../res/img/calcium.svg";
+import PhosphorusImage from "../../res/img/phosphorus.svg";
+import PotassiumImage from "../../res/img/potassium.svg";
+import SulfurImage from "../../res/img/sulfur.svg";
+import MagnesiumImage from "../../res/img/magnesium.svg";
+
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/my-lady-bug.svg";
 import GrasshopperImage from "../../res/img/grasshopper.svg";
@@ -18,6 +25,13 @@ import {
 } from "../controller/SpriteController";
 
 export const IMAGE_WATER = 'img/water.svg';
+export const IMAGE_NITROGEN = 'img/nitrogen.svg';
+export const IMAGE_POTASSIUM = 'img/potassium.svg';
+export const IMAGE_SULFUR = 'img/sulfur.svg';
+export const IMAGE_CALCIUM = 'img/calcium.svg';
+export const IMAGE_MAGNESIUM = 'img/magnesium.svg';
+export const IMAGE_PHOSPHORUS = 'img/phosphorus.svg';
+
 export const IMAGE_BUG = 'img/ladybug.svg';
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
@@ -130,8 +144,16 @@ export default class SpriteBuilder {
 		return this.level.sprites.add(new SpriteModel(state));
 	}
 
-	addWater() {
+	addNutrients() {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_NITROGEN, NitrogenImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_SULFUR, SulfurImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_MAGNESIUM, MagnesiumImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_CALCIUM, CalciumImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_PHOSPHORUS, PhosphorusImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_POTASSIUM, PotassiumImage);
+
+		const nutrients = [IMAGE_WATER, IMAGE_NITROGEN, IMAGE_SULFUR, IMAGE_MAGNESIUM, IMAGE_CALCIUM, IMAGE_PHOSPHORUS, IMAGE_POTASSIUM];
 
 		const waterDensity = 0.02;
 		const max = this.level.grid.getMaxPosition();
@@ -147,7 +169,7 @@ export default class SpriteBuilder {
 						scale: 1 ,
 						flipped: false,
 						rotation: 0,
-						path: IMAGE_WATER
+						path:  Pixies.randomElement(nutrients)
 					},
 					strategy: STRATEGY_WATER,
 					data: {amount: Pixies.randomIndex(11)/10 }

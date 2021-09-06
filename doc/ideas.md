@@ -7,6 +7,7 @@
 
 # Stages
 
+- seed placement
 - germination (use stashed Sugar to grow enough roots for two leaves)
 - growth (grow more leaves to be able to grow flower)
 - reproduction and pollination (grow flowers that must be pollinated, pollinated flowers produce seeds)
