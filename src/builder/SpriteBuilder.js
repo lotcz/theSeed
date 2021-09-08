@@ -18,7 +18,7 @@ import WormButtImage from "../../res/img/worm-butt.svg";
 import SpriteModel from "../model/SpriteModel";
 import {
 	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY,
+	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
 	STRATEGY_WORM
@@ -144,18 +144,10 @@ export default class SpriteBuilder {
 		return this.level.sprites.add(new SpriteModel(state));
 	}
 
-	addNutrients() {
+	addWater() {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_NITROGEN, NitrogenImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_SULFUR, SulfurImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_MAGNESIUM, MagnesiumImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_CALCIUM, CalciumImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_PHOSPHORUS, PhosphorusImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_POTASSIUM, PotassiumImage);
 
-		const nutrients = [IMAGE_WATER, IMAGE_NITROGEN, IMAGE_SULFUR, IMAGE_MAGNESIUM, IMAGE_CALCIUM, IMAGE_PHOSPHORUS, IMAGE_POTASSIUM];
-
-		const waterDensity = 0.02;
+		const waterDensity = 0.01;
 		const max = this.level.grid.getMaxPosition();
 		for (let i = 0; i <= max.x; i++) {
 			const groundY = this.level.getGroundY(i);
@@ -169,7 +161,7 @@ export default class SpriteBuilder {
 						scale: 1,
 						flipped: false,
 						rotation: 0,
-						path: Pixies.randomElement(nutrients)
+						path: IMAGE_WATER
 					},
 					strategy: STRATEGY_WATER,
 					data: {amount: 0.3 + 0.7 * Math.random() }
@@ -179,6 +171,44 @@ export default class SpriteBuilder {
 		}
 	}
 
+	addMinerals() {
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_NITROGEN, NitrogenImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_SULFUR, SulfurImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_MAGNESIUM, MagnesiumImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_CALCIUM, CalciumImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_PHOSPHORUS, PhosphorusImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_POTASSIUM, PotassiumImage);
+
+		const nutrients = [IMAGE_NITROGEN, IMAGE_SULFUR, IMAGE_MAGNESIUM, IMAGE_CALCIUM, IMAGE_PHOSPHORUS, IMAGE_POTASSIUM];
+
+		const mineralsDensity = 0.01;
+		const max = this.level.grid.getMaxPosition();
+		for (let i = 0; i <= max.x; i++) {
+			const groundY = this.level.getGroundY(i);
+			const limit = max.y - groundY;
+			const amount = Math.ceil(limit * mineralsDensity);
+
+			for (let ii = 0; ii < amount; ii++) {
+				const state = {
+					image: {
+						position: [i, groundY + Pixies.randomIndex(limit)],
+						scale: 1,
+						flipped: false,
+						rotation: 0,
+						path: Pixies.randomElement(nutrients)
+					},
+					strategy: STRATEGY_MINERAL,
+					data: {amount: 0.3 + 0.7 * Math.random() }
+				};
+				this.level.sprites.add(new SpriteModel(state));
+			}
+		}
+	}
+
+	addNutrients() {
+		this.addWater();
+		this.addMinerals()
+	}
 	addTurner() {
 		const turner = {
 			image: {

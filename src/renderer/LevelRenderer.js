@@ -15,9 +15,7 @@ export default class LevelRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.group = this.draw.group();
-	this.group.addClass('level');
-
-	console.log('creating renderer');
+		this.group.addClass('level');
 
 		// PARALLAX
 		this.parallax = this.group.group();
@@ -91,13 +89,6 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
-			const cameraCoordinates = new Vector2(
-				this.model.viewBoxCoordinates.x + (0.5 * this.model.viewBoxSize.x * this.model.viewBoxScale.get()),
-				this.model.viewBoxCoordinates.y + (0.5 * this.model.viewBoxSize.y * this.model.viewBoxScale.get())
-			);
-			const center = this.model.grid.getMaxCoordinates().multiply(0.5);
-			const cameraOffset = cameraCoordinates.subtract(center);
-			this.model.parallax.cameraOffset.set(cameraOffset);
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}

@@ -52,7 +52,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	loadBackground() {
-		const size = new Vector2(250, 250);
+		const size = new Vector2(200, 150);
 		const scale = 100;
 
 		const levelBuilder = new LevelBuilder(size, scale);
@@ -77,7 +77,8 @@ export default class GameController extends ControllerBase {
 		builder.setCss('main');
 		builder.addLine("New Game", (e) => this.startGame());
 		builder.addLine("Load Level", (e) => this.showLevelSelection());
-		builder.addLine("Playground", (e) => this.playground());
+		builder.addLine("Editor", (e) => this.playground());
+		builder.addLine("Options", (e) => this.playground());
 		if (this.model.level && this.model.level.inventory) {
 			builder.addLine("Quit", (e) => this.reset());
 			builder.addLine("Resume", (e) => this.resume());
@@ -97,6 +98,7 @@ export default class GameController extends ControllerBase {
 		builder.setCss('main');
 		builder.addLine("Level 1", (e) => this.startGame());
 		builder.addLine("Level 2", (e) => this.playground());
+		builder.addLine("Playground", (e) => this.playground());
 		builder.addLine("Back", (e) => this.showMainMenu());
 		builder.setSize(this.model.viewBoxSize);
 		const menu = builder.build();
@@ -129,8 +131,7 @@ export default class GameController extends ControllerBase {
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
 		spriteBuilder.addBugs();
-		//spriteBuilder.addTurner();
-		//spriteBuilder.addNutrients();
+		spriteBuilder.addNutrients();
 
 		this.hideMenu();
 		this.loadLevel(level);
@@ -144,9 +145,9 @@ export default class GameController extends ControllerBase {
 		const levelBuilder = new LevelBuilder(size, scale);
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
-		spriteBuilder.addBugs();
+		//spriteBuilder.addBugs();
 		spriteBuilder.addTurner();
-		spriteBuilder.addNutrients();
+		//spriteBuilder.addNutrients();
 
 		this.hideMenu();
 		this.loadLevel(level);

@@ -108,7 +108,6 @@ export default class GameRenderer extends SvgRenderer {
 		if (this.game.level) {
 			this.model.loading.set(true);
 			const loader = new ResourceLoader(this.draw, this.game.level.resources);
-			console.log('loading');
 			loader.load(() => {
 				this.model.loading.set(false);
 				this.levelRenderer = new LevelRenderer(this.game, this.game.level, this.draw);

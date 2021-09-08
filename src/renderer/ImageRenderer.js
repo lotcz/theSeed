@@ -53,14 +53,14 @@ export default class ImageRenderer extends SvgRenderer {
 			if (HIDE_WHEN_OUTTA_SIGHT) {
 				if (this.game.level.isCoordinateInView(this.model.coordinates)) {
 					if (!this.group.visible()) {
-						this.group.show();
+						this.group.addTo(this.draw);
 					}
 					this.renderInternal();
 					this.clean();
 					this.model.clean();
 				} else {
 					if (this.group.visible()) {
-						this.group.hide();
+						this.group.remove();
 					}
 				}
 			} else {

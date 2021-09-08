@@ -32,7 +32,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.center = this.gridSize.multiply(0.5);
 	}
 
-	activate() {
+	activateInternal() {
 		this.background = this.draw.group();
 		const max = this.gridSize;
 		const linear = this.draw.gradient('linear', function (add) {
@@ -95,7 +95,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 		}
 	}
 
-	render() {
+	renderInternal() {
 		for (let i = 0, max = PARALLAX_SIZE; i <= max; i++) {
 			if (this.parallaxLayers[i]) {
 				const layerOffset = this.model.cameraOffset.multiply((i / PARALLAX_SIZE));

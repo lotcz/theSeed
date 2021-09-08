@@ -12,9 +12,9 @@ export default class SpriteRenderer extends SvgRenderer {
 			this.imageRenderer.setOnClick(model.onClick);
 		}
 	}
-
+/*
 	render() {
 		this.imageRenderer.render();
 	}
-
+*/
 }
