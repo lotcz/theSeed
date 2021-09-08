@@ -130,7 +130,7 @@ export default class GameController extends ControllerBase {
 		const spriteBuilder = new SpriteBuilder(level);
 		spriteBuilder.addBugs();
 		//spriteBuilder.addTurner();
-		spriteBuilder.addNutrients();
+		//spriteBuilder.addNutrients();
 
 		this.hideMenu();
 		this.loadLevel(level);

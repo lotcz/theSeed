@@ -13,10 +13,12 @@ export default class ActivatedTree extends Tree {
 	}
 
 	activate() {
-		this.children.forEach((c) => c.activate());
-		this.activated = true;
-		this.activateInternal();
-		this.makeDirty();
+		if (!this.isActivated()) {
+			this.children.forEach((c) => c.activate());
+			this.activated = true;
+			this.activateInternal();
+			this.makeDirty();
+		}
 	}
 
 	activateInternal() {
@@ -24,9 +26,11 @@ export default class ActivatedTree extends Tree {
 	}
 
 	deactivate() {
-		this.children.forEach((c) => c.deactivate());
-		this.activated = false;
-		this.deactivateInternal();
+		if (this.isActivated()) {
+			this.children.forEach((c) => c.deactivate());
+			this.activated = false;
+			this.deactivateInternal();
+		}
 	}
 
 	deactivateInternal() {

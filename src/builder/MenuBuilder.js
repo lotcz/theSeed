@@ -31,7 +31,7 @@ export default class MenuBuilder {
 		this.setFontFamily(DEFAULT_FONT_FAMILY);
 		this.setFill('yellow');
 		this.setSelectedFill('white');
-		this.setStroke({color: 'orange', width: DEFAULT_TEXT_STROKE_WIDTH});
+		this.setStroke({color: 'black', width: DEFAULT_TEXT_STROKE_WIDTH});
 		this.setSelectedStroke({color: 'red', width: DEFAULT_TEXT_STROKE_WIDTH});
 		this.setSize(new Vector2(0, 0));
 	}

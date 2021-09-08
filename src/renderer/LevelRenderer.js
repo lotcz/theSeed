@@ -15,6 +15,9 @@ export default class LevelRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.group = this.draw.group();
+	this.group.addClass('level');
+
+	console.log('creating renderer');
 
 		// PARALLAX
 		this.parallax = this.group.group();

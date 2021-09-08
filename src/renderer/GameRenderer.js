@@ -22,10 +22,13 @@ export default class GameRenderer extends SvgRenderer {
 			document.body.appendChild(this.stats.dom);
 		}
 
+		draw.fill('black');
+
 		this.loadingScreen = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
-		this.loadLevel();
+
+		this.showLoading();
 	}
 
 	showLoading() {
@@ -100,15 +103,18 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	loadLevel() {
+		this.showLoading();
 		if (this.levelRenderer) this.removeChild(this.levelRenderer);
 		if (this.game.level) {
 			this.model.loading.set(true);
-			const loader = new ResourceLoader(this.draw, this.model.level.resources);
+			const loader = new ResourceLoader(this.draw, this.game.level.resources);
+			console.log('loading');
 			loader.load(() => {
 				this.model.loading.set(false);
 				this.levelRenderer = new LevelRenderer(this.game, this.game.level, this.draw);
 				this.addChild(this.levelRenderer);
 				this.levelRenderer.activate();
+				this.hideLoading();
 			});
 		}
 	}
