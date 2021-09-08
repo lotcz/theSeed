@@ -7,6 +7,7 @@ export default class SpriteModel extends ModelBase {
 	strategy;
 	data;
 	_is_sprite;
+	onClick;
 
 	constructor(state) {
 		super();

@@ -16,6 +16,7 @@ export default class ActivatedTree extends Tree {
 		this.children.forEach((c) => c.activate());
 		this.activated = true;
 		this.activateInternal();
+		this.makeDirty();
 	}
 
 	activateInternal() {

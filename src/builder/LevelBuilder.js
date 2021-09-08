@@ -30,6 +30,10 @@ export default class LevelBuilder {
 		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * this.viewboxSize.y / 2));
 	}
 
+	setStartToTop() {
+		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y);
+	}
+
 	plant() {
 		this.plantState = {
 			roots: {

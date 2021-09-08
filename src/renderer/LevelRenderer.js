@@ -9,40 +9,50 @@ import Vector2 from "../class/Vector2";
 import InventoryRenderer from "./InventoryRenderer";
 
 export default class LevelRenderer extends SvgRenderer {
+	group;
 
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		this.group = this.draw.group();
+
 		// PARALLAX
-		this.parallax = draw.group();
-		this.parallaxRenderer = new ParallaxRenderer(game, model.parallax, this.parallax);
+		this.parallax = this.group.group();
+		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.parallax);
 		this.addChild(this.parallaxRenderer);
 
 		// GROUND
-		this.ground = this.draw.group();
-		const groundGradient = draw.gradient('linear', function(add) {
+		this.ground = this.group.group();
+		const groundGradient = this.group.gradient('linear', function(add) {
 			add.stop(0, GROUND_LIGHT);
 			add.stop(1, GROUND_DARK);
 			add.from(0, 0);
 			add.to(0,1);
 		})
-		this.groundRenderer = new GroundRenderer(this.game, model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
+		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
 		this.addChild(this.groundRenderer);
 
 		// FOREGROUND
-		this.foreground = this.draw.group();
-		this.plantRenderer = new PlantRenderer(this.game, model.plant, this.foreground);
+		this.foreground = this.group.group();
+		this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
 
 		// SPRITES
-		this.sprites = this.draw.group();
-		this.spritesRenderer = new SpriteCollectionRenderer(this.game, model.sprites, this.sprites);
+		this.sprites =this.group.group();
+		this.spritesRenderer = new SpriteCollectionRenderer(this.game, this.model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 
 		// INVENTORY
-		this.inventory = this.draw.group();
-		this.inventoryRenderer = new InventoryRenderer(this.game, model.inventory, this.inventory);
-		this.addChild(this.inventoryRenderer);
+		if (this.model.inventory) {
+			this.inventory = this.group.group();
+			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
+			this.addChild(this.inventoryRenderer);
+		}
+
+	}
+
+	deactivateInternal() {
+		if (this.group) this.group.remove();
 	}
 
 	renderGridTile(position, stroke) {
@@ -55,7 +65,7 @@ export default class LevelRenderer extends SvgRenderer {
 
 	renderHighlights(position) {
 		if (this.highlightedTiles) this.highlightedTiles.remove();
-		this.highlightedTiles = this.draw.group();
+		this.highlightedTiles = this.group.group();
 
 		this.renderGridTile(position, { width: 2, color: 'blue'});
 

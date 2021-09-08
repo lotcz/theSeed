@@ -75,4 +75,7 @@ export default class InventoryRenderer extends SvgRenderer {
 		}
 	}
 
+	deactivateInternal() {
+		if (this.inventory) this.inventory.remove();
+	}
 }

@@ -52,6 +52,8 @@ export default class ResourceLoader extends Tree {
 					);
 					this.resource.attr({id:token});
 					//defs.add(this.resource);
+				} else {
+					this.loaded = true;
 				}
 				break;
 		}

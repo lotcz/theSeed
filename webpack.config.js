@@ -34,7 +34,7 @@ module.exports = {
 				use: {
 					loader: 'url-loader',
 				},
-			},
+			}
 		]
 	}
 };

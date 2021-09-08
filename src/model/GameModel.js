@@ -5,8 +5,10 @@ import Vector2 from "../class/Vector2";
 
 export default class GameModel extends ModelBase {
 	level;
+	menu;
 	loading;
 	levelChanged;
+	menuChanged;
 	viewBoxSize;
 
 	constructor(state) {
@@ -18,6 +20,8 @@ export default class GameModel extends ModelBase {
 		this.addChild(this.levelChanged);
 		this.viewBoxSize = new Vector2();
 		this.addChild(this.viewBoxSize);
+		this.menuChanged = new DirtyValue(false);
+		this.addChild(this.menuChanged);
 
 		if (state) {
 			this.restoreState(state);
@@ -40,6 +44,13 @@ export default class GameModel extends ModelBase {
 		this.level = level;
 		this.addChild(level);
 		this.levelChanged.set(true);
+	}
+
+	setMenu(menu) {
+		if (this.menu) this.removeChild(this.menu);
+		this.menu = menu;
+		if (menu !== null) this.addChild(menu);
+		this.menuChanged.set(true);
 	}
 
 }

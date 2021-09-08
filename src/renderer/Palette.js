@@ -8,3 +8,9 @@ export const GROUND_LIGHT = '#313131';
 
 export const GREEN_DARK = '#2b592a';
 export const GREEN_LIGHT = '#326522';
+
+export const DEFAULT_FONT_FAMILY = 'Racing Sans One';
+export const DEFAULT_FONT_SIZE = 65;
+export const DEFAULT_LINE_HEIGHT = 80;
+
+export const DEFAULT_TEXT_STROKE_WIDTH = 1;

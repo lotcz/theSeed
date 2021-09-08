@@ -1,6 +1,6 @@
 import GroundModel from "../model/GroundModel";
 
-const PRESET_HILL = {
+export const GROUND_PRESET_HILL = {
 	left: {
 		up: 0.2
 	},
@@ -37,7 +37,7 @@ const PRESET_SLOPE_RIGHT = {
 };
 
 const PRESETS = [
-	PRESET_HILL,
+	GROUND_PRESET_HILL,
 	PRESET_VALLEY,
 	PRESET_SLOPE_LEFT,
 	PRESET_SLOPE_RIGHT

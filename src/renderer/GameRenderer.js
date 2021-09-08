@@ -7,6 +7,8 @@ import * as dat from 'dat.gui';
 import LevelRenderer from "./LevelRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 import InventoryRenderer from "./InventoryRenderer";
+import MenuRenderer from "./MenuRenderer";
+import DirtyValue from "../class/DirtyValue";
 
 const DEBUG_FPS = true;
 
@@ -21,6 +23,8 @@ export default class GameRenderer extends SvgRenderer {
 		}
 
 		this.loadingScreen = null;
+		this.levelRenderer = null;
+		this.menuRenderer = null;
 		this.loadLevel();
 	}
 
@@ -73,14 +77,32 @@ export default class GameRenderer extends SvgRenderer {
 			this.model.loading.clean();
 		}
 
+		if (this.model.menuChanged.isDirty()) {
+			if (this.model.menuChanged.get()) {
+				this.model.menuChanged.set(false);
+				this.showMenu();
+			}
+			this.model.menuChanged.clean();
+		}
+
 		this.children.forEach((r) => r.render());
 		this.clean();
 		this.model.clean();
 	}
 
+	showMenu() {
+		if (this.menuRenderer) this.removeChild(this.menuRenderer);
+		if (this.game.menu && !this.game.menu.closed) {
+			this.menuRenderer = new MenuRenderer(this.game, this.game.menu, this.draw);
+			this.addChild(this.menuRenderer);
+			this.menuRenderer.activate();
+		}
+	}
+
 	loadLevel() {
 		if (this.levelRenderer) this.removeChild(this.levelRenderer);
 		if (this.game.level) {
+			this.model.loading.set(true);
 			const loader = new ResourceLoader(this.draw, this.model.level.resources);
 			loader.load(() => {
 				this.model.loading.set(false);

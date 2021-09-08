@@ -7,17 +7,12 @@ import GameModel from "./model/GameModel";
 import GameRenderer from "./renderer/GameRenderer";
 import LevelBuilder from "./builder/LevelBuilder";
 import SpriteBuilder from "./builder/SpriteBuilder";
+import {GROUND_PRESET_HILL} from "./builder/GroundBuilder";
+import MenuModel from "./model/MenuModel";
+import MenuBuilder from "./builder/MenuBuilder";
 
 const MAX_DELTA = 500;
-const size = new Vector2(500, 100);
-const scale = 80;
 
-const levelBuilder = new LevelBuilder(size, scale);
-const level = levelBuilder.build();
-const spriteBuilder = new SpriteBuilder(level);
-spriteBuilder.addBugs();
-//spriteBuilder.addTurner();
-spriteBuilder.addNutrients();
 const game = new GameModel();
 
 const draw = SVG().addTo(window.document.body);
@@ -28,8 +23,6 @@ controller.activate();
 
 const renderer = new GameRenderer(game, draw);
 renderer.activate();
-
-controller.loadLevel(level);
 
 let lastTime = null;
 
@@ -47,5 +40,6 @@ const updateLoop = function ()
 }
 
 requestAnimationFrame(updateLoop);
+
 
 //console.log(game.getState());

@@ -8,6 +8,9 @@ export default class SpriteRenderer extends SvgRenderer {
 		this.imageRenderer = new ImageRenderer(game, model.image, draw);
 		this.addChild(this.imageRenderer);
 
+		if (model.onClick) {
+			this.imageRenderer.setOnClick(model.onClick);
+		}
 	}
 
 	render() {

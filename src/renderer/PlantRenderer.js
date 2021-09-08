@@ -35,7 +35,7 @@ export default class PlantRenderer extends SvgRenderer {
 			`${-width/2},0 ${-width},${-height/2} ${-width},${-height} ` +
 			`0,${-height} ${width/2},${height*0.1} ${width},${height*0.1} ` +
 			`${width/2},0 ${width},${-height} ${width},${-height*0.1} z`
-		).fill(BROWN_DARK).stroke({width: 1});
+		).fill(GREEN_DARK).stroke({width: 1});
 		this.ringOuter.front();
 
 		this.ringInner = this.plantGroup.path(

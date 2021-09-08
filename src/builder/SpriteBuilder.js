@@ -166,13 +166,13 @@ export default class SpriteBuilder {
 				const state = {
 					image: {
 						position: [i, groundY + Pixies.randomIndex(limit)],
-						scale: 1 ,
+						scale: 1,
 						flipped: false,
 						rotation: 0,
-						path:  Pixies.randomElement(nutrients)
+						path: Pixies.randomElement(nutrients)
 					},
 					strategy: STRATEGY_WATER,
-					data: {amount: Pixies.randomIndex(11)/10 }
+					data: {amount: 0.3 + 0.7 * Math.random() }
 				};
 				this.level.sprites.add(new SpriteModel(state));
 			}

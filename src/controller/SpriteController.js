@@ -19,6 +19,8 @@ export default class SpriteController extends ControllerBase {
 
 		this.strategy = this.createStrategy(model);
 		this.addChild(this.strategy);
+
+		model.onClick = (e) => this.onClick(e);
 	}
 
 	createStrategy(model) {
@@ -36,5 +38,8 @@ export default class SpriteController extends ControllerBase {
 		}
 	}
 
+	onClick(e) {
+		console.log(e);
+	}
 
 }

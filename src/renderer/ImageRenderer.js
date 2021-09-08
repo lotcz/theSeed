@@ -9,6 +9,7 @@ export default class ImageRenderer extends SvgRenderer {
 	lastRotation;
 	lastScale;
 	grid;
+	onClick;
 
 	constructor(game, model, draw) {
 		super(game, model, draw);
@@ -23,6 +24,9 @@ export default class ImageRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 		const ref = this.getRef(this.model.path);
 		this.image = this.group.use(ref);
+		if (this.onClick) {
+			this.setOnClick(this.onClick);
+		}
 		if (this.model.flipped.get()) {
 			this.image.flip('x');
 		}
@@ -69,10 +73,10 @@ export default class ImageRenderer extends SvgRenderer {
 
 	renderInternal() {
 		if (this.model.scale.isDirty()) {
-			this.image.scale(1 / this.lastScale);
+			const scale = this.model.scale.get() / this.lastScale;
 			this.lastScale = this.model.scale.get();
-			this.image.scale(this.lastScale);
 			this.model.scale.clean();
+			this.image.scale(scale);
 			this.model.coordinates.makeDirty();
 		}
 		if (this.model.coordinates.isDirty()) {
@@ -95,6 +99,13 @@ export default class ImageRenderer extends SvgRenderer {
 			this.model.rotation.clean();
 		}
 
+	}
+
+	setOnClick(onClick) {
+		this.onClick = onClick;
+		if (this.group) {
+			this.group.on('click', onClick);
+		}
 	}
 
 }
