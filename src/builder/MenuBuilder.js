@@ -29,10 +29,10 @@ export default class MenuBuilder {
 		this.setLineHeight(DEFAULT_LINE_HEIGHT);
 		this.setFontSize(DEFAULT_FONT_SIZE);
 		this.setFontFamily(DEFAULT_FONT_FAMILY);
-		this.setFill(GREEN_LIGHT);
-		this.setSelectedFill(BROWN_LIGHT);
-		this.setStroke({color: GREEN_DARK, width: DEFAULT_TEXT_STROKE_WIDTH});
-		this.setSelectedStroke({color: BROWN_DARK, width: DEFAULT_TEXT_STROKE_WIDTH});
+		this.setFill('yellow');
+		this.setSelectedFill('white');
+		this.setStroke({color: 'orange', width: DEFAULT_TEXT_STROKE_WIDTH});
+		this.setSelectedStroke({color: 'red', width: DEFAULT_TEXT_STROKE_WIDTH});
 		this.setSize(new Vector2(0, 0));
 	}
 

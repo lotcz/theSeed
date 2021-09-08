@@ -9,7 +9,7 @@ export const GROUND_PRESET_HILL = {
 	}
 };
 
-const PRESET_VALLEY = {
+export const GROUND_PRESET_VALLEY = {
 	left: {
 		up: 0.9
 	},
@@ -18,7 +18,7 @@ const PRESET_VALLEY = {
 	}
 };
 
-const PRESET_SLOPE_LEFT = {
+export const GROUND_PRESET_SLOPE_LEFT = {
 	left: {
 		up: 0.2
 	},
@@ -27,7 +27,7 @@ const PRESET_SLOPE_LEFT = {
 	}
 };
 
-const PRESET_SLOPE_RIGHT = {
+export const GROUND_PRESET_SLOPE_RIGHT = {
 	left: {
 		up: 0.8
 	},
@@ -38,9 +38,9 @@ const PRESET_SLOPE_RIGHT = {
 
 const PRESETS = [
 	GROUND_PRESET_HILL,
-	PRESET_VALLEY,
-	PRESET_SLOPE_LEFT,
-	PRESET_SLOPE_RIGHT
+	GROUND_PRESET_VALLEY,
+	GROUND_PRESET_SLOPE_LEFT,
+	GROUND_PRESET_SLOPE_RIGHT
 ];
 
 export default class GroundBuilder {

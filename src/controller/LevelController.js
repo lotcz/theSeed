@@ -5,6 +5,7 @@ import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 import PlantController from "./PlantController";
 import {STRATEGY_WATER} from "./SpriteController";
+import AutoPlantController from "./AutoPlantController";
 
 const GUTTER_WIDTH = 150;
 
@@ -12,7 +13,11 @@ export default class LevelController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
-		this.plantController = new PlantController(game, model.plant, controls);
+		if (model.plant.auto) {
+			this.plantController = new AutoPlantController(game, model.plant, controls);
+		} else {
+			this.plantController = new PlantController(game, model.plant, controls);
+		}
 		this.addChild(this.plantController);
 
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
@@ -45,9 +50,9 @@ export default class LevelController extends ControllerBase {
 			this.controls.clean();
 		}
 
-		if (this.controls.mouseOver) {
+		//if (this.controls.mouseOver) {
 			this.scroll(delta);
-		}
+		//}
 	}
 
 	getCursorGridPosition(offset) {
@@ -71,9 +76,11 @@ export default class LevelController extends ControllerBase {
 			this.lastMouseCoords = this.controls.mouseCoords;
 		} else {
 			this.lastMouseCoords = null;
+
+			const scrolling = new Vector2();
 /*
 			const mouseCoords = this.controls.mouseCoords;
-			const scrolling = new Vector2();
+
 			if (mouseCoords.x < GUTTER_WIDTH) {
 				scrolling.x = mouseCoords.x - GUTTER_WIDTH;
 			} else if ((this.model.viewBoxSize.x - mouseCoords.x) < GUTTER_WIDTH) {
@@ -85,12 +92,17 @@ export default class LevelController extends ControllerBase {
 				scrolling.y = GUTTER_WIDTH - this.model.viewBoxSize.y + mouseCoords.y;
 			}
 
+ */
+
+			if (!this.model.inventory) {
+				//scrolling.setX(-2);
+			}
+
 			if (scrolling.size() > 0) {
 				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
 				this.model.sanitizeViewBox();
 			}
 
- */
 		}
 	}
 

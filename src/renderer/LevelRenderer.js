@@ -98,7 +98,7 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
-		if (this.model.highlightedTilePosition.isDirty()) {
+		if (this.model.highlightedTilePosition.isDirty() && this.model.inventory !== null) {
 			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}

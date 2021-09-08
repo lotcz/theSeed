@@ -7,6 +7,7 @@ import HillImage from "../../res/img/hill.svg";
 import StalkImage from "../../res/img/stalk.svg";
 import GrassImage from "../../res/img/grass.svg";
 import TreesImage from "../../res/img/trees.svg";
+import EggHillsImage from "../../res/img/egghills.svg";
 import BulbsImage from "../../res/img/bulbs.svg";
 import PlantImage from '../../res/img/plant.svg';
 import RockImage from '../../res/img/rock.svg';
@@ -24,6 +25,10 @@ export default class LevelBuilder {
 
 	}
 
+	setViewBoxScale(scale) {
+		this.viewboxScale = scale;
+	}
+
 	setStart(position) {
 		this.startPosition = position.clone();
 		this.startCoords = this.grid.getCoordinates(this.startPosition);
@@ -32,6 +37,10 @@ export default class LevelBuilder {
 
 	setStartToTop() {
 		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y);
+	}
+
+	setStartToBottom(dist) {
+		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * (this.viewboxSize.y / 2)) + dist);
 	}
 
 	plant() {
@@ -89,11 +98,11 @@ export default class LevelBuilder {
 				TreesImage,
 				false,
 				false,
-				false,
 				GrassImage,
 				StalkImage,
 				BulbsImage,
-				false,
+				EggHillsImage,
+				HillImage,
 				false
 			]
 		}
