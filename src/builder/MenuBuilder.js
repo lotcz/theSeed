@@ -104,7 +104,7 @@ export default class MenuBuilder {
 
 		this.line++;
 
-		this.menu.size.setX(Math.max(this.menu.size.x, label.length * this.textStyle.fontSize.get()));
+		this.menu.size.setX(Math.max(this.menu.size.x, label.length * this.textStyle.fontSize.get() * 0.65));
 		this.menu.size.setY(Math.max(this.menu.size.y, (this.menu.lineHeight * this.line) + 10));
 	}
 

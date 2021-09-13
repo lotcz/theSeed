@@ -64,7 +64,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		//this.game.level.grid.chessboard.addVisitor(this.position, this.model);
 	}
 
-	updateInternal(delta) {
+	onClick(e) {
 
 	}
 

@@ -12,9 +12,17 @@ export default class SpriteRenderer extends SvgRenderer {
 			this.imageRenderer.setOnClick(model.onClick);
 		}
 	}
-/*
-	render() {
-		this.imageRenderer.render();
+
+	updateOuttaSight() {
+		if (!this.imageRenderer.isActivated()) {
+			if (this.game.level.isCoordinateInView(this.model.image.coordinates)) {
+				this.imageRenderer.activate();
+			}
+		} else if (this.imageRenderer.isActivated()) {
+			if (!this.game.level.isCoordinateInView(this.model.image.coordinates)) {
+				this.imageRenderer.deactivate();
+			}
+		}
 	}
-*/
+
 }

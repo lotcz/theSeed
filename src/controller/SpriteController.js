@@ -43,7 +43,7 @@ export default class SpriteController extends ControllerBase {
 	}
 
 	onClick(e) {
-		console.log(e);
+		this.strategy.onClick(e);
 	}
 
 }

@@ -1,8 +1,5 @@
 import SvgRenderer from "./SvgRenderer";
 
-const DEBUG_IMAGE = false;
-const HIDE_WHEN_OUTTA_SIGHT = true;
-
 export default class ImageRenderer extends SvgRenderer {
 	group;
 	image;
@@ -27,84 +24,72 @@ export default class ImageRenderer extends SvgRenderer {
 		if (this.onClick) {
 			this.setOnClick(this.onClick);
 		}
-		if (this.model.flipped.get()) {
-			this.image.flip('x');
-		}
-		this.model.flipped.clean();
+		this.updateFromModel();
 	}
 
 	deactivateInternal() {
 		if (this.group) {
 			this.group.remove();
+			this.group = null;
 		}
+		this.lastRotation = 0;
+		this.lastScale = 1;
 	}
 
-	render() {
-		if (this.model.isDeleted()) {
-			this.setDeleted(true);
-			return;
-		}
+	updateScale() {
+		const scale = this.model.scale.get() / this.lastScale;
+		this.lastScale = this.model.scale.get();
+		this.model.scale.clean();
+		this.image.scale(scale);
+		this.model.coordinates.makeDirty();
+		this.updateCoordinates();
+	}
 
-		if (!this.isActivated()) {
-			return;
-		}
+	updateCoordinates() {
+		this.group.center(
+			this.model.coordinates.x,
+			this.model.coordinates.y
+		);
+		this.model.coordinates.clean();
+	}
 
-		if (this.isDirty() || this.model.isDirty()) {
-			if (HIDE_WHEN_OUTTA_SIGHT) {
-				if (this.game.level.isCoordinateInView(this.model.coordinates)) {
-					if (!this.group.visible()) {
-						this.group.addTo(this.draw);
-					}
-					this.renderInternal();
-					this.clean();
-					this.model.clean();
-				} else {
-					if (this.group.visible()) {
-						this.group.remove();
-					}
-				}
-			} else {
-				this.renderInternal();
-				this.clean();
-				this.model.clean();
-			}
-		}
+	updateFlip() {
+		if (this.model.flipped.get()) this.image.flip('x');
+		this.model.flipped.clean();
+	}
+
+	updateRotation() {
+		this.image.rotate(-this.lastRotation);
+		this.lastRotation = this.model.rotation.get();
+		this.image.rotate(this.lastRotation);
+		this.model.rotation.clean();
+	}
+
+	updateFromModel() {
+		this.updateScale();
+		this.updateFlip();
+		this.updateRotation()
 	}
 
 	renderInternal() {
 		if (this.model.scale.isDirty()) {
-			const scale = this.model.scale.get() / this.lastScale;
-			this.lastScale = this.model.scale.get();
-			this.model.scale.clean();
-			this.image.scale(scale);
-			this.model.coordinates.makeDirty();
+			this.updateScale();
 		}
 		if (this.model.coordinates.isDirty()) {
-			this.group.center(
-				this.model.coordinates.x,
-				this.model.coordinates.y
-			);
-			if (DEBUG_IMAGE)
-				this.draw.circle(14).center(this.model.coordinates.x, this.model.coordinates.y);
-			this.model.coordinates.clean();
+			this.updateCoordinates();
 		}
 		if (this.model.flipped.isDirty()) {
-			this.image.flip('x');
-			this.model.flipped.clean();
+			this.updateFlip();
 		}
 		if (this.model.rotation.isDirty()) {
-			this.image.rotate(-this.lastRotation);
-			this.lastRotation = this.model.rotation.get();
-			this.image.rotate(this.lastRotation);
-			this.model.rotation.clean();
+			this.updateRotation();
 		}
-
 	}
 
 	setOnClick(onClick) {
 		this.onClick = onClick;
-		if (this.group) {
-			this.group.on('click', onClick);
+		if (this.image) {
+			this.image.on('click', onClick);
 		}
 	}
 

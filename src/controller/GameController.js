@@ -77,8 +77,6 @@ export default class GameController extends ControllerBase {
 		builder.setCss('main');
 		builder.addLine("New Game", (e) => this.startGame());
 		builder.addLine("Load Level", (e) => this.showLevelSelection());
-		builder.addLine("Editor", (e) => this.playground());
-		builder.addLine("Options", (e) => this.playground());
 		if (this.model.level && this.model.level.inventory) {
 			builder.addLine("Quit", (e) => this.reset());
 			builder.addLine("Resume", (e) => this.resume());
@@ -111,9 +109,9 @@ export default class GameController extends ControllerBase {
 
 	showPlayMenu() {
 		const builder = new MenuBuilder();
-		//builder.setStartPosition(this.model.viewBoxSize.multiply(0.3));
+		builder.setStartPosition(new Vector2(25, 0));
 		builder.setCss('play');
-		builder.addLine("menu", (e) => this.showMainMenu());
+		builder.addLine("pause", (e) => this.showMainMenu());
 		const menu = builder.build();
 		this.model.setMenu(menu);
 	}
@@ -145,9 +143,9 @@ export default class GameController extends ControllerBase {
 		const levelBuilder = new LevelBuilder(size, scale);
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
-		//spriteBuilder.addBugs();
-		spriteBuilder.addTurner();
-		//spriteBuilder.addNutrients();
+		spriteBuilder.addBugs();
+		//spriteBuilder.addTurner();
+		spriteBuilder.addNutrients();
 
 		this.hideMenu();
 		this.loadLevel(level);

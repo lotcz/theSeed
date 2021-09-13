@@ -8,6 +8,9 @@ import ParallaxRenderer from "./ParallaxRenderer";
 import Vector2 from "../class/Vector2";
 import InventoryRenderer from "./InventoryRenderer";
 
+export const HIDE_WHEN_OUTTA_SIGHT = true;
+const DEBUG_HIGHLIGHTS = false;
+
 export default class LevelRenderer extends SvgRenderer {
 	group;
 
@@ -61,7 +64,9 @@ export default class LevelRenderer extends SvgRenderer {
 			.getCorners(position)
 			.map((c) => [c.x, c.y]);
 		corners.push(corners[0]);
-		this.highlightedTiles.polyline(corners).fill('transparent').stroke(stroke);
+		for (let i = 0, max = corners.length - 1; i < max; i++) {
+			this.highlightedTiles.line(corners[i].concat(corners[i + 1])).stroke(stroke);
+		}
 	}
 
 	renderHighlights(position) {
@@ -70,18 +75,23 @@ export default class LevelRenderer extends SvgRenderer {
 
 		this.renderGridTile(position, { width: 2, color: 'blue'});
 
-		this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), { width: 2, color: 'orange'});
-		this.renderGridTile(this.model.grid.getNeighborUpperRight(position), { width: 2, color: 'red'});
+		if (DEBUG_HIGHLIGHTS) {
+			this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), {width: 2, color: 'orange'});
+			this.renderGridTile(this.model.grid.getNeighborUpperRight(position), {width: 2, color: 'red'});
 
-		this.renderGridTile(this.model.grid.getNeighborLowerLeft(position), { width: 2, color: 'magenta'});
-		this.renderGridTile(this.model.grid.getNeighborLowerRight(position), { width: 2, color: 'cyan'});
+			this.renderGridTile(this.model.grid.getNeighborLowerLeft(position), {width: 2, color: 'magenta'});
+			this.renderGridTile(this.model.grid.getNeighborLowerRight(position), {width: 2, color: 'cyan'});
 
-		this.renderGridTile(this.model.grid.getNeighborDown(position), { width: 2, color: 'lightgreen'});
-		this.renderGridTile(this.model.grid.getNeighborUp(position), { width: 2, color: 'darkgreen'});
+			this.renderGridTile(this.model.grid.getNeighborDown(position), {width: 2, color: 'lightgreen'});
+			this.renderGridTile(this.model.grid.getNeighborUp(position), {width: 2, color: 'darkgreen'});
+		}
 	}
 
 	renderInternal() {
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
+			if (HIDE_WHEN_OUTTA_SIGHT) {
+				this.spritesRenderer.updateOuttaSight();
+			}
 			this.draw.size(this.model.viewBoxSize.x, this.model.viewBoxSize.y);
 			this.draw.viewbox(
 				this.model.viewBoxCoordinates.x,

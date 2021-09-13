@@ -15,8 +15,6 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 
 	}
 
-
-
 	selectTargetInternal() {
 
 		//this.setTarget(down);
@@ -26,6 +24,27 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	updateInternal(delta) {
 		const scale = Math.sqrt(this.model.data.amount / (4 * Math.PI))
 		this.model.image.scale.set(scale * 2);
+	}
+
+	findEmptyNeighbor() {
+		const neighbors = this.game.level.grid.getNeighbors(this.position);
+		const empty = neighbors.filter((n) => this.game.level.grid.chessboard.getTile(n).length === 0);
+		return Pixies.randomElement(empty);
+	}
+
+	spawn() {
+		const position = this.findEmptyNeighbor();
+		if (!position) return;
+
+		const spriteBuilder = new SpriteBuilder(this.game.level);
+		const spawn = spriteBuilder.addSprite(position, this.model.image.scale.get(), this.model.image.flipped.get(), this.model.image.rotation.get(), this.model.image.path, this.model.strategy.get(), this.model.data);
+		//this.model.data.amount -= WATER_UNIT_SIZE;
+		this.model.makeDirty();
+		return spawn;
+	}
+
+	onClick(e) {
+		this.spawn();
 	}
 
 }

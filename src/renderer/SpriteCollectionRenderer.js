@@ -25,4 +25,8 @@ export default class SpriteCollectionRenderer extends SvgRenderer {
 		this.removeChild(renderer);
 	}
 
+	updateOuttaSight() {
+		this.children.forEach((r) => r.updateOuttaSight());
+	}
+
 }
