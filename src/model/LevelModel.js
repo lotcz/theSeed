@@ -11,6 +11,7 @@ import ParallaxModel from "./ParallaxModel";
 import InventoryModel from "./InventoryModel";
 
 export default class LevelModel extends ModelBase {
+	name;
 	grid;
 	parallax;
 	plant;
@@ -32,6 +33,7 @@ export default class LevelModel extends ModelBase {
 
 	getState() {
 		return {
+			name: this.name,
 			grid: this.grid.getState(),
 			parallax: this.parallax.getState(),
 			plant: this.plant.getState(),
@@ -46,6 +48,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		this.name = state.name;
 		this.grid = new GridModel(state.grid);
 		this.parallax = new ParallaxModel(state.parallax);
 		this.plant = new PlantModel(state.plant);

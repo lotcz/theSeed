@@ -23,8 +23,13 @@ export default class LevelBuilder {
 		this.grid = new GridModel({ size: size.toArray(), scale: scale});
 		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
 
+		this.name = 'level-0';
 	}
 
+	setName(name) {
+		this.name = name;
+	}
+	
 	setViewBoxScale(scale) {
 		this.viewboxScale = scale;
 	}
@@ -119,6 +124,7 @@ export default class LevelBuilder {
 			this.parallax();
 		}
 		const state = {
+			name: this.name,
 			grid: this.grid.getState(),
 			parallax: this.parallaxState,
 			ground: this.g.getState(),
