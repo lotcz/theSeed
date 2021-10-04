@@ -97,6 +97,9 @@ export default class LevelModel extends ModelBase {
 	}
 
 	getGroundY(x) {
+		if (!this.ground.points[x]) {
+			return null;
+		}
 		return this.ground.points[x].y;
 	}
 

@@ -42,7 +42,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.background.back();
 
 		// parallax
-		this.parallax = this.draw.group();
+		this.parallax = this.draw.group().addClass('parallax');
 		this.parallax.opacity(0.1);
 		/*
 		this.parallax.filterWith(function(add) {
@@ -73,7 +73,8 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.parallaxLayers = [];
 		const height = max.y;
 		const width = max.x;
-
+		const _this = this;
+		
 		for (let i = PARALLAX_SIZE; i >= 0; i--) {
 			const layer = this.model.layers[i];
 			if (!layer) continue;
@@ -85,11 +86,13 @@ export default class ParallaxRenderer extends SvgRenderer {
 				function (e) {
 					img.scale(fullWidth / img.width());
 					img.move(width / 2, height / 2);
+					_this.renderInternal();
 				}
 			);
 
 			this.parallaxLayers[i] = group;
 		}
+
 	}
 
 	renderInternal() {

@@ -24,7 +24,7 @@ export default class GameController extends ControllerBase {
 
 	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
-		this.onResize();		
+		this.onResize();
 		this.reset();
 	}
 
@@ -45,26 +45,36 @@ export default class GameController extends ControllerBase {
 		this.levelController = new LevelController(this.model, this.model.level, this.controls);
 		this.addChild(this.levelController);
 		this.levelController.activate();
+		this.levelController.updateCameraOffset();
 		this.showPlayMenu();
 		this.onResize();
-		
+
 		if (this.gui) this.gui.destroy();
 		this.gui = new dat.GUI();
-		const scaleFolder = this.gui.addFolder('Scale')
+		this.gui.add(this.model.level, 'name').listen();
+		const gridFolder = this.gui.addFolder('grid')
+		gridFolder.add(this.model.level.grid, 'scale').listen();
+		const gridsizeFolder = gridFolder.addFolder('size')
+		gridsizeFolder.add(this.model.level.grid.size, 'x').listen();
+		gridsizeFolder.add(this.model.level.grid.size, 'y').listen();
+		const scaleFolder = this.gui.addFolder('viewBoxScale')
 		scaleFolder.add(this.model.level.viewBoxScale, 'value', 0, 10).listen();
+		const sizeFolder = this.gui.addFolder('viewBoxSize')
+		sizeFolder.add(this.model.level.viewBoxSize, 'x').listen();
+		sizeFolder.add(this.model.level.viewBoxSize, 'y').listen();
 		const positionFolder = this.gui.addFolder('viewBoxCoordinates')
 		positionFolder.add(this.model.level.viewBoxCoordinates, 'x').listen();
 		positionFolder.add(this.model.level.viewBoxCoordinates, 'y').listen();
-				
+
 		const _this = this;
-		
+
 		var actions = {
-			save: function() { 
+			save: function() {
 				const state = _this.game.level.getState();
 				console.log(state);
 				localStorage.setItem('beehive-savegame-' + state.name, JSON.stringify(state));
 			},
-			load: function() { 
+			load: function() {
 				_this.model.loading.set(true);
 				const name = _this.model.level.name;
 				const store = localStorage.getItem('beehive-savegame-' + name);
@@ -75,10 +85,10 @@ export default class GameController extends ControllerBase {
 				_this.loadLevel(level);
 			}
 		};
-	
+
 		this.gui.add(actions,'load').name('Load');
 		this.gui.add(actions,'save').name('Save');
-		
+
 		this.gui.open();
 	}
 
@@ -158,14 +168,11 @@ export default class GameController extends ControllerBase {
 		this.levelController.activate();
 	}
 
-	loadSavegame(name) {	
+	loadSavegame(name) {
 		const store = localStorage.getItem('beehive-savegame-' + name);
-		console.log(store);
-		
 		var level = null;
 		if (store) {
 			const state = JSON.parse(store);
-			console.log(state);
 			level = new LevelModel(state);
 		} else {
 			const size = new Vector2(500, 100);
@@ -178,7 +185,7 @@ export default class GameController extends ControllerBase {
 			spriteBuilder.addBugs();
 			spriteBuilder.addNutrients();
 		}
-		
+
 		this.hideMenu();
 		this.loadLevel(level);
 
