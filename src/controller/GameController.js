@@ -1,7 +1,10 @@
 import ControllerBase from "./ControllerBase";
 import LevelController from "./LevelController";
+import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import LevelBuilder from "../builder/LevelBuilder";
+import * as dat from 'dat.gui';
+
 import {
 	GROUND_PRESET_HILL,
 	GROUND_PRESET_SLOPE_LEFT,
@@ -16,12 +19,12 @@ export default class GameController extends ControllerBase {
 		super(model, model, controls);
 
 		this.onResizeEvent = () => this.onResize();
+		this.gui = null;
 	}
 
 	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
-		this.onResize();
-
+		this.onResize();		
 		this.reset();
 	}
 
@@ -32,6 +35,7 @@ export default class GameController extends ControllerBase {
 
 	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
+		if (this.gui) this.gui.destroy();
 	}
 
 	loadLevel(levelModel) {
@@ -43,6 +47,38 @@ export default class GameController extends ControllerBase {
 		this.levelController.activate();
 		this.showPlayMenu();
 		this.onResize();
+		
+		if (this.gui) this.gui.destroy();
+		this.gui = new dat.GUI();
+		const scaleFolder = this.gui.addFolder('Scale')
+		scaleFolder.add(this.model.level.viewBoxScale, 'value', 0, 10).listen();
+		const positionFolder = this.gui.addFolder('viewBoxCoordinates')
+		positionFolder.add(this.model.level.viewBoxCoordinates, 'x').listen();
+		positionFolder.add(this.model.level.viewBoxCoordinates, 'y').listen();
+				
+		const _this = this;
+		
+		var actions = {
+			save: function() { 
+				const state = _this.game.level.getState();
+				console.log(state);
+				localStorage.setItem('bee', JSON.stringify(state));
+			},
+			load: function() { 
+				_this.model.loading.set(true);
+				const store = localStorage.getItem('bee');
+				console.log(store);
+				const state = JSON.parse(store);
+				console.log(state);
+				const level = new LevelModel(state);
+				_this.loadLevel(level);
+			}
+		};
+	
+		this.gui.add(actions,'load').name('Load');
+		this.gui.add(actions,'save').name('Save');
+		
+		this.gui.open();
 	}
 
 	onResize() {
@@ -145,7 +181,7 @@ export default class GameController extends ControllerBase {
 		const spriteBuilder = new SpriteBuilder(level);
 		spriteBuilder.addBugs();
 		//spriteBuilder.addTurner();
-		spriteBuilder.addNutrients();
+		//spriteBuilder.addNutrients();
 
 		this.hideMenu();
 		this.loadLevel(level);

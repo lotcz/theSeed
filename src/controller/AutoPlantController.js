@@ -4,7 +4,7 @@ import Pixies from "../class/Pixies";
 import PlantController from "./PlantController";
 
 const AUTO_PLANT_TIMEOUT = 500;
-const AUTO_PLANT_MAX_POWER = 300;
+const AUTO_PLANT_MAX_POWER = 30;
 
 export default class AutoPlantController extends PlantController {
 	constructor(game, model, controls) {

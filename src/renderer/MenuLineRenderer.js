@@ -1,5 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import {SVG} from "@svgdotjs/svg.js";
 import Pixies from "../class/Pixies";
 import WaterImage from "../../res/img/water.svg";
 import {IMAGE_WATER} from "../builder/SpriteBuilder";

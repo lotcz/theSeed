@@ -1,6 +1,6 @@
 import "./style.css";
-import Vector2 from "./class/Vector2";
 import {SVG} from "@svgdotjs/svg.js";
+import Vector2 from "./class/Vector2";
 import Controls from "./class/Controls";
 import GameController from "./controller/GameController";
 import GameModel from "./model/GameModel";

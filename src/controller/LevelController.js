@@ -1,5 +1,4 @@
 import Vector2 from "../class/Vector2";
-import {} from "@svgdotjs/svg.filter.js"
 import LivingTreeModel from "../model/LivingTreeModel";
 import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";

@@ -1,4 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
+import {SVG} from "@svgdotjs/svg.js";
+import {} from "@svgdotjs/svg.filter.js";
 import PlantRenderer from "./PlantRenderer";
 import {BROWN_DARK, BROWN_LIGHT, GROUND_DARK, GROUND_LIGHT, SKY_DARK, SKY_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
@@ -11,11 +13,6 @@ import WaterImage from '../../res/img/water.svg';
 import TreesImage from '../../res/img/trees.svg';
 import GrassImage from '../../res/img/grass.svg';
 
-import {SVG} from "@svgdotjs/svg.js";
-import {} from "@svgdotjs/svg.filter.js"
-
-import Stats from "../class/stats.module";
-import * as dat from 'dat.gui';
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 
