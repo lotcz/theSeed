@@ -3,9 +3,6 @@
 
 html, body {
 	background: #000;
-}
-
-html, body, * {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
@@ -13,8 +10,8 @@ html, body, * {
 
 .inventory {
 	position: fixed;
-	top: 0;
-	left: 0;
+	top: 10px;
+	left: 50%;
 }
 
 .menu {

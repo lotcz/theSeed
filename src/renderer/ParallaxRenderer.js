@@ -1,4 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
+import {SVG} from "@svgdotjs/svg.js";
+import {} from "@svgdotjs/svg.filter.js";
 import PlantRenderer from "./PlantRenderer";
 import {BROWN_DARK, BROWN_LIGHT, GROUND_DARK, GROUND_LIGHT, SKY_DARK, SKY_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
@@ -11,11 +13,6 @@ import WaterImage from '../../res/img/water.svg';
 import TreesImage from '../../res/img/trees.svg';
 import GrassImage from '../../res/img/grass.svg';
 
-import {SVG} from "@svgdotjs/svg.js";
-import {} from "@svgdotjs/svg.filter.js"
-
-import Stats from "../class/stats.module";
-import * as dat from 'dat.gui';
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 
@@ -45,7 +42,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.background.back();
 
 		// parallax
-		this.parallax = this.draw.group();
+		this.parallax = this.draw.group().addClass('parallax');
 		this.parallax.opacity(0.1);
 		/*
 		this.parallax.filterWith(function(add) {
@@ -76,7 +73,8 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.parallaxLayers = [];
 		const height = max.y;
 		const width = max.x;
-
+		const _this = this;
+		
 		for (let i = PARALLAX_SIZE; i >= 0; i--) {
 			const layer = this.model.layers[i];
 			if (!layer) continue;
@@ -88,11 +86,13 @@ export default class ParallaxRenderer extends SvgRenderer {
 				function (e) {
 					img.scale(fullWidth / img.width());
 					img.move(width / 2, height / 2);
+					_this.renderInternal();
 				}
 			);
 
 			this.parallaxLayers[i] = group;
 		}
+
 	}
 
 	renderInternal() {

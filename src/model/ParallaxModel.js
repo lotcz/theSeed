@@ -9,9 +9,6 @@ export default class ParallaxModel extends ModelBase {
 	constructor(state) {
 		super(state);
 
-		this.cameraOffset = new Vector2();
-		this.addChild(this.cameraOffset);
-
 		if (state) {
 			this.restoreState(state);
 		}
@@ -19,12 +16,15 @@ export default class ParallaxModel extends ModelBase {
 
 	restoreState(state) {
 		this.layers = state.layers;
+		this.cameraOffset = Vector2.fromArray(state.cameraOffset);
+		this.addChild(this.cameraOffset);
 		this.makeDirty();
 	}
 
 	getState() {
 		return {
 			layers: this.layers,
+			cameraOffset: this.cameraOffset.toArray()
 		}
 	}
 

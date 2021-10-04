@@ -1,7 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import {SVG} from "@svgdotjs/svg.js";
-import {} from "@svgdotjs/svg.filter.js"
-
 import Stats from "../class/stats.module";
 import * as dat from 'dat.gui';
 import LevelRenderer from "./LevelRenderer";

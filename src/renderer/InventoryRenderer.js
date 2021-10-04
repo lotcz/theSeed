@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import Pixies from "../class/Pixies";
+import Vector2 from "../class/Vector2";
 import WaterImage from "../../res/img/water.svg";
 import {IMAGE_WATER} from "../builder/SpriteBuilder";
 import ImageModel from "../model/ImageModel";
@@ -17,31 +18,15 @@ export default class InventoryRenderer extends SvgRenderer {
 		this.inventory = SVG().addTo(this.draw.root().parent());
 		this.inventory.addClass('inventory');
 
-		const width = this.game.viewBoxSize.x;
-		const span = width / 5;
-		const itemWidth = 100;
-		const height = 100;
-		this.inventory.size(width, height+5);
-
-		const slot1start = span - (itemWidth/2);
-		const slot1end = span + (itemWidth/2);
-
-		const slot2start = width - span - (itemWidth/2);
-		const slot2end = width - span + (itemWidth/2);
-
-		this.inventory.rect(width, height/2).fill('black');
-		this.inventory.path(`M 0 ${height/2}` +
-			`L ${slot1start} ${height/2}` +
-			`A ${itemWidth/2} ${height/2} 0 0 0 ${slot1end} ${height/2}` +
-			`L ${slot2start} ${height/2}` +
-			`A ${itemWidth/2} ${height/2} 0 0 0 ${slot2end} ${height/2}` +
-			`L ${width} ${height/2}`)
-			.fill('black')
-			.stroke({width: 4, color: 'blue'});
+		const width = 100;
+		const height = 50;
+		this.inventory.size(width, height);
+		const position = new Vector2(this.game.viewBoxSize.x/2, height/2);
+		this.inventory.center(position.x, position.y);
 		this.water = this.inventory.group();
 
-		const image = this.water.image(WaterImage).size(itemWidth/2, itemWidth/2);
-		this.water.center(span, height/2);
+		const image = this.water.image(WaterImage).size(width/2, height).center((width*0.75), height/2);
+		
 		this.waterText = this.water
 			.text()
 			.font(
@@ -49,11 +34,11 @@ export default class InventoryRenderer extends SvgRenderer {
 					family: 'Bastion',
 					size: 25,
 					anchor: 'start',
-					leading: '1.5em'
+					leading: '0'
 				}
 			)
 			.fill('#1b6ed8ff')
-			.move(slot1end, (height/2)-4);
+			.move(0, (height/2)+10);
 	}
 
 	showWater() {

@@ -1,13 +1,9 @@
 import Vector2 from "../class/Vector2";
-import {} from "@svgdotjs/svg.filter.js"
-import LivingTreeModel from "../model/LivingTreeModel";
 import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 import PlantController from "./PlantController";
 import {STRATEGY_WATER} from "./SpriteController";
 import AutoPlantController from "./AutoPlantController";
-
-const GUTTER_WIDTH = 150;
 
 export default class LevelController extends ControllerBase {
 	constructor(game, model, controls) {

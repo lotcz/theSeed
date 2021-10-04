@@ -102,7 +102,7 @@ export default class SpriteBuilder {
 			this.level.sprites.add(new SpriteModel(state));
 		}
 
-		const wormsCount = 5;
+		const wormsCount = 0;
 		for (let i = 0, max = wormsCount; i < max; i++) {
 			this.addSprite(
 				this.getRandomPosition(true),
@@ -115,7 +115,7 @@ export default class SpriteBuilder {
 			);
 		}
 
-		const grasshoppersCount = 5;
+		const grasshoppersCount = 0;
 		for (let i = 0, max = grasshoppersCount; i < max; i++) {
 			this.addSprite(
 				this.getRandomPosition(false),
