@@ -16,6 +16,8 @@ import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
 import SpriteModel from "../model/SpriteModel";
+import BeeModel from "../model/BeeModel";
+
 import {
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
@@ -38,6 +40,9 @@ export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
+
+import BeeImage from "../../res/img/bee.svg";
+export const IMAGE_BEE = 'img/bee.svg';
 
 export default class SpriteBuilder {
 	level;
@@ -209,6 +214,7 @@ export default class SpriteBuilder {
 		this.addWater();
 		this.addMinerals()
 	}
+
 	addTurner() {
 		const turner = {
 			image: {
@@ -221,6 +227,21 @@ export default class SpriteBuilder {
 			strategy: STRATEGY_TURNER
 		};
 		this.level.sprites.add(new SpriteModel(turner));
+	}
+
+	addBee(position) {
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.level.bee = new BeeModel({
+			direction: 0,
+			speed: 0,
+			image: {
+				position: position.toArray(),
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE
+			},
+		})
 	}
 
 }

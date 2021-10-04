@@ -69,6 +69,12 @@ export default class Tree extends Dirty {
 		return null;
 	}
 
+	resetChildren() {
+		this.children.forEach((child) => child.setDeleted(true));
+		this.children = [];
+		this.makeDirty();
+	}
+
 	forEach(func) {
 		func(this);
 		for (let i = 0, max = this.children.length; i < max; i++) {

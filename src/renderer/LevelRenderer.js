@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
+import BeeRenderer from "./BeeRenderer";
 import {GROUND_DARK, GROUND_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
 
@@ -51,6 +52,13 @@ export default class LevelRenderer extends SvgRenderer {
 			this.inventory = this.group.group();
 			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
 			this.addChild(this.inventoryRenderer);
+		}
+
+		//Bee
+		if (this.model.bee) {
+			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
+			this.addChild(this.beeRenderer);
+			console.log(this.model.bee);
 		}
 
 	}
