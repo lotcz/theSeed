@@ -2,6 +2,7 @@ import Vector2 from "../class/Vector2";
 import ControllerBase from "./ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 import PlantController from "./PlantController";
+import BeeController from "./BeeController";
 import {STRATEGY_WATER} from "./SpriteController";
 import AutoPlantController from "./AutoPlantController";
 
@@ -18,6 +19,11 @@ export default class LevelController extends ControllerBase {
 
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
 		this.addChild(this.spritesController);
+
+		if (model.bee) {
+			this.beeController = new BeeController(game, model.bee, controls);
+			this.addChild(this.beeController);
+		}
 
 		this.lastMouseCoords = null;
 	}
@@ -44,6 +50,10 @@ export default class LevelController extends ControllerBase {
 				this.controls.resetZoom();
 			}
 			this.controls.clean();
+		}
+
+		if (this.model.bee) {
+			this.updateCameraOffset();
 		}
 
 		//if (this.controls.mouseOver) {

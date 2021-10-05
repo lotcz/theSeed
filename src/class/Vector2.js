@@ -5,10 +5,19 @@ export default class Vector2 extends Tree {
 	x;
 	y;
 
-	constructor(x = 0, y = 0) {
+	constructor(x, y) {
 		super();
-		this.x = x;
-		this.y = y;
+		this.x = 0;
+		this.y = 0;
+		if (y === undefined && typeof x === 'object') {
+			if (x.length === 2) {
+				this.setFromArray(x);
+			} else {
+				this.set(x);
+			}
+		} else if (x !== undefined) {
+			this.set(x, y);
+		}
 	}
 
 	distanceTo(v) {
@@ -44,6 +53,12 @@ export default class Vector2 extends Tree {
 
 	size() {
 		return this.distanceTo(new Vector2(0, 0));
+	}
+
+	setSize(size) {
+		const ratio = size / this.size();
+		this.setX(this.x * ratio);
+		this.setY(this.y * ratio);
 	}
 
 	add(v) {
@@ -87,9 +102,17 @@ export default class Vector2 extends Tree {
 		return new Vector2(this.x, this.y);
 	}
 
+	getState() {
+		return this.toArray();
+	}
+
+	restoreState(state) {
+		this.setFromArray(state);
+	}
+
 	/***
 	 * Return angle between AB and Y axis
-	 * @param target
+	 * @param Vector2 b
 	 * @returns {number}
 	 */
 	getAngleToY(b) {

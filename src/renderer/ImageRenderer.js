@@ -5,6 +5,7 @@ export default class ImageRenderer extends SvgRenderer {
 	image;
 	lastRotation;
 	lastScale;
+	flipped;
 	grid;
 	onClick;
 
@@ -12,6 +13,7 @@ export default class ImageRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.grid = game.level.grid;
+		this.flipped = false;
 		this.lastRotation = 0;
 		this.lastScale = 1;
 	}
@@ -54,7 +56,14 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	updateFlip() {
-		if (this.model.flipped.get()) this.image.flip('x');
+		if (this.model.flipped.get() && !this.flipped) {
+			this.image.flip('x');
+			this.flipped = true;
+		}
+		if (this.flipped && !this.model.flipped.get()) {
+ 			this.image.flip('x');
+ 			this.flipped = false;
+ 		}
 		this.model.flipped.clean();
 	}
 

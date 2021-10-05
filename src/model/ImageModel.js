@@ -4,10 +4,10 @@ import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 export default class ImageModel extends ModelBase {
-	position;
 	coordinates;
 	flipped;
 	rotation;
+	scale;
 	path;
 
 	constructor(state) {
@@ -20,7 +20,6 @@ export default class ImageModel extends ModelBase {
 
 	getState() {
 		return {
-			position: this.position.toArray(),
 			coordinates: this.coordinates.toArray(),
 			flipped: this.flipped.get(),
 			rotation: this.rotation.get(),
@@ -30,9 +29,7 @@ export default class ImageModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.position = Vector2.fromArray(state.position);
-		this.addChild(this.position);
-		this.coordinates = Vector2.fromArray(state.coordinates);
+		this.coordinates = new Vector2(state.coordinates);
 		this.addChild(this.coordinates);
 		this.flipped = new DirtyValue(state.flipped);
 		this.addChild(this.flipped);

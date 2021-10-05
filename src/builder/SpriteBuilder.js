@@ -16,6 +16,8 @@ import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
 import SpriteModel from "../model/SpriteModel";
+import BeeModel from "../model/BeeModel";
+
 import {
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
@@ -38,6 +40,9 @@ export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
+
+import BeeImage from "../../res/img/bee.svg";
+export const IMAGE_BEE = 'img/bee.svg';
 
 export default class SpriteBuilder {
 	level;
@@ -72,8 +77,8 @@ export default class SpriteBuilder {
 		const bugCount = 10;
 		for (let i = 0, max = bugCount; i < max; i++) {
 			const state = {
+				position: [0, 0],
 				image: {
-					position: [0, 0],
 					scale: 0.2 + (Math.random() * 2),
 					flipped: (0.5 > Math.random()),
 					rotation: 0,
@@ -90,8 +95,8 @@ export default class SpriteBuilder {
 		const fliesCount = 10;
 		for (let i = 0, max = fliesCount; i < max; i++) {
 			const state = {
+				position: this.getRandomPosition(false).toArray(),
 				image: {
-					position: this.getRandomPosition(false).toArray(),
 					scale: 0.5 + Math.random(),
 					flipped: false,
 					rotation: 0,
@@ -131,8 +136,8 @@ export default class SpriteBuilder {
 
 	addSprite(position, scale, flipped, rotation, path, strategy, data) {
 		const state = {
+			position: position.toArray(),
 			image: {
-				position: position.toArray(),
 				scale: scale,
 				flipped: false,
 				rotation: 0,
@@ -156,8 +161,8 @@ export default class SpriteBuilder {
 
 			for (let ii = 0; ii < amount; ii++) {
 				const state = {
+					position: [i, groundY + Pixies.randomIndex(limit)],
 					image: {
-						position: [i, groundY + Pixies.randomIndex(limit)],
 						scale: 1,
 						flipped: false,
 						rotation: 0,
@@ -190,8 +195,8 @@ export default class SpriteBuilder {
 
 			for (let ii = 0; ii < amount; ii++) {
 				const state = {
+					position: [i, groundY + Pixies.randomIndex(limit)],
 					image: {
-						position: [i, groundY + Pixies.randomIndex(limit)],
 						scale: 1,
 						flipped: false,
 						rotation: 0,
@@ -209,10 +214,11 @@ export default class SpriteBuilder {
 		this.addWater();
 		this.addMinerals()
 	}
+
 	addTurner() {
 		const turner = {
+			position: [0, 0],
 			image: {
-				position: [0, 0],
 				scale: 1,
 				flipped: false,
 				rotation: 0,
@@ -221,6 +227,21 @@ export default class SpriteBuilder {
 			strategy: STRATEGY_TURNER
 		};
 		this.level.sprites.add(new SpriteModel(turner));
+	}
+
+	addBee(position) {
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.level.bee = new BeeModel({
+			direction: [0,0],
+			speed: 0,
+			position: position.toArray(),
+			image: {
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE
+			},
+		})
 	}
 
 }

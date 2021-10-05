@@ -96,6 +96,11 @@ export default class LevelModel extends ModelBase {
 		return new Vector2(this.viewBoxCoordinates.x + (offset.x * this.viewBoxScale.get()), this.viewBoxCoordinates.y + (offset.y * this.viewBoxScale.get()));
 	}
 
+	centerOnCoordinates(coordinates) {
+		this.viewBoxCoordinates.setX(coordinates.x - (this.viewBoxScale.get() * this.viewBoxSize.x / 2));
+		this.viewBoxCoordinates.setY(coordinates.y - (this.viewBoxScale.get() * this.viewBoxSize.y / 2));
+	}
+
 	getGroundY(x) {
 		if (!this.ground.points[x]) {
 			return null;
@@ -147,4 +152,3 @@ export default class LevelModel extends ModelBase {
 	}
 
 }
-

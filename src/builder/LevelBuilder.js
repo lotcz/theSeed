@@ -29,7 +29,7 @@ export default class LevelBuilder {
 	setName(name) {
 		this.name = name;
 	}
-	
+
 	setViewBoxScale(scale) {
 		this.viewboxScale = scale;
 	}

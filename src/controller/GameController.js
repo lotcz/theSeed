@@ -58,7 +58,7 @@ export default class GameController extends ControllerBase {
 		gridsizeFolder.add(this.model.level.grid.size, 'x').listen();
 		gridsizeFolder.add(this.model.level.grid.size, 'y').listen();
 		const scaleFolder = this.gui.addFolder('viewBoxScale')
-		scaleFolder.add(this.model.level.viewBoxScale, 'value', 0, 10).listen();
+		scaleFolder.add(this.model.level.viewBoxScale, 'value', 0, 100).listen();
 		const sizeFolder = this.gui.addFolder('viewBoxSize')
 		sizeFolder.add(this.model.level.viewBoxSize, 'x').listen();
 		sizeFolder.add(this.model.level.viewBoxSize, 'y').listen();
@@ -122,7 +122,7 @@ export default class GameController extends ControllerBase {
 		const builder = new MenuBuilder();
 		builder.setStartPosition(this.model.viewBoxSize.multiply(0.2));
 		builder.setCss('main');
-		builder.addLine("New Game", (e) => this.loadSavegame('level-1'));
+		builder.addLine("New Game", (e) => this.newGame());
 		builder.addLine("Load Level", (e) => this.showLevelSelection());
 		if (this.model.level && this.model.level.inventory) {
 			builder.addLine("Quit", (e) => this.reset());
@@ -166,6 +166,22 @@ export default class GameController extends ControllerBase {
 	resume() {
 		this.showPlayMenu();
 		this.levelController.activate();
+	}
+
+	newGame() {
+		const size = new Vector2(500, 50);
+		const scale = 150;
+
+		const levelBuilder = new LevelBuilder(size, scale);
+		levelBuilder.setName('newgame');
+		const level = levelBuilder.build();
+		const spriteBuilder = new SpriteBuilder(level);
+		spriteBuilder.addBugs();
+		//spriteBuilder.addNutrients();
+		spriteBuilder.addBee(levelBuilder.startPosition.addY(-10));
+
+		this.hideMenu();
+		this.loadLevel(level);
 	}
 
 	loadSavegame(name) {
