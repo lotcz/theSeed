@@ -5,8 +5,8 @@ import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 export default class BeeModel extends ModelBase {
-	speed;
 	direction;
+	position;
 	image;
 
 	constructor(state) {
@@ -19,17 +19,20 @@ export default class BeeModel extends ModelBase {
 
 	getState() {
 		return {
+			position: this.position.toArray(),
 			speed: this.speed.get(),
-			direction: this.direction.get(),
+			direction: this.direction.toArray(),
 			image: this.image.getState()
 		}
 	}
 
 	restoreState(state) {
 		this.resetChildren();
+		this.position = Vector2.fromArray(state.position);
+		this.addChild(this.position);
 		this.speed = Vector2.fromArray(state.position);
 		this.addChild(this.speed);
-		this.direction = new RotationValue(state.direction);
+		this.direction = Vector2.fromArray(state.direction);
 		this.addChild(this.direction);
 		this.image = new ImageModel(state.image);
 		this.addChild(this.image);

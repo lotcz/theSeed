@@ -1,8 +1,10 @@
 import ModelBase from "./ModelBase";
 import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
+import Vector2 from "../class/Vector2";
 
 export default class SpriteModel extends ModelBase {
+	position;
 	image;
 	strategy;
 	data;
@@ -22,6 +24,7 @@ export default class SpriteModel extends ModelBase {
 
 	getState() {
 		return {
+			position: this.position.toArray(),
 			image: this.image.getState(),
 			strategy: this.strategy.get(),
 			data: this.data
@@ -29,6 +32,8 @@ export default class SpriteModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		this.position = Vector2.fromArray(state.position);
+		this.addChild(this.position);
 		this.image = new ImageModel(state.image);
 		this.addChild(this.image);
 		this.strategy = new DirtyValue(state.strategy);

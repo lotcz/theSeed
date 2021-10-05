@@ -169,15 +169,15 @@ export default class GameController extends ControllerBase {
 	}
 
 	newGame() {
-		const size = new Vector2(500, 100);
-		const scale = 80;
+		const size = new Vector2(500, 50);
+		const scale = 150;
 
 		const levelBuilder = new LevelBuilder(size, scale);
 		levelBuilder.setName('newgame');
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
 		spriteBuilder.addBugs();
-		spriteBuilder.addNutrients();
+		//spriteBuilder.addNutrients();
 		spriteBuilder.addBee(levelBuilder.startPosition.addY(-10));
 
 		this.hideMenu();

@@ -20,7 +20,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
-		this.position = model.image.position;
+		this.position = model.position;
 		this.lastVisited = null;
 		this.target = null;
 		this.coordinates = model.image.coordinates;

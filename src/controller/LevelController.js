@@ -52,6 +52,10 @@ export default class LevelController extends ControllerBase {
 			this.controls.clean();
 		}
 
+		if (this.model.bee) {
+			this.updateCameraOffset();
+		}
+
 		//if (this.controls.mouseOver) {
 			this.scroll(delta);
 		//}
