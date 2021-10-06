@@ -45,7 +45,6 @@ export default class GameController extends ControllerBase {
 		this.levelController = new LevelController(this.model, this.model.level, this.controls);
 		this.addChild(this.levelController);
 		this.levelController.activate();
-		this.levelController.updateCameraOffset();
 		this.showPlayMenu();
 		this.onResize();
 
@@ -65,6 +64,9 @@ export default class GameController extends ControllerBase {
 		const positionFolder = this.gui.addFolder('viewBoxCoordinates')
 		positionFolder.add(this.model.level.viewBoxCoordinates, 'x').listen();
 		positionFolder.add(this.model.level.viewBoxCoordinates, 'y').listen();
+		const parallaxFolder = this.gui.addFolder('Parallax Camera Offset')
+		parallaxFolder.add(this.model.level.parallax.cameraOffset, 'x').listen();
+		parallaxFolder.add(this.model.level.parallax.cameraOffset, 'y').listen();
 
 		const _this = this;
 

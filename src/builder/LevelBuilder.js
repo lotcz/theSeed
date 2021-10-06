@@ -2,7 +2,8 @@ import Vector2 from "../class/Vector2";
 import GridModel from "../model/GridModel";
 import LevelModel from "../model/LevelModel";
 import GroundBuilder from "./GroundBuilder";
-import {RESOURCE_TYPE_GROUP} from "../model/ResourceModel";
+import ResourceModel from "../model/ResourceModel";
+import {RESOURCE_TYPE_GROUP, RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import HillImage from "../../res/img/hill.svg";
 import StalkImage from "../../res/img/stalk.svg";
 import GrassImage from "../../res/img/grass.svg";
@@ -12,6 +13,9 @@ import BulbsImage from "../../res/img/bulbs.svg";
 import PlantImage from '../../res/img/plant.svg';
 import RockImage from '../../res/img/rock.svg';
 
+export const IMAGE_HILL = 'img/hill.svg';
+export const IMAGE_STALK = 'img/stalk.svg';
+
 export default class LevelBuilder {
 	grid;
 
@@ -19,15 +23,24 @@ export default class LevelBuilder {
 
 		this.viewboxScale = 3;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
+		this.parallaxState = {
+			cameraOffset: [0, 0],
+			layers: []
+		};
 
 		this.grid = new GridModel({ size: size.toArray(), scale: scale});
 		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
 
 		this.name = 'level-0';
+		this.resources = new ResourceModel({resType: RESOURCE_TYPE_GROUP});
 	}
 
 	setName(name) {
 		this.name = name;
+	}
+
+	addResource(resType, uri, data) {
+		this.resources.addChild(new ResourceModel({resType: resType, uri: uri, data: data}));
 	}
 
 	setViewBoxScale(scale) {
@@ -95,22 +108,37 @@ export default class LevelBuilder {
 		this.g = builder.build();
 	}
 
+	addParallaxLayer(image_path, image_data, distance) {
+		this.addResource(RESOURCE_TYPE_IMAGE, image_path, image_data);
+		this.parallaxState.layers.push({
+			distance: distance,
+			image: {
+				path: image_path
+			}
+		});
+	}
+
 	parallax() {
+		this.addParallaxLayer(IMAGE_HILL, HillImage, 0.5);
+		this.addParallaxLayer(IMAGE_STALK, StalkImage, 0.8);
+		console.log(this.parallaxState);
+		/*
 		this.parallaxState = {
 			layers: [
-				false,
-				false,
 				TreesImage,
+				false,
+				false,
 				false,
 				false,
 				GrassImage,
 				StalkImage,
 				BulbsImage,
+				,
+				false,
 				EggHillsImage,
-				HillImage,
-				false
 			]
 		}
+		*/
 	}
 
 	build() {
@@ -120,7 +148,7 @@ export default class LevelBuilder {
 		if (!this.plantState) {
 			this.plant();
 		}
-		if (!this.parallaxState) {
+		if (this.parallaxState.layers.length === 0) {
 			this.parallax();
 		}
 		const state = {
@@ -130,14 +158,11 @@ export default class LevelBuilder {
 			ground: this.g.getState(),
 			plant: this.plantState,
 			sprites: [],
-			resources: {
-				resType: RESOURCE_TYPE_GROUP
-			},
+			resources: this.resources.getState(),
 			viewBoxScale: this.viewboxScale,
 			viewBoxSize: this.viewboxSize.toArray(),
 			viewBoxCoordinates: this.viewboxCoordinates.toArray()
 		};
-
 		return new LevelModel(state);
 	}
 

@@ -6,13 +6,11 @@ export default class ImageRenderer extends SvgRenderer {
 	lastRotation;
 	lastScale;
 	flipped;
-	grid;
 	onClick;
 
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
-		this.grid = game.level.grid;
 		this.flipped = false;
 		this.lastRotation = 0;
 		this.lastScale = 1;

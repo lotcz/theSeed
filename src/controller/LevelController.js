@@ -52,10 +52,6 @@ export default class LevelController extends ControllerBase {
 			this.controls.clean();
 		}
 
-		if (this.model.bee) {
-			this.updateCameraOffset();
-		}
-
 		//if (this.controls.mouseOver) {
 			this.scroll(delta);
 		//}
@@ -78,7 +74,6 @@ export default class LevelController extends ControllerBase {
 				const diff = this.lastMouseCoords.subtract(this.controls.mouseCoords);
 				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (diff.x * speed), this.model.viewBoxCoordinates.y + (diff.y * speed));
 				this.model.sanitizeViewBox();
-				this.updateCameraOffset();
 			}
 			this.lastMouseCoords = this.controls.mouseCoords;
 		} else {
@@ -108,18 +103,10 @@ export default class LevelController extends ControllerBase {
 			if (scrolling.size() > 0) {
 				this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x + (scrolling.x * speed), this.model.viewBoxCoordinates.y + (scrolling.y * speed));
 				this.model.sanitizeViewBox();
-				this.updateCameraOffset();
 			}
 
 		}
 
-	}
-
-	updateCameraOffset() {
-		const cameraCoordinates = this.model.viewBoxCoordinates.add(this.model.viewBoxSize.multiply(0.5).multiply(this.model.viewBoxScale.get()));
-		const center = this.model.grid.getMaxCoordinates().multiply(0.5);
-		const cameraOffset = cameraCoordinates.subtract(center);
-		this.model.parallax.cameraOffset.set(cameraOffset);
 	}
 
 	onZoom() {
@@ -132,9 +119,8 @@ export default class LevelController extends ControllerBase {
 		const after = this.model.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.model.viewBoxSize.multiply(0.5));
 		const diff = after.subtract(before);
 		this.model.viewBoxCoordinates.set(this.model.viewBoxCoordinates.x - diff.x, this.model.viewBoxCoordinates.y - diff.y);
-
 		this.model.sanitizeViewBox();
-		this.updateCameraOffset();
+
 	}
 
 }

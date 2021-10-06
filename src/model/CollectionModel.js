@@ -1,14 +1,12 @@
 import ModelBase from "./ModelBase";
 
 export default class CollectionModel extends ModelBase {
-	on_remove;
-	on_add ;
-
-	constructor() {
+	constructor(state, restoreFunc) {
 		super();
 
-		this.on_remove = [];
-		this.on_add = [];
+		if (state && restoreFunc) {
+			this.restoreState(state, restoreFunc);
+		}
 	}
 
 	getState() {
@@ -22,29 +20,29 @@ export default class CollectionModel extends ModelBase {
 
 	add(element) {
 		this.addChild(element);
-		this.on_add.forEach((a) => a(element));
+		this.triggerEvent('add', element);
 		return element;
 	}
 
 	remove(element) {
 		this.removeChild(element);
-		this.on_remove.forEach((r) => r(element));
+		this.triggerEvent('remove', element);
 	}
 
 	addOnRemoveListener(listener) {
-		this.on_remove.push(listener);
+		this.addEventListener('remove', listener);
 	}
 
 	removeOnRemoveListener(listener) {
-		this.on_remove.splice(this.on_remove.indexOf(listener), 1);
+		this.removeEventListener('remove', listener);
 	}
 
 	addOnAddListener(listener) {
-		this.on_add.push(listener);
+		this.addEventListener('add', listener);
 	}
 
 	removeOnAddListener(listener) {
-		this.on_add.splice(this.on_add.indexOf(listener), 1);
+		this.removeEventListener('add', listener);
 	}
 
 }

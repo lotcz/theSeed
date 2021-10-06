@@ -1,5 +1,6 @@
 import ModelBase from "./ModelBase";
-import LivingTreeModel from "./LivingTreeModel";
+import ParallaxLayerModel from "./ParallaxLayerModel";
+import CollectionModel from "./CollectionModel";
 import Vector2 from "../class/Vector2";
 
 export default class ParallaxModel extends ModelBase {
@@ -15,15 +16,15 @@ export default class ParallaxModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.layers = state.layers;
-		this.cameraOffset = Vector2.fromArray(state.cameraOffset);
+		this.layers = new CollectionModel(state.layers, (s) => new ParallaxLayerModel(s));
+		this.addChild(this.layers);
+		this.cameraOffset = new Vector2(state.cameraOffset);
 		this.addChild(this.cameraOffset);
-		this.makeDirty();
 	}
 
 	getState() {
 		return {
-			layers: this.layers,
+			layers: this.layers.getState(),
 			cameraOffset: this.cameraOffset.toArray()
 		}
 	}

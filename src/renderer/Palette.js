@@ -1,5 +1,3 @@
-import Pixies from "../class/Pixies";
-
 export const SKY_LIGHT = '#a3d2fe';
 export const SKY_DARK = '#6483bc';
 export const BROWN_LIGHT = '#ead2a4';

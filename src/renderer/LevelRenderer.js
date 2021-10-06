@@ -33,7 +33,7 @@ export default class LevelRenderer extends SvgRenderer {
 			add.stop(1, GROUND_DARK);
 			add.from(0, 0);
 			add.to(0,1);
-		})
+		});
 		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
 		this.addChild(this.groundRenderer);
 
@@ -58,7 +58,6 @@ export default class LevelRenderer extends SvgRenderer {
 		if (this.model.bee) {
 			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
 			this.addChild(this.beeRenderer);
-			console.log(this.model.bee);
 		}
 
 	}

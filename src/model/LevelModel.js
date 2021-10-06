@@ -26,6 +26,8 @@ export default class LevelModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		this.viewBoxChangedHandler = () => this.updateCameraOffset();
+
 		if (state) {
 			this.restoreState(state);
 		}
@@ -51,6 +53,7 @@ export default class LevelModel extends ModelBase {
 		this.name = state.name;
 		this.grid = new GridModel(state.grid);
 		this.parallax = new ParallaxModel(state.parallax);
+		//this.addChild(this.parallax); no need for this
 		this.plant = new PlantModel(state.plant);
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
@@ -75,6 +78,12 @@ export default class LevelModel extends ModelBase {
 		this.highlightedTilePosition = new Vector2();
 		this.highlightedTilePosition.clean();
 		this.addChild(this.highlightedTilePosition);
+
+		// auto recalculate parallax offset
+		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
+		this.updateCameraOffset();
 	}
 
 	isPositionInView(position) {
@@ -149,6 +158,14 @@ export default class LevelModel extends ModelBase {
 		if (this.viewBoxCoordinates.y > maxY) {
 			this.viewBoxCoordinates.setY(maxY);
 		}
+	}
+
+	updateCameraOffset() {
+		console.log('updating offset');
+		const cameraCoordinates = this.viewBoxCoordinates.add(this.viewBoxSize.multiply(0.5).multiply(this.viewBoxScale.get()));
+		const center = this.grid.getMaxCoordinates().multiply(0.5);
+		const cameraOffset = cameraCoordinates.subtract(center);
+		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
 }

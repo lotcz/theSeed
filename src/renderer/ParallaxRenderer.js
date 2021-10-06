@@ -1,20 +1,9 @@
 import SvgRenderer from "./SvgRenderer";
+import ImageRenderer from "./ImageRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
-import PlantRenderer from "./PlantRenderer";
-import {BROWN_DARK, BROWN_LIGHT, GROUND_DARK, GROUND_LIGHT, SKY_DARK, SKY_LIGHT} from "./Palette";
-import GroundRenderer from "./GroundRenderer";
-import Vector2 from "../class/Vector2";
-import RockImage from '../../res/img/rock.svg';
-import HillImage from '../../res/img/hill.svg';
-import EggHillsImage from '../../res/img/egghills.svg';
-import StalkImage from '../../res/img/stalk.svg';
-import WaterImage from '../../res/img/water.svg';
-import TreesImage from '../../res/img/trees.svg';
-import GrassImage from '../../res/img/grass.svg';
 
-import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
-import ResourceLoader from "../class/ResourceLoader";
+import {SKY_DARK, SKY_LIGHT} from "./Palette";
 
 const PARALLAX_SIZE = 10;
 
@@ -22,45 +11,28 @@ export default class ParallaxRenderer extends SvgRenderer {
 
 	constructor(game, model, draw) {
 		super(game, model, draw);
-
-		this.grid = game.level.grid;
-
-		this.gridSize = this.grid.getMaxCoordinates();
-		this.center = this.gridSize.multiply(0.5);
 	}
 
 	activateInternal() {
-		this.background = this.draw.group();
-		const max = this.gridSize;
+		console.log(this.model);
+
+		this.grid = this.game.level.grid;
+		this.gridSize = this.grid.getMaxCoordinates();
+		this.center = this.gridSize.multiply(0.5);
+		const background = this.draw.group();
+
 		const linear = this.draw.gradient('linear', function (add) {
 			add.stop(0, SKY_LIGHT);
 			add.stop(1, SKY_DARK);
 			add.from(0, 0);
 			add.to(0, 1);
 		})
-		this.background.rect(max.x, max.y).fill(linear);
-		this.background.back();
+		background.rect(this.gridSize.x, this.gridSize.y).fill(linear);
+		background.back();
 
 		// parallax
 		this.parallax = this.draw.group().addClass('parallax');
 		this.parallax.opacity(0.1);
-		/*
-		this.parallax.filterWith(function(add) {
-			add.gaussianBlur(50)
-		})
-		*/
-
-		/*
-		// SEPIA
-		this.parallax.filterWith(function(add) {
-			add.colorMatrix('matrix', [ .343, .669, .119, 0, 0
-				, .249, .626, .130, 0, 0
-				, .172, .334, .111, 0, 0
-				, .000, .000, .000, 1, 0 ])
-		});
-		*/
-
-		// SEPIA
 
 		this.parallax.filterWith(function (add) {
 			add.colorMatrix('matrix',
@@ -70,41 +42,29 @@ export default class ParallaxRenderer extends SvgRenderer {
 					, .000, .000, .000, 1, 0])
 		});
 
-		this.parallaxLayers = [];
-		const height = max.y;
-		const width = max.x;
-		const _this = this;
+		// TO DO: sort parallax layers by distance
 
-		for (let i = PARALLAX_SIZE; i >= 0; i--) {
-			const layer = this.model.layers[i];
-			if (!layer) continue;
-
-			const fullWidth = width * (1 + (i / PARALLAX_SIZE));
-			const fullHeight = height * (1 + (i / PARALLAX_SIZE));
-			const group = this.parallax.group();
-			const img = group.image(
-				layer,
-				function (e) {
-					img.size(fullWidth, fullHeight);
-					img.move(width / 2, height / 2);
-					_this.renderInternal();
-				}
-			);
-
-			this.parallaxLayers[i] = group;
-		}
+		this.model.children.forEach((layer) => {
+			const layerRenderer = new ImageRenderer(this.game, layer.image, this.parallax);
+			this.addChild(layerRenderer);
+			layerRenderer.activate();
+		});
 
 	}
 
 	renderInternal() {
 		console.log('rendering parallax');
-		for (let i = 0, max = PARALLAX_SIZE; i <= max; i++) {
-			if (this.parallaxLayers[i]) {
-				const layerOffset = this.model.cameraOffset.multiply((i / PARALLAX_SIZE));
-				const layerCenter = this.center.add(layerOffset);
-				this.parallaxLayers[i].center(layerCenter.x, layerCenter.y);
-			}
-		}
+
+		// TO DO: create parallax controller?
+
+		this.model.children.forEach((layer) => {
+			const layerOffset = this.model.cameraOffset.multiply(layer.distance);
+			const layerCenter = this.center.add(layerOffset);
+			layer.image.coordinates.set(layerCenter.x, layerCenter.y);
+		});
+
+		//this.children.forEach((ch) => ch.render());
+
 	}
 
 }

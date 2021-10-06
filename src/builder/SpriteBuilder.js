@@ -1,6 +1,10 @@
 import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+
+import SpriteModel from "../model/SpriteModel";
+import BeeModel from "../model/BeeModel";
+
 import WaterImage from "../../res/img/water.svg";
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import CalciumImage from "../../res/img/calcium.svg";
@@ -15,16 +19,6 @@ import GrasshopperImage from "../../res/img/grasshopper.svg";
 import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
-import SpriteModel from "../model/SpriteModel";
-import BeeModel from "../model/BeeModel";
-
-import {
-	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
-	STRATEGY_TURNER,
-	STRATEGY_WATER,
-	STRATEGY_WORM
-} from "../controller/SpriteController";
 
 export const IMAGE_WATER = 'img/water.svg';
 export const IMAGE_NITROGEN = 'img/nitrogen.svg';
@@ -40,6 +34,15 @@ export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
+
+import {
+	STRATEGY_BUG,
+	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
+	STRATEGY_TURNER,
+	STRATEGY_WATER,
+	STRATEGY_WORM
+} from "../controller/SpriteController";
+
 
 import BeeImage from "../../res/img/bee.svg";
 export const IMAGE_BEE = 'img/bee.svg';

@@ -1,7 +1,6 @@
-import Dirty from "./Dirty";
-import Tree from "./Tree";
+import ModelBase from "../model/ModelBase";
 
-export default class Vector2 extends Tree {
+export default class Vector2 extends ModelBase {
 	x;
 	y;
 
@@ -41,6 +40,7 @@ export default class Vector2 extends Tree {
 		if (this.x !== x) {
 			this.x = x;
 			this.makeDirty();
+			this.triggerEvent('change', this);
 		}
 	}
 
@@ -48,6 +48,7 @@ export default class Vector2 extends Tree {
 		if (this.y !== y) {
 			this.y = y;
 			this.makeDirty();
+			this.triggerEvent('change', this);
 		}
 	}
 
@@ -123,6 +124,10 @@ export default class Vector2 extends Tree {
 		const x = Math.asin(sinX);
 		const angle = -x * 180 / Math.PI;
 		return down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+	}
+
+	addOnChangeListener(eventHandler) {
+		this.addEventListener('change', eventHandler);
 	}
 
 }
