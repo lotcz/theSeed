@@ -72,7 +72,9 @@ export default class GameController extends ControllerBase {
 			save: function() {
 				const state = _this.game.level.getState();
 				console.log(state);
-				localStorage.setItem('beehive-savegame-' + state.name, JSON.stringify(state));
+				const text = JSON.stringify(state);
+				localStorage.setItem('beehive-savegame-' + state.name, text);
+				_this.download('beehive-savegame-' + state.name, text);
 			},
 			load: function() {
 				_this.model.loading.set(true);
@@ -90,6 +92,16 @@ export default class GameController extends ControllerBase {
 		this.gui.add(actions,'save').name('Save');
 
 		this.gui.open();
+	}
+
+	download(filename, text) {
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(text));
+		element.setAttribute('download', filename);
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
 	}
 
 	onResize() {
@@ -177,7 +189,7 @@ export default class GameController extends ControllerBase {
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
 		spriteBuilder.addBugs();
-		//spriteBuilder.addNutrients();
+		spriteBuilder.addNutrients();
 		spriteBuilder.addBee(levelBuilder.startPosition.addY(-10));
 
 		this.hideMenu();

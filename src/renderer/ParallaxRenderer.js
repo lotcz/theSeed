@@ -74,17 +74,18 @@ export default class ParallaxRenderer extends SvgRenderer {
 		const height = max.y;
 		const width = max.x;
 		const _this = this;
-		
+
 		for (let i = PARALLAX_SIZE; i >= 0; i--) {
 			const layer = this.model.layers[i];
 			if (!layer) continue;
 
-			const fullWidth = width * (1 + (0.3 * i / PARALLAX_SIZE));
+			const fullWidth = width * (1 + (i / PARALLAX_SIZE));
+			const fullHeight = height * (1 + (i / PARALLAX_SIZE));
 			const group = this.parallax.group();
 			const img = group.image(
 				layer,
 				function (e) {
-					img.scale(fullWidth / img.width());
+					img.size(fullWidth, fullHeight);
 					img.move(width / 2, height / 2);
 					_this.renderInternal();
 				}
@@ -96,6 +97,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
+		console.log('rendering parallax');
 		for (let i = 0, max = PARALLAX_SIZE; i <= max; i++) {
 			if (this.parallaxLayers[i]) {
 				const layerOffset = this.model.cameraOffset.multiply((i / PARALLAX_SIZE));
