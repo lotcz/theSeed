@@ -44,7 +44,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 
 		// TO DO: sort parallax layers by distance
 
-		this.model.children.forEach((layer) => {
+		this.model.layers.forEach((layer) => {
 			const layerRenderer = new ImageRenderer(this.game, layer.image, this.parallax);
 			this.addChild(layerRenderer);
 			layerRenderer.activate();
@@ -57,7 +57,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 
 		// TO DO: create parallax controller?
 
-		this.model.children.forEach((layer) => {
+		this.model.layers.forEach((layer) => {
 			const layerOffset = this.model.cameraOffset.multiply(layer.distance);
 			const layerCenter = this.center.add(layerOffset);
 			layer.image.coordinates.set(layerCenter.x, layerCenter.y);

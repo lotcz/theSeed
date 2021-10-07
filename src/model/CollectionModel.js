@@ -45,4 +45,8 @@ export default class CollectionModel extends ModelBase {
 		this.removeEventListener('add', listener);
 	}
 
+	forEach(func) {
+		this.children.forEach(func);
+	}
+
 }
