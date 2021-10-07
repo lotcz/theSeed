@@ -15,6 +15,9 @@ import RockImage from '../../res/img/rock.svg';
 
 export const IMAGE_HILL = 'img/hill.svg';
 export const IMAGE_STALK = 'img/stalk.svg';
+export const IMAGE_TREES = 'img/trees.svg';
+export const IMAGE_BULBS = 'img/bulbs.svg';
+export const IMAGE_PLANT = 'img/plant.svg';
 
 export default class LevelBuilder {
 	grid;
@@ -121,6 +124,8 @@ export default class LevelBuilder {
 	parallax() {
 		this.addParallaxLayer(IMAGE_HILL, HillImage, 0.5);
 		this.addParallaxLayer(IMAGE_STALK, StalkImage, 0.8);
+		this.addParallaxLayer(IMAGE_BULBS, BulbsImage, 0.6);
+		this.addParallaxLayer(IMAGE_HILL, HillImage, -0.6);
 		console.log(this.parallaxState);
 		/*
 		this.parallaxState = {

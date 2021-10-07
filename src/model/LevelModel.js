@@ -161,7 +161,6 @@ export default class LevelModel extends ModelBase {
 	}
 
 	updateCameraOffset() {
-		console.log('updating offset');
 		const cameraCoordinates = this.viewBoxCoordinates.add(this.viewBoxSize.multiply(0.5).multiply(this.viewBoxScale.get()));
 		const center = this.grid.getMaxCoordinates().multiply(0.5);
 		const cameraOffset = cameraCoordinates.subtract(center);

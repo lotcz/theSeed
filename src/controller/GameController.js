@@ -76,7 +76,7 @@ export default class GameController extends ControllerBase {
 				console.log(state);
 				const text = JSON.stringify(state);
 				localStorage.setItem('beehive-savegame-' + state.name, text);
-				_this.download('beehive-savegame-' + state.name, text);
+				//_this.download('beehive-savegame-' + state.name, text);
 			},
 			load: function() {
 				_this.model.loading.set(true);

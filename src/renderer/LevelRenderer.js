@@ -21,13 +21,10 @@ export default class LevelRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 		this.group.addClass('level');
 
-		// PARALLAX
-		this.parallax = this.group.group();
-		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.parallax);
-		this.addChild(this.parallaxRenderer);
+		this.background = this.group.group().addClass('background');
 
 		// GROUND
-		this.ground = this.group.group();
+		this.ground = this.group.group().addClass('ground');
 		const groundGradient = this.group.gradient('linear', function(add) {
 			add.stop(0, GROUND_LIGHT);
 			add.stop(1, GROUND_DARK);
@@ -38,18 +35,22 @@ export default class LevelRenderer extends SvgRenderer {
 		this.addChild(this.groundRenderer);
 
 		// FOREGROUND
-		this.foreground = this.group.group();
+		this.foreground = this.group.group().addClass('foreground');
 		this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
 		this.addChild(this.plantRenderer);
 
+		// PARALLAX
+		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
+		this.addChild(this.parallaxRenderer);
+
 		// SPRITES
-		this.sprites =this.group.group();
+		this.sprites =this.group.group().addClass('sprites');
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, this.model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 
 		// INVENTORY
 		if (this.model.inventory) {
-			this.inventory = this.group.group();
+			this.inventory = this.group.group().addClass('inventory');
 			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
 			this.addChild(this.inventoryRenderer);
 		}
