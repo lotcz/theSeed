@@ -1,21 +1,24 @@
 import SvgRenderer from "./SvgRenderer";
-import {BROWN_DARK, GROUND_DARK} from "./Palette";
+import {BROWN_DARK, GROUND_DARK, GROUND_LIGHT} from "./Palette";
+import {GROUND_TYPE_BASIC} from "../model/GroundTileModel";
 
 const DEBUG_GROUND = true;
 
-export default class GroundRenderer extends SvgRenderer {
-	path;
-	fill;
-	stroke;
-	group;
-	grid;
+const GROUND_STYLE_BASIC = {
+		fill: GROUND_LIGHT,
+		stroke: { width: 4, color: GROUND_DARK}
+	};
 
-	constructor(game, model, draw, fill, stroke) {
+const GROUND_STYLE = [
+	GROUND_TYPE_BASIC => GROUND_STYLE_BASIC
+];
+
+export default class GroundRenderer extends SvgRenderer {
+	group;
+
+	constructor(game, model, draw) {
 		super(game, model, draw);
-		this.fill = fill;
-		this.stroke = stroke;
 		this.group = null;
-		this.grid = game.level.grid;
 	}
 
 	renderDebugGridTile(position) {

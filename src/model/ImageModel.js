@@ -57,7 +57,7 @@ export default class ImageModel extends ModelBase {
 			this.path = state.path;
 		}
 		if (state.size) {
-			this.setFromArray(state.size);
+			this.size.setFromArray(state.size);
 		}
 	}
 

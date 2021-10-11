@@ -25,13 +25,7 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// GROUND
 		this.ground = this.group.group().addClass('ground');
-		const groundGradient = this.group.gradient('linear', function(add) {
-			add.stop(0, GROUND_LIGHT);
-			add.stop(1, GROUND_DARK);
-			add.from(0, 0);
-			add.to(0,1);
-		});
-		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
+		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground);
 		this.addChild(this.groundRenderer);
 
 		// FOREGROUND

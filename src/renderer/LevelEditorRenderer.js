@@ -33,18 +33,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 				const text = JSON.stringify(state);
 				localStorage.setItem('beehive-savegame-' + state.name, text);
 				//_this.download('beehive-savegame-' + state.name, text);
-			},
-			load: () => {
-				this.level.loading.set(true);
-				const name = this.level.name;
-				const store = localStorage.getItem('beehive-savegame-' + name);
-				const state = JSON.parse(store);
-				const level = new LevelModel(state);
-				this.loadLevel(level);
 			}
 		};
 
-		this.gui.add(actions,'load').name('Load');
 		this.gui.add(actions,'save').name('Save');
 
 		this.gui.add(this.model, 'selectedGroundType', this.model.groundTypes);

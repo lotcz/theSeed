@@ -13,17 +13,19 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	addGroundTile(position) {
-		const visitors = this.level.grid.chessboard.getTile(position);
+		const visitors = this.chessboard.getTile(position);
 		console.log(visitors);
 		const groundVisitors = visitors.filter((v) => v._is_ground === true);
 		if (groundVisitors.length === 0) {
 			const groundType = this.model.selectedGroundType;
-			if (groundType === GROUND_TYPE_EMPTY) {
-				this.level.ground.removeTile(position);
-			} else {
+			if (groundType !== GROUND_TYPE_EMPTY) {
 				this.level.ground.addTile({position: position.toArray(), type: groundType});
 			}
 			console.log('Tile added');
+		} else {
+			if (this.model.selectedGroundType === GROUND_TYPE_EMPTY) {
+				this.level.ground.removeTile(groundVisitors[0]);
+			}
 		}
 	}
 
@@ -69,7 +71,7 @@ export default class LevelEditorController extends ControllerBase {
 		if (this.controls.mouseDownRight) {
 			if (this.lastMouseCoords !== null) {
 				const diff = this.lastMouseCoords.subtract(this.controls.mouseCoords);
-				this.level.viewBoxCoordinates.set(this.model.level.viewBoxCoordinates.x + (diff.x * speed), this.level.viewBoxCoordinates.y + (diff.y * speed));
+				this.level.viewBoxCoordinates.set(this.level.viewBoxCoordinates.x + (diff.x * speed), this.level.viewBoxCoordinates.y + (diff.y * speed));
 				this.level.sanitizeViewBox();
 			}
 			this.lastMouseCoords = this.controls.mouseCoords;

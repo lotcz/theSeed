@@ -93,7 +93,7 @@ export default class GameController extends ControllerBase {
 		}
 		builder.setSize(this.model.viewBoxSize);
 		const menu = builder.build();
-		this.model.setMenu(menu);
+		this.model.menu.set(menu);
 		if (this.model.level && this.model.level.inventory)
 			this.levelController.deactivate();
 	}
