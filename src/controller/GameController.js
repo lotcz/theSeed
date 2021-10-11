@@ -13,19 +13,22 @@ import {
 } from "../builder/GroundBuilder";
 import MenuBuilder from "../builder/MenuBuilder";
 import SpriteBuilder from "../builder/SpriteBuilder";
+import LevelEditorController from "./LevelEditorController";
+import LevelEditorModel from "../model/LevelEditorModel";
 
 export default class GameController extends ControllerBase {
 	constructor(model, controls) {
 		super(model, model, controls);
 
 		this.onResizeEvent = () => this.onResize();
-		this.gui = null;
+
+		this.editorController = null;
 	}
 
 	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
-		this.reset();
+		this.newGame();
 	}
 
 	reset() {
@@ -35,81 +38,25 @@ export default class GameController extends ControllerBase {
 
 	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
-		if (this.gui) this.gui.destroy();
 	}
 
-	loadLevel(levelModel) {
-		this.model.loading.set(true);
+	setActiveLevel(levelModel) {
 		if (this.levelController) this.removeChild(this.levelController);
-		this.model.setLevel(levelModel);
-		this.levelController = new LevelController(this.model, this.model.level, this.controls);
+		this.model.level.set(levelModel);
+		this.levelController = new LevelController(this.model, this.model.level.get(), this.controls);
 		this.addChild(this.levelController);
 		this.levelController.activate();
 		this.showPlayMenu();
 		this.onResize();
-
-		if (this.gui) this.gui.destroy();
-		this.gui = new dat.GUI();
-		this.gui.add(this.model.level, 'name').listen();
-		const gridFolder = this.gui.addFolder('grid')
-		gridFolder.add(this.model.level.grid, 'scale').listen();
-		const gridsizeFolder = gridFolder.addFolder('size')
-		gridsizeFolder.add(this.model.level.grid.size, 'x').listen();
-		gridsizeFolder.add(this.model.level.grid.size, 'y').listen();
-		const scaleFolder = this.gui.addFolder('viewBoxScale')
-		scaleFolder.add(this.model.level.viewBoxScale, 'value', 0, 100).listen();
-		const sizeFolder = this.gui.addFolder('viewBoxSize')
-		sizeFolder.add(this.model.level.viewBoxSize, 'x').listen();
-		sizeFolder.add(this.model.level.viewBoxSize, 'y').listen();
-		const positionFolder = this.gui.addFolder('viewBoxCoordinates')
-		positionFolder.add(this.model.level.viewBoxCoordinates, 'x').listen();
-		positionFolder.add(this.model.level.viewBoxCoordinates, 'y').listen();
-		const parallaxFolder = this.gui.addFolder('Parallax Camera Offset')
-		parallaxFolder.add(this.model.level.parallax.cameraOffset, 'x').listen();
-		parallaxFolder.add(this.model.level.parallax.cameraOffset, 'y').listen();
-
-		const _this = this;
-
-		var actions = {
-			save: function() {
-				const state = _this.game.level.getState();
-				console.log(state);
-				const text = JSON.stringify(state);
-				localStorage.setItem('beehive-savegame-' + state.name, text);
-				//_this.download('beehive-savegame-' + state.name, text);
-			},
-			load: function() {
-				_this.model.loading.set(true);
-				const name = _this.model.level.name;
-				const store = localStorage.getItem('beehive-savegame-' + name);
-				console.log(store);
-				const state = JSON.parse(store);
-				console.log(state);
-				const level = new LevelModel(state);
-				_this.loadLevel(level);
-			}
-		};
-
-		this.gui.add(actions,'load').name('Load');
-		this.gui.add(actions,'save').name('Save');
-
-		this.gui.open();
-	}
-
-	download(filename, text) {
-		var element = document.createElement('a');
-		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(text));
-		element.setAttribute('download', filename);
-		element.style.display = 'none';
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
+		if (this.model.isInEditMode.get()) {
+			this.activateEditor();
+		}
 	}
 
 	onResize() {
 		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
-		if (this.model.level)
-			this.model.level.viewBoxSize.set(this.model.viewBoxSize);
+		if (!this.model.level.isEmpty())
+			this.model.level.get().viewBoxSize.set(this.model.viewBoxSize);
 	}
 
 	loadBackground() {
@@ -129,7 +76,7 @@ export default class GameController extends ControllerBase {
 		spriteBuilder.addBugs();
 		spriteBuilder.addNutrients();
 
-		this.loadLevel(level);
+		this.setActiveLevel(level);
 	}
 
 	showMainMenu() {
@@ -155,17 +102,17 @@ export default class GameController extends ControllerBase {
 		const builder = new MenuBuilder();
 		builder.setStartPosition(this.model.viewBoxSize.multiply(0.2));
 		builder.setCss('main');
-		builder.addLine("Level 1", (e) => this.loadSavegame('level-1'));
-		builder.addLine("Level 2", (e) => this.loadSavegame('level-2'));
-		builder.addLine("Playground", (e) => this.loadSavegame('playground'));
+		builder.addLine("Level 1", (e) => this.loadSaveGame('level-1'));
+		builder.addLine("Level 2", (e) => this.loadSaveGame('level-2'));
+		builder.addLine("Playground", (e) => this.loadSaveGame('playground'));
 		builder.addLine("Back", (e) => this.showMainMenu());
 		builder.setSize(this.model.viewBoxSize);
 		const menu = builder.build();
-		this.model.setMenu(menu);
+		this.model.menu.set(menu);
 	}
 
 	hideMenu() {
-		this.model.setMenu(null);
+		this.model.menu.set(null);
 	}
 
 	showPlayMenu() {
@@ -174,7 +121,7 @@ export default class GameController extends ControllerBase {
 		builder.setCss('play');
 		builder.addLine("pause", (e) => this.showMainMenu());
 		const menu = builder.build();
-		this.model.setMenu(menu);
+		this.model.menu.set(menu);
 	}
 
 	resume() {
@@ -183,24 +130,27 @@ export default class GameController extends ControllerBase {
 	}
 
 	newGame() {
-		const size = new Vector2(500, 50);
-		const scale = 150;
+		const size = new Vector2(500, 375);
+		const scale = 50;
 
 		const levelBuilder = new LevelBuilder(size, scale);
-		levelBuilder.setName('newgame');
+		levelBuilder.setName('new-game');
 		const level = levelBuilder.build();
 		const spriteBuilder = new SpriteBuilder(level);
-		spriteBuilder.addBugs();
-		spriteBuilder.addNutrients();
-		spriteBuilder.addBee(levelBuilder.startPosition.addY(-10));
+		//spriteBuilder.addBugs();
+		//spriteBuilder.addNutrients();
+		//spriteBuilder.addBee(levelBuilder.startPosition.addY(-10));
 
 		this.hideMenu();
-		this.loadLevel(level);
+		this.setActiveLevel(level);
 	}
 
-	loadSavegame(name) {
+	loadSaveGame(name) {
+		this.model.level.set(null);
+		this.deactivateEditor();
+
 		const store = localStorage.getItem('beehive-savegame-' + name);
-		var level = null;
+		let level = null;
 		if (store) {
 			const state = JSON.parse(store);
 			level = new LevelModel(state);
@@ -217,8 +167,39 @@ export default class GameController extends ControllerBase {
 		}
 
 		this.hideMenu();
-		this.loadLevel(level);
-
+		this.setActiveLevel(level);
 	}
 
+	activateEditor() {
+		this.deactivateEditor();
+		const editor = new LevelEditorModel(this.model.level.get());
+		this.model.editor.set(editor);
+		this.editorController = new LevelEditorController(this.game, editor, this.controls);
+		this.addChild(this.editorController);
+		this.editorController.activate();
+	}
+
+	deactivateEditor() {
+		this.model.editor.set(null);
+		if (this.editorController !== null) {
+			this.removeChild(this.editorController);
+			this.editorController = null;
+		}
+	}
+
+	updateInternal() {
+		if (this.controls.menuRequested.isDirty()) {
+			if (this.controls.menuRequested.get()) {
+				if (!this.model.isInEditMode.get()) {
+					this.mode.isInEditMode.set(true);
+					this.activateEditor();
+				} else {
+					this.mode.isInEditMode.set(false);
+					this.deactivateEditor();
+				}
+			}
+			this.controls.menuRequested.set(false);
+			this.controls.menuRequested.clean();
+		}
+	}
 }

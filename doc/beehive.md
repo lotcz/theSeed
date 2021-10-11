@@ -1,0 +1,5 @@
+- start in basic beehive with a queen
+- collect pollen and nectar
+- bring it to the hive to create honey
+- queen can eat and then lay eggs
+-

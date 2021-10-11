@@ -5,7 +5,7 @@ export default class DirtyValue extends ModelBase {
 
 	constructor(value) {
 		super();
-		this.value = value;
+		this.value = value || null;
 	}
 
 	addOnChangeListener(eventHandler) {
@@ -22,6 +22,10 @@ export default class DirtyValue extends ModelBase {
 
 	get() {
 		return this.value;
+	}
+
+	isEmpty() {
+		return this.value === null || this.value === undefined;
 	}
 
 }

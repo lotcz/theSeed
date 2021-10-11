@@ -7,7 +7,7 @@ export default class PlantController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
-		this.grid = game.level.grid;
+		this.grid = game.level.get().grid;
 
 		this.model.roots.forEach((r) => this.grid.chessboard.addVisitor(r.position, r));
 		this.model.stem.forEach((s) => this.grid.chessboard.addVisitor(s.position, s));

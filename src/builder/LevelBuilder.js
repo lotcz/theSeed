@@ -24,7 +24,7 @@ export default class LevelBuilder {
 
 	constructor(size, scale) {
 
-		this.viewboxScale = 3;
+		this.viewboxScale = 1;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
 		this.parallaxState = {
 			cameraOffset: [0, 0],
@@ -125,7 +125,8 @@ export default class LevelBuilder {
 		this.addParallaxLayer(IMAGE_HILL, HillImage, 0.5);
 		this.addParallaxLayer(IMAGE_STALK, StalkImage, 0.8);
 		this.addParallaxLayer(IMAGE_BULBS, BulbsImage, 0.6);
-		this.addParallaxLayer(IMAGE_HILL, HillImage, -0.6);
+		this.addParallaxLayer(IMAGE_TREES, TreesImage, 0.3);
+		//this.addParallaxLayer(IMAGE_PLANT, PlantImage, 0.4);
 		console.log(this.parallaxState);
 		/*
 		this.parallaxState = {

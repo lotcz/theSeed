@@ -49,22 +49,19 @@ export default class LevelRenderer extends SvgRenderer {
 		this.addChild(this.spritesRenderer);
 
 		// INVENTORY
+		/*
 		if (this.model.inventory) {
 			this.inventory = this.group.group().addClass('inventory');
 			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
 			this.addChild(this.inventoryRenderer);
 		}
-
+		*/
 		//Bee
 		if (this.model.bee) {
 			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
 			this.addChild(this.beeRenderer);
 		}
 
-	}
-
-	deactivateInternal() {
-		if (this.group) this.group.remove();
 	}
 
 	renderGridTile(position, stroke) {
@@ -95,6 +92,10 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 	}
 
+	deactivateInternal() {
+		if (this.group) this.group.remove();
+	}
+
 	renderInternal() {
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
 			if (HIDE_WHEN_OUTTA_SIGHT) {
@@ -110,7 +111,7 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
-		if (this.model.highlightedTilePosition.isDirty() && this.model.inventory !== null) {
+		if (this.model.highlightedTilePosition.isDirty()) {
 			this.renderHighlights(this.model.highlightedTilePosition);
 			this.model.highlightedTilePosition.clean();
 		}

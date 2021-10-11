@@ -28,7 +28,7 @@ export default class PlantRenderer extends SvgRenderer {
 		const power = Math.max(this.model.roots.power, this.model.stem.power);
 		const width = 10 + Math.min(25, power);
 		const height = width * 0.8;
-		const coordinates = this.game.level.grid.getCoordinates(this.model.roots.position);
+		const coordinates = this.grid.getCoordinates(this.model.roots.position);
 		this.ringOuter = this.plantGroup.path(
 			`m ${coordinates.x + width}, ${coordinates.y - (height*0.3)} c` +
 			`0,${height/2} ${-width/2},${height} ${-width},${height} ` +

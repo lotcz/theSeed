@@ -27,8 +27,8 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	findEmptyNeighbor() {
-		const neighbors = this.game.level.grid.getNeighbors(this.position);
-		const empty = neighbors.filter((n) => this.game.level.grid.chessboard.getTile(n).length === 0);
+		const neighbors = this.grid.getNeighbors(this.position);
+		const empty = neighbors.filter((n) => this.chessboard.getTile(n).length === 0);
 		return Pixies.randomElement(empty);
 	}
 
@@ -36,7 +36,7 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 		const position = this.findEmptyNeighbor();
 		if (!position) return;
 
-		const spriteBuilder = new SpriteBuilder(this.game.level);
+		const spriteBuilder = new SpriteBuilder(this.level);
 		const spawn = spriteBuilder.addSprite(position, this.model.image.scale.get(), this.model.image.flipped.get(), this.model.image.rotation.get(), this.model.image.path, this.model.strategy.get(), this.model.data);
 		//this.model.data.amount -= WATER_UNIT_SIZE;
 		this.model.makeDirty();

@@ -13,10 +13,10 @@ export default class EventManager {
 	}
 
 	removeEventListener(eventName, eventHandler) {
-		if (!this.handlers[eventName]) {
-			return;
+		const index = this.handlers.indexOf(eventHandler);
+		if (index >= 0) {
+			this.handlers.splice(index, 1);
 		}
-		tile.handlers.splice(this.handlers.indexOf(eventHandler), 1);
 	}
 
 	triggerEvent(eventName, sender, param) {

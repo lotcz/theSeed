@@ -6,6 +6,7 @@ export default class BeeRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		model.image.size = this.grid.tileSize;
 		this.imageRenderer = new ImageRenderer(game, model.image, draw);
 		this.addChild(this.imageRenderer);
 /*
@@ -13,6 +14,10 @@ export default class BeeRenderer extends SvgRenderer {
 		this.gui.add(this.model.direction, 'x').listen();
 		this.gui.add(this.model.direction, 'y').listen();
 */
+
+	}
+
+	activateInternal() {
 
 	}
 

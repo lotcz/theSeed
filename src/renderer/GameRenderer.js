@@ -6,10 +6,17 @@ import ResourceLoader from "../class/ResourceLoader";
 import InventoryRenderer from "./InventoryRenderer";
 import MenuRenderer from "./MenuRenderer";
 import DirtyValue from "../class/DirtyValue";
+import LevelEditorRenderer from "./LevelEditorRenderer";
+import MenuBuilder from "../builder/MenuBuilder";
+import TextRenderer from "./TextRenderer";
 
 const DEBUG_FPS = true;
 
 export default class GameRenderer extends SvgRenderer {
+	loadingScreenRenderer;
+	levelRenderer;
+	menuRenderer;
+	editorRenderer;
 
 	constructor(model, draw) {
 		super(model, model, draw);
@@ -21,35 +28,12 @@ export default class GameRenderer extends SvgRenderer {
 
 		draw.fill('black');
 
-		this.loadingScreen = null;
+		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
+		this.editorRenderer = null;
 
 		this.showLoading();
-	}
-
-	showLoading() {
-		this.hideLoading();
-		this.loadingScreen = this.draw.text(
-			function(add) {
-				add.tspan('Loading...')
-			}
-		).font({
-			family:   'Helvetica',
-			size:     144,
-			anchor:   'middle',
-			leading:  '1.5em'
-		}).fill('blue');
-
-		const center = this.model.viewBoxSize.multiply(0.5);
-		this.loadingScreen.center(center.x, center.y);
-		this.loadingScreen.front();
-		//this.loadingScreen.path('M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80');
-	}
-
-	hideLoading() {
-		if (this.loadingScreen) this.loadingScreen.remove();
-		this.loadingScreen = null;
 	}
 
 	render() {
@@ -62,28 +46,31 @@ export default class GameRenderer extends SvgRenderer {
 			this.model.viewBoxSize.clean();
 		}
 
-		if (this.model.levelChanged.isDirty()) {
-			if (this.model.levelChanged.get()) {
-				this.model.levelChanged.set(false);
-				this.loadLevel();
-			}
-			this.model.levelChanged.clean();
-		}
-
-		if (this.model.loading.isDirty()) {
-			if (this.model.loading.get())
+		if (this.model.level.isDirty()) {
+			if (this.model.level.isEmpty()) {
+				this.hideLevel();
 				this.showLoading();
-			else
-				this.hideLoading();
-			this.model.loading.clean();
+			} else {
+				this.showLevel();
+			}
+			this.model.level.clean();
 		}
 
-		if (this.model.menuChanged.isDirty()) {
-			if (this.model.menuChanged.get()) {
-				this.model.menuChanged.set(false);
+		if (this.model.menu.isDirty()) {
+			if (this.model.menu.isEmpty()) {
+				this.hideMenu();
+			} else {
 				this.showMenu();
 			}
-			this.model.menuChanged.clean();
+			this.model.menu.clean();
+		}
+
+		if (this.model.editor.isDirty()) {
+			if (this.model.editor.get())
+				this.showEditor();
+			else
+				this.hideEditor();
+			this.model.editor.clean();
 		}
 
 		this.children.forEach((r) => r.render());
@@ -91,28 +78,77 @@ export default class GameRenderer extends SvgRenderer {
 		this.model.clean();
 	}
 
+	showLoading() {
+		this.hideLoading();
+		const builder = new MenuBuilder();
+		const center = this.model.viewBoxSize.multiply(0.5);
+		builder.setStartPosition(center);
+		const line = builder.addLine('Loading...');
+		this.loadingScreenRenderer = new TextRenderer(this.game, line.text, this.draw);
+		this.addChild(this.loadingScreenRenderer);
+		this.loadingScreenRenderer.activate();
+	}
+
+	hideLoading() {
+		if (this.loadingScreenRenderer) this.removeChild(this.loadingScreenRenderer);
+		this.loadingScreenRenderer = null;
+	}
+
 	showMenu() {
-		if (this.menuRenderer) this.removeChild(this.menuRenderer);
-		if (this.game.menu && !this.game.menu.closed) {
-			this.menuRenderer = new MenuRenderer(this.game, this.game.menu, this.draw);
-			this.addChild(this.menuRenderer);
-			this.menuRenderer.activate();
+		this.hideMenu();
+		if (!this.game.menu.isEmpty()) {
+			if (!this.game.menu.get().closed) {
+				this.menuRenderer = new MenuRenderer(this.game, this.game.menu.get(), this.draw);
+				this.addChild(this.menuRenderer);
+				this.menuRenderer.activate();
+			}
 		}
 	}
 
-	loadLevel() {
+	hideMenu() {
+		if (this.menuRenderer) this.removeChild(this.menuRenderer);
+		this.menuRenderer = null;
+	}
+
+	showLevel() {
+		this.hideLevel();
+		this.hideEditor();
+		this.hideMenu();
 		this.showLoading();
-		if (this.levelRenderer) this.removeChild(this.levelRenderer);
-		if (this.game.level) {
-			this.model.loading.set(true);
-			const loader = new ResourceLoader(this.draw, this.game.level.resources);
+
+		if (!this.game.level.isEmpty()) {
+			const loader = new ResourceLoader(this.draw, this.game.level.get().resources);
 			loader.load(() => {
-				this.model.loading.set(false);
-				this.levelRenderer = new LevelRenderer(this.game, this.game.level, this.draw);
+				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw);
 				this.addChild(this.levelRenderer);
 				this.levelRenderer.activate();
 				this.hideLoading();
+				this.showMenu();
+				if (this.model.editor.get()) {
+					this.showEditor();
+				}
 			});
+		}
+	}
+
+	hideLevel() {
+		if (this.levelRenderer) this.removeChild(this.levelRenderer);
+		this.levelRenderer = null;
+	}
+
+	showEditor() {
+		this.hideEditor();
+		if (!this.model.editor.isEmpty()) {
+			this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor.get(), this.draw);
+			this.addChild(this.editorRenderer);
+			this.editorRenderer.activate();
+		}
+	}
+
+	hideEditor() {
+		if (this.editorRenderer !== null) {
+			this.removeChild(this.editorRenderer);
+			this.editorRenderer = null;
 		}
 	}
 

@@ -15,11 +15,11 @@ export default class SpriteRenderer extends SvgRenderer {
 
 	updateOuttaSight() {
 		if (!this.imageRenderer.isActivated()) {
-			if (this.game.level.isCoordinateInView(this.model.image.coordinates)) {
+			if (this.level.isCoordinateInView(this.model.image.coordinates)) {
 				this.imageRenderer.activate();
 			}
 		} else if (this.imageRenderer.isActivated()) {
-			if (!this.game.level.isCoordinateInView(this.model.image.coordinates)) {
+			if (!this.level.isCoordinateInView(this.model.image.coordinates)) {
 				this.imageRenderer.deactivate();
 			}
 		}

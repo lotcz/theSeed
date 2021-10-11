@@ -72,10 +72,17 @@ export default class ImageRenderer extends SvgRenderer {
 		this.model.rotation.clean();
 	}
 
+	updateSize() {
+		if (this.model.size) {
+			this.group.size(this.model.size.x, this.model.size.y);
+		}
+	}
+
 	updateFromModel() {
+		this.updateSize();
 		this.updateScale();
 		this.updateFlip();
-		this.updateRotation()
+		this.updateRotation();
 	}
 
 	renderInternal() {
@@ -90,6 +97,9 @@ export default class ImageRenderer extends SvgRenderer {
 		}
 		if (this.model.rotation.isDirty()) {
 			this.updateRotation();
+		}
+		if (this.model.size && this.model.size.isDirty()) {
+			this.updateSize();
 		}
 	}
 

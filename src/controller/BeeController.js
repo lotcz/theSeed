@@ -14,7 +14,7 @@ export default class BeeController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
-		this.model.image.coordinates.set(this.game.level.grid.getCoordinates(this.model.position));
+		this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
 	}
 
 	updateInternal(delta) {
@@ -55,7 +55,7 @@ export default class BeeController extends ControllerBase {
 		// apply movement
 		if (speed > 0) {
 			let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
-			this.game.level.centerOnCoordinates(coords);
+			this.level.centerOnCoordinates(coords);
 			this.model.image.coordinates.set(coords);
 		}
 

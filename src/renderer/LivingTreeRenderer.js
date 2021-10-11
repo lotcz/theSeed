@@ -12,7 +12,6 @@ export default class LivingTreeRenderer extends SvgRenderer {
 	stroke;
 	curves;
 	group;
-	grid;
 
 	constructor(game, model, draw, upwards, fill, stroke, curves) {
 		super(game, model, draw);
@@ -21,7 +20,6 @@ export default class LivingTreeRenderer extends SvgRenderer {
 		this.stroke = stroke;
 		this.curves = curves;
 		this.group = null;
-		this.grid = game.level.grid;
 	}
 
 	getNodeRadius(node) {
