@@ -36,10 +36,9 @@ export default class ParallaxRenderer extends SvgRenderer {
 					, .000, .000, .000, 1, 0])
 		});
 
-		// TO DO: sort parallax layers by distance
+		// TODO: sort parallax layers by distance
 
 		this.model.layers.forEach((layer) => {
-			console.log(layer);
 			layer.image.size = this.gridSize;
 			const layerRenderer = new ImageRenderer(this.game, layer.image, layer.distance < 0 ? this.foreground : parallaxBack);
 			this.addChild(layerRenderer);
@@ -54,9 +53,6 @@ export default class ParallaxRenderer extends SvgRenderer {
 			const layerCenter = this.center.add(layerOffset);
 			layer.image.coordinates.set(layerCenter.x, layerCenter.y);
 		});
-
-		//this.children.forEach((ch) => ch.render());
-
 	}
 
 }

@@ -32,6 +32,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 				const state = this.level.getState();
 				const text = JSON.stringify(state);
 				localStorage.setItem('beehive-savegame-' + state.name, text);
+				console.log('Level saved.');
 				//_this.download('beehive-savegame-' + state.name, text);
 			}
 		};

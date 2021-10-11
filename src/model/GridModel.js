@@ -7,6 +7,12 @@ const NEIGHBOR_DOWN = new Vector2(0, 1);
 const NEIGHBOR_LEFT = new Vector2(-1, 0);
 const NEIGHBOR_RIGHT = new Vector2(1, 0);
 
+export const CORNER_RIGHT = 0;
+export const CORNER_LOWER_RIGHT = 1;
+export const CORNER_LOWER_LEFT = 2;
+export const CORNER_LEFT = 3;
+export const CORNER_UPPER_LEFT = 4;
+export const CORNER_UPPER_RIGHT = 5;
 
 export default class GridModel extends ModelBase {
 	size;
@@ -45,14 +51,18 @@ export default class GridModel extends ModelBase {
 		const corners = [];
 		const coordinates = this.getCoordinates(position);
 		for (let i = 0, max = 6; i < max; i++) {
-			corners.push(this.pointCorner(coordinates, i));
+			corners.push(this.getCornerFromCoordinates(coordinates, i));
 		}
 		return corners;
 	}
 
-	pointCorner(center, i) {
+	getCornerFromCoordinates(coordinates, i) {
 		const angle_rad = (Math.PI/3 * i);
-		return new Vector2(center.x + this.scale * Math.cos(angle_rad), center.y + this.scale * Math.sin(angle_rad));
+		return new Vector2(coordinates.x + this.scale * Math.cos(angle_rad), coordinates.y + this.scale * Math.sin(angle_rad));
+	}
+
+	getCorner(position, i) {
+		return this.getCornerFromCoordinates(this.getCoordinates(position), i);
 	}
 
 	getNeighbors(position) {

@@ -15,6 +15,15 @@ export default class Chessboard {
 		return this.tiles[position.x][position.y];
 	}
 
+	getVisitors(position, filter) {
+		const tile = this.getTile(position);
+		if (filter) {
+			return tile.filter(filter);
+		} else {
+			return tile;
+		}
+	}
+
 	addVisitor(position, visitor) {
 		let tile = this.getTile(position);
 		tile.push(visitor);
