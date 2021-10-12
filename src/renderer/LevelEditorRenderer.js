@@ -39,7 +39,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		this.gui.add(actions,'save').name('Save');
 
+		this.gui.add(this.model, 'selectedMode', this.model.modes);
+		this.gui.add(this.model, 'brush');
 		this.gui.add(this.model, 'selectedGroundType', this.model.groundTypes);
+		this.gui.add(this.model, 'selectedSpriteType', this.model.spriteTypes);
+
 
 		const gridFolder = this.gui.addFolder('grid')
 		gridFolder.add(this.grid, 'scale').listen();

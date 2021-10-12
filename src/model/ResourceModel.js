@@ -23,8 +23,7 @@ export default class ResourceModel extends ModelBase {
 		return {
 			uri: this.uri,
 			data: this.data,
-			resType: this.resType,
-			children: this.getChildrenState()
+			resType: this.resType
 		}
 	}
 
@@ -32,7 +31,6 @@ export default class ResourceModel extends ModelBase {
 		this.uri = state.uri;
 		this.data = state.data;
 		this.resType = state.resType;
-		if (state.children) this.restoreChildren(state.children, (ch) => new ResourceModel(ch));
 	}
 
 }

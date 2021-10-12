@@ -9,6 +9,7 @@ import DirtyValue from "../class/DirtyValue";
 import LevelEditorRenderer from "./LevelEditorRenderer";
 import MenuBuilder from "../builder/MenuBuilder";
 import TextRenderer from "./TextRenderer";
+import ResourcesLoader from "../class/ResourcesLoader";
 
 const DEBUG_FPS = true;
 
@@ -117,7 +118,7 @@ export default class GameRenderer extends SvgRenderer {
 		this.showLoading();
 
 		if (!this.game.level.isEmpty()) {
-			const loader = new ResourceLoader(this.draw, this.game.level.get().resources);
+			const loader = new ResourcesLoader(this.draw, this.game.level.get().resources);
 			loader.load(() => {
 				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw);
 				this.addChild(this.levelRenderer);

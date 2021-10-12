@@ -9,12 +9,14 @@ import CollectionModel from "./CollectionModel";
 import ResourceModel from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
 import InventoryModel from "./InventoryModel";
+import BeeModel from "./BeeModel";
 
 export default class LevelModel extends ModelBase {
 	name;
 	grid;
 	parallax;
 	plant;
+	bee;
 	sprites;
 	resources;
 	viewBoxScale;
@@ -45,7 +47,8 @@ export default class LevelModel extends ModelBase {
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
-			inventory: this.inventory.getState()
+			inventory: this.inventory.getState(),
+			bee: this.bee ? this.bee.getState() : null
 		}
 	}
 
@@ -58,13 +61,17 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.plant);
 		this.ground = new GroundModel(state.ground);
 		this.addChild(this.ground);
+		if (state.bee) {
+			this.bee = new BeeModel(state.bee);
+			this.addChild(this.bee);
+		}
 		this.sprites = new CollectionModel();
 		if (state.sprites) {
 			this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		}
 		this.addChild(this.sprites);
 
-		this.resources = new ResourceModel(state.resources);
+		this.resources = new CollectionModel(state.resources, (r) => new ResourceModel(r));
 		this.addChild(this.resources);
 
 		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
@@ -93,7 +100,7 @@ export default class LevelModel extends ModelBase {
 		if (existing.length > 0) {
 			console.log(`Resource URI ${uri} already exists.`);
 		} else {
-			this.resources.addChild(new ResourceModel({resType: resType, uri: uri, data: data}));
+			this.resources.add(new ResourceModel({resType: resType, uri: uri, data: data}));
 		}
 	}
 

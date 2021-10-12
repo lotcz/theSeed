@@ -12,6 +12,7 @@ import EggHillsImage from "../../res/img/egghills.svg";
 import BulbsImage from "../../res/img/bulbs.svg";
 import PlantImage from '../../res/img/plant.svg';
 import RockImage from '../../res/img/rock.svg';
+import CollectionModel from "../model/CollectionModel";
 
 export const IMAGE_HILL = 'img/hill.svg';
 export const IMAGE_STALK = 'img/stalk.svg';
@@ -36,7 +37,7 @@ export default class LevelBuilder {
 		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
 
 		this.name = 'level-0';
-		this.resources = new ResourceModel({resType: RESOURCE_TYPE_GROUP});
+		this.resources = new CollectionModel();
 	}
 
 	setName(name) {
@@ -44,7 +45,7 @@ export default class LevelBuilder {
 	}
 
 	addResource(resType, uri, data) {
-		this.resources.addChild(new ResourceModel({resType: resType, uri: uri, data: data}));
+		this.resources.add(new ResourceModel({resType: resType, uri: uri, data: data}));
 	}
 
 	setViewBoxScale(scale) {

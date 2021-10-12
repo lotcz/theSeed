@@ -8,6 +8,8 @@ import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ParallaxRenderer from "./ParallaxRenderer";
 import Vector2 from "../class/Vector2";
 import InventoryRenderer from "./InventoryRenderer";
+import ResourceLoader from "../class/ResourceLoader";
+import CollectionModel from "../model/CollectionModel";
 
 export const HIDE_WHEN_OUTTA_SIGHT = true;
 const DEBUG_HIGHLIGHTS = false;
@@ -38,7 +40,7 @@ export default class LevelRenderer extends SvgRenderer {
 		this.addChild(this.parallaxRenderer);
 
 		// SPRITES
-		this.sprites =this.group.group().addClass('sprites');
+		this.sprites = this.group.group().addClass('sprites');
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, this.model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 
@@ -56,6 +58,7 @@ export default class LevelRenderer extends SvgRenderer {
 			this.addChild(this.beeRenderer);
 		}
 
+		this.model.resources.addOnAddListener((sender, resource) => this.onAddResource(resource));
 	}
 
 	renderGridTile(position, stroke) {
@@ -111,4 +114,11 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 	}
 
+	onAddResource(resource) {
+		console.log('Resource aded');
+		const loader = new ResourceLoader(this.draw, resource);
+		loader.load(() => {
+			console.log('Resource loaded');
+		});
+	}
 }

@@ -1,4 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
+import ResourceLoader from "../class/ResourceLoader";
+import LevelRenderer from "./LevelRenderer";
 
 export default class ImageRenderer extends SvgRenderer {
 	group;

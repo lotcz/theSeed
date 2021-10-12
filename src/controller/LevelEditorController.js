@@ -1,5 +1,10 @@
 import ControllerBase from "./ControllerBase";
 import {GROUND_TYPE_BASIC, GROUND_TYPE_EMPTY} from "../model/GroundTileModel";
+import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
+import SpriteBuilder, {IMAGE_BUTTERFLY} from "../builder/SpriteBuilder";
+import {STRATEGY_BUTTERFLY} from "./SpriteController";
+import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+import ButterflyImage from "../../res/img/butterfly.svg";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
@@ -10,6 +15,26 @@ export default class LevelEditorController extends ControllerBase {
 
 	activateInternal() {
 		this.controls.mouseClick = null;
+	}
+
+	processClick(position) {
+		switch (this.model.selectedMode) {
+			case EDITOR_MODE_SPRITES:
+				this.addSprite(position);
+				break;
+
+			case EDITOR_MODE_GROUND:
+				this.processGroundClick(position);
+				break;
+		}
+	}
+
+	processGroundClick(position) {
+		this.addGroundTile(position);
+		if (this.model.brush) {
+			const neighbors = this.grid.getNeighbors(position);
+			neighbors.forEach((n) => this.addGroundTile(n));
+		}
 	}
 
 	addGroundTile(position) {
@@ -27,23 +52,39 @@ export default class LevelEditorController extends ControllerBase {
 		}
 	}
 
+	addSprite(position) {
+		const builder = new SpriteBuilder(this.level);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
+
+		builder.addSprite(
+			position,
+			0.5 + Math.random(),
+			false,
+			0,
+			IMAGE_BUTTERFLY,
+			STRATEGY_BUTTERFLY
+		);
+	}
+
 	updateInternal(delta) {
 		if (this.controls.isDirty()) {
+
 			if (this.controls.mouseCoords.isDirty()) {
 				this.onMouseMove();
 				if (this.controls.mouseDownLeft) {
 					const position = this.getCursorGridPosition(this.controls.mouseCoords);
-					this.addGroundTile(position);
+					this.processClick(position);
 				}
 				this.controls.mouseCoords.clean();
 			}
 			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
 				const position = this.getCursorGridPosition(this.controls.mouseClick);
 				if (this.controls.mouseClickLeft) {
-					this.addGroundTile(position);
+					this.processClick(position);
 				}
 				this.controls.mouseClick.clean();
 			}
+
 			if (this.controls.zoom.isDirty()) {
 				this.onZoom();
 				this.controls.resetZoom();

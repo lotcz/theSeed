@@ -57,6 +57,8 @@ export default class BeeController extends ControllerBase {
 			let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
 			this.level.centerOnCoordinates(coords);
 			this.model.image.coordinates.set(coords);
+
+			this.model.position.set(this.grid.getPosition(coords));
 		}
 
 	}

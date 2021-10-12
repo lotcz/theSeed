@@ -14,7 +14,6 @@ export default class ResourceLoader extends Tree {
 
 		this.draw = draw;
 		this.model = model;
-		this.model.children.forEach((ch) => this.addChild(new ResourceLoader(draw, ch)));
 
 		this.loaded = false;
 		this.onLoaded = null;
@@ -29,8 +28,7 @@ export default class ResourceLoader extends Tree {
 	}
 
 	isLoaded() {
-		if (!this.loaded) return false;
-		return this.children.every((ch) => ch.isLoaded());
+		return this.loaded;
 	}
 
 	loadInternal() {
@@ -53,6 +51,7 @@ export default class ResourceLoader extends Tree {
 					this.resource.attr({id:token});
 					//defs.add(this.resource);
 				} else {
+					console.log(`Resource ${this.model.uri} already loaded.`);
 					this.loaded = true;
 				}
 				break;
@@ -63,7 +62,6 @@ export default class ResourceLoader extends Tree {
 	load(onLoaded) {
 		this.onLoaded = onLoaded;
 		this.loadInternal();
-		this.children.forEach((ch) => ch.load(() => this.update()));
 	}
 
 }
