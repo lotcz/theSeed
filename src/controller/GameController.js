@@ -80,9 +80,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	showMainMenu() {
-		const builder = new MenuBuilder();
-		builder.setStartPosition(this.model.viewBoxSize.multiply(0.2));
-		builder.setCss('main');
+		const builder = new MenuBuilder('main');
 		builder.addLine("New Game", (e) => this.newGame());
 		builder.addLine("Load Level", (e) => this.showLevelSelection());
 		if (this.model.level && this.model.level.inventory) {
@@ -91,24 +89,18 @@ export default class GameController extends ControllerBase {
 		} else {
 			builder.addLine("Reset", (e) => this.reset());
 		}
-		builder.setSize(this.model.viewBoxSize);
-		const menu = builder.build();
-		this.model.menu.set(menu);
+		this.model.menu.set(builder.build());
 		if (this.model.level && this.model.level.inventory)
 			this.levelController.deactivate();
 	}
 
 	showLevelSelection() {
-		const builder = new MenuBuilder();
-		builder.setStartPosition(this.model.viewBoxSize.multiply(0.2));
-		builder.setCss('main');
+		const builder = new MenuBuilder('main');
 		builder.addLine("Level 1", (e) => this.loadSaveGame('level-1'));
 		builder.addLine("Level 2", (e) => this.loadSaveGame('level-2'));
 		builder.addLine("Playground", (e) => this.loadSaveGame('playground'));
 		builder.addLine("Back", (e) => this.showMainMenu());
-		builder.setSize(this.model.viewBoxSize);
-		const menu = builder.build();
-		this.model.menu.set(menu);
+		this.model.menu.set(builder.build());
 	}
 
 	hideMenu() {
@@ -116,12 +108,9 @@ export default class GameController extends ControllerBase {
 	}
 
 	showPlayMenu() {
-		const builder = new MenuBuilder();
-		builder.setStartPosition(new Vector2(25, 0));
-		builder.setCss('play');
-		builder.addLine("pause", (e) => this.showMainMenu());
-		const menu = builder.build();
-		this.model.menu.set(menu);
+		const builder = new MenuBuilder('play');
+		builder.addLine("menu", (e) => this.showMainMenu());
+		this.model.menu.set(builder.build());
 	}
 
 	resume() {
@@ -145,11 +134,21 @@ export default class GameController extends ControllerBase {
 		this.setActiveLevel(level);
 	}
 
-	loadSaveGame(name) {
+	async loadSaveGameAsync(name) {
+		return new Promise(
+			function(resolve) {
+				resolve(localStorage.getItem('beehive-savegame-' + name));
+			}
+		);
+	}
+
+	async loadSaveGame(name) {
 		this.model.level.set(null);
 		this.deactivateEditor();
+		this.hideMenu();
 
-		const store = localStorage.getItem('beehive-savegame-' + name);
+		const store = await this.loadSaveGameAsync(name);
+
 		let level = null;
 		if (store) {
 			const state = JSON.parse(store);
@@ -166,7 +165,6 @@ export default class GameController extends ControllerBase {
 			spriteBuilder.addNutrients();
 		}
 
-		this.hideMenu();
 		this.setActiveLevel(level);
 	}
 
@@ -191,10 +189,10 @@ export default class GameController extends ControllerBase {
 		if (this.controls.menuRequested.isDirty()) {
 			if (this.controls.menuRequested.get()) {
 				if (!this.model.isInEditMode.get()) {
-					this.mode.isInEditMode.set(true);
+					this.model.isInEditMode.set(true);
 					this.activateEditor();
 				} else {
-					this.mode.isInEditMode.set(false);
+					this.model.isInEditMode.set(false);
 					this.deactivateEditor();
 				}
 			}

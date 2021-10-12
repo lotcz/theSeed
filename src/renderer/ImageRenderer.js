@@ -75,9 +75,13 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	updateSize() {
+		/*
 		if (this.model.size) {
-			this.group.size(this.model.size.x, this.model.size.y);
+			if (this.image && this.model.size.size() > 0) {
+				this.image.size(this.model.size.x, this.model.size.y);
+			}
 		}
+		*/
 	}
 
 	updateFromModel() {
@@ -88,6 +92,7 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
+
 		if (this.model.scale.isDirty()) {
 			this.updateScale();
 		}

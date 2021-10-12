@@ -39,9 +39,16 @@ export default class LevelEditorController extends ControllerBase {
 
 	processGroundClick(position) {
 		this.addGroundTile(position);
-		if (this.model.brush) {
+		if (this.model.brushSize >= 6) {
 			const neighbors = this.grid.getNeighbors(position);
 			neighbors.forEach((n) => this.addGroundTile(n));
+
+			if (this.model.brushSize > 6) {
+				neighbors.forEach((n) => {
+					const neighbors2 = this.grid.getNeighbors(n);
+					neighbors2.forEach((n2) => this.addGroundTile(n2));
+				});
+			}
 		}
 	}
 

@@ -41,4 +41,30 @@ export default class Pixies {
 		return token;
 	}
 
+	static addClass(element, css) {
+		if (Array.isArray((css)) && css.length > 0) {
+			css.forEach((c) => element.classList.add(c));
+		} else if (css) {
+			element.classList.add(css);
+		}
+	}
+
+	static createElement(parent, tag, css = null) {
+		const el = document.createElement(tag);
+		if (css !== null) {
+			this.addClass(el, css);
+		}
+		if (parent) {
+			parent.appendChild(el);
+		}
+		return el;
+	}
+
+	static destroyElement(el) {
+		if (el) {
+			el.parentNode.removeChild(el);
+			el.remove();
+		}
+	}
+
 }

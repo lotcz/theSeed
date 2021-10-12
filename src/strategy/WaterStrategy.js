@@ -114,7 +114,7 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 					const children = Array.from(plantNode.children);
 					children.sort((a, b) => b.power - a.power);
 					const index = Math.floor(Math.pow(Math.random(), 2) * children.length);
-					if (this.model.data.amount > (children[index].position.power * WATER_UNIT_SIZE)) {
+					if (this.model.data.amount > (children[index].power * WATER_UNIT_SIZE)) {
 						const spawn = this.spawn();
 						spawn.image.position.set(children[index].position);
 					} else {

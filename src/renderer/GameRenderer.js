@@ -1,15 +1,15 @@
 import SvgRenderer from "./SvgRenderer";
 import Stats from "../class/stats.module";
-import * as dat from 'dat.gui';
 import LevelRenderer from "./LevelRenderer";
-import ResourceLoader from "../class/ResourceLoader";
-import InventoryRenderer from "./InventoryRenderer";
 import MenuRenderer from "./MenuRenderer";
-import DirtyValue from "../class/DirtyValue";
 import LevelEditorRenderer from "./LevelEditorRenderer";
 import MenuBuilder from "../builder/MenuBuilder";
 import TextRenderer from "./TextRenderer";
 import ResourcesLoader from "../class/ResourcesLoader";
+import DomRenderer from "./DomRenderer";
+import ModelBase from "../model/ModelBase";
+import TextModel from "../model/TextModel";
+import Pixies from "../class/Pixies";
 
 const DEBUG_FPS = true;
 
@@ -18,21 +18,25 @@ export default class GameRenderer extends SvgRenderer {
 	levelRenderer;
 	menuRenderer;
 	editorRenderer;
+	dom;
 
 	constructor(model, draw) {
 		super(model, model, draw);
 
+		this.dom = this.draw.root().parent().node;
+
 		if (DEBUG_FPS) {
 			this.stats = new Stats();
-			document.body.appendChild(this.stats.dom);
+			this.dom.appendChild(this.stats.dom);
 		}
 
-		draw.fill('black');
-
+		this.loadingScreenDom = null;
 		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
 		this.editorRenderer = null;
+
+		this.draw.fill('black');
 
 		this.showLoading();
 	}
@@ -80,26 +84,29 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	showLoading() {
-		this.hideLoading();
-		const builder = new MenuBuilder();
-		const center = this.model.viewBoxSize.multiply(0.5);
-		builder.setStartPosition(center);
-		const line = builder.addLine('Loading...');
-		this.loadingScreenRenderer = new TextRenderer(this.game, line.text, this.draw);
-		this.addChild(this.loadingScreenRenderer);
-		this.loadingScreenRenderer.activate();
+		if (!this.loadingScreenRenderer) {
+			this.loadingScreenDom = Pixies.createElement(this.dom, 'div', 'loading');
+			this.loadingScreenRenderer = new DomRenderer(this.game, this.model, this.loadingScreenDom);
+			this.loadingScreenRenderer.addChild(new TextRenderer(this.game, new TextModel({label: 'Loading...'}), this.loadingScreenDom));
+			this.addChild(this.loadingScreenRenderer);
+			this.loadingScreenRenderer.activate();
+		}
 	}
 
 	hideLoading() {
-		if (this.loadingScreenRenderer) this.removeChild(this.loadingScreenRenderer);
+		if (this.loadingScreenRenderer) {
+			Pixies.destroyElement(this.loadingScreenDom);
+			this.removeChild(this.loadingScreenRenderer);
+		}
 		this.loadingScreenRenderer = null;
+		this.loadingScreenDom = null;
 	}
 
 	showMenu() {
 		this.hideMenu();
 		if (!this.game.menu.isEmpty()) {
 			if (!this.game.menu.get().closed) {
-				this.menuRenderer = new MenuRenderer(this.game, this.game.menu.get(), this.draw);
+				this.menuRenderer = new MenuRenderer(this.game, this.game.menu.get(), this.dom);
 				this.addChild(this.menuRenderer);
 				this.menuRenderer.activate();
 			}

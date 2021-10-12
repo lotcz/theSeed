@@ -12,7 +12,8 @@ export const SPRITE_TYPE_WATER = 'water';
 export default class LevelEditorModel extends ModelBase {
 	modes;
 	selectedMode;
-	brush;
+	brushSizes;
+	brushSize;
 	groundTypes;
 	selectedGroundType;
 	spriteTypes;
@@ -28,7 +29,12 @@ export default class LevelEditorModel extends ModelBase {
 		];
 		this.selectedMode = EDITOR_MODE_GROUND;
 
-		this.brush = true;
+		this.brushSizes = [
+			1,
+			6,
+			12,
+		];
+		this.brushSize = 6;
 
 		this.groundTypes = [
 			GROUND_TYPE_EMPTY,

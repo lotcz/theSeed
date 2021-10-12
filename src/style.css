@@ -6,33 +6,52 @@ html, body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-}
-
-.inventory {
-	position: fixed;
-	top: 10px;
-	left: 50%;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-family: 'Lobster', Arial, sans-serif;
+	color: yellow;
+	font-size: 170%;
 }
 
 .menu {
 	position: fixed;
-	-webkit-user-select: none; /* Safari */
-	-ms-user-select: none; /* IE 10 and IE 11 */
-	user-select: none; /* Standard syntax */
+	cursor: pointer;
+	left: 0;
+	top: 0;
+	z-index: 1000;
+}
+
+.menu a:hover {
+	color: white;
+	cursor: pointer;
+}
+
+.menu ul,
+.menu ul li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 .menu.main {
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	top: 15%;
+	left: 15%;
 }
 
 .menu.play {
-	bottom: 1rem;
-	left: 1rem;
+	left: 100px;
 }
 
-.menu * {
-	cursor: pointer;
+.loading {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
 }

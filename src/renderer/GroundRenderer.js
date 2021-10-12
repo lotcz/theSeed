@@ -27,16 +27,6 @@ export default class GroundRenderer extends SvgRenderer {
 		this.group = null;
 	}
 
-	renderDebugGridTile(position, fill = 'red') {
-		const corners = this.grid
-			.getCorners(position)
-			.map((c) => [c.x, c.y]);
-		corners.push(corners[0]);
-		this.group.polyline(corners).fill('transparent').stroke({width: 1, color: GROUND_DARK});
-		const coordinates = this.grid.getCoordinates(position);
-		this.group.circle(25).fill(fill).center(coordinates.x, coordinates.y);
-	}
-
 	removeTileNeighbors(remaining, tile) {
 		const index = remaining.indexOf(tile);
 		if (index < 0) {
@@ -84,11 +74,6 @@ export default class GroundRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 
 		const tilesCollection = this.model.tiles;
-
-		if (DEBUG_GROUND) {
-			tilesCollection.forEach((tile) => this.renderDebugGridTile(tile.position));
-		}
-
 		const remaining = [...tilesCollection.children];
 
 		while (remaining.length > 0) {
@@ -110,10 +95,6 @@ export default class GroundRenderer extends SvgRenderer {
 			if (!startTile) {
 				console.log('No start tile');
 				return;
-			}
-
-			if (DEBUG_GROUND) {
-				this.renderDebugGridTile(startTile.position, 'yellow');
 			}
 
 			// remove all neighboring tiles of the same type recursively from remaining
@@ -148,9 +129,6 @@ export default class GroundRenderer extends SvgRenderer {
 				currentCorner = (currentCorner + 4) % 6;
 				if (currentTile !== startTile) {
 					edge.push(currentTile);
-					if (DEBUG_GROUND) {
-						this.renderDebugGridTile(currentTile.position, 'green');
-					}
 				}
 			} while (currentTile !== startTile)
 
@@ -170,6 +148,7 @@ export default class GroundRenderer extends SvgRenderer {
 
 				const style = GROUND_STYLE[startTile.type];
 				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
+				pathDraw.back();
 			}
 
 		}
