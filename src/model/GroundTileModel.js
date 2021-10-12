@@ -3,7 +3,7 @@ import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 
-export const GROUND_TYPE_EMPTY = '--empty--';
+export const GROUND_TYPE_DELETE = '--delete--';
 export const GROUND_TYPE_BASIC = 'rock';
 
 export default class GroundTileModel extends ModelBase {

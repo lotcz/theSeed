@@ -1,10 +1,11 @@
 import ModelBase from "./ModelBase";
-import {GROUND_TYPE_BASIC, GROUND_TYPE_EMPTY} from "./GroundTileModel";
+import {GROUND_TYPE_BASIC, GROUND_TYPE_DELETE} from "./GroundTileModel";
 
 export const EDITOR_MODE_SPRITES = 'Sprites';
 export const EDITOR_MODE_GROUND = 'Ground';
 export const EDITOR_MODE_PLANT = 'Plant';
 
+export const SPRITE_TYPE_DELETE = '---delete--';
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
@@ -37,12 +38,13 @@ export default class LevelEditorModel extends ModelBase {
 		this.brushSize = 6;
 
 		this.groundTypes = [
-			GROUND_TYPE_EMPTY,
+			GROUND_TYPE_DELETE,
 			GROUND_TYPE_BASIC
 		];
 		this.selectedGroundType = GROUND_TYPE_BASIC;
 
 		this.spriteTypes = [
+			SPRITE_TYPE_DELETE,
 			SPRITE_TYPE_BUTTERFLY,
 			SPRITE_TYPE_BUG,
 			SPRITE_TYPE_WATER

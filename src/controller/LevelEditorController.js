@@ -1,10 +1,10 @@
 import ControllerBase from "./ControllerBase";
-import {GROUND_TYPE_BASIC, GROUND_TYPE_EMPTY} from "../model/GroundTileModel";
+import {GROUND_TYPE_BASIC, GROUND_TYPE_DELETE} from "../model/GroundTileModel";
 import {
 	EDITOR_MODE_GROUND,
 	EDITOR_MODE_SPRITES,
 	SPRITE_TYPE_BUG,
-	SPRITE_TYPE_BUTTERFLY, SPRITE_TYPE_WATER
+	SPRITE_TYPE_BUTTERFLY, SPRITE_TYPE_DELETE, SPRITE_TYPE_WATER
 } from "../model/LevelEditorModel";
 import SpriteBuilder, {IMAGE_BUG, IMAGE_BUTTERFLY, IMAGE_WATER,} from "../builder/SpriteBuilder";
 import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_WATER} from "./SpriteController";
@@ -57,11 +57,11 @@ export default class LevelEditorController extends ControllerBase {
 		const groundVisitors = visitors.filter((v) => v._is_ground === true);
 		if (groundVisitors.length === 0) {
 			const groundType = this.model.selectedGroundType;
-			if (groundType !== GROUND_TYPE_EMPTY) {
+			if (groundType !== GROUND_TYPE_DELETE) {
 				this.level.ground.addTile({position: position.toArray(), type: groundType});
 			}
 		} else {
-			if (this.model.selectedGroundType === GROUND_TYPE_EMPTY) {
+			if (this.model.selectedGroundType === GROUND_TYPE_DELETE) {
 				this.level.ground.removeTile(groundVisitors[0]);
 			}
 		}
@@ -105,6 +105,12 @@ export default class LevelEditorController extends ControllerBase {
 					{amount: Math.random() * 5}
 				);
 				break;
+			case SPRITE_TYPE_DELETE:
+				const visitors = this.chessboard.getTile(position);
+				const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
+				spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
+				break;
+
 		}
 
 	}
