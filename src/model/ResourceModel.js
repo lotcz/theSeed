@@ -35,12 +35,4 @@ export default class ResourceModel extends ModelBase {
 		if (state.children) this.restoreChildren(state.children, (ch) => new ResourceModel(ch));
 	}
 
-	find(uri) {
-		if (this.uri === uri) return this;
-	}
-
-	exists(uri) {
-		return this.find(uri) !== null;
-	}
-
 }

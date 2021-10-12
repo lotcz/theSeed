@@ -22,8 +22,7 @@ export default class ImageModel extends ModelBase {
 		this.addChild(this.rotation);
 		this.scale = new DirtyValue(1);
 		this.addChild(this.scale);
-		this.size = new Vector2();
-		this.addChild(this.size);
+		this.size = null;
 		this.path = '';
 
 		if (state) {
@@ -57,7 +56,8 @@ export default class ImageModel extends ModelBase {
 			this.path = state.path;
 		}
 		if (state.size) {
-			this.size.setFromArray(state.size);
+			this.size = Vector2.fromArray(state.size);
+			this.addChild(this.size);
 		}
 	}
 

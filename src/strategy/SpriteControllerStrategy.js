@@ -36,14 +36,14 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	selectRandomTarget() {
-		const neighbors = this.game.level.grid.getNeighbors(this.position);
+		const neighbors = this.level.grid.getNeighbors(this.position);
 		this.setTarget(Pixies.randomElement(neighbors));
 	}
 
 	visit(position) {
-		if (this.lastVisited) this.game.level.grid.chessboard.removeVisitor(this.lastVisited, this.model);
+		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
 		this.lastVisited = position.clone();
-		this.game.level.grid.chessboard.addVisitor(position, this.model);
+		this.chessboard.addVisitor(position, this.model);
 	}
 
 	setTarget(target) {
@@ -93,8 +93,8 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		if (this.target && !this.position.equalsTo(this.target)) {
 			const progress = (this.defaultTimeout - this.timeout) / this.defaultTimeout;
-			const a = this.game.level.grid.getCoordinates(this.position);
-			const b = this.game.level.grid.getCoordinates(this.target);
+			const a = this.grid.getCoordinates(this.position);
+			const b = this.grid.getCoordinates(this.target);
 
 			if (this.movementEnabled) {
 				const diff = b.subtract(a);
@@ -107,7 +107,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 			}
 
 		} else {
-			this.coordinates.set(this.game.level.grid.getCoordinates(this.position));
+			this.coordinates.set(this.grid.getCoordinates(this.position));
 		}
 
 	}

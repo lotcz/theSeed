@@ -88,6 +88,15 @@ export default class LevelModel extends ModelBase {
 		this.updateCameraOffset();
 	}
 
+	addResource(resType, uri, data) {
+		const existing = this.resources.children.filter((r) => r.uri === uri);
+		if (existing.length > 0) {
+			console.log(`Resource URI ${uri} already exists.`);
+		} else {
+			this.resources.addChild(new ResourceModel({resType: resType, uri: uri, data: data}));
+		}
+	}
+
 	isPositionInView(position) {
 		const coords = this.grid.getCoordinates(position);
 		return this.isCoordinateInView(coords);
@@ -112,23 +121,9 @@ export default class LevelModel extends ModelBase {
 		this.viewBoxCoordinates.setY(coordinates.y - (this.viewBoxScale.get() * this.viewBoxSize.y / 2));
 	}
 
-	getGroundY(x) {
-		if (!this.ground.points[x]) {
-			return null;
-		}
-		return this.ground.points[x].y;
-	}
-
 	isGround(position) {
-		return position.y === this.getGroundY(position.x);
-	}
-
-	isAboveGround(position) {
-		return position.y < this.getGroundY(position.x);
-	}
-
-	isUnderGround(position) {
-		return position.y > this.getGroundY(position.x);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground);
+		return visitors.length > 0;
 	}
 
 	sanitizeViewBox() {

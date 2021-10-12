@@ -5,7 +5,7 @@ export default class DirtyValue extends ModelBase {
 
 	constructor(value) {
 		super();
-		this.value = value || null;
+		this.value = value;
 	}
 
 	addOnChangeListener(eventHandler) {

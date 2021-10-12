@@ -33,7 +33,7 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 	}
 
 	spawn() {
-		const spriteBuilder = new SpriteBuilder(this.game.level);
+		const spriteBuilder = new SpriteBuilder(this.level);
 		this.lastSpawn = spriteBuilder.addSprite(this.position, WATER_UNIT_SIZE, false, this.model.image.rotation.get(), IMAGE_WATER, STRATEGY_WATER, {amount:WATER_UNIT_SIZE, inside: true, insideUp:this.model.data.insideUp });
 		this.model.data.amount -= WATER_UNIT_SIZE;
 		this.model.makeDirty();
@@ -44,13 +44,13 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 		if (node.data.amount <= this.model.data.amount && node !== this.lastSpawn) {
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
-			this.game.level.sprites.remove(node);
-			this.game.level.grid.chessboard.removeVisitor(this.position, node);
+			this.level.sprites.remove(node);
+			this.chessboard.removeVisitor(this.position, node);
 		}
 	}
 
 	selectTargetInternal() {
-		const visitors = this.game.level.grid.chessboard.getTile(this.position).filter((v) => v !== this.model);
+		const visitors = this.chessboard.getTile(this.position).filter((v) => v !== this.model);
 		const plantNodes = visitors.filter((v) => v._is_plant === true);
 		const plantNode = plantNodes.length === 1 || this.lastPlantNode === null ? plantNodes[0] : visitors.find((v) => v !== this.lastPlantNode);
 
@@ -109,9 +109,9 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 
 		if (Math.random() < 0.9) return;
 
-		const down = this.game.level.grid.getNeighborDown(this.position);
-		if (!this.game.level.isValidPosition(down)) {
-			this.game.level.sprites.remove(this.model);
+		const down = this.grid.getNeighborDown(this.position);
+		if (!this.level.isValidPosition(down)) {
+			this.level.sprites.remove(this.model);
 		}
 		this.setTarget(down);
 

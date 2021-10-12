@@ -37,7 +37,8 @@ export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 import {
 	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY, STRATEGY_MINERAL,
+	STRATEGY_BUTTERFLY,
+	STRATEGY_MINERAL,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
 	STRATEGY_WORM
@@ -54,60 +55,67 @@ export default class SpriteBuilder {
 		this.level = level;
 	}
 
-	addResource(resType, uri, data) {
-		this.level.resources.addChild(new ResourceModel({resType: resType, uri: uri, data: data}));
+	getRandomPosition(underGround) {
+		if (underGround) {
+			if (this.level.ground.tiles.children.length > 0) {
+				return Pixies.randomElement(this.level.ground.tiles.children).position;
+			}
+		}
+
+		const max = this.level.grid.getMaxPosition();
+		let position = null;
+		do {
+			position = new Vector2(Pixies.randomIndex(max.x), Pixies.randomIndex(max.y));
+		} while (this.level.isGround(position));
+		return position;
+
 	}
 
-	getRandomPosition(under) {
-		const max = this.level.grid.getMaxPosition();
-		const x = Pixies.randomIndex(max.x);
-		const groundY = this.level.getGroundY(x);
-
-		if (under)
-			return new Vector2(x, groundY + 1 + Pixies.randomIndex(max.y - groundY));
-		else
-			return new Vector2(x, groundY - 1 - Pixies.randomIndex(groundY));
+	addSprite(position, scale, flipped, rotation, path, strategy, data) {
+		const state = {
+			position: position.toArray(),
+			image: {
+				scale: scale,
+				flipped: flipped,
+				rotation: rotation,
+				path: path
+			},
+			strategy: strategy,
+			data: data
+		};
+		return this.level.sprites.add(new SpriteModel(state));
 	}
 
 	addBugs() {
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_HEAD, WormHeadImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BODY, WormBodyImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BUTT, WormButtImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_GRASSHOPPER, GrasshopperImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_HEAD, WormHeadImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BODY, WormBodyImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WORM_BUTT, WormButtImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_GRASSHOPPER, GrasshopperImage);
 
 		const bugCount = 10;
 		for (let i = 0, max = bugCount; i < max; i++) {
-			const state = {
-				position: [0, 0],
-				image: {
-					scale: 0.2 + (Math.random() * 2),
-					flipped: (0.5 > Math.random()),
-					rotation: 0,
-					path: IMAGE_BUG
-				},
-				data: {
-					gi: Pixies.randomIndex(this.level.ground.points.length)
-				},
-				strategy: STRATEGY_BUG
-			};
-			this.level.sprites.add(new SpriteModel(state));
+			this.addSprite(
+				this.getRandomPosition(false),
+				0.2 + (Math.random() * 2),
+				false,
+				0,
+				IMAGE_BUG,
+				STRATEGY_BUG
+			);
 		}
 
 		const fliesCount = 10;
 		for (let i = 0, max = fliesCount; i < max; i++) {
-			const state = {
-				position: this.getRandomPosition(false).toArray(),
-				image: {
-					scale: 0.5 + Math.random(),
-					flipped: false,
-					rotation: 0,
-					path: IMAGE_BUTTERFLY
-				},
-				strategy: STRATEGY_BUTTERFLY
-			};
-			this.level.sprites.add(new SpriteModel(state));
+			this.addSprite(
+				this.getRandomPosition(false),
+				0.5 + Math.random(),
+				false,
+				0,
+				IMAGE_BUTTERFLY,
+				STRATEGY_BUTTERFLY
+			);
 		}
 
 		const wormsCount = 0;
@@ -118,8 +126,7 @@ export default class SpriteBuilder {
 				false,
 				0,
 				IMAGE_WORM_HEAD,
-				STRATEGY_WORM,
-				{}
+				STRATEGY_WORM
 			);
 		}
 
@@ -131,84 +138,60 @@ export default class SpriteBuilder {
 				false,
 				0,
 				IMAGE_GRASSHOPPER,
-				STRATEGY_BUTTERFLY,
-				{}
+				STRATEGY_BUTTERFLY
 			);
 		}
 	}
 
-	addSprite(position, scale, flipped, rotation, path, strategy, data) {
-		const state = {
-			position: position.toArray(),
-			image: {
-				scale: scale,
-				flipped: false,
-				rotation: 0,
-				path: path
-			},
-			strategy: strategy,
-			data: data
-		};
-		return this.level.sprites.add(new SpriteModel(state));
-	}
-
 	addWater() {
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
 
 		const waterDensity = 0.01;
 		const max = this.level.grid.getMaxPosition();
 		for (let i = 0; i <= max.x; i++) {
-			const groundY = this.level.getGroundY(i);
-			const limit = max.y - groundY;
+			const limit = max.y;
 			const amount = Math.ceil(limit * waterDensity);
 
 			for (let ii = 0; ii < amount; ii++) {
-				const state = {
-					position: [i, groundY + Pixies.randomIndex(limit)],
-					image: {
-						scale: 1,
-						flipped: false,
-						rotation: 0,
-						path: IMAGE_WATER
-					},
-					strategy: STRATEGY_WATER,
-					data: {amount: 0.3 + 0.7 * Math.random() }
-				};
-				this.level.sprites.add(new SpriteModel(state));
+				this.addSprite(
+					this.getRandomPosition(false),
+					1,
+					false,
+					0,
+					IMAGE_WATER,
+					STRATEGY_WATER,
+					{amount: 0.3 + 0.7 * Math.random() }
+				);
 			}
 		}
 	}
 
 	addMinerals() {
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_NITROGEN, NitrogenImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_SULFUR, SulfurImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_MAGNESIUM, MagnesiumImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_CALCIUM, CalciumImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_PHOSPHORUS, PhosphorusImage);
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_POTASSIUM, PotassiumImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_NITROGEN, NitrogenImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_SULFUR, SulfurImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_MAGNESIUM, MagnesiumImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_CALCIUM, CalciumImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_PHOSPHORUS, PhosphorusImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_POTASSIUM, PotassiumImage);
 
 		const nutrients = [IMAGE_NITROGEN, IMAGE_SULFUR, IMAGE_MAGNESIUM, IMAGE_CALCIUM, IMAGE_PHOSPHORUS, IMAGE_POTASSIUM];
 
 		const mineralsDensity = 0.01;
 		const max = this.level.grid.getMaxPosition();
 		for (let i = 0; i <= max.x; i++) {
-			const groundY = this.level.getGroundY(i);
-			const limit = max.y - groundY;
+			const limit = this.level.ground.tiles.children.length;
 			const amount = Math.ceil(limit * mineralsDensity);
 
 			for (let ii = 0; ii < amount; ii++) {
-				const state = {
-					position: [i, groundY + Pixies.randomIndex(limit)],
-					image: {
-						scale: 1,
-						flipped: false,
-						rotation: 0,
-						path: Pixies.randomElement(nutrients)
-					},
-					strategy: STRATEGY_MINERAL,
-					data: {amount: 0.3 + 0.7 * Math.random() }
-				};
-				this.level.sprites.add(new SpriteModel(state));
+				this.addSprite(
+					this.getRandomPosition(true),
+					1,
+					false,
+					0,
+					Pixies.randomElement(nutrients),
+					STRATEGY_MINERAL,
+					{amount: 0.3 + 0.7 * Math.random() }
+				);
 			}
 		}
 	}
@@ -233,7 +216,7 @@ export default class SpriteBuilder {
 	}
 
 	addBee(position) {
-		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
 		this.level.bee = new BeeModel({
 			direction: [0,0],
 			speed: 0,

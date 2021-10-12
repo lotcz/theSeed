@@ -10,7 +10,7 @@ import {
 	CORNER_UPPER_RIGHT
 } from "../model/GridModel";
 
-const DEBUG_GROUND = true;
+const DEBUG_GROUND = false;
 
 const GROUND_STYLE = {
 	'rock': {
@@ -119,7 +119,6 @@ export default class GroundRenderer extends SvgRenderer {
 			// remove all neighboring tiles of the same type recursively from remaining
 			this.removeTileNeighbors(remaining, startTile);
 
-			const tileType = startTile.type;
 			const edge = [startTile];
 
 			let currentCorner = CORNER_UPPER_RIGHT;
@@ -130,8 +129,10 @@ export default class GroundRenderer extends SvgRenderer {
 				currentCorner = (currentCorner + 1) % 6;
 			}
 
-			const corner = this.grid.getCorner(startTile.position, currentCorner);
-			this.group.circle(10).fill('blue').center(corner.x, corner.y);
+			if (DEBUG_GROUND) {
+				const corner = this.grid.getCorner(startTile.position, currentCorner);
+				this.group.circle(10).fill('blue').center(corner.x, corner.y);
+			}
 
 			// push edges into single group
 			do {
@@ -166,15 +167,8 @@ export default class GroundRenderer extends SvgRenderer {
 					}
 				}
 				path += ` Z`;
-/*
-				const gridSize = this.grid.getMaxCoordinates();
-				this.path += `L ${gridSize.x} ${gridSize.y} `;
-				this.path += `L 0 ${gridSize.y} Z`;
-*/
+
 				const style = GROUND_STYLE[startTile.type];
-				console.log(GROUND_STYLE);
-				console.log(style);
-				console.log(startTile.type);
 				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
 			}
 

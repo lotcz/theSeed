@@ -24,6 +24,7 @@ export default class LevelBuilder {
 
 	constructor(size, scale) {
 
+
 		this.viewboxScale = 1;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
 		this.parallaxState = {

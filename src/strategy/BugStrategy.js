@@ -4,28 +4,35 @@ import Pixies from "../class/Pixies";
 const BUG_TIMEOUT = 500;
 
 export default class BugStrategy extends SpriteControllerStrategy {
-	direction;
+	lastDirection;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, BUG_TIMEOUT);
 
-		if (!this.model.data) this.model.data = {};
-		if (!this.model.data.gi) this.model.data.gi = Pixies.randomIndex(this.game.level.ground.points.length);
-		this.setPosition(this.game.level.ground.points[this.model.data.gi]);
-		this.direction = 1;
+		this.lastDirection = null;
 	}
 
 	selectTargetInternal() {
-		if (Math.random() < 0.8) {
-			this.direction = ((Math.random() < 0.1) ? -this.direction : this.direction);
-			const gi = Math.max(0, Math.min(this.game.level.ground.points.length - 1, this.model.data.gi + this.direction));
-			const position = this.game.level.ground.points[gi];
-			const visitors = this.game.level.grid.chessboard.getTile(position);
-			if (visitors.length === 0) {
-				this.model.data.gi = gi
-				this.setTarget(position);
+
+		const lowerNeighbor = this.grid.getNeighborDown(this.position);
+		if ((!this.level.isGround(this.position)) && (!this.level.isGround(lowerNeighbor))) {
+			if (!this.level.isValidPosition(lowerNeighbor)) {
+				this.level.sprites.remove(this.model);
+				return;
 			}
+			this.setTarget(lowerNeighbor);
+			return;
 		}
+		const upperNeighbor = this.grid.getNeighborUp(this.position);
+		if (this.level.isGround(this.position) && this.level.isGround(upperNeighbor)) {
+			this.setTarget(upperNeighbor);
+			return;
+		}
+
+		const validNeighbors = this.level.grid.getValidNeighbors(this.position);
+		const groundNeighbors = validNeighbors.filter((n) => this.level.isGround(n));
+		this.setTarget(Pixies.randomElement(groundNeighbors));
+
 	}
 
 }
