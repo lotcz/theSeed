@@ -14,7 +14,6 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetInternal() {
-
 		const neighbors = this.level.grid.getNeighbors(this.position);
 
 		if (this.lastDirection && (Math.random() < 0.95)) {

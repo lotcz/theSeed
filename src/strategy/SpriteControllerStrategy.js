@@ -83,7 +83,9 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		if (this.timeout <= 0) {
 			if (this.target) this.setPosition(this.target);
-			this.selectTargetInternal();
+			if (!this.game.isInEditMode.get()) {
+				this.selectTargetInternal();
+			}
 			this.timeout = this.defaultTimeout;
 		}
 
