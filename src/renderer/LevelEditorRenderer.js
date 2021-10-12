@@ -37,6 +37,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	activateInternal() {
 		this.deactivateInternal();
 
+		this.level = this.game.level.get();
+
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
 		this.group.front();

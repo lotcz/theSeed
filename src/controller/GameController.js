@@ -28,7 +28,7 @@ export default class GameController extends ControllerBase {
 	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
-		this.newGame();
+		this.reset();
 	}
 
 	reset() {
@@ -170,18 +170,16 @@ export default class GameController extends ControllerBase {
 
 	activateEditor() {
 		this.deactivateEditor();
-		const editor = new LevelEditorModel(this.model.level.get());
-		this.model.editor.set(editor);
-		this.editorController = new LevelEditorController(this.game, editor, this.controls);
+		this.editorController = new LevelEditorController(this.game, this.model.editor, this.controls);
 		this.addChild(this.editorController);
 		this.editorController.activate();
 	}
 
 	deactivateEditor() {
-		this.model.editor.set(null);
+		//this.model.editor.set(null);
 		if (this.editorController !== null) {
 			this.removeChild(this.editorController);
-			this.editorController = null;
+			//this.editorController = null;
 		}
 	}
 

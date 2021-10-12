@@ -20,7 +20,7 @@ export default class GameModel extends ModelBase {
 		this.addChild(this.level);
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
-		this.editor = new DirtyValue()
+		this.editor = new LevelEditorModel();
 		this.addChild(this.editor);
 		this.isInEditMode = new DirtyValue(DEBUG_MODE);
 		this.addChild(this.isInEditMode);

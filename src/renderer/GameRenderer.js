@@ -34,7 +34,8 @@ export default class GameRenderer extends SvgRenderer {
 		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
-		this.editorRenderer = null;
+		this.editorRenderer =  new LevelEditorRenderer(this.game, this.model.editor, this.draw);
+		this.addChild(this.editorRenderer);
 
 		this.draw.fill('black');
 
@@ -70,12 +71,12 @@ export default class GameRenderer extends SvgRenderer {
 			this.model.menu.clean();
 		}
 
-		if (this.model.editor.isDirty()) {
-			if (this.model.editor.get())
+		if (this.model.isInEditMode.isDirty()) {
+			if (this.model.isInEditMode.get())
 				this.showEditor();
 			else
 				this.hideEditor();
-			this.model.editor.clean();
+			this.model.isInEditMode.clean();
 		}
 
 		this.children.forEach((r) => r.render());
@@ -132,7 +133,7 @@ export default class GameRenderer extends SvgRenderer {
 				this.levelRenderer.activate();
 				this.hideLoading();
 				this.showMenu();
-				if (this.model.editor.get()) {
+				if (this.model.isInEditMode.get()) {
 					this.showEditor();
 				}
 			});
@@ -146,18 +147,12 @@ export default class GameRenderer extends SvgRenderer {
 
 	showEditor() {
 		this.hideEditor();
-		if (!this.model.editor.isEmpty()) {
-			this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor.get(), this.draw);
-			this.addChild(this.editorRenderer);
-			this.editorRenderer.activate();
-		}
+		this.addChild(this.editorRenderer);
+		this.editorRenderer.activate();
 	}
 
 	hideEditor() {
-		if (this.editorRenderer !== null) {
-			this.removeChild(this.editorRenderer);
-			this.editorRenderer = null;
-		}
+		this.removeChild(this.editorRenderer);
 	}
 
 }
