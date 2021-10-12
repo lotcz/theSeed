@@ -88,19 +88,19 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	getLevelState() {
-		const state = this.level.getState();
+		const state = this.game.level.get().getState();
 		return JSON.stringify(state);
 	}
 
 	saveGame() {
-		localStorage.setItem('beehive-savegame-' + this.level.name, this.getLevelState());
+		localStorage.setItem('beehive-savegame-' + this.game.level.get().name, this.getLevelState());
 		console.log('Level saved.');
 	}
 
 	downloadSavedGame() {
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
-		element.setAttribute('download', 'beehive-adventures-' + this.level.name + '.json');
+		element.setAttribute('download', 'beehive-adventures-' + this.game.level.get().name + '.json');
 		element.style.display = 'none';
 		document.body.appendChild(element);
 		element.click();
@@ -108,17 +108,19 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	renderDebugGridTile(position) {
-		const corners = this.grid
+		this.level = this.game.level.get();
+		const corners = this.level.grid
 			.getCorners(position)
 			.map((c) => [c.x, c.y]);
 		corners.push(corners[0]);
 		this.group.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
-		const coordinates = this.grid.getCoordinates(position);
+		const coordinates = this.level.grid.getCoordinates(position);
 		this.group.circle(25).fill('red').center(coordinates.x, coordinates.y);
 	}
 
 	hideGroundTiles() {
 		if (this.group) this.group.remove();
+		this.level = this.game.level.get();
 		this.group = null;
 		if (this.level.ground.tiles) {
 			this.level.ground.tiles.removeOnAddListener(this.tilesChangedHandler);
@@ -130,6 +132,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.hideGroundTiles();
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
+		this.level = this.game.level.get();
 		this.level.ground.tiles.forEach((tile) => this.renderDebugGridTile(tile.position));
 		this.level.ground.tiles.addOnAddListener(this.tilesChangedHandler);
 		this.level.ground.tiles.addOnRemoveListener(this.tilesChangedHandler);

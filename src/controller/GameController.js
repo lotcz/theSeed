@@ -28,10 +28,11 @@ export default class GameController extends ControllerBase {
 	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
-		this.reset();
+		this.newGame();
 	}
 
 	reset() {
+		this.model.level.set(null);
 		this.loadBackground();
 		this.showMainMenu();
 	}
