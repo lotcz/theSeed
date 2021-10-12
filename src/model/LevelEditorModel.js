@@ -1,5 +1,11 @@
 import ModelBase from "./ModelBase";
-import {GROUND_TYPE_BASIC, GROUND_TYPE_DELETE} from "./GroundTileModel";
+import {
+	GROUND_TYPE_BASIC,
+	GROUND_TYPE_DELETE,
+	GROUND_TYPE_GRASS, GROUND_TYPE_GROUND,
+	GROUND_TYPE_HONEY,
+	GROUND_TYPE_ROCK
+} from "./GroundTileModel";
 
 export const EDITOR_MODE_SPRITES = 'Sprites';
 export const EDITOR_MODE_GROUND = 'Ground';
@@ -39,7 +45,11 @@ export default class LevelEditorModel extends ModelBase {
 
 		this.groundTypes = [
 			GROUND_TYPE_DELETE,
-			GROUND_TYPE_BASIC
+			GROUND_TYPE_BASIC,
+			GROUND_TYPE_GROUND,
+			GROUND_TYPE_ROCK,
+			GROUND_TYPE_GRASS,
+			GROUND_TYPE_HONEY
 		];
 		this.selectedGroundType = GROUND_TYPE_BASIC;
 

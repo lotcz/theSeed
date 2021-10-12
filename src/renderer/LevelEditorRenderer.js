@@ -85,6 +85,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.gui.destroy();
 			this.gui = null;
 		}
+		this.hideGroundTiles();
 	}
 
 	getLevelState() {

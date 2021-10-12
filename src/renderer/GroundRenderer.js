@@ -1,6 +1,12 @@
 import SvgRenderer from "./SvgRenderer";
-import {BROWN_DARK, GROUND_DARK, GROUND_LIGHT} from "./Palette";
-import {GROUND_TYPE_BASIC} from "../model/GroundTileModel";
+import {BROWN_DARK, BROWN_LIGHT, GREEN_DARK, GREEN_LIGHT, GROUND_DARK, GROUND_LIGHT} from "./Palette";
+import {
+	GROUND_TYPE_BASIC,
+	GROUND_TYPE_GRASS,
+	GROUND_TYPE_GROUND,
+	GROUND_TYPE_HONEY,
+	GROUND_TYPE_ROCK
+} from "../model/GroundTileModel";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -12,11 +18,31 @@ import {
 
 const DEBUG_GROUND = false;
 
-const GROUND_STYLE = {
-	'rock': {
-		fill: GROUND_LIGHT,
-		stroke: { width: 4, color: GROUND_DARK}
-	}
+const GROUND_STYLE = [];
+
+GROUND_STYLE[GROUND_TYPE_BASIC] = {
+	fill: GROUND_LIGHT,
+	stroke: { width: 4, color: GROUND_DARK}
+};
+
+GROUND_STYLE[GROUND_TYPE_GROUND] = {
+	fill: BROWN_LIGHT,
+	stroke: { width: 4, color: BROWN_DARK}
+};
+
+GROUND_STYLE[GROUND_TYPE_ROCK] = {
+	fill: '#a0a0a0',
+	stroke: { width: 4, color: '#808080'}
+};
+
+GROUND_STYLE[GROUND_TYPE_GRASS] = {
+	fill: GREEN_LIGHT,
+	stroke: { width: 4, color: GREEN_DARK}
+};
+
+GROUND_STYLE[GROUND_TYPE_HONEY] = {
+	fill: '#d0b090',
+	stroke: { width: 4, color: '#b0a070'}
 };
 
 export default class GroundRenderer extends SvgRenderer {
@@ -65,7 +91,7 @@ export default class GroundRenderer extends SvgRenderer {
 
 	canUseCorner(tile, cornerType) {
 		const position = this.getCornerNeighbor(tile, cornerType);
-		const visitors = this.chessboard.getVisitors(position, (g) => g._is_ground);
+		const visitors = this.chessboard.getVisitors(position, (v) => v.type === tile.type);
 		return visitors.length === 0;
 	}
 
