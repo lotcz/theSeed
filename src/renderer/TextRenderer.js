@@ -16,7 +16,6 @@ export default class TextRenderer extends DomRenderer {
 	renderInternal() {
 		this.removeText();
 		this.text = this.createElement(this.dom, 'span');
-		console.log(this.model.label.get());
 		this.text.innerHTML = this.model.label.get();
 	}
 

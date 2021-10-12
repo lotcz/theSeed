@@ -64,7 +64,7 @@ export default class GameController extends ControllerBase {
 		const scale = 100;
 
 		const levelBuilder = new LevelBuilder(size, scale);
-		levelBuilder.ground(GROUND_PRESET_SLOPE_LEFT);
+		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
 		levelBuilder.setViewBoxScale(12);
 		levelBuilder.setStartToBottom(scale * 4);
 
@@ -83,15 +83,21 @@ export default class GameController extends ControllerBase {
 		const builder = new MenuBuilder('main');
 		builder.addLine("New Game", (e) => this.newGame());
 		builder.addLine("Load Level", (e) => this.showLevelSelection());
-		if (this.model.level && this.model.level.inventory) {
-			builder.addLine("Quit", (e) => this.reset());
-			builder.addLine("Resume", (e) => this.resume());
-		} else {
-			builder.addLine("Reset", (e) => this.reset());
+		if (!this.model.level.isEmpty()) {
+			if (this.model.level.get().bee) {
+				builder.addLine("Quit", (e) => this.reset());
+				builder.addLine("Resume", (e) => this.resume());
+			} else {
+				builder.addLine("Reset", (e) => this.reset());
+			}
 		}
 		this.model.menu.set(builder.build());
-		if (this.model.level && this.model.level.inventory)
-			this.levelController.deactivate();
+
+		if (!this.model.level.isEmpty()) {
+			if (this.model.level.get().bee) {
+				this.levelController.deactivate();
+			}
+		}
 	}
 
 	showLevelSelection() {
@@ -153,19 +159,13 @@ export default class GameController extends ControllerBase {
 		if (store) {
 			const state = JSON.parse(store);
 			level = new LevelModel(state);
+			console.log(`Level ${level.name} loaded.`);
+			this.setActiveLevel(level);
 		} else {
-			const size = new Vector2(500, 100);
-			const scale = 80;
-
-			const levelBuilder = new LevelBuilder(size, scale);
-			levelBuilder.setName(name);
-			level = levelBuilder.build();
-			const spriteBuilder = new SpriteBuilder(level);
-			spriteBuilder.addBugs();
-			spriteBuilder.addNutrients();
+			console.warn(`Level ${name} not found!`);
+			this.newGame();
 		}
 
-		this.setActiveLevel(level);
 	}
 
 	activateEditor() {

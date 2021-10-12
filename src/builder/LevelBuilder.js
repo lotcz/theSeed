@@ -13,6 +13,7 @@ import BulbsImage from "../../res/img/bulbs.svg";
 import PlantImage from '../../res/img/plant.svg';
 import RockImage from '../../res/img/rock.svg';
 import CollectionModel from "../model/CollectionModel";
+import GroundModel from "../model/GroundModel";
 
 export const IMAGE_HILL = 'img/hill.svg';
 export const IMAGE_STALK = 'img/stalk.svg';
@@ -22,10 +23,9 @@ export const IMAGE_PLANT = 'img/plant.svg';
 
 export default class LevelBuilder {
 	grid;
+	ground;
 
 	constructor(size, scale) {
-
-
 		this.viewboxScale = 1;
 		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
 		this.parallaxState = {
@@ -35,6 +35,8 @@ export default class LevelBuilder {
 
 		this.grid = new GridModel({ size: size.toArray(), scale: scale});
 		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
+
+		this.ground = new GroundModel();
 
 		this.name = 'level-0';
 		this.resources = new CollectionModel();
@@ -103,14 +105,14 @@ export default class LevelBuilder {
 		};
 	}
 
-	ground(preset) {
+	generateGround(preset = null) {
 		const builder = new GroundBuilder(this.grid);
 		if (preset) {
 			builder.generateFromPreset(this.startPosition, preset);
 		} else {
 			builder.generateRandom(this.startPosition);
 		}
-		this.g = builder.build();
+		this.ground = builder.build();
 	}
 
 	addParallaxLayer(image_path, image_data, distance) {
@@ -132,9 +134,6 @@ export default class LevelBuilder {
 	}
 
 	build() {
-		if (!this.g) {
-			this.ground();
-		}
 		if (!this.plantState) {
 			this.plant();
 		}
@@ -145,7 +144,7 @@ export default class LevelBuilder {
 			name: this.name,
 			grid: this.grid.getState(),
 			parallax: this.parallaxState,
-			ground: this.g.getState(),
+			ground: this.ground.getState(),
 			plant: this.plantState,
 			sprites: [],
 			resources: this.resources.getState(),

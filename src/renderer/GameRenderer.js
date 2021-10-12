@@ -34,7 +34,7 @@ export default class GameRenderer extends SvgRenderer {
 		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
-		this.editorRenderer =  new LevelEditorRenderer(this.game, this.model.editor, this.draw);
+		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
 		this.addChild(this.editorRenderer);
 
 		this.draw.fill('black');

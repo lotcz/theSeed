@@ -97,7 +97,7 @@ export default class SpriteBuilder {
 		const bugCount = 10;
 		for (let i = 0, max = bugCount; i < max; i++) {
 			this.addSprite(
-				this.getRandomPosition(false),
+				this.getRandomPosition(true),
 				0.2 + (Math.random() * 2),
 				false,
 				0,
