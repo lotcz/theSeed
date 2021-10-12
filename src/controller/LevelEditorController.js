@@ -1,10 +1,18 @@
 import ControllerBase from "./ControllerBase";
 import {GROUND_TYPE_BASIC, GROUND_TYPE_EMPTY} from "../model/GroundTileModel";
-import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
-import SpriteBuilder, {IMAGE_BUTTERFLY} from "../builder/SpriteBuilder";
-import {STRATEGY_BUTTERFLY} from "./SpriteController";
+import {
+	EDITOR_MODE_GROUND,
+	EDITOR_MODE_SPRITES,
+	SPRITE_TYPE_BUG,
+	SPRITE_TYPE_BUTTERFLY, SPRITE_TYPE_WATER
+} from "../model/LevelEditorModel";
+import SpriteBuilder, {IMAGE_BUG, IMAGE_BUTTERFLY, IMAGE_WATER,} from "../builder/SpriteBuilder";
+import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_WATER} from "./SpriteController";
 import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+
 import ButterflyImage from "../../res/img/butterfly.svg";
+import LadybugImage from "../../res/img/my-lady-bug.svg";
+import WaterImage from "../../res/img/water.svg";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
@@ -54,16 +62,44 @@ export default class LevelEditorController extends ControllerBase {
 
 	addSprite(position) {
 		const builder = new SpriteBuilder(this.level);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
 
-		builder.addSprite(
-			position,
-			0.5 + Math.random(),
-			false,
-			0,
-			IMAGE_BUTTERFLY,
-			STRATEGY_BUTTERFLY
-		);
+		switch (this.model.selectedSpriteType) {
+			case SPRITE_TYPE_BUTTERFLY:
+				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
+				builder.addSprite(
+					position,
+					0.5 + Math.random(),
+					false,
+					0,
+					IMAGE_BUTTERFLY,
+					STRATEGY_BUTTERFLY
+				);
+				break;
+			case SPRITE_TYPE_BUG:
+				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
+				builder.addSprite(
+					position,
+					0.5 + Math.random(),
+					false,
+					0,
+					IMAGE_BUG,
+					STRATEGY_BUG
+				);
+				break;
+			case SPRITE_TYPE_WATER:
+				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
+				builder.addSprite(
+					position,
+					0.5 + Math.random(),
+					false,
+					0,
+					IMAGE_WATER,
+					STRATEGY_WATER,
+					{amount: Math.random() * 5}
+				);
+				break;
+		}
+
 	}
 
 	updateInternal(delta) {

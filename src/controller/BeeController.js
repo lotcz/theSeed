@@ -43,6 +43,14 @@ export default class BeeController extends ControllerBase {
 			}
 		}
 
+		let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
+		const position = this.grid.getPosition(coords);
+		const ground = this.level.isGround(position);
+		if (ground) {
+			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
+			direction = direction.multiply(-0.3);
+		}
+
 		const speed = direction.size();
 
 		// limit speed
@@ -50,16 +58,14 @@ export default class BeeController extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
-		this.model.direction.set(direction);
-
 		// apply movement
 		if (speed > 0) {
-			let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
+			this.model.position.set(this.grid.getPosition(coords));
 			this.level.centerOnCoordinates(coords);
 			this.model.image.coordinates.set(coords);
-
-			this.model.position.set(this.grid.getPosition(coords));
 		}
+
+		this.model.direction.set(direction);
 
 	}
 
