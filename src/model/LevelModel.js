@@ -129,8 +129,13 @@ export default class LevelModel extends ModelBase {
 	}
 
 	isGround(position) {
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true);
 		return visitors.length > 0;
+	}
+
+	isPenetrable(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
+		return visitors.length === 0;
 	}
 
 	sanitizeViewBox() {

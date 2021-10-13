@@ -1,13 +1,13 @@
 import ControllerBase from "./ControllerBase";
 
 // max length of direction vector, pixels per second
-const MAX_SPEED = 1000;
+const MAX_SPEED = 1500;
 
 // how quickly will speed drop down, pixels per second
-const SLOWDOWN_SPEED = 300;
+const SLOWDOWN_SPEED = 400;
 
 // how quickly will speed build up, pixels per second
-const SPEEDUP_SPEED = 500;
+const SPEEDUP_SPEED = 800;
 
 export default class BeeController extends ControllerBase {
 
@@ -45,9 +45,13 @@ export default class BeeController extends ControllerBase {
 
 		let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
 		const position = this.grid.getPosition(coords);
-		const ground = this.level.isGround(position);
-		if (ground) {
+		const penetrable = this.level.isPenetrable(position);
+		if (!penetrable) {
+
+			console.log(this.grid.chessboard.getVisitors(position));
+
 			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
+
 			direction = direction.multiply(-0.3);
 		}
 
