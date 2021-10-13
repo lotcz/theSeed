@@ -11,6 +11,7 @@ export const GROUND_TYPE_GRASS = 'grass';
 export const GROUND_TYPE_HONEY = 'honey';
 export const GROUND_TYPE_WAX = 'wax';
 export const GROUND_TYPE_WATER = 'water';
+export const GROUND_TYPE_ROCK_BACKGROUND = 'background-rock';
 
 export default class GroundTileModel extends ModelBase {
 	position;

@@ -47,12 +47,8 @@ export default class BeeController extends ControllerBase {
 		const position = this.grid.getPosition(coords);
 		const penetrable = this.level.isPenetrable(position);
 		if (!penetrable) {
-
-			console.log(this.grid.chessboard.getVisitors(position));
-
 			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
-
-			direction = direction.multiply(-0.3);
+			direction = direction.multiply(-0.5);
 		}
 
 		const speed = direction.size();
@@ -70,7 +66,6 @@ export default class BeeController extends ControllerBase {
 		}
 
 		this.model.direction.set(direction);
-
 	}
 
 }

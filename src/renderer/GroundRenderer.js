@@ -5,7 +5,7 @@ import {
 	GROUND_TYPE_GRASS,
 	GROUND_TYPE_WOOD,
 	GROUND_TYPE_HONEY,
-	GROUND_TYPE_ROCK, GROUND_TYPE_WAX, GROUND_TYPE_WATER
+	GROUND_TYPE_ROCK, GROUND_TYPE_WAX, GROUND_TYPE_WATER, GROUND_TYPE_ROCK_BACKGROUND
 } from "../model/GroundTileModel";
 import {
 	CORNER_LEFT,
@@ -18,7 +18,7 @@ import {
 
 const DEBUG_GROUND = false;
 
-const GROUND_STYLE = [];
+export const GROUND_STYLE = [];
 
 GROUND_STYLE[GROUND_TYPE_BASIC] = {
 	fill: GROUND_LIGHT,
@@ -47,20 +47,25 @@ GROUND_STYLE[GROUND_TYPE_GRASS] = {
 GROUND_STYLE[GROUND_TYPE_HONEY] = {
 	fill: 'orange',
 	stroke: { width: 4, color: 'darkOrange'},
-	disableGround: true,
+	background: true,
 };
 
 GROUND_STYLE[GROUND_TYPE_WAX] = {
 	fill: 'darkorange',
 	stroke: { width: 4, color: 'brown'},
-	disableGround: false,
 	renderCorners: true
 };
 
 GROUND_STYLE[GROUND_TYPE_WATER] = {
 	fill: 'darkblue',
 	stroke: { width: 4, color: '#009'},
-	disableGround: true,
+	background: true
+};
+
+GROUND_STYLE[GROUND_TYPE_ROCK_BACKGROUND] = {
+	fill: 'darkgray',
+	stroke: { width: 0, color: '#009'},
+	background: true,
 	renderCorners: true
 };
 
@@ -78,7 +83,7 @@ export default class GroundRenderer extends SvgRenderer {
 			return;
 		}
 		remaining.splice(index, 1);
-		if (GROUND_STYLE[tile.type].disableGround === true) {
+		if (GROUND_STYLE[tile.type].background === true) {
 			tile._is_penetrable = true;
 		}
 		const neighborPositions = this.grid.getNeighbors(tile.position);
@@ -160,7 +165,6 @@ export default class GroundRenderer extends SvgRenderer {
 			}
 
 			const startCorner = currentCorner;
-			const lastCorner = (startCorner + 2) % 6;
 
 			if (DEBUG_GROUND) {
 				const corner = this.grid.getCorner(startTile.position, startCorner);
@@ -244,7 +248,11 @@ export default class GroundRenderer extends SvgRenderer {
 				path += ` Z`;
 
 				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
-				pathDraw.back();
+				if (style.background) {
+					pathDraw.back();
+				} else {
+					pathDraw.front();
+				}
 			}
 
 		}
