@@ -14,7 +14,6 @@ import {
 import MenuBuilder from "../builder/MenuBuilder";
 import SpriteBuilder from "../builder/SpriteBuilder";
 import LevelEditorController from "./LevelEditorController";
-import LevelEditorModel from "../model/LevelEditorModel";
 
 export default class GameController extends ControllerBase {
 	constructor(model, controls) {

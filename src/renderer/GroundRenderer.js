@@ -1,12 +1,5 @@
 import SvgRenderer from "./SvgRenderer";
-import {BROWN_DARK, BROWN_LIGHT, GREEN_DARK, GREEN_LIGHT, GROUND_DARK, GROUND_LIGHT} from "./Palette";
-import {
-	GROUND_TYPE_BASIC,
-	GROUND_TYPE_GRASS,
-	GROUND_TYPE_WOOD,
-	GROUND_TYPE_HONEY,
-	GROUND_TYPE_ROCK, GROUND_TYPE_WAX, GROUND_TYPE_WATER, GROUND_TYPE_ROCK_BACKGROUND
-} from "../model/GroundTileModel";
+import {GROUND_STYLES} from "./Palette";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -17,57 +10,6 @@ import {
 } from "../model/GridModel";
 
 const DEBUG_GROUND = false;
-
-export const GROUND_STYLE = [];
-
-GROUND_STYLE[GROUND_TYPE_BASIC] = {
-	fill: GROUND_LIGHT,
-	stroke: { width: 4, color: GROUND_DARK},
-	renderCorners: true
-};
-
-GROUND_STYLE[GROUND_TYPE_WOOD] = {
-	fill: BROWN_LIGHT,
-	stroke: { width: 4, color: BROWN_DARK},
-	renderCorners: true
-};
-
-GROUND_STYLE[GROUND_TYPE_ROCK] = {
-	fill: '#909090',
-	stroke: { width: 4, color: '#202020'},
-	renderCorners: true
-};
-
-GROUND_STYLE[GROUND_TYPE_GRASS] = {
-	fill: GREEN_LIGHT,
-	stroke: { width: 4, color: GREEN_DARK},
-	renderCorners: true
-};
-
-GROUND_STYLE[GROUND_TYPE_HONEY] = {
-	fill: 'orange',
-	stroke: { width: 4, color: 'darkOrange'},
-	background: true,
-};
-
-GROUND_STYLE[GROUND_TYPE_WAX] = {
-	fill: 'darkorange',
-	stroke: { width: 4, color: 'brown'},
-	renderCorners: true
-};
-
-GROUND_STYLE[GROUND_TYPE_WATER] = {
-	fill: 'darkblue',
-	stroke: { width: 4, color: '#009'},
-	background: true
-};
-
-GROUND_STYLE[GROUND_TYPE_ROCK_BACKGROUND] = {
-	fill: 'darkgray',
-	stroke: { width: 0, color: '#009'},
-	background: true,
-	renderCorners: true
-};
 
 export default class GroundRenderer extends SvgRenderer {
 	group;
@@ -83,9 +25,6 @@ export default class GroundRenderer extends SvgRenderer {
 			return;
 		}
 		remaining.splice(index, 1);
-		if (GROUND_STYLE[tile.type].background === true) {
-			tile._is_penetrable = true;
-		}
 		const neighborPositions = this.grid.getNeighbors(tile.position);
 		const neighbors = neighborPositions.reduce((prev, current) => prev.concat(this.chessboard.getVisitors(current, (v) => v.type === tile.type)), []);
 
@@ -151,7 +90,12 @@ export default class GroundRenderer extends SvgRenderer {
 				return;
 			}
 
-			const style = GROUND_STYLE[startTile.type];
+			const style = GROUND_STYLES[startTile.type];
+
+			if (!style) {
+				console.error(`Style ${startTile.type} not present in GROUND_STYLES.`);
+				return;
+			}
 
 			// remove all neighboring tiles of the same type recursively from remaining
 			this.removeTileNeighbors(remaining, startTile);
@@ -176,10 +120,10 @@ export default class GroundRenderer extends SvgRenderer {
 			if (style.renderCorners) {
 				points.push(this.grid.getCorner(startTile.position, startCorner));
 			} else {
-				points.push(this.grid.getCoordinates(startTile.position));
+				//points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 5) % 6)));
 			}
 
-			// push edges into single group
+			// find edged tiles and push them into single group
 			do {
 				let nextPosition = this.getCornerNeighbor(currentTile, currentCorner);
 				let visitors = this.chessboard.getVisitors(nextPosition, (v) => v.type === startTile.type);
@@ -203,7 +147,8 @@ export default class GroundRenderer extends SvgRenderer {
 				}
 				if (!style.renderCorners) {
 					if (currentTile !== null && currentTile !== startTile) {
-						points.push(this.grid.getCoordinates(currentTile.position));
+						//this.grid.getCoordinates(currentTile.position)
+						points.push(this.grid.getCoordinates(this.getCornerNeighbor(currentTile, currentCorner)));
 					}
 				}
 			} while (currentTile !== null && ((currentTile !== startTile) || (currentCorner !== startCorner)));
@@ -222,30 +167,37 @@ export default class GroundRenderer extends SvgRenderer {
 			// last
 
 			if (style.renderCorners) {
-				points.push(this.grid.getCorner(startTile.position, startCorner));
+				points.push(points[0]);
 				points.push(points[1]);
 			} else {
-				points.push(this.grid.getCoordinates(startTile.position));
+				points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 4) % 6)));
+				points.push(points[0]);
 			}
 
 			// render
 			if (points.length > 1) {
 
 				let middle = points[0].add(points[1].subtract(points[0]).multiply(0.5));
-				let path = `M${middle.x} ${middle.y} `;
+
+				let path = '';
+				path = `M${middle.x} ${middle.y} `;
 
 				if (DEBUG_GROUND) {
-					this.group.circle(15).fill('yellow').center(middle.x, middle.y);
+					this.group.circle(25).fill('green').center(points[0].x, points[0].y);
+					this.group.circle(22).fill('green').center(points[1].x, points[1].y);
+					this.group.circle(20).fill('yellow').center(middle.x, middle.y);
 				}
 
 				for (let i = 1, max = points.length - 1; i < max; i++) {
 					middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
 					path += `S ${points[i].x} ${points[i].y}, ${middle.x} ${middle.y}`;
 					if (DEBUG_GROUND) {
-						this.group.circle(15).fill('blue').center(middle.x, middle.y);
+						this.group.circle(15).fill('lightgreen').center(points[i].x, points[i].y);
+						this.group.circle(10).fill('blue').center(middle.x, middle.y);
 					}
 				}
-				path += ` Z`;
+
+				//path += ` Z`;
 
 				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
 				if (style.background) {

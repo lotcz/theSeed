@@ -14,6 +14,7 @@ export default class SpriteModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		// for visitor to be recognized as sprite
 		this._is_sprite = true;
 
 		if (state) {
