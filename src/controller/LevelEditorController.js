@@ -67,9 +67,8 @@ export default class LevelEditorController extends ControllerBase {
 			default:
 				const visitors2 = this.chessboard.getTile(position);
 				const groundVisitors2 = visitors2.filter((v) => v._is_ground === true);
-				if (groundVisitors2.length === 0) {
-					this.level.ground.addTile({position: position.toArray(), type: this.model.selectedGroundType});
-				}
+				groundVisitors2.forEach((v) => this.level.ground.removeTile(v));
+				this.level.ground.addTile({position: position.toArray(), type: this.model.selectedGroundType});
 		}
 
 	}

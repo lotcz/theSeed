@@ -3,7 +3,7 @@ import ImageRenderer from "./ImageRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
 
-import {SKY_DARK, SKY_LIGHT} from "./Palette";
+import {BLUE_DARK, BLUE_LIGHT} from "./Palette";
 
 export default class ParallaxRenderer extends SvgRenderer {
 
@@ -19,8 +19,8 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.center = this.gridSize.multiply(0.5);
 
 		const linear = this.background.gradient('linear', function (add) {
-			add.stop(0, SKY_LIGHT);
-			add.stop(1, SKY_DARK);
+			add.stop(0, BLUE_LIGHT);
+			add.stop(1, BLUE_DARK);
 			add.from(0, 0);
 			add.to(0, 1);
 		});

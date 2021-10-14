@@ -29,7 +29,7 @@ export default class LevelEditorModel extends ModelBase {
 			EDITOR_MODE_SPRITES,
 			EDITOR_MODE_PLANT
 		];
-		this.selectedMode = EDITOR_MODE_GROUND;
+		this.selectedMode = EDITOR_MODE_SPRITES;
 
 		this.brushSizes = [
 			1,

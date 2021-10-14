@@ -120,7 +120,7 @@ export default class GroundRenderer extends SvgRenderer {
 			if (style.renderCorners) {
 				points.push(this.grid.getCorner(startTile.position, startCorner));
 			} else {
-				//points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 5) % 6)));
+				points.push(this.grid.getCoordinates(startTile.position));
 			}
 
 			// find edged tiles and push them into single group
@@ -148,7 +148,7 @@ export default class GroundRenderer extends SvgRenderer {
 				if (!style.renderCorners) {
 					if (currentTile !== null && currentTile !== startTile) {
 						//this.grid.getCoordinates(currentTile.position)
-						points.push(this.grid.getCoordinates(this.getCornerNeighbor(currentTile, currentCorner)));
+						points.push(this.grid.getCoordinates(currentTile.position));
 					}
 				}
 			} while (currentTile !== null && ((currentTile !== startTile) || (currentCorner !== startCorner)));
@@ -170,7 +170,7 @@ export default class GroundRenderer extends SvgRenderer {
 				points.push(points[0]);
 				points.push(points[1]);
 			} else {
-				points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 4) % 6)));
+				//points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 4) % 6)));
 				points.push(points[0]);
 				points.push(points[1]);
 			}

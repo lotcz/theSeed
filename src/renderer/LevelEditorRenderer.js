@@ -75,6 +75,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.toolsFolder.open();
 
 		this.gui.add(this.actions, 'save').name('Save');
+		this.gui.add(this.actions, 'download').name('Download');
 		this.gui.open();
 
 	}
