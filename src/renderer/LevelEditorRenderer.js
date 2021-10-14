@@ -12,7 +12,7 @@ import * as dat from "dat.gui";
 import LevelModel from "../model/LevelModel";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
 
-const DEBUG_EDITOR = true;
+const DEBUG_EDITOR = false;
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
@@ -25,34 +25,37 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.brushController = null;
 		this.toolTypeController = null;
 		this.group = null;
+		this.groundTiles = [];
 
-		this.tilesChangedHandler = () => this.model.makeDirty();
+		this.tileAddedHandler = (sender, tile) => this.renderDebugGridTile(tile.position);
+		this.tileRemovedHandler = (sender, tile) => this.hideGroundTile(tile.position);
 
 		this.actions = {
 			save: () => this.saveGame(),
 			download: () => this.downloadSavedGame()
 		};
+
 	}
 
 	activateInternal() {
 		this.deactivateInternal();
 
-		this.level = this.game.level.get();
+		const level = this.game.level.get();
 
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
 		this.group.front();
 
 		this.gui = new dat.GUI();
-		this.gui.add(this.level, 'name').listen()
+		this.gui.add(level, 'name').listen()
 
 		const gridFolder = this.gui.addFolder('grid')
 		gridFolder.add(this.grid, 'scale').listen();
-		const gridsizeFolder = gridFolder.addFolder('size')
-		gridsizeFolder.add(this.grid.size, 'x').listen();
-		gridsizeFolder.add(this.grid.size, 'y').listen();
+		const sizeFolder = gridFolder.addFolder('size')
+		sizeFolder.add(level.grid.size, 'x').listen();
+		sizeFolder.add(level.grid.size, 'y').listen();
 		const scaleFolder = this.gui.addFolder('viewBoxScale')
-		scaleFolder.add(this.level.viewBoxScale, 'value', 0, 100).listen();
+		scaleFolder.add(level.viewBoxScale, 'value', 0, 100).listen();
 
 		/*
 			const sizeFolder = this.gui.addFolder('viewBoxSize')
@@ -73,6 +76,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		this.gui.add(this.actions, 'save').name('Save');
 		this.gui.open();
+
 	}
 
 	deactivateInternal() {
@@ -85,7 +89,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.gui.destroy();
 			this.gui = null;
 		}
-		this.hideGroundTiles();
+		this.groundTiles.forEach((position) => this.destroyGroundTile(position));
+		this.groundTiles = [];
 	}
 
 	getLevelState() {
@@ -109,34 +114,70 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	renderDebugGridTile(position) {
-		this.level = this.game.level.get();
-		const corners = this.level.grid
-			.getCorners(position)
-			.map((c) => [c.x, c.y]);
-		corners.push(corners[0]);
-		this.group.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
-		const coordinates = this.level.grid.getCoordinates(position);
-		this.group.circle(25).fill('red').center(coordinates.x, coordinates.y);
+		if (DEBUG_EDITOR) console.log('rendering tile position', position);
+
+		const level = this.game.level.get();
+		let tile;
+		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_hex === true);
+		if (visitors.length === 0) {
+			const hex = this.group.group();
+			const corners = level.grid
+				.getCorners(new Vector2())
+				.map((c) => [c.x, c.y]);
+			corners.push(corners[0]);
+			hex.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
+			hex.circle(20).fill('#000').center(-10, 0);
+			hex.circle(20).fill('#fff').center(10, 0);
+			const coordinates = level.grid.getCoordinates(position);
+			hex.center(coordinates.x, coordinates.y);
+			level.grid.chessboard.addVisitor(position, {_is_hex: true, hex: hex});
+			this.groundTiles.push(position);
+			tile = hex;
+		} else {
+			tile = visitors[0].hex;
+		}
+		tile.show();
+	}
+
+	destroyGroundTile(position) {
+		const level = this.game.level.get();
+		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_hex === true);
+		if (visitors.length > 1) {
+			console.log('Visitors count more than 1', visitors);
+		}
+		if (visitors.length > 0) {
+			const hex = visitors[0].hex;
+			hex.remove();
+			level.grid.chessboard.removeVisitor(position, visitors[0]);
+		}
+	}
+
+	hideGroundTile(position) {
+		const level = this.game.level.get();
+		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_hex === true);
+		if (visitors.length > 1) {
+			console.log('Visitors count more than 1', visitors);
+		}
+		if (visitors.length > 0) {
+			const hex = visitors[0].hex;
+			hex.hide();
+		}
 	}
 
 	hideGroundTiles() {
-		if (this.group) this.group.remove();
+		if (DEBUG_EDITOR) console.log('Hiding all ground tiles');
 		this.level = this.game.level.get();
-		this.group = null;
-		if (this.level.ground.tiles) {
-			this.level.ground.tiles.removeOnAddListener(this.tilesChangedHandler);
-			this.level.ground.tiles.removeOnRemoveListener(this.tilesChangedHandler);
-		}
+		this.level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
+		this.level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
+		this.groundTiles.forEach((position) => this.hideGroundTile(position));
 	}
 
 	renderGroundTiles() {
 		this.hideGroundTiles();
-		this.group = this.draw.group();
-		this.group.addClass('level-editor');
 		this.level = this.game.level.get();
 		this.level.ground.tiles.forEach((tile) => this.renderDebugGridTile(tile.position));
-		this.level.ground.tiles.addOnAddListener(this.tilesChangedHandler);
-		this.level.ground.tiles.addOnRemoveListener(this.tilesChangedHandler);
+		this.level.ground.tiles.addOnAddListener(this.tileAddedHandler);
+		this.level.ground.tiles.addOnRemoveListener(this.tileRemovedHandler);
 	}
 
 	renderInternal() {
@@ -148,8 +189,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		if (this.brushController) this.brushController.remove();
 		this.brushController = null;
 
-		this.hideGroundTiles();
-
 		switch (this.model.selectedMode) {
 			case EDITOR_MODE_GROUND:
 				this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
@@ -158,6 +197,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 				break;
 			case EDITOR_MODE_SPRITES:
 				this.toolTypeController = this.toolsFolder.add(this.model, 'selectedSpriteType', this.model.spriteTypes);
+				this.hideGroundTiles();
 				break;
 		}
 

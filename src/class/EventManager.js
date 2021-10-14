@@ -1,3 +1,5 @@
+const DEBUG_EVENT_MANAGER = true;
+
 export default class EventManager {
 	handlers;
 
@@ -9,13 +11,23 @@ export default class EventManager {
 		if (!this.handlers[eventName]) {
 			this.handlers[eventName] = [];
 		}
+		const index = this.handlers[eventName].indexOf(eventHandler);
+		if (index >= 0) {
+			if (DEBUG_EVENT_MANAGER) console.log('Event listener already registered.');
+			return;
+		}
 		return this.handlers[eventName].push(eventHandler);
 	}
 
 	removeEventListener(eventName, eventHandler) {
-		const index = this.handlers.indexOf(eventHandler);
+		if (!this.handlers[eventName]) {
+			this.handlers[eventName] = [];
+		}
+		const index = this.handlers[eventName].indexOf(eventHandler);
 		if (index >= 0) {
-			this.handlers.splice(index, 1);
+			this.handlers[eventName].splice(index, 1);
+		} else {
+			if (DEBUG_EVENT_MANAGER) console.log('Event listener cannot be removed - not found.');
 		}
 	}
 

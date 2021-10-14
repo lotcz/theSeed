@@ -172,6 +172,7 @@ export default class GroundRenderer extends SvgRenderer {
 			} else {
 				points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 4) % 6)));
 				points.push(points[0]);
+				points.push(points[1]);
 			}
 
 			// render
