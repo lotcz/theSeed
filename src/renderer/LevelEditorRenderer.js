@@ -18,6 +18,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	group;
 	gui;
 	toolsFolder;
+	showGroundTilesController;
 	brushController;
 	toolTypeController;
 	groundTiles;
@@ -30,6 +31,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.toolsFolder = null;
 		this.brushController = null;
 		this.toolTypeController = null;
+		this.showGroundTilesController = null;
 		this.group = null;
 		this.highlights = null;
 		this.groundTiles = [];
@@ -79,9 +81,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.gui.add(this.model.selectedMode, 'value', this.model.modes).name('Mode')
 			.onChange(() => {
 				this.model.selectedMode.makeDirty();
-				this.renderInternal();
 			}
 		);
+		this.model.selectedMode.makeDirty();
 
 		this.toolsFolder = this.gui.addFolder('Tools');
 		this.toolsFolder.open();
@@ -244,6 +246,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		}
 
 		if (this.model.selectedMode.isDirty()) {
+			if (this.showGroundTilesController) this.showGroundTilesController.remove();
+			this.showGroundTilesController = null;
+
 			if (this.toolTypeController) this.toolTypeController.remove();
 			this.toolTypeController = null;
 
@@ -252,16 +257,28 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 			switch (this.model.selectedMode.get()) {
 				case EDITOR_MODE_GROUND:
+					this.showGroundTilesController = this.toolsFolder.add(this.model.showGroundTiles, 'value').name('Show Ground')
+						.onChange(() => {
+								this.model.showGroundTiles.makeDirty();
+							}
+						);
 					this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
 					this.toolTypeController = this.toolsFolder.add(this.model, 'selectedGroundType', this.model.groundTypes);
-					this.renderGroundTiles();
 					break;
 				case EDITOR_MODE_SPRITES:
 					this.toolTypeController = this.toolsFolder.add(this.model, 'selectedSpriteType', this.model.spriteTypes);
-					this.hideGroundTiles();
 					break;
 			}
 			this.model.selectedMode.clean();
+		}
+
+		if (this.model.showGroundTiles.isDirty()) {
+			if (this.model.showGroundTiles.get()) {
+				this.renderGroundTiles();
+			} else {
+				this.hideGroundTiles();
+			}
+			this.model.showGroundTiles.clean();
 		}
 
 	}
