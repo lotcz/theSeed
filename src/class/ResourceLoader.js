@@ -2,6 +2,8 @@ import Tree from "./Tree";
 import ResourceModel, {RESOURCE_TYPE_GROUP, RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import Pixies from "./Pixies";
 
+const DEBUG_RESOURCE_LOADER = false;
+
 export default class ResourceLoader extends Tree {
 	model;
 	loaded;
@@ -51,7 +53,7 @@ export default class ResourceLoader extends Tree {
 					this.resource.attr({id:token});
 					//defs.add(this.resource);
 				} else {
-					console.log(`Resource ${this.model.uri} already loaded.`);
+					if (DEBUG_RESOURCE_LOADER) console.log(`Resource ${this.model.uri} already loaded.`);
 					this.loaded = true;
 				}
 				break;

@@ -9,7 +9,7 @@ import {
 	CORNER_UPPER_RIGHT
 } from "../model/GridModel";
 
-const DEBUG_GROUND = false;
+const DEBUG_GROUND_RENDERER = false;
 
 export default class GroundRenderer extends SvgRenderer {
 	group;
@@ -20,15 +20,20 @@ export default class GroundRenderer extends SvgRenderer {
 	}
 
 	removeTileNeighbors(remaining, tile) {
-		const index = remaining.indexOf(tile);
-		if (index < 0) {
-			return;
-		}
-		remaining.splice(index, 1);
-		const neighborPositions = this.grid.getNeighbors(tile.position);
-		const neighbors = neighborPositions.reduce((prev, current) => prev.concat(this.chessboard.getVisitors(current, (v) => v.type === tile.type)), []);
+		const candidates = [];
+		candidates.push(tile);
 
-		neighbors.forEach((n) => this.removeTileNeighbors(remaining, n));
+		while (candidates.length > 0) {
+			const candidate = candidates[0];
+			candidates.splice(0, 1);
+			const index = remaining.indexOf(candidate);
+			if (index >= 0) {
+				remaining.splice(index, 1);
+				const neighborPositions = this.grid.getNeighbors(candidate.position);
+				const neighbors = neighborPositions.reduce((prev, current) => prev.concat(this.chessboard.getVisitors(current, (v) => v.type === candidate.type)), []);
+				neighbors.forEach((n) => {if (remaining.includes(n) && !candidates.includes(n)) candidates.push(n);});
+			}
+		}
 	}
 
 	getCornerNeighbor(tile, cornerType) {
@@ -63,6 +68,8 @@ export default class GroundRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
+		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
+
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
 
@@ -110,7 +117,7 @@ export default class GroundRenderer extends SvgRenderer {
 
 			const startCorner = currentCorner;
 
-			if (DEBUG_GROUND) {
+			if (DEBUG_GROUND_RENDERER) {
 				const corner = this.grid.getCorner(startTile.position, startCorner);
 				this.group.circle(10).fill('purple').center(corner.x, corner.y);
 			}
@@ -183,7 +190,7 @@ export default class GroundRenderer extends SvgRenderer {
 				let path = '';
 				path = `M${middle.x} ${middle.y} `;
 
-				if (DEBUG_GROUND) {
+				if (DEBUG_GROUND_RENDERER) {
 					this.group.circle(25).fill('green').center(points[0].x, points[0].y);
 					this.group.circle(22).fill('green').center(points[1].x, points[1].y);
 					this.group.circle(20).fill('yellow').center(middle.x, middle.y);
@@ -192,7 +199,7 @@ export default class GroundRenderer extends SvgRenderer {
 				for (let i = 1, max = points.length - 1; i < max; i++) {
 					middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
 					path += `S ${points[i].x} ${points[i].y}, ${middle.x} ${middle.y}`;
-					if (DEBUG_GROUND) {
+					if (DEBUG_GROUND_RENDERER) {
 						this.group.circle(15).fill('lightgreen').center(points[i].x, points[i].y);
 						this.group.circle(10).fill('blue').center(middle.x, middle.y);
 					}
