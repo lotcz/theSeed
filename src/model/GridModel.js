@@ -2,10 +2,17 @@ import Vector2 from "../class/Vector2";
 import ModelBase from "./ModelBase";
 import Chessboard from "../class/Chessboard";
 
-const NEIGHBOR_UP = new Vector2(0, -1);
-const NEIGHBOR_DOWN = new Vector2(0, 1);
-const NEIGHBOR_LEFT = new Vector2(-1, 0);
-const NEIGHBOR_RIGHT = new Vector2(1, 0);
+const NEIGHBOR_VECTOR_UP = new Vector2(0, -1);
+const NEIGHBOR_VECTOR_DOWN = new Vector2(0, 1);
+const NEIGHBOR_VECTOR_LEFT = new Vector2(-1, 0);
+const NEIGHBOR_VECTOR_RIGHT = new Vector2(1, 0);
+
+export const NEIGHBOR_UP = 0;
+export const NEIGHBOR_UPPER_RIGHT = 1;
+export const NEIGHBOR_LOWER_RIGHT = 2;
+export const NEIGHBOR_DOWN = 3;
+export const NEIGHBOR_LOWER_LEFT = 4;
+export const NEIGHBOR_UPPER_LEFT = 5;
 
 export const CORNER_RIGHT = 0;
 export const CORNER_LOWER_RIGHT = 1;
@@ -65,6 +72,23 @@ export default class GridModel extends ModelBase {
 		return this.getCornerFromCoordinates(this.getCoordinates(position), i);
 	}
 
+	getNeighbor(position, direction, steps = 1) {
+		switch (direction) {
+			case NEIGHBOR_UP:
+				return this.getNeighborUp(position, steps);
+			case NEIGHBOR_UPPER_RIGHT:
+				return this.getNeighborUpperRight(position, steps);
+			case NEIGHBOR_LOWER_RIGHT:
+				return this.getNeighborLowerRight(position, steps);
+			case NEIGHBOR_DOWN:
+				return this.getNeighborDown(position, steps);
+			case NEIGHBOR_LOWER_LEFT:
+				return this.getNeighborLowerLeft(position, steps);
+			case NEIGHBOR_UPPER_LEFT:
+				return this.getNeighborUpperLeft(position, steps);
+		};
+	}
+
 	getNeighbors(position) {
 		return [
 			this.getNeighborUp(position),
@@ -76,28 +100,48 @@ export default class GridModel extends ModelBase {
 		];
 	}
 
-	getNeighborUp(position) {
-		return position.add(NEIGHBOR_UP);
+	getNeighborUp(position, steps = 1) {
+		return position.add(NEIGHBOR_VECTOR_UP.multiply(steps));
 	}
 
-	getNeighborDown(position) {
-		return position.add(NEIGHBOR_DOWN);
+	getNeighborDown(position, steps = 1) {
+		return position.add(NEIGHBOR_VECTOR_DOWN.multiply(steps));
 	}
 
-	getNeighborUpperLeft(position) {
-		return position.add(position.x % 2 === 0 ? NEIGHBOR_LEFT.addY(-1) : NEIGHBOR_LEFT);
+	getNeighborUpperLeft(position, steps = 1) {
+		const result = position.add(position.x % 2 === 0 ? NEIGHBOR_VECTOR_LEFT.addY(-1) : NEIGHBOR_VECTOR_LEFT);
+		if (steps > 1) {
+			return this.getNeighborUpperLeft(result, steps - 1);
+		} else {
+			return result;
+		}
 	}
 
-	getNeighborUpperRight(position) {
-		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT.addY(-1) : NEIGHBOR_RIGHT);
+	getNeighborUpperRight(position, steps = 1) {
+		const result = position.add(position.x % 2 === 0 ? NEIGHBOR_VECTOR_RIGHT.addY(-1) : NEIGHBOR_VECTOR_RIGHT);
+		if (steps > 1) {
+			return this.getNeighborUpperRight(result, steps - 1);
+		} else {
+			return result;
+		}
 	}
 
-	getNeighborLowerLeft(position) {
-		return position.add(position.x % 2 === 0 ? NEIGHBOR_LEFT : NEIGHBOR_LEFT.addY(1));
+	getNeighborLowerLeft(position, steps = 1) {
+		const result = position.add(position.x % 2 === 0 ? NEIGHBOR_VECTOR_LEFT : NEIGHBOR_VECTOR_LEFT.addY(1));
+		if (steps > 1) {
+			return this.getNeighborLowerLeft(result, steps - 1);
+		} else {
+			return result;
+		}
 	}
 
-	getNeighborLowerRight(position) {
-		return position.add(position.x % 2 === 0 ? NEIGHBOR_RIGHT : NEIGHBOR_RIGHT.addY(1));
+	getNeighborLowerRight(position, steps = 1) {
+		const result = position.add(position.x % 2 === 0 ? NEIGHBOR_VECTOR_RIGHT : NEIGHBOR_VECTOR_RIGHT.addY(1));
+		if (steps > 1) {
+			return this.getNeighborLowerRight(result, steps - 1);
+		} else {
+			return result;
+		}
 	}
 
 	isValidPosition(position) {

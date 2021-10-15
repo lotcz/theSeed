@@ -71,8 +71,8 @@ export default class LevelEditorModel extends ModelBase {
 		this.selectedGroundType = this.groundTypes[0];
 
 		this.spriteTypes = [
-			EDITOR_TOOL_SELECT,
 			EDITOR_TOOL_DELETE,
+			EDITOR_TOOL_SELECT,
 			SPRITE_TYPE_BUTTERFLY,
 			SPRITE_TYPE_BUG,
 			SPRITE_TYPE_WATER,

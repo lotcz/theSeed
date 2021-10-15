@@ -11,8 +11,9 @@ import InventoryRenderer from "./InventoryRenderer";
 import * as dat from "dat.gui";
 import LevelModel from "../model/LevelModel";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
+import Pixies from "../class/Pixies";
 
-const DEBUG_EDITOR = true;
+const DEBUG_EDITOR = false;
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
@@ -199,7 +200,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	renderHighlights() {
 		this.hideHighlights();
 		this.highlights = this.group.group();
+		//const session = Pixies.startDebugSession('rendering');
 		this.model.highlights.children.forEach((ch) => this.renderHighlightedTile(ch));
+		//Pixies.finishDebugSession(session);
 	}
 
 	//</editor-fold>
@@ -220,19 +223,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			helper.center(coordinates.x, coordinates.y);
 			level.grid.chessboard.addVisitor(position, {_is_sprite_helper: true, helper: helper});
 
-		}
-	}
-
-	destroySpriteHelper(position) {
-		const level = this.game.level.get();
-		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_sprite_helper === true);
-		if (visitors.length > 1) {
-			console.log('Visitors count more than 1', visitors);
-		}
-		if (visitors.length > 0) {
-			const helper = visitors[0].helper;
-			helper.remove();
-			level.grid.chessboard.removeVisitor(position, visitors[0]);
 		}
 	}
 
@@ -360,9 +350,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	renderInternal() {
 		if (DEBUG_EDITOR) console.log('Rendering editor');
 
-		if (this.model.highlights.isDirty()) {
+		if (this.model.highlightedTilePosition.isDirty()) {
 			this.renderHighlights();
-			this.model.highlights.clean();
+			this.model.highlightedTilePosition.clean();
 		}
 
 		if (this.model.selectedMode.isDirty()) {

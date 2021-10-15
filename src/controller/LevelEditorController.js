@@ -17,6 +17,8 @@ import LadybugImage from "../../res/img/my-lady-bug.svg";
 import WaterImage from "../../res/img/water.svg";
 import {GROUND_STYLES} from "../renderer/Palette";
 import VectorCollectionModel from "../model/VectorCollectionModel";
+import Pixies from "../class/Pixies";
+import {NEIGHBOR_LOWER_RIGHT, NEIGHBOR_UP} from "../model/GridModel";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
@@ -32,40 +34,69 @@ export default class LevelEditorController extends ControllerBase {
 		this.controls.mouseClick = null;
 	}
 
-	findAffectedPositionsInternal(positions, position, level = 1) {
-		positions.add(position);
-		if (level > 1) {
-			const neighbors = this.grid.getNeighbors(position);
-			neighbors.forEach((n) =>
-			{
-				const affected = this.getAffectedPositions(n, level - 1);
-				affected.forEach((a) =>	positions.add(a));
-			});
+	updateInternal(delta) {
+		if (this.controls.isDirty()) {
+
+			if (this.controls.mouseCoords.isDirty()) {
+				this.onMouseMove();
+				this.controls.mouseCoords.clean();
+			}
+			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
+				const position = this.getCursorGridPosition(this.controls.mouseClick);
+				if (this.controls.mouseClickLeft) {
+					this.processClick(position);
+				}
+				this.controls.mouseClick.clean();
+			}
+
+			if (this.controls.zoom.isDirty()) {
+				this.onZoom();
+				this.controls.resetZoom();
+			}
+			this.controls.clean();
 		}
+
+		this.scroll(delta);
 	}
 
-	getAffectedPositions(position, level = 1) {
-		const positions = new VectorCollectionModel();
-		this.findAffectedPositionsInternal(positions, position, level);
-		return positions.children;
-	}
+	getAffectedPositions(position, steps = 1) {
+		const level = this.game.level.get();
+		const positions = [];
+		let start = position;
+		let stepsRemaining = steps;
 
-	processClick(position) {
-		switch (this.model.selectedMode.get()) {
-			case EDITOR_MODE_SPRITES:
-				this.addSprite(position);
-				break;
-
-			case EDITOR_MODE_GROUND:
-				this.processGroundClick(position);
-				break;
+		while (stepsRemaining > 0) {
+			positions.push(start);
+			for (let i = 1; i < steps; i++) {
+				positions.push(level.grid.getNeighborLowerLeft(start, i));
+			}
+			start = level.grid.getNeighborUp(start);
+			stepsRemaining--;
 		}
-	}
 
-	processGroundClick(position) {
-		const level = Math.round(this.model.brushSize);
-		const positions = this.getAffectedPositions(position, level);
-		positions.forEach((p) => this.addGroundTile(p));
+		stepsRemaining = steps;
+		start = position;
+		while (stepsRemaining > 0) {
+			//positions.push(start);
+			for (let i = 1; i < steps; i++) {
+				positions.push(level.grid.getNeighborLowerRight(start, i));
+			}
+			start = level.grid.getNeighborUp(start);
+			stepsRemaining--;
+		}
+
+		stepsRemaining = steps;
+		start = position;
+		while (stepsRemaining > 0) {
+			//positions.push(start);
+			for (let i = 1; i < steps; i++) {
+				positions.push(level.grid.getNeighborLowerRight(start, i));
+			}
+			start = level.grid.getNeighborLowerLeft(start);
+			stepsRemaining--;
+		}
+
+		return positions;
 	}
 
 	addGroundTile(position) {
@@ -86,7 +117,25 @@ export default class LevelEditorController extends ControllerBase {
 
 	}
 
-	addSprite(position) {
+	processGroundClick(position) {
+		const level = Math.round(this.model.brushSize);
+		const positions = this.getAffectedPositions(position, level);
+		positions.forEach((p) => this.addGroundTile(p));
+	}
+
+	processClick(position) {
+		switch (this.model.selectedMode.get()) {
+			case EDITOR_MODE_SPRITES:
+				this.processSpriteClick(position);
+				break;
+
+			case EDITOR_MODE_GROUND:
+				this.processGroundClick(position);
+				break;
+		}
+	}
+
+	processSpriteClick(position) {
 		const builder = new SpriteBuilder(this.level);
 
 		switch (this.model.selectedSpriteType) {
@@ -146,35 +195,6 @@ export default class LevelEditorController extends ControllerBase {
 
 	}
 
-	updateInternal(delta) {
-		if (this.controls.isDirty()) {
-
-			if (this.controls.mouseCoords.isDirty()) {
-				this.onMouseMove();
-				if (this.controls.mouseDownLeft) {
-					const position = this.getCursorGridPosition(this.controls.mouseCoords);
-					this.processClick(position);
-				}
-				this.controls.mouseCoords.clean();
-			}
-			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
-				const position = this.getCursorGridPosition(this.controls.mouseClick);
-				if (this.controls.mouseClickLeft) {
-					this.processClick(position);
-				}
-				this.controls.mouseClick.clean();
-			}
-
-			if (this.controls.zoom.isDirty()) {
-				this.onZoom();
-				this.controls.resetZoom();
-			}
-			this.controls.clean();
-		}
-
-		this.scroll(delta);
-	}
-
 	getCursorGridPosition(offset) {
 		return this.grid.getPosition(this.level.getAbsoluteCoordinates(offset));
 	}
@@ -182,17 +202,25 @@ export default class LevelEditorController extends ControllerBase {
 	onMouseMove() {
 		const mousePosition = this.getCursorGridPosition(this.controls.mouseCoords);
 
-		if (this.lastHighlight !== null) {
-			if (this.lastHighlight.distanceTo(mousePosition) === 0) {
-				return;
+		if (this.controls.mouseDownLeft) {
+			const position = this.getCursorGridPosition(this.controls.mouseCoords);
+			this.processClick(position);
+		} else {
+			let moved = true;
+			if (this.lastHighlight !== null) {
+				moved = (this.lastHighlight.distanceTo(mousePosition) > 0);
+			}
+			if (moved) {
+				this.model.highlightedTilePosition.set(mousePosition);
+				this.model.highlights.resetChildren();
+				const level = Math.round(this.model.brushSize);
+				//const session = Pixies.startDebugSession('affected positions');
+				const positions = this.getAffectedPositions(mousePosition, level);
+				//Pixies.finishDebugSession(session);
+				positions.forEach((p) => this.model.highlights.add(p));
+				this.lastHighlight = mousePosition;
 			}
 		}
-
-		this.model.highlightedTilePosition.set(mousePosition);
-		this.model.highlights.resetChildren();
-		const level = Math.round(this.model.brushSize);
-		const positions = this.getAffectedPositions(mousePosition, level);
-		positions.forEach((p) => this.model.highlights.add(p));
 	}
 
 	scroll(delta) {

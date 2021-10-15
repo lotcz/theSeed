@@ -67,4 +67,14 @@ export default class Pixies {
 		}
 	}
 
+	static startDebugSession(name) {
+		return {
+			name: name,
+			start: performance.now()
+		};
+	}
+
+	static finishDebugSession(session) {
+		console.log(`Finished debug session '${session.name}'. Took ${performance.now() - session.start} ms.`);
+	}
 }
