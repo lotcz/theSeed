@@ -5,15 +5,24 @@ export default class SpriteRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
-		this.imageRenderer = new ImageRenderer(game, model.image, draw);
-		this.addChild(this.imageRenderer);
+		this.imageRenderer = null;
 
-		if (model.onClick) {
-			this.imageRenderer.setOnClick(model.onClick);
+		console.log(model.image);
+
+		if (model.image) {
+			this.imageRenderer = new ImageRenderer(game, model.image, draw);
+			this.addChild(this.imageRenderer);
+
+			if (model.onClick) {
+				this.imageRenderer.setOnClick(model.onClick);
+			}
 		}
 	}
 
 	updateOuttaSight() {
+
+		if (!this.imageRenderer) return;
+
 		if (!this.imageRenderer.isActivated()) {
 			if (this.level.isCoordinateInView(this.model.image.coordinates)) {
 				this.imageRenderer.activate();

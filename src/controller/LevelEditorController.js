@@ -1,5 +1,5 @@
 import ControllerBase from "./ControllerBase";
-import {EDITOR_TOOL_DELETE} from "../model/LevelEditorModel";
+import {EDITOR_TOOL_DELETE, SPRITE_TYPE_RESPAWN} from "../model/LevelEditorModel";
 import {
 	EDITOR_MODE_GROUND,
 	EDITOR_MODE_SPRITES,
@@ -9,7 +9,7 @@ import {
 } from "../model/LevelEditorModel";
 
 import SpriteBuilder, {IMAGE_BUG, IMAGE_BUTTERFLY, IMAGE_WATER,} from "../builder/SpriteBuilder";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_WATER} from "./SpriteController";
+import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_RESPAWN, STRATEGY_WATER} from "./SpriteController";
 import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 
 import ButterflyImage from "../../res/img/butterfly.svg";
@@ -120,6 +120,18 @@ export default class LevelEditorController extends ControllerBase {
 					IMAGE_WATER,
 					STRATEGY_WATER,
 					{amount: Math.random() * 5}
+				);
+				break;
+			case SPRITE_TYPE_RESPAWN:
+				//this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
+				builder.addSprite(
+					position,
+					0.5 + Math.random(),
+					false,
+					0,
+					null,
+					STRATEGY_RESPAWN,
+					{name: 'default'}
 				);
 				break;
 			case EDITOR_TOOL_DELETE:

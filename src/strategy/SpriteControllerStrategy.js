@@ -23,9 +23,17 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.position = model.position;
 		this.lastVisited = null;
 		this.target = null;
-		this.coordinates = model.image.coordinates;
-		this.rotation = model.image.rotation;
-		this.targetRotation = new RotationValue(this.rotation.get());
+		this.targetRotation = new RotationValue();
+		this.rotation = new RotationValue();
+
+		this.coordinates = null;
+
+		if (model.image) {
+			this.coordinates = model.image.coordinates;
+			this.rotation.set(model.image.rotation.get());
+			this.targetRotation.set(this.rotation.get());
+		}
+
 		this.defaultTimeout = timeout;
 		this.timeout = Math.random() * this.defaultTimeout;
 
@@ -92,6 +100,8 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.timeout -= delta;
 
 		this.updateInternal(delta);
+
+		if (!this.coordinates) return;
 
 		if (this.target && !this.position.equalsTo(this.target)) {
 			const progress = (this.defaultTimeout - this.timeout) / this.defaultTimeout;

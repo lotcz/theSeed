@@ -35,8 +35,10 @@ export default class SpriteModel extends ModelBase {
 	restoreState(state) {
 		this.position = Vector2.fromArray(state.position);
 		this.addChild(this.position);
-		this.image = new ImageModel(state.image);
-		this.addChild(this.image);
+		if (state.image) {
+			this.image = new ImageModel(state.image);
+			this.addChild(this.image);
+		}
 		this.strategy = new DirtyValue(state.strategy);
 		this.addChild(this.strategy);
 		this.data = state.data;

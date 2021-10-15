@@ -60,34 +60,43 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.gui = new dat.GUI();
 		this.gui.add(level, 'name').listen()
 
-		const gridFolder = this.gui.addFolder('grid')
+		const levelFolder = this.gui.addFolder('Level');
+		const gridFolder = levelFolder.addFolder('grid')
 		gridFolder.add(this.grid, 'scale').listen();
-		const sizeFolder = gridFolder.addFolder('size')
-		sizeFolder.add(level.grid.size, 'x').listen();
-		sizeFolder.add(level.grid.size, 'y').listen();
-		const scaleFolder = this.gui.addFolder('viewBoxScale')
-		scaleFolder.add(level.viewBoxScale, 'value', 0, 100).listen();
+		gridFolder.add(level.grid.size, 'x').listen();
+		gridFolder.add(level.grid.size, 'y').listen();
+		gridFolder.open();
+		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen();
 
-		/*
-			const sizeFolder = this.gui.addFolder('viewBoxSize')
-			sizeFolder.add(this.level.viewBoxSize, 'x').listen();
-			sizeFolder.add(this.level.viewBoxSize, 'y').listen();
-			const positionFolder = this.gui.addFolder('viewBoxCoordinates')
-			positionFolder.add(this.level.viewBoxCoordinates, 'x').listen();
-			positionFolder.add(this.level.viewBoxCoordinates, 'y').listen();
-			const parallaxFolder = this.gui.addFolder('Parallax Camera Offset')
-			parallaxFolder.add(this.level.parallax.cameraOffset, 'x').listen();
-			parallaxFolder.add(this.level.parallax.cameraOffset, 'y').listen();
-		*/
-
-		this.gui.add(this.model.selectedMode, 'value', this.model.modes).name('Mode')
-			.onChange(() => {
-				this.model.selectedMode.makeDirty();
-			}
-		);
-		this.model.selectedMode.makeDirty();
+		const sizeFolder = levelFolder.addFolder('viewBoxSize')
+		sizeFolder.add(this.level.viewBoxSize, 'x').listen();
+		sizeFolder.add(this.level.viewBoxSize, 'y').listen();
+		sizeFolder.open();
+		const positionFolder = levelFolder.addFolder('viewBoxCoordinates')
+		positionFolder.add(this.level.viewBoxCoordinates, 'x').listen();
+		positionFolder.add(this.level.viewBoxCoordinates, 'y').listen();
+		positionFolder.open();
+		const parallaxFolder = levelFolder.addFolder('Parallax Camera Offset')
+		parallaxFolder.add(this.level.parallax.cameraOffset, 'x').listen();
+		parallaxFolder.add(this.level.parallax.cameraOffset, 'y').listen();
+		parallaxFolder.open();
 
 		this.toolsFolder = this.gui.addFolder('Tools');
+		this.toolsFolder.add(this.model.selectedMode, 'value', this.model.modes).name('Mode')
+			.onChange(() => {
+					this.model.selectedMode.makeDirty();
+				}
+			);
+		this.model.selectedMode.makeDirty();
+
+		this.showGroundTilesController = this.toolsFolder.add(this.model.showGroundTiles, 'value').name('Show Ground')
+			.onChange(() => {
+					this.model.showGroundTiles.makeDirty();
+				}
+			);
+
+		this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
+
 		this.toolsFolder.open();
 
 		const moreFolder = this.gui.addFolder('More');
@@ -291,23 +300,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		}
 
 		if (this.model.selectedMode.isDirty()) {
-			if (this.showGroundTilesController) this.showGroundTilesController.remove();
-			this.showGroundTilesController = null;
-
 			if (this.toolTypeController) this.toolTypeController.remove();
 			this.toolTypeController = null;
 
-			if (this.brushController) this.brushController.remove();
-			this.brushController = null;
-
 			switch (this.model.selectedMode.get()) {
 				case EDITOR_MODE_GROUND:
-					this.showGroundTilesController = this.toolsFolder.add(this.model.showGroundTiles, 'value').name('Show Ground')
-						.onChange(() => {
-								this.model.showGroundTiles.makeDirty();
-							}
-						);
-					this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
 					this.toolTypeController = this.toolsFolder.add(this.model, 'selectedGroundType', this.model.groundTypes);
 					break;
 				case EDITOR_MODE_SPRITES:

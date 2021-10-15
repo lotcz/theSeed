@@ -74,12 +74,12 @@ export default class SpriteBuilder {
 	addSprite(position, scale, flipped, rotation, path, strategy, data) {
 		const state = {
 			position: position.toArray(),
-			image: {
+			image: (path) ? {
 				scale: scale,
 				flipped: flipped,
 				rotation: rotation,
 				path: path
-			},
+			} : null,
 			strategy: strategy,
 			data: data
 		};

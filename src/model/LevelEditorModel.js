@@ -10,10 +10,12 @@ export const EDITOR_MODE_GROUND = 'Ground';
 export const EDITOR_MODE_PLANT = 'Plant';
 
 export const EDITOR_TOOL_DELETE = '--delete--';
+export const EDITOR_TOOL_SELECT = '--select--';
 
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
+export const SPRITE_TYPE_RESPAWN = 'respawn';
 
 export default class LevelEditorModel extends ModelBase {
 	modes;
@@ -25,6 +27,7 @@ export default class LevelEditorModel extends ModelBase {
 	selectedGroundType;
 	spriteTypes;
 	selectedSpriteType;
+	showSpriteHelpers;
 	highlightedTilePosition;
 	highlights;
 	levelLoadRequest;
@@ -41,7 +44,8 @@ export default class LevelEditorModel extends ModelBase {
 		this.addChild(this.selectedMode);
 		this.showGroundTiles = new DirtyValue(false);
 		this.addChild(this.showGroundTiles);
-
+		this.showSpriteHelpers = new DirtyValue(false);
+		this.addChild(this.showSpriteHelpers);
 		this.levelLoadRequest = new DirtyValue(false);
 		this.addChild(this.levelLoadRequest);
 
@@ -67,12 +71,14 @@ export default class LevelEditorModel extends ModelBase {
 		this.selectedGroundType = this.groundTypes[0];
 
 		this.spriteTypes = [
+			EDITOR_TOOL_SELECT,
 			EDITOR_TOOL_DELETE,
 			SPRITE_TYPE_BUTTERFLY,
 			SPRITE_TYPE_BUG,
-			SPRITE_TYPE_WATER
+			SPRITE_TYPE_WATER,
+			SPRITE_TYPE_RESPAWN
 		];
-		this.selectedSpriteType = SPRITE_TYPE_BUTTERFLY;
+		this.selectedSpriteType = this.spriteTypes[0];
 
 		this.highlightedTilePosition = new Vector2();
 		this.addChild(this.highlightedTilePosition);

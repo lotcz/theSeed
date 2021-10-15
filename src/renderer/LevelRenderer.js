@@ -11,7 +11,7 @@ import InventoryRenderer from "./InventoryRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 import CollectionModel from "../model/CollectionModel";
 
-export const HIDE_WHEN_OUTTA_SIGHT = true;
+export const HIDE_WHEN_OUTTA_SIGHT = false;
 
 const DEBUG_LEVEL_RENDERER = false;
 
