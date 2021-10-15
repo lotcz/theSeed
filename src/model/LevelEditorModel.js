@@ -1,5 +1,9 @@
 import ModelBase from "./ModelBase";
 import {GROUND_STYLES} from "../renderer/Palette";
+import Vector2 from "../class/Vector2";
+import DirtyValue from "../class/DirtyValue";
+import CollectionModel from "./CollectionModel";
+import VectorCollectionModel from "./VectorCollectionModel";
 
 export const EDITOR_MODE_SPRITES = 'Sprites';
 export const EDITOR_MODE_GROUND = 'Ground';
@@ -20,6 +24,8 @@ export default class LevelEditorModel extends ModelBase {
 	selectedGroundType;
 	spriteTypes;
 	selectedSpriteType;
+	highlightedTilePosition;
+	highlights;
 
 	constructor() {
 		super();
@@ -29,14 +35,17 @@ export default class LevelEditorModel extends ModelBase {
 			EDITOR_MODE_SPRITES,
 			EDITOR_MODE_PLANT
 		];
-		this.selectedMode = EDITOR_MODE_SPRITES;
+		this.selectedMode = new DirtyValue(EDITOR_MODE_SPRITES);
 
 		this.brushSizes = [
 			1,
-			6,
-			12,
+			2,
+			3,
+			4,
+			5,
+			6
 		];
-		this.brushSize = 6;
+		this.brushSize = 2;
 
 		this.groundTypes = Object.keys(GROUND_STYLES);
 		this.groundTypes.unshift(EDITOR_TOOL_DELETE);
@@ -49,6 +58,11 @@ export default class LevelEditorModel extends ModelBase {
 			SPRITE_TYPE_WATER
 		];
 		this.selectedSpriteType = SPRITE_TYPE_BUTTERFLY;
+
+		this.highlightedTilePosition = new Vector2();
+		this.addChild(this.highlightedTilePosition);
+		this.highlights = new VectorCollectionModel();
+		this.addChild(this.highlights);
 
 	}
 

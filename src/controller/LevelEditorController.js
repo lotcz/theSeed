@@ -16,20 +16,40 @@ import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/my-lady-bug.svg";
 import WaterImage from "../../res/img/water.svg";
 import {GROUND_STYLES} from "../renderer/Palette";
+import VectorCollectionModel from "../model/VectorCollectionModel";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.lastMouseCoords = null;
+		this.lastHighlight = null;
 	}
 
 	activateInternal() {
 		this.controls.mouseClick = null;
 	}
 
+	findAffectedPositionsInternal(positions, position, level = 1) {
+		positions.add(position);
+		if (level > 1) {
+			const neighbors = this.grid.getNeighbors(position);
+			neighbors.forEach((n) =>
+			{
+				const affected = this.getAffectedPositions(n, level - 1);
+				affected.forEach((a) =>	positions.add(a));
+			});
+		}
+	}
+
+	getAffectedPositions(position, level = 1) {
+		const positions = new VectorCollectionModel();
+		this.findAffectedPositionsInternal(positions, position, level);
+		return positions.children;
+	}
+
 	processClick(position) {
-		switch (this.model.selectedMode) {
+		switch (this.model.selectedMode.get()) {
 			case EDITOR_MODE_SPRITES:
 				this.addSprite(position);
 				break;
@@ -41,18 +61,9 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	processGroundClick(position) {
-		this.addGroundTile(position);
-		if (this.model.brushSize >= 6) {
-			const neighbors = this.grid.getNeighbors(position);
-			neighbors.forEach((n) => this.addGroundTile(n));
-
-			if (this.model.brushSize > 6) {
-				neighbors.forEach((n) => {
-					const neighbors2 = this.grid.getNeighbors(n);
-					neighbors2.forEach((n2) => this.addGroundTile(n2));
-				});
-			}
-		}
+		const level = Math.round(this.model.brushSize);
+		const positions = this.getAffectedPositions(position, level);
+		positions.forEach((p) => this.addGroundTile(p));
 	}
 
 	addGroundTile(position) {
@@ -156,7 +167,18 @@ export default class LevelEditorController extends ControllerBase {
 
 	onMouseMove() {
 		const mousePosition = this.getCursorGridPosition(this.controls.mouseCoords);
-		this.level.highlightedTilePosition.set(mousePosition);
+
+		if (this.lastHighlight !== null) {
+			if (this.lastHighlight.distanceTo(mousePosition) === 0) {
+				return;
+			}
+		}
+
+		this.model.highlightedTilePosition.set(mousePosition);
+		this.model.highlights.resetChildren();
+		const level = Math.round(this.model.brushSize);
+		const positions = this.getAffectedPositions(mousePosition, level);
+		positions.forEach((p) => this.model.highlights.add(p));
 	}
 
 	scroll(delta) {

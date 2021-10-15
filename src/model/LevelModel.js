@@ -22,8 +22,6 @@ export default class LevelModel extends ModelBase {
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxCoordinates;
-	highlightedTilePosition;
-	inventory;
 
 	constructor(state) {
 		super();
@@ -47,7 +45,6 @@ export default class LevelModel extends ModelBase {
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
-			inventory: this.inventory.getState(),
 			bee: this.bee ? this.bee.getState() : null
 		}
 	}
@@ -80,13 +77,6 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.viewBoxSize);
 		this.viewBoxCoordinates = Vector2.fromArray(state.viewBoxCoordinates);
 		this.addChild(this.viewBoxCoordinates);
-
-		this.inventory = new InventoryModel(state.inventory);
-		this.addChild(this.inventory);
-
-		this.highlightedTilePosition = new Vector2();
-		this.highlightedTilePosition.clean();
-		this.addChild(this.highlightedTilePosition);
 
 		// auto recalculate parallax offset
 		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);

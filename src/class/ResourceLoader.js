@@ -23,7 +23,7 @@ export default class ResourceLoader extends Tree {
 
 	update() {
 		if (this.isLoaded()) {
-			this.onLoaded();
+			this.onLoaded(this.resource);
 		}
 	}
 

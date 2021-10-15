@@ -69,7 +69,6 @@ export default class GameController extends ControllerBase {
 		levelBuilder.setStartToBottom(scale * 4);
 
 		const level = levelBuilder.build();
-		level.inventory = null;
 		level.plant.auto = true;
 
 		const spriteBuilder = new SpriteBuilder(level);

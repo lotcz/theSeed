@@ -16,6 +16,12 @@ const DEBUG_EDITOR = false;
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
+	gui;
+	toolsFolder;
+	brushController;
+	toolTypeController;
+	groundTiles;
+	highlights;
 
 	constructor(game, model, draw) {
 		super(game, model, draw);
@@ -25,6 +31,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.brushController = null;
 		this.toolTypeController = null;
 		this.group = null;
+		this.highlights = null;
 		this.groundTiles = [];
 
 		this.tileAddedHandler = (sender, tile) => this.renderDebugGridTile(tile.position);
@@ -69,15 +76,28 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			parallaxFolder.add(this.level.parallax.cameraOffset, 'y').listen();
 		*/
 
-		this.gui.add(this.model, 'selectedMode', this.model.modes).onChange(() => this.model.makeDirty());
+		this.gui.add(this.model.selectedMode, 'value', this.model.modes).name('Mode')
+			.onChange(() => {
+				this.model.selectedMode.makeDirty();
+				this.renderInternal();
+			}
+		);
 
 		this.toolsFolder = this.gui.addFolder('Tools');
 		this.toolsFolder.open();
 
-		this.gui.add(this.actions, 'save').name('Save');
-		this.gui.add(this.actions, 'download').name('Download');
-		this.gui.open();
+		const moreFolder = this.gui.addFolder('More');
+		const highlightFolder = moreFolder.addFolder('highlight');
+		highlightFolder.add(this.model.highlightedTilePosition, 'x').listen();
+		highlightFolder.add(this.model.highlightedTilePosition, 'y').listen();
+		highlightFolder.open();
 
+		const actionsFolder = this.gui.addFolder('Actions');
+		actionsFolder.add(this.actions, 'save').name('Save');
+		actionsFolder.add(this.actions, 'download').name('Download');
+		actionsFolder.open();
+
+		this.gui.open();
 	}
 
 	deactivateInternal() {
@@ -90,8 +110,13 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.gui.destroy();
 			this.gui = null;
 		}
+		if (this.highlightedTileDef) {
+			this.highlightedTileDef.remove();
+			this.highlightedTileDef = null;
+		}
 		this.groundTiles.forEach((position) => this.destroyGroundTile(position));
 		this.groundTiles = [];
+		this.hideHighlights();
 	}
 
 	getLevelState() {
@@ -112,6 +137,35 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+	}
+
+	hideHighlights() {
+		if (this.highlights) {
+			this.highlights.remove();
+		}
+		this.highlights = null;
+	}
+
+	renderHighlightedTile(position) {
+		const level = this.game.level.get();
+
+		if (!this.highlightedTileDef) {
+			const corners = level.grid
+				.getCorners(new Vector2())
+				.map((c) => [c.x, c.y]);
+			corners.push(corners[0]);
+			this.highlightedTileDef = this.getDefs().polyline(corners).fill('rgba(255, 255, 255, 0.3)');
+		}
+
+		const coordinates = level.grid.getCoordinates(position);
+		const hex = this.highlights.use(this.highlightedTileDef);
+		hex.center(coordinates.x, coordinates.y);
+	}
+
+	renderHighlights() {
+		this.hideHighlights();
+		this.highlights = this.group.group();
+		this.model.highlights.children.forEach((ch) => this.renderHighlightedTile(ch));
 	}
 
 	renderDebugGridTile(position) {
@@ -184,22 +238,30 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	renderInternal() {
 		if (DEBUG_EDITOR) console.log('Rendering editor');
 
-		if (this.toolTypeController) this.toolTypeController.remove();
-		this.toolTypeController = null;
+		if (this.model.highlights.isDirty()) {
+			this.renderHighlights();
+			this.model.highlights.clean();
+		}
 
-		if (this.brushController) this.brushController.remove();
-		this.brushController = null;
+		if (this.model.selectedMode.isDirty()) {
+			if (this.toolTypeController) this.toolTypeController.remove();
+			this.toolTypeController = null;
 
-		switch (this.model.selectedMode) {
-			case EDITOR_MODE_GROUND:
-				this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
-				this.toolTypeController = this.toolsFolder.add(this.model, 'selectedGroundType', this.model.groundTypes);
-				this.renderGroundTiles();
-				break;
-			case EDITOR_MODE_SPRITES:
-				this.toolTypeController = this.toolsFolder.add(this.model, 'selectedSpriteType', this.model.spriteTypes);
-				this.hideGroundTiles();
-				break;
+			if (this.brushController) this.brushController.remove();
+			this.brushController = null;
+
+			switch (this.model.selectedMode.get()) {
+				case EDITOR_MODE_GROUND:
+					this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
+					this.toolTypeController = this.toolsFolder.add(this.model, 'selectedGroundType', this.model.groundTypes);
+					this.renderGroundTiles();
+					break;
+				case EDITOR_MODE_SPRITES:
+					this.toolTypeController = this.toolsFolder.add(this.model, 'selectedSpriteType', this.model.spriteTypes);
+					this.hideGroundTiles();
+					break;
+			}
+			this.model.selectedMode.clean();
 		}
 
 	}

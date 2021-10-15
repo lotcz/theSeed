@@ -12,7 +12,8 @@ import ResourceLoader from "../class/ResourceLoader";
 import CollectionModel from "../model/CollectionModel";
 
 export const HIDE_WHEN_OUTTA_SIGHT = true;
-const DEBUG_HIGHLIGHTS = false;
+
+const DEBUG_LEVEL_RENDERER = false;
 
 export default class LevelRenderer extends SvgRenderer {
 	group;
@@ -61,34 +62,6 @@ export default class LevelRenderer extends SvgRenderer {
 		this.model.resources.addOnAddListener((sender, resource) => this.onAddResource(resource));
 	}
 
-	renderGridTile(position, stroke) {
-		const corners = this.model.grid
-			.getCorners(position)
-			.map((c) => [c.x, c.y]);
-		corners.push(corners[0]);
-		for (let i = 0, max = corners.length - 1; i < max; i++) {
-			this.highlightedTiles.line(corners[i].concat(corners[i + 1])).stroke(stroke);
-		}
-	}
-
-	renderHighlights(position) {
-		if (this.highlightedTiles) this.highlightedTiles.remove();
-		this.highlightedTiles = this.group.group();
-
-		this.renderGridTile(position, { width: 2, color: 'blue'});
-
-		if (DEBUG_HIGHLIGHTS) {
-			this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), {width: 2, color: 'orange'});
-			this.renderGridTile(this.model.grid.getNeighborUpperRight(position), {width: 2, color: 'red'});
-
-			this.renderGridTile(this.model.grid.getNeighborLowerLeft(position), {width: 2, color: 'magenta'});
-			this.renderGridTile(this.model.grid.getNeighborLowerRight(position), {width: 2, color: 'cyan'});
-
-			this.renderGridTile(this.model.grid.getNeighborDown(position), {width: 2, color: 'lightgreen'});
-			this.renderGridTile(this.model.grid.getNeighborUp(position), {width: 2, color: 'darkgreen'});
-		}
-	}
-
 	deactivateInternal() {
 		if (this.group) this.group.remove();
 	}
@@ -108,17 +81,14 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
-		if (this.model.highlightedTilePosition.isDirty()) {
-			this.renderHighlights(this.model.highlightedTilePosition);
-			this.model.highlightedTilePosition.clean();
-		}
 	}
 
 	onAddResource(resource) {
-		console.log('Resource aded');
+		if (DEBUG_LEVEL_RENDERER) console.log('Resource added.', resource);
 		const loader = new ResourceLoader(this.draw, resource);
-		loader.load(() => {
-			console.log('Resource loaded');
+		loader.load((r) => {
+			if (DEBUG_LEVEL_RENDERER) console.log('Resource loaded', r);
 		});
 	}
+
 }
