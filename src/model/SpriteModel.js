@@ -17,6 +17,8 @@ export default class SpriteModel extends ModelBase {
 		// for visitor to be recognized as sprite
 		this._is_sprite = true;
 
+		this.data = {};
+
 		if (state) {
 			this.restoreState(state);
 		}
@@ -41,7 +43,9 @@ export default class SpriteModel extends ModelBase {
 		}
 		this.strategy = new DirtyValue(state.strategy);
 		this.addChild(this.strategy);
-		this.data = state.data;
+		if (state.data) {
+			this.data = state.data;
+		}
 	}
 
 }

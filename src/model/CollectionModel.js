@@ -29,6 +29,12 @@ export default class CollectionModel extends ModelBase {
 		this.triggerEvent('remove', element);
 	}
 
+	reset() {
+		while (this.children.length > 0) {
+			this.remove(this.children[0]);
+		}
+	}
+
 	addOnRemoveListener(listener) {
 		this.addEventListener('remove', listener);
 	}

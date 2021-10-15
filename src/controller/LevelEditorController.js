@@ -1,24 +1,13 @@
 import ControllerBase from "./ControllerBase";
-import {EDITOR_TOOL_DELETE, SPRITE_TYPE_RESPAWN} from "../model/LevelEditorModel";
+import {EDITOR_TOOL_DELETE, EDITOR_TOOL_SELECT} from "../model/LevelEditorModel";
 import {
 	EDITOR_MODE_GROUND,
-	EDITOR_MODE_SPRITES,
-	SPRITE_TYPE_BUG,
-	SPRITE_TYPE_BUTTERFLY,
-	SPRITE_TYPE_WATER
+	EDITOR_MODE_SPRITES
 } from "../model/LevelEditorModel";
 
-import SpriteBuilder, {IMAGE_BUG, IMAGE_BUTTERFLY, IMAGE_WATER,} from "../builder/SpriteBuilder";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_RESPAWN, STRATEGY_WATER} from "./SpriteController";
+import SpriteBuilder from "../builder/SpriteBuilder";
 import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
-
-import ButterflyImage from "../../res/img/butterfly.svg";
-import LadybugImage from "../../res/img/my-lady-bug.svg";
-import WaterImage from "../../res/img/water.svg";
-import {GROUND_STYLES} from "../renderer/Palette";
-import VectorCollectionModel from "../model/VectorCollectionModel";
-import Pixies from "../class/Pixies";
-import {NEIGHBOR_LOWER_RIGHT, NEIGHBOR_UP} from "../model/GridModel";
+import {SPRITE_STYLES} from "../renderer/Palette";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
@@ -136,61 +125,36 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	processSpriteClick(position) {
-		const builder = new SpriteBuilder(this.level);
+		const level = this.game.level.get();
+		const builder = new SpriteBuilder(level);
 
 		switch (this.model.selectedSpriteType) {
-			case SPRITE_TYPE_BUTTERFLY:
-				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUTTERFLY, ButterflyImage);
-				builder.addSprite(
-					position,
-					0.5 + Math.random(),
-					false,
-					0,
-					IMAGE_BUTTERFLY,
-					STRATEGY_BUTTERFLY
-				);
-				break;
-			case SPRITE_TYPE_BUG:
-				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BUG, LadybugImage);
-				builder.addSprite(
-					position,
-					0.5 + Math.random(),
-					false,
-					0,
-					IMAGE_BUG,
-					STRATEGY_BUG
-				);
-				break;
-			case SPRITE_TYPE_WATER:
-				this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
-				builder.addSprite(
-					position,
-					0.5 + Math.random(),
-					false,
-					0,
-					IMAGE_WATER,
-					STRATEGY_WATER,
-					{amount: Math.random() * 5}
-				);
-				break;
-			case SPRITE_TYPE_RESPAWN:
-				//this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_WATER, WaterImage);
-				builder.addSprite(
-					position,
-					0.5 + Math.random(),
-					false,
-					0,
-					null,
-					STRATEGY_RESPAWN,
-					{name: 'default'}
-				);
-				break;
 			case EDITOR_TOOL_DELETE:
 				const visitors = this.chessboard.getTile(position);
 				const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
-				spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
-				break;
 
+				spriteVisitors.forEach((sprite) => level.sprites.remove(sprite));
+				break;
+			case EDITOR_TOOL_SELECT:
+				const visitors2 = this.chessboard.getVisitors(position, (v) => v._is_sprite === true);
+				this.model.selectedSprites.reset();
+				console.log(this.model.selectedSprites);
+				visitors2.forEach((sprite) => this.model.selectedSprites.add(sprite));
+				break;
+			default:
+				const style = SPRITE_STYLES[this.model.selectedSpriteType];
+				if (style.image) {
+					level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
+				}
+				builder.addSprite(
+					position,
+					1,
+					false,
+					0,
+					style.image.uri,
+					style.strategy
+				);
+				break;
 		}
 
 	}
@@ -199,10 +163,14 @@ export default class LevelEditorController extends ControllerBase {
 		return this.grid.getPosition(this.level.getAbsoluteCoordinates(offset));
 	}
 
+	activateClickWhenDragging() {
+		return (this.model.selectedMode.get() === EDITOR_MODE_GROUND);
+	}
+
 	onMouseMove() {
 		const mousePosition = this.getCursorGridPosition(this.controls.mouseCoords);
 
-		if (this.controls.mouseDownLeft) {
+		if (this.controls.mouseDownLeft && this.activateClickWhenDragging()) {
 			const position = this.getCursorGridPosition(this.controls.mouseCoords);
 			this.processClick(position);
 		} else {

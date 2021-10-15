@@ -7,15 +7,14 @@ import WaterStrategy from "../strategy/WaterStrategy";
 import MineralStrategy from "../strategy/MineralStrategy";
 import RespawnStrategy from "../strategy/RespawnStrategy";
 
-export const STRATEGY_BUG = 0;
-export const STRATEGY_BUTTERFLY = 1;
-export const STRATEGY_WORM = 2;
-export const STRATEGY_WATER = 3;
-export const STRATEGY_MINERAL = 4;
+export const STRATEGY_BUG = 'bug';
+export const STRATEGY_BUTTERFLY = 'butterfly';
+export const STRATEGY_WORM = 'worm';
+export const STRATEGY_WATER = 'water';
+export const STRATEGY_MINERAL = 'mineral';
 
-export const STRATEGY_RESPAWN = 50;
-
-export const STRATEGY_TURNER = 99;
+export const STRATEGY_RESPAWN = 'respawn';
+export const STRATEGY_TURNER = 'turner';
 
 export default class SpriteController extends ControllerBase {
 	strategy;

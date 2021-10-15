@@ -1,3 +1,7 @@
+import {STRATEGY_BUG} from "../controller/SpriteController";
+import {IMAGE_BUG} from "../builder/SpriteBuilder";
+import LadybugImage from "../../res/img/my-lady-bug.svg";
+
 export const BLUE_DARKEST = '#2a364f';
 export const BLUE_DARK = '#415781';
 export const BLUE_MEDIUM = '#6483bc';
@@ -102,3 +106,23 @@ GROUND_STYLES[GROUND_TYPE_SOIL_BACKGROUND] = {
 	renderCorners: true
 };
 
+export const SPRITE_TYPE_BUG = 'bug';
+export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
+export const SPRITE_TYPE_WATER = 'water';
+export const SPRITE_TYPE_RESPAWN = 'respawn';
+export const SPRITE_STYLES = [];
+
+SPRITE_STYLES[SPRITE_TYPE_BUG] = {
+	strategy: STRATEGY_BUG,
+	image: {
+		uri: IMAGE_BUG,
+		resource: LadybugImage
+	}
+};
+
+/*
+SPRITE_TYPE_BUTTERFLY,
+	SPRITE_TYPE_BUG,
+	SPRITE_TYPE_WATER,
+	SPRITE_TYPE_RESPAWN
+*/

@@ -10,7 +10,7 @@ import Vector2 from "../class/Vector2";
 import InventoryRenderer from "./InventoryRenderer";
 import * as dat from "dat.gui";
 import LevelModel from "../model/LevelModel";
-import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
+import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES, SPRITE_STRATEGIES} from "../model/LevelEditorModel";
 import Pixies from "../class/Pixies";
 
 const DEBUG_EDITOR = false;
@@ -18,11 +18,13 @@ const DEBUG_EDITOR = false;
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
 	gui;
+	additionalGUI;
 	toolsFolder;
 	showGroundTilesController;
 	brushController;
 	toolTypeController;
 	groundTiles;
+	spriteHelpers;
 	highlights;
 
 	constructor(game, model, draw) {
@@ -37,6 +39,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.highlights = null;
 		this.groundTiles = null;
 		this.spriteHelpers = null;
+		this.additionalGUI = [];
 
 		this.tileAddedHandler = (sender, tile) => this.groundTileAdded(tile);
 		this.tileRemovedHandler = (sender, tile) => this.groundTileRemoved(tile);
@@ -108,7 +111,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 					this.model.showSpriteHelpers.makeDirty();
 				}
 			);
-		this.brushController = this.toolsFolder.add(this.model, 'brushSize', this.model.brushSizes);
+		this.brushController = this.toolsFolder.add(this.model, 'brushSize', 1, 10).name('Brush');
 
 		this.toolsFolder.open();
 
@@ -146,6 +149,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.highlightedTileDef = null;
 		}
 		this.hideHighlights();
+		this.hideAdditionalGUI();
 	}
 
 	getLevelState() {
@@ -209,21 +213,33 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	//<editor-fold desc="SPRITE HELPERS">
 
-	renderSpriteHelper(position) {
-		if (DEBUG_EDITOR) console.log('rendering sprite helper', position);
-
-		const level = this.game.level.get();
-		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_sprite_helper === true);
-		if (visitors.length === 0) {
+	renderSpriteHelper(sprite) {
+		if (DEBUG_EDITOR) console.log('rendering sprite helper', sprite.position);
+		if (!sprite._helper) {
+			const level = this.game.level.get();
 			const helper = this.spriteHelpers.rect(level.grid.tileSize.x, level.grid.tileSize.y);
 			helper.fill('transparent');
 			helper.stroke({width: 6, color: 'white'});
-
-			const coordinates = level.grid.getCoordinates(position);
+			const coordinates = level.grid.getCoordinates(sprite.position);
 			helper.center(coordinates.x, coordinates.y);
-			level.grid.chessboard.addVisitor(position, {_is_sprite_helper: true, helper: helper});
-
+			sprite._helper = helper;
 		}
+	}
+
+	destroySpriteHelper(sprite) {
+		if (sprite._helper) {
+			sprite._helper.remove();
+			sprite._helper = null;
+		}
+	}
+
+	showSpriteHelpers() {
+		this.hideSpriteHelpers();
+		const level = this.game.level.get();
+		level.sprites.forEach((sprite) => this.renderSpriteHelper(sprite));
+		this.spriteHelpers.show();
+		level.sprites.addOnAddListener(this.spriteAddedHandler);
+		level.sprites.addOnRemoveListener(this.spriteRemovedHandler);
 	}
 
 	hideSpriteHelpers() {
@@ -234,21 +250,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.spriteHelpers.hide();
 	}
 
-	showSpriteHelpers() {
-		this.hideSpriteHelpers();
-		const level = this.game.level.get();
-		level.sprites.forEach((tile) => this.renderSpriteHelper(tile.position));
-		this.spriteHelpers.show();
-		level.sprites.addOnAddListener(this.spriteAddedHandler);
-		level.sprites.addOnRemoveListener(this.spriteRemovedHandler);
-	}
-
 	spriteAdded(sprite) {
-		this.renderSpriteHelper(sprite.position);
+		this.renderSpriteHelper(sprite);
 	}
 
 	spriteRemoved(sprite) {
-		this.destroyGroundTile(sprite.position);
+		this.destroySpriteHelper(sprite);
 	}
 
 	//</editor-fold>
@@ -313,6 +320,32 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	groundTileRemoved(tile) {
 		this.destroyGroundTile(tile.position);
+	}
+
+	//</editor-fold>
+
+	//<editor-fold desc="Additional GUI">
+
+	hideAdditionalGUI() {
+		this.additionalGUI.forEach((gui) => gui.destroy());
+		this.additionalGUI = [];
+	}
+
+	newAdditionalGUI() {
+		const gui = new dat.GUI();
+		this.additionalGUI.push(gui);
+		return gui;
+	}
+
+	addSpriteGUI(sprite) {
+		console.log(sprite);
+		const gui = this.newAdditionalGUI();
+		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
+		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
+		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('Strategy').onChange(() => sprite.strategy.makeDirty());
+		const obj = {str: JSON.stringify(sprite.data)};
+		gui.add(obj, 'str').listen().onChange(() => sprite.data = JSON.parse(obj.str));
+		//gui.add(sprite, 'image');
 	}
 
 	//</editor-fold>
@@ -386,6 +419,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 				this.hideSpriteHelpers();
 			}
 			this.model.showSpriteHelpers.clean();
+		}
+
+		if (this.model.selectedSprites.isDirty()) {
+			this.hideAdditionalGUI();
+			this.model.selectedSprites.forEach((sprite) => this.addSpriteGUI(sprite));
+			this.model.selectedSprites.clean();
 		}
 
 	}
