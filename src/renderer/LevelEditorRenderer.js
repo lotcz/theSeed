@@ -40,7 +40,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.tileRemovedHandler = (sender, tile) => this.hideGroundTile(tile.position);
 
 		this.actions = {
-			save: () => this.saveGame(),
+			reload: () => this.reload(),
+			saveAndReload: () => this.saveAndReload(),
+			fitGrid: () => this.fitGrid(),
 			download: () => this.downloadSavedGame()
 		};
 
@@ -95,8 +97,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		highlightFolder.open();
 
 		const actionsFolder = this.gui.addFolder('Actions');
-		actionsFolder.add(this.actions, 'save').name('Save');
+		actionsFolder.add(this.actions, 'reload').name('Reload');
+		actionsFolder.add(this.actions, 'fitGrid').name('Fit Grid to Ground');
 		actionsFolder.add(this.actions, 'download').name('Download');
+		actionsFolder.add(this.actions, 'saveAndReload').name('Save & Reload');
 		actionsFolder.open();
 
 		this.gui.open();
@@ -126,9 +130,20 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		return JSON.stringify(state);
 	}
 
+	reload() {
+		const level = this.game.level.get();
+		this.model.levelLoadRequest.set(level.name);
+	}
+
 	saveGame() {
-		localStorage.setItem('beehive-savegame-' + this.game.level.get().name, this.getLevelState());
+		const level = this.game.level.get();
+		localStorage.setItem('beehive-savegame-' + level.name, this.getLevelState());
 		console.log('Level saved.');
+	}
+
+	saveAndReload() {
+		this.saveGame();
+		this.reload();
 	}
 
 	downloadSavedGame() {
@@ -235,6 +250,36 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.level.ground.tiles.forEach((tile) => this.renderDebugGridTile(tile.position));
 		this.level.ground.tiles.addOnAddListener(this.tileAddedHandler);
 		this.level.ground.tiles.addOnRemoveListener(this.tileRemovedHandler);
+	}
+
+	fitGrid() {
+		console.log('Fitting...');
+		const level = this.game.level.get();
+		const tiles = level.ground.tiles.children;
+
+		if (tiles.length === 0) {
+			console.log('No tiles to fit');
+			return;
+		}
+
+		const min = tiles[0].position.clone();
+		const max = tiles[0].position.clone();
+
+		tiles.forEach((tile) => {
+			const position = tile.position;
+			min.x = Math.min(min.x, position.x);
+			min.y = Math.min(min.y, position.y);
+			max.x = Math.max(max.x, position.x);
+			max.y = Math.max(max.y, position.y);
+		});
+
+		console.log(min, max);
+
+		tiles.forEach((tile) => {
+			tile.position.set(tile.position.subtract(min));
+		});
+
+		level.grid.size.set(max.subtract(min));
 	}
 
 	renderInternal() {

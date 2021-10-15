@@ -22,6 +22,9 @@ export default class GameController extends ControllerBase {
 		this.onResizeEvent = () => this.onResize();
 
 		this.editorController = null;
+		if (this.model.editor) {
+			this.model.editor.levelLoadRequest.addOnChangeListener((sender, value) => this.onLoadLeveRequest(value));
+		}
 	}
 
 	activateInternal() {
@@ -38,6 +41,15 @@ export default class GameController extends ControllerBase {
 
 	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
+	}
+
+	async onLoadLeveRequest(levelName) {
+		if (levelName) {
+			console.log('Level request', levelName);
+			this.model.editor.levelLoadRequest.set(false);
+			await this.loadSaveGame(levelName);
+		}
+		this.model.editor.levelLoadRequest.clean();
 	}
 
 	setActiveLevel(levelModel) {

@@ -27,6 +27,7 @@ export default class LevelEditorModel extends ModelBase {
 	selectedSpriteType;
 	highlightedTilePosition;
 	highlights;
+	levelLoadRequest;
 
 	constructor() {
 		super();
@@ -40,6 +41,9 @@ export default class LevelEditorModel extends ModelBase {
 		this.addChild(this.selectedMode);
 		this.showGroundTiles = new DirtyValue(false);
 		this.addChild(this.showGroundTiles);
+
+		this.levelLoadRequest = new DirtyValue(false);
+		this.addChild(this.levelLoadRequest);
 
 		this.brushSizes = [
 			1,
