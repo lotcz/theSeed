@@ -138,7 +138,6 @@ export default class LevelEditorController extends ControllerBase {
 			case EDITOR_TOOL_SELECT:
 				const visitors2 = this.chessboard.getVisitors(position, (v) => v._is_sprite === true);
 				this.model.selectedSprites.reset();
-				console.log(this.model.selectedSprites);
 				visitors2.forEach((sprite) => this.model.selectedSprites.add(sprite));
 				break;
 			default:

@@ -31,15 +31,16 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.gui = null;
+		this.additionalGUI = [];
 		this.toolsFolder = null;
 		this.brushController = null;
 		this.toolTypeController = null;
 		this.showGroundTilesController = null;
+
 		this.group = null;
 		this.highlights = null;
 		this.groundTiles = null;
 		this.spriteHelpers = null;
-		this.additionalGUI = [];
 
 		this.tileAddedHandler = (sender, tile) => this.groundTileAdded(tile);
 		this.tileRemovedHandler = (sender, tile) => this.groundTileRemoved(tile);
@@ -133,6 +134,15 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	deactivateInternal() {
 		this.toolsFolder = null;
+		const level = this.game.level.get();
+		level.sprites.forEach((sprite) => {
+			if (sprite._helper) {
+				sprite._helper = null;
+			}
+		});
+		level.ground.tiles.forEach((tile) => {
+			tile._helper = null;
+		});
 		if (this.group) {
 			this.group.remove();
 			this.group = null;
@@ -266,9 +276,15 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		if (DEBUG_EDITOR) console.log('rendering tile position', position);
 
 		const level = this.game.level.get();
-		let tile;
-		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_hex === true);
+		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_ground === true);
 		if (visitors.length === 0) {
+			console.warn('No visitors for ground tile');
+			return;
+		}
+
+		const tile = visitors[0];
+		const helper = tile._helper;
+		if (!helper) {
 			const hex = this.groundTiles.group();
 			const corners = level.grid
 				.getCorners(new Vector2())
@@ -279,9 +295,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			hex.circle(20).fill('#fff').center(10, 0);
 			const coordinates = level.grid.getCoordinates(position);
 			hex.center(coordinates.x, coordinates.y);
-			level.grid.chessboard.addVisitor(position, {_is_hex: true, hex: hex});
-			tile = hex;
+			tile._helper = hex;
 		}
+
 	}
 
 	destroyGroundTile(position) {
@@ -338,14 +354,15 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	addSpriteGUI(sprite) {
-		console.log(sprite);
 		const gui = this.newAdditionalGUI();
 		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
-		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('Strategy').onChange(() => sprite.strategy.makeDirty());
+		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('strategy').onChange(() => sprite.strategy.makeDirty());
 		const obj = {str: JSON.stringify(sprite.data)};
-		gui.add(obj, 'str').listen().onChange(() => sprite.data = JSON.parse(obj.str));
-		//gui.add(sprite, 'image');
+		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));
+		if (sprite.image) {
+			gui.add(sprite.image, 'path');
+		}
 	}
 
 	//</editor-fold>
@@ -372,6 +389,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		});
 
 		console.log(min, max);
+
+		if (min.x % 2 !== 0 ) {
+			min.x = min.x - 1;
+		}
 
 		tiles.forEach((tile) => {
 			tile.position.set(tile.position.subtract(min));

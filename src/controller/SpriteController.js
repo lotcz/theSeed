@@ -23,13 +23,16 @@ export default class SpriteController extends ControllerBase {
 		super(game, model, controls);
 
 		this.strategy = this.createStrategy(model);
-		this.addChild(this.strategy);
+		if (this.strategy) {
+			this.addChild(this.strategy);
+		}
 
 		model.onClick = (e) => this.onClick(e);
 	}
 
 	createStrategy(model) {
-		switch (model.strategy.get()) {
+		const id = model.strategy.get();
+		switch (id) {
 			case STRATEGY_BUG:
 				return new BugStrategy(this.game, model, this.controls);
 			case STRATEGY_BUTTERFLY:
@@ -44,6 +47,8 @@ export default class SpriteController extends ControllerBase {
 				return new MineralStrategy(this.game, model, this.controls);
 			case STRATEGY_RESPAWN:
 				return new RespawnStrategy(this.game, model, this.controls);
+			default:
+				console.error('Strategy not found', id);
 		}
 	}
 
