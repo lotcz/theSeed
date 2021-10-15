@@ -7,8 +7,6 @@ export default class SpriteRenderer extends SvgRenderer {
 
 		this.imageRenderer = null;
 
-		console.log(model.image);
-
 		if (model.image) {
 			this.imageRenderer = new ImageRenderer(game, model.image, draw);
 			this.addChild(this.imageRenderer);

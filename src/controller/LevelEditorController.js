@@ -27,6 +27,8 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.showGroundTiles.makeDirty();
+		this.model.showSpriteHelpers.makeDirty();
 		this.controls.mouseClick = null;
 	}
 
