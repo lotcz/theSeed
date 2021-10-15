@@ -47,7 +47,14 @@ export default class LevelEditorModel extends ModelBase {
 			3,
 			4,
 			5,
-			6
+			6,
+			7,
+			8,
+			9,
+			10,
+			11,
+			12,
+			13
 		];
 		this.brushSize = 2;
 

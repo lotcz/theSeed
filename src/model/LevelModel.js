@@ -124,6 +124,9 @@ export default class LevelModel extends ModelBase {
 	}
 
 	isPenetrable(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
 		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
 		return visitors.length === 0;
 	}

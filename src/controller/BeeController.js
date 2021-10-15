@@ -43,14 +43,6 @@ export default class BeeController extends ControllerBase {
 			}
 		}
 
-		let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
-		const position = this.grid.getPosition(coords);
-		const penetrable = this.level.isPenetrable(position);
-		if (!penetrable) {
-			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
-			direction = direction.multiply(-0.5);
-		}
-
 		const speed = direction.size();
 
 		// limit speed
@@ -58,12 +50,35 @@ export default class BeeController extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
-		// apply movement
-		if (speed > 0) {
-			this.model.position.set(this.grid.getPosition(coords));
-			this.level.centerOnCoordinates(coords);
-			this.model.image.coordinates.set(coords);
+		if (speed === 0) {
+			return;
 		}
+
+		let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
+		const position = this.grid.getPosition(coords);
+		const penetrable = this.level.isPenetrable(position);
+		if (!penetrable) {
+			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
+			direction = direction.multiply(-0.5);
+
+			const newPosition = this.grid.getPosition(coords);
+			const newPenetrable = this.level.isPenetrable(newPosition);
+			if (!newPenetrable) {
+				const nei = this.grid.getNeighbors(position);
+				const free = nei.filter((n) => this.level.isPenetrable(n));
+				if (free.length > 0) {
+					coords = this.grid.getCoordinates(free[0]);
+				} else {
+					console.log('Lost');
+				}
+			}
+		}
+
+		// apply movement
+		this.model.position.set(this.grid.getPosition(coords));
+		this.level.centerOnCoordinates(coords);
+		this.level.sanitizeViewBox();
+		this.model.image.coordinates.set(coords);
 
 		this.model.direction.set(direction);
 	}
