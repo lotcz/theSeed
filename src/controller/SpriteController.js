@@ -9,6 +9,7 @@ import RespawnStrategy from "../strategy/RespawnStrategy";
 import ExitStrategy from "../strategy/ExitStrategy";
 import EmitterStrategy from "../strategy/EmitterStrategy";
 import {
+	STRATEGY_BUBBLE,
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY, STRATEGY_EMITTER, STRATEGY_EXIT,
 	STRATEGY_MINERAL, STRATEGY_RESPAWN,
@@ -16,6 +17,7 @@ import {
 	STRATEGY_WATER,
 	STRATEGY_WORM
 } from "../builder/SpriteStyle";
+import BubbleStrategy from "../strategy/BubbleStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -44,6 +46,8 @@ export default class SpriteController extends ControllerBase {
 				return new WormStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:
 				return new WaterStrategy(this.game, model, this.controls);
+			case STRATEGY_BUBBLE:
+				return new BubbleStrategy(this.game, model, this.controls);
 			case STRATEGY_MINERAL:
 				return new MineralStrategy(this.game, model, this.controls);
 			case STRATEGY_RESPAWN:

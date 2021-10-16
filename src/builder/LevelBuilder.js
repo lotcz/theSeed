@@ -81,16 +81,18 @@ export default class LevelBuilder {
 	addSpriteFromStyle(position, spriteType) {
 		const style = SPRITE_STYLES[spriteType];
 		let uri = null;
+		let scale = 1;
 		if (style.image) {
 			this.level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
 			uri = style.image.uri;
+			scale = style.image.scale;
 		}
 		return this.addSprite(
 			position,
 			style.strategy,
 			style.data,
 			uri,
-			1,
+			scale,
 			0,
 			false
 		);

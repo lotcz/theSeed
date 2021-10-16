@@ -10,6 +10,7 @@ import ResourceModel from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
 import InventoryModel from "./InventoryModel";
 import BeeModel from "./BeeModel";
+import {GROUND_TYPE_WATER} from "../builder/GroundStyle";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -150,7 +151,12 @@ export default class LevelModel extends ModelBase {
 	}
 
 	isGround(position) {
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type !== GROUND_TYPE_WATER && v._is_penetrable === false);
+		return visitors.length > 0;
+	}
+
+	isWater(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
 		return visitors.length > 0;
 	}
 

@@ -2,6 +2,7 @@ import SvgRenderer from "./SvgRenderer";
 import Vector2 from "../class/Vector2";
 import * as dat from "dat.gui";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
+import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
 const DEBUG_EDITOR = false;
 

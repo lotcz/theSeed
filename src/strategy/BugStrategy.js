@@ -24,7 +24,7 @@ export default class BugStrategy extends SpriteControllerStrategy {
 			return;
 		}
 
-		const groundNeighbors = this.level.grid.getNeighbors(this.position).filter((g) => g.strategy !== STRATEGY_WATER && !this.level.isPenetrable(g));
+		const groundNeighbors = this.level.grid.getNeighbors(this.position).filter((g) => this.level.isGround(g));
 		const surfaceNeighbors = groundNeighbors.filter((g) => {
 			const airNeighbors = this.level.grid.getNeighbors(g).filter((a) => this.level.isPenetrable(a));
 			return airNeighbors.length > 0;
@@ -35,7 +35,6 @@ export default class BugStrategy extends SpriteControllerStrategy {
 		} else {
 			this.setTarget(Pixies.randomElement(groundNeighbors));
 		}
-
 
 	}
 
