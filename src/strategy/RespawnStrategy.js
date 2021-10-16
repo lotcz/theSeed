@@ -8,12 +8,8 @@ export default class RespawnStrategy extends SpriteControllerStrategy {
 	constructor(game, model, controls) {
 		super(game, model, controls, RESPAWN_TIMEOUT);
 
-		this.movementEnabled = true;
-	}
-
-	selectTargetInternal() {
-		console.log('Respawn has no targeting');
-		this.setPosition(this.model.position);
+		this.movementEnabled = false;
+		this.turningEnabled = false;
 	}
 
 }

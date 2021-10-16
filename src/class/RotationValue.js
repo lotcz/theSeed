@@ -12,10 +12,10 @@ export default class RotationValue extends DirtyValue {
 	static normalizeValue(value) {
 		let result = value % 360;
 		if (result > 180) {
-			result = - 180 + (result - 180);
+			result = result - 360;
 		}
 		if (result < -180) {
-			result = 180 + result + 180;
+			result = result + 360;
 		}
 		return result;
 	}

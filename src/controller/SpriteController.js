@@ -6,6 +6,7 @@ import WormStrategy from "../strategy/WormStrategy";
 import WaterStrategy from "../strategy/WaterStrategy";
 import MineralStrategy from "../strategy/MineralStrategy";
 import RespawnStrategy from "../strategy/RespawnStrategy";
+import ExitStrategy from "../strategy/ExitStrategy";
 
 export const STRATEGY_BUG = 'bug';
 export const STRATEGY_BUTTERFLY = 'butterfly';
@@ -14,6 +15,7 @@ export const STRATEGY_WATER = 'water';
 export const STRATEGY_MINERAL = 'mineral';
 
 export const STRATEGY_RESPAWN = 'respawn';
+export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 
 export default class SpriteController extends ControllerBase {
@@ -47,8 +49,10 @@ export default class SpriteController extends ControllerBase {
 				return new MineralStrategy(this.game, model, this.controls);
 			case STRATEGY_RESPAWN:
 				return new RespawnStrategy(this.game, model, this.controls);
+			case STRATEGY_EXIT:
+				return new ExitStrategy(this.game, model, this.controls);
 			default:
-				console.error('Strategy not found', id);
+				console.error('Strategy not found:', id);
 		}
 	}
 

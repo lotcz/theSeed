@@ -7,6 +7,7 @@ import VectorCollectionModel from "./VectorCollectionModel";
 import {
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY,
+	STRATEGY_EXIT,
 	STRATEGY_RESPAWN,
 	STRATEGY_WATER,
 	STRATEGY_WORM
@@ -19,13 +20,12 @@ export const EDITOR_MODE_PLANT = 'Plant';
 export const EDITOR_TOOL_DELETE = '--delete--';
 export const EDITOR_TOOL_SELECT = '--select--';
 
-export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUTTERFLY, STRATEGY_RESPAWN, STRATEGY_WORM];
+export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUTTERFLY, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_WORM];
 
 export default class LevelEditorModel extends ModelBase {
 	modes;
 	selectedMode;
 	showGroundTiles;
-	brushSizes;
 	brushSize;
 	groundTypes;
 	selectedGroundType;

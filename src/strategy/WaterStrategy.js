@@ -88,16 +88,17 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 		const waterNodes = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_WATER);
 		waterNodes.forEach(
 			(w) => {
-				if (this.model.data.amount > w.data.amount) {
+				if (this.model.data.amount >= w.data.amount) {
 					this.absorb(w);
 				}
 			}
 		);
 
 		const plantNodes = visitors.filter((v) => v._is_plant === true);
-		const plantNode = plantNodes.length === 1 || this.lastPlantNode === null ? plantNodes[0] : visitors.find((v) => v !== this.lastPlantNode);
 
-		if (plantNode) {
+		if (plantNodes.length > 0) {
+
+			const plantNode = plantNodes[0];
 
 			if (this.model.data.inside) {
 

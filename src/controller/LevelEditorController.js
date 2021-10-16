@@ -142,15 +142,17 @@ export default class LevelEditorController extends ControllerBase {
 				break;
 			default:
 				const style = SPRITE_STYLES[this.model.selectedSpriteType];
+				let uri = null;
 				if (style.image) {
 					level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
+					uri = style.image.uri;
 				}
 				builder.addSprite(
 					position,
 					1,
 					false,
 					0,
-					style.image.uri,
+					uri,
 					style.strategy
 				);
 				break;

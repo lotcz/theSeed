@@ -361,7 +361,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		const obj = {str: JSON.stringify(sprite.data)};
 		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));
 		if (sprite.image) {
-			gui.add(sprite.image, 'path');
+			const imgFolder = gui.addFolder('image');
+			imgFolder.add(sprite.image, 'path');
+			imgFolder.add(sprite.image.coordinates, 'x');
+			imgFolder.add(sprite.image.coordinates, 'y');
+			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation');
+			imgFolder.open();
 		}
 	}
 

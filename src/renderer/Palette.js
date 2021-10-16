@@ -1,7 +1,3 @@
-import {STRATEGY_BUG} from "../controller/SpriteController";
-import {IMAGE_BUG} from "../builder/SpriteBuilder";
-import LadybugImage from "../../res/img/my-lady-bug.svg";
-
 export const BLUE_DARKEST = '#2a364f';
 export const BLUE_DARK = '#415781';
 export const BLUE_MEDIUM = '#6483bc';
@@ -106,10 +102,26 @@ GROUND_STYLES[GROUND_TYPE_SOIL_BACKGROUND] = {
 	renderCorners: true
 };
 
+import {
+	STRATEGY_BUG,
+	STRATEGY_BUTTERFLY, STRATEGY_EXIT,
+	STRATEGY_MINERAL,
+	STRATEGY_RESPAWN,
+	STRATEGY_WATER
+} from "../controller/SpriteController";
+import {IMAGE_BUG, IMAGE_BUTTERFLY, IMAGE_POTASSIUM, IMAGE_WATER} from "../builder/SpriteBuilder";
+import LadybugImage from "../../res/img/my-lady-bug.svg";
+import WaterImage from "../../res/img/water.svg";
+import ButterflyImage from "../../res/img/butterfly.svg";
+import PotassiumImage from "../../res/img/potassium.svg";
+
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
+export const SPRITE_TYPE_POTASSIUM = 'potassium';
 export const SPRITE_TYPE_RESPAWN = 'respawn';
+export const SPRITE_TYPE_EXIT = 'exit';
+
 export const SPRITE_STYLES = [];
 
 SPRITE_STYLES[SPRITE_TYPE_BUG] = {
@@ -120,9 +132,34 @@ SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 	}
 };
 
-/*
-SPRITE_TYPE_BUTTERFLY,
-	SPRITE_TYPE_BUG,
-	SPRITE_TYPE_WATER,
-	SPRITE_TYPE_RESPAWN
-*/
+SPRITE_STYLES[SPRITE_TYPE_BUTTERFLY] = {
+	strategy: STRATEGY_BUTTERFLY,
+	image: {
+		uri: IMAGE_BUTTERFLY,
+		resource: ButterflyImage
+	}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_WATER] = {
+	strategy: STRATEGY_WATER,
+	image: {
+		uri: IMAGE_WATER,
+		resource: WaterImage
+	}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_POTASSIUM,
+		resource: PotassiumImage
+	}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
+	strategy: STRATEGY_RESPAWN
+};
+
+SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
+	strategy: STRATEGY_EXIT
+};

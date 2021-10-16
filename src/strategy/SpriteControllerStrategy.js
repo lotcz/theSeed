@@ -30,7 +30,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		if (model.image) {
 			this.coordinates = model.image.coordinates;
-			this.rotation.set(model.image.rotation.get());
+			this.rotation = model.image.rotation;
 			this.targetRotation.set(this.rotation.get());
 		}
 
@@ -77,7 +77,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	selectTargetInternal() {
-		this.selectRandomTarget();
+		//this.selectRandomTarget();
 	}
 
 	update(delta) {

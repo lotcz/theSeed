@@ -28,7 +28,7 @@ export default class SpriteModel extends ModelBase {
 	getState() {
 		return {
 			position: this.position.toArray(),
-			image: this.image.getState(),
+			image: (this.image) ? this.image.getState() : null,
 			strategy: this.strategy.get(),
 			data: this.data
 		}

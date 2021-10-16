@@ -18,16 +18,15 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 
 		if (this.lastDirection && (Math.random() < 0.95)) {
 			const next = neighbors[this.lastDirection];
-			if (this.level.isValidPosition(next) && !this.level.isGround(next)) {
+			if (this.level.isPenetrable(next)) {
 				this.setTarget(next);
 				return;
 			}
 		}
 
-		const validNeighbors = neighbors.filter((n) => this.level.isValidPosition(n));
-		const airNeighbors = validNeighbors.filter((n) => !this.level.isGround(n));
-		if (airNeighbors.length > 0) {
-			const next = Pixies.randomElement(airNeighbors);
+		const validNeighbors = neighbors.filter((n) => this.level.isPenetrable(n));
+		if (validNeighbors.length > 0) {
+			const next = Pixies.randomElement(validNeighbors);
 			this.lastDirection = neighbors.indexOf(next);
 			this.setTarget(next);
 		}
