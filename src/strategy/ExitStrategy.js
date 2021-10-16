@@ -11,6 +11,7 @@ export default class ExitStrategy extends SpriteControllerStrategy {
 
 		this.movementEnabled = false;
 		this.turningEnabled = false;
+		this.scalingEnabled = false;
 
 		this.respawn = this.level.sprites.children.find((sprite) => sprite.strategy.get() === STRATEGY_RESPAWN);
 	}

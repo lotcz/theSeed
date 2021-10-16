@@ -4,6 +4,7 @@ import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 const ROTATION_SPEED = 1000;
+const SCALING_SPEED = 100;
 
 export default class SpriteControllerStrategy extends ControllerBase {
 	position;
@@ -13,8 +14,10 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	timeout;
 	target;
 	targetRotation;
+	targetScale;
 	movementEnabled;
 	turningEnabled;
+	scalingEnabled;
 	lastVisited;
 
 	constructor(game, model, controls, timeout) {
@@ -25,6 +28,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.target = null;
 		this.targetRotation = new RotationValue();
 		this.rotation = new RotationValue();
+		this.targetScale = null;
 
 		this.coordinates = null;
 
@@ -32,6 +36,8 @@ export default class SpriteControllerStrategy extends ControllerBase {
 			this.coordinates = model.image.coordinates;
 			this.rotation = model.image.rotation;
 			this.targetRotation.set(this.rotation.get());
+			this.scale = model.image.scale;
+			this.targetScale = this.scale.get();
 		}
 
 		this.defaultTimeout = timeout;
@@ -39,6 +45,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		this.movementEnabled = true;
 		this.turningEnabled = true;
+		this.scalingEnabled = true;
 
 		this.visit(this.position);
 	}
@@ -86,6 +93,13 @@ export default class SpriteControllerStrategy extends ControllerBase {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
 				const step = Pixies.between(-diff, diff, (diff > 0 ? -1 : 1) * 360 * (delta / ROTATION_SPEED));
 				this.rotation.set((this.rotation.get() + step));
+			}
+		}
+		if (this.scalingEnabled) {
+			if (this.targetScale !== this.scale.get()) {
+				const diff = this.targetScale - this.scale.get();
+				const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (delta * (diff > 0) ? 1 : -1) / SCALING_SPEED);
+				this.scale.set(scale);
 			}
 		}
 

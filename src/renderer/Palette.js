@@ -1,6 +1,6 @@
 export const BLUE_DARKEST = '#2a364f';
 export const BLUE_DARK = '#415781';
-export const BLUE_MEDIUM = '#6483bc';
+export const BLUE_MEDIUM = '#1b6ed8';
 export const BLUE_LIGHT = '#84a7e7';
 export const BLUE_LIGHTEST = '#a3d2fe';
 
@@ -76,9 +76,9 @@ GROUND_STYLES[GROUND_TYPE_WAX] = {
 };
 
 GROUND_STYLES[GROUND_TYPE_WATER] = {
-	fill: BLUE_DARKEST,
-	stroke: { width: 150, color: BLUE_DARKEST},
-	background: true
+	fill: BLUE_MEDIUM,
+	stroke: { width: 120, color: BLUE_MEDIUM},
+	background: false
 };
 
 GROUND_STYLES[GROUND_TYPE_CLOUD] = {

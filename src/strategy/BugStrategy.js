@@ -1,37 +1,41 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
+import {STRATEGY_WATER} from "../controller/SpriteController";
 
 const BUG_TIMEOUT = 500;
 
 export default class BugStrategy extends SpriteControllerStrategy {
-	lastDirection;
-
 	constructor(game, model, controls) {
 		super(game, model, controls, BUG_TIMEOUT);
 
-		this.lastDirection = null;
 	}
 
 	selectTargetInternal() {
 
-		const lowerNeighbor = this.grid.getNeighborDown(this.position);
-		if ((!this.level.isGround(this.position)) && (!this.level.isGround(lowerNeighbor))) {
-			if (!this.level.isValidPosition(lowerNeighbor)) {
-				this.level.sprites.remove(this.model);
-				return;
-			}
-			this.setTarget(lowerNeighbor);
-			return;
-		}
-		const upperNeighbor = this.grid.getNeighborUp(this.position);
-		if (this.level.isGround(this.position) && this.level.isGround(upperNeighbor)) {
-			this.setTarget(upperNeighbor);
+		if (!this.level.isValidPosition(this.position)) {
+			this.level.sprites.remove(this.model);
+			console.log('Bug over board');
 			return;
 		}
 
-		const validNeighbors = this.level.grid.getValidNeighbors(this.position);
-		const groundNeighbors = validNeighbors.filter((n) => this.level.isGround(n));
-		this.setTarget(Pixies.randomElement(groundNeighbors));
+		const lowerNeighbor = this.grid.getNeighborDown(this.position);
+		if ((!this.level.isGround(this.position)) && (this.level.isPenetrable(lowerNeighbor))) {
+			this.setTarget(lowerNeighbor);
+			return;
+		}
+
+		const groundNeighbors = this.level.grid.getNeighbors(this.position).filter((g) => g.strategy !== STRATEGY_WATER && !this.level.isPenetrable(g));
+		const surfaceNeighbors = groundNeighbors.filter((g) => {
+			const airNeighbors = this.level.grid.getNeighbors(g).filter((a) => this.level.isPenetrable(a));
+			return airNeighbors.length > 0;
+		});
+
+		if (surfaceNeighbors.length > 0) {
+			this.setTarget(Pixies.randomElement(surfaceNeighbors));
+		} else {
+			this.setTarget(Pixies.randomElement(groundNeighbors));
+		}
+
 
 	}
 

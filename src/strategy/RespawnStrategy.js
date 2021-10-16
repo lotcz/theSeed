@@ -10,6 +10,7 @@ export default class RespawnStrategy extends SpriteControllerStrategy {
 
 		this.movementEnabled = false;
 		this.turningEnabled = false;
+		this.scalingEnabled = false;
 	}
 
 }

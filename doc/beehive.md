@@ -3,7 +3,7 @@
 - collect pollen and nectar
 - bring it to the hive to create honey
 - queen can eat and then lay eggs
-- bee can fly and 'eat' - heal and gather small things in pockets
+- bee can fly, crawl, 'eat' - heal and gather small things in pockets and drop things from pockets
 - when dies, respawn in a hive
 
 Beehive
@@ -39,8 +39,7 @@ TODO:
 
 - plants (render parts in ground system?)
 - bee eating and collecting and dropping
-- exits and respawns
-- 
+-
 
 
 

@@ -9,7 +9,9 @@ export default class Pixies {
 	}
 
 	static between(min, max, n) {
-		return Math.min(Math.abs(max), Math.max(-Math.abs(min), n));
+		const minimum = Math.min(min, max);
+		const maximum = Math.max(min, max);
+		return Math.min(maximum, Math.max(minimum, n));
 	}
 
 	static hash(value) {

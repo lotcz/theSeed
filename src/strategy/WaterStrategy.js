@@ -29,7 +29,7 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 			this.model.data.insideUp = true;
 		}
 
-		this.lastPlantNode = null;
+		this.timeout = 0;
 		this.lastSpawn = null;
 	}
 
