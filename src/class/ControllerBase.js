@@ -25,6 +25,7 @@ export default class ControllerBase extends ActivatedTree {
 	update(delta) {
 		if (this.model.isDeleted()) {
 			this.setDeleted(true);
+			console.log('deleted');
 			return;
 		}
 

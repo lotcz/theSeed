@@ -42,6 +42,7 @@ export default class Tree extends Dirty {
 	addChild(node) {
 		node.parent = this;
 		node.dirtyParent = this;
+		node.setDeleted(false);
 		this.children.push(node);
 		this.makeDirty();
 		return node;
@@ -66,7 +67,6 @@ export default class Tree extends Dirty {
 				return result;
 			}
 		}
-		return null;
 	}
 
 	resetChildren() {

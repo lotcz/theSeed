@@ -1,17 +1,15 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
-import Pixies from "../class/Pixies";
 import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
-import LevelBuilder from "../builder/LevelBuilder";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
 
 export default class MineralStrategy extends SpriteControllerStrategy {
-	insideUp;
-
 
 	constructor(game, model, controls) {
 		super(game, model, controls, MINERAL_TIMEOUT);
+
+		console.log('creating strategy', this.model.is_deleted);
 
 		if (!this.model.data.amount) {
 			this.model.data.amount = this.model.image.scale.get();

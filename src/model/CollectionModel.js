@@ -26,13 +26,24 @@ export default class CollectionModel extends ModelBase {
 	}
 
 	remove(element) {
-		this.removeChild(element);
-		this.triggerEvent('remove', element);
+		const child = this.removeChild(element);
+		if (child) this.triggerEvent('remove', child);
+		return child;
 	}
 
 	reset() {
 		while (this.children.length > 0) {
 			this.remove(this.children[0]);
+		}
+	}
+
+	count() {
+		return this.children.length;
+	}
+
+	removeFirst() {
+		if (this.count() > 0) {
+			return this.remove(this.children[0]);
 		}
 	}
 

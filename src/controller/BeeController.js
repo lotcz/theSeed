@@ -1,4 +1,5 @@
 import ControllerBase from "../class/ControllerBase";
+import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -21,8 +22,32 @@ export default class BeeController extends ControllerBase {
 		this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
 	}
 
+	emptyInventory() {
+		const item = this.model.inventory.removeFirst();
+		if (item) {
+			item.position.set(this.model.position);
+			this.level.sprites.add(item);
+		};
+	}
+
 	updateInternal(delta) {
 		const secsDelta = delta / 1000;
+
+		if (this.controls.interact) {
+			console.log('Interacting');
+			const visitors = this.chessboard.getVisitors(this.model.position, (v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
+			console.log(visitors);
+			if (visitors.length > 0) {
+				this.level.sprites.remove(visitors[0]);
+				this.model.inventory.add(visitors[0]);
+			}
+			this.controls.interact = false;
+		}
+
+		if (this.controls.fire) {
+			this.emptyInventory();
+			this.controls.fire = false;
+		}
 
 		let direction = this.model.direction;
 

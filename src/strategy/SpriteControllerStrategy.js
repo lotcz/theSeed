@@ -47,7 +47,17 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.turningEnabled = true;
 		this.scalingEnabled = true;
 
-		this.visit(this.position);
+	}
+
+	activateInternal() {
+		if (this.position) {
+			if (this.movementEnabled) this.coordinates.set(this.grid.getCoordinates(this.position));
+			this.visit(this.position);
+		}
+	}
+
+	deactivateInternal() {
+		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
 	}
 
 	selectRandomTarget() {
@@ -88,6 +98,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	update(delta) {
+
 		if (this.turningEnabled) {
 			if (this.targetRotation.get() !== this.rotation.get()) {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
@@ -95,6 +106,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 				this.rotation.set((this.rotation.get() + step));
 			}
 		}
+
 		if (this.scalingEnabled) {
 			if (this.targetScale !== this.scale.get()) {
 				const diff = this.targetScale - this.scale.get();

@@ -26,12 +26,21 @@ export default class Chessboard {
 
 	addVisitor(position, visitor) {
 		let tile = this.getTile(position);
-		tile.push(visitor);
+		if (tile.includes(visitor)) {
+			console.log('Visitor already present');
+		} else {
+			tile.push(visitor);
+		}
 	}
 
 	removeVisitor(position, visitor) {
 		const tile = this.getTile(position);
-		tile.splice(tile.indexOf(visitor), 1);
+		const index = tile.indexOf(visitor);
+		if (index < 0) {
+			console.log('Visitor not present');
+		} else {
+			tile.splice(index, 1);
+		}
 	}
 
 }

@@ -8,7 +8,6 @@ import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
 import ResourceModel from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
-import InventoryModel from "./InventoryModel";
 import BeeModel from "./BeeModel";
 import {GROUND_TYPE_WATER} from "../builder/GroundStyle";
 

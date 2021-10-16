@@ -11,6 +11,7 @@ export default class SpriteCollectionController extends ControllerBase {
 	}
 
 	addController(model) {
+		console.log('adding controller');
 		const controller = new SpriteController(this.game, model, this.controls);
 		model._controller = controller;
 		this.addChild(controller);

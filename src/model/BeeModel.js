@@ -1,9 +1,7 @@
 import ImageModel from "./ImageModel";
 import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
-import DirtyValue from "../class/DirtyValue";
-import RotationValue from "../class/RotationValue";
-import InventoryModel from "./InventoryModel";
+import CollectionModel from "./CollectionModel";
 
 export default class BeeModel extends ModelBase {
 	direction;
@@ -13,6 +11,9 @@ export default class BeeModel extends ModelBase {
 
 	constructor(state) {
 		super();
+
+		this.inventory = new CollectionModel();
+		this.addChild(this.inventory);
 
 		if (state) {
 			this.restoreState(state);
@@ -36,8 +37,7 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.direction);
 		this.image = new ImageModel(state.image);
 		this.addChild(this.image);
-		this.inventory = new InventoryModel(state.inventory);
-		this.addChild(this.inventory);
+		if (state.inventory) this.inventory.restoreState(state.inventory);
 	}
 
 }
