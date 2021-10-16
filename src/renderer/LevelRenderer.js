@@ -1,15 +1,10 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
 import BeeRenderer from "./BeeRenderer";
-import {GROUND_DARK, GROUND_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
-
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ParallaxRenderer from "./ParallaxRenderer";
-import Vector2 from "../class/Vector2";
-import InventoryRenderer from "./InventoryRenderer";
 import ResourceLoader from "../class/ResourceLoader";
-import CollectionModel from "../model/CollectionModel";
 
 export const HIDE_WHEN_OUTTA_SIGHT = false;
 
@@ -33,8 +28,10 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// FOREGROUND
 		this.foreground = this.group.group().addClass('foreground');
-		this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
-		this.addChild(this.plantRenderer);
+		if (this.model.plant) {
+			this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
+			this.addChild(this.plantRenderer);
+		}
 
 		// PARALLAX
 		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);

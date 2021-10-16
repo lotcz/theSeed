@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import DirtyValue from "../class/DirtyValue";
 
 export default class TextModel extends ModelBase {

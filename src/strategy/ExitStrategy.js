@@ -1,7 +1,5 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
-import Pixies from "../class/Pixies";
-import Vector2 from "../class/Vector2";
-import {STRATEGY_RESPAWN} from "../controller/SpriteController";
+import {STRATEGY_RESPAWN} from "../builder/SpriteStyle";
 
 const RESPAWN_TIMEOUT = 1000;
 

@@ -1,5 +1,5 @@
 import MenuLineRenderer from "./MenuLineRenderer";
-import RendererBase from "./RendererBase";
+import RendererBase from "../class/RendererBase";
 import DomRenderer from "./DomRenderer";
 
 const DEBUG_MENU = true;

@@ -1,6 +1,6 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
-import {GROUND_STYLES} from "../renderer/Palette";
+import {GROUND_STYLES, GROUND_TYPE_BASIC} from "../builder/GroundStyle";
 
 export default class GroundTileModel extends ModelBase {
 	position;

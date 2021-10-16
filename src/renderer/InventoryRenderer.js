@@ -1,11 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import {SVG} from "@svgdotjs/svg.js";
-import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 import WaterImage from "../../res/img/water.svg";
-import {IMAGE_WATER} from "../builder/SpriteBuilder";
-import ImageModel from "../model/ImageModel";
-import ImageRenderer from "./ImageRenderer";
 
 const DEBUG_INVENTORY = true;
 
@@ -26,7 +22,7 @@ export default class InventoryRenderer extends SvgRenderer {
 		this.water = this.inventory.group();
 
 		const image = this.water.image(WaterImage).size(width/2, height).center((width*0.75), height/2);
-		
+
 		this.waterText = this.water
 			.text()
 			.font(

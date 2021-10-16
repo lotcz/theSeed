@@ -1,10 +1,8 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
-import Vector2 from "../class/Vector2";
-import SpriteBuilder, {IMAGE_WATER, IMAGE_WORM_BODY, IMAGE_WORM_BUTT} from "../builder/SpriteBuilder";
-import {STRATEGY_MINERAL, STRATEGY_WATER, STRATEGY_WORM} from "../controller/SpriteController";
+import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
+import LevelBuilder from "../builder/LevelBuilder";
 
-const MINERAL_UNIT_SIZE = 0.1;
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
 
@@ -64,10 +62,8 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	updateInternal(delta) {
-		if (this.scalingEnabled) {
-			const scale = Math.sqrt(this.model.data.amount / (4 * Math.PI));
-			this.targetScale = (scale * 2);
-		}
+		const scale = Math.sqrt(this.model.data.amount / (4 * Math.PI));
+		this.targetScale = (scale * 2);
 	}
 
 	absorb(node) {
@@ -77,27 +73,6 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 			this.level.sprites.remove(node);
 			this.chessboard.removeVisitor(this.position, node);
 		}
-	}
-
-	findEmptyNeighbor() {
-		const neighbors = this.grid.getNeighbors(this.position);
-		const empty = neighbors.filter((n) => this.chessboard.getTile(n).length === 0);
-		return Pixies.randomElement(empty);
-	}
-
-	spawn() {
-		const position = this.findEmptyNeighbor();
-		if (!position) return;
-
-		const spriteBuilder = new SpriteBuilder(this.level);
-		const spawn = spriteBuilder.addSprite(position, this.model.image.scale.get(), this.model.image.flipped.get(), this.model.image.rotation.get(), this.model.image.path, this.model.strategy.get(), this.model.data);
-		//this.model.data.amount -= WATER_UNIT_SIZE;
-		this.model.makeDirty();
-		return spawn;
-	}
-
-	onClick(e) {
-		this.spawn();
 	}
 
 }

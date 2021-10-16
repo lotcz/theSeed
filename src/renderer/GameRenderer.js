@@ -7,7 +7,7 @@ import MenuBuilder from "../builder/MenuBuilder";
 import TextRenderer from "./TextRenderer";
 import ResourcesLoader from "../class/ResourcesLoader";
 import DomRenderer from "./DomRenderer";
-import ModelBase from "../model/ModelBase";
+import ModelBase from "../class/ModelBase";
 import TextModel from "../model/TextModel";
 import Pixies from "../class/Pixies";
 

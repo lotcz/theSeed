@@ -1,6 +1,7 @@
 import Vector2 from "../class/Vector2";
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import Chessboard from "../class/Chessboard";
+import DirtyValue from "../class/DirtyValue";
 
 const NEIGHBOR_VECTOR_UP = new Vector2(0, -1);
 const NEIGHBOR_VECTOR_DOWN = new Vector2(0, 1);
@@ -23,14 +24,40 @@ export const CORNER_UPPER_RIGHT = 5;
 
 export default class GridModel extends ModelBase {
 	size;
-	scale;
+	tileScale;
 	tileSize;
 	chessboard;
 
 	constructor(state) {
 		super();
 		this.chessboard = new Chessboard();
+
+		this.size = new Vector2(100, 50);
+		this.addChild(this.size);
+		this.tileScale = new DirtyValue(100);
+		this.addChild(this.tileScale);
+
+		this.updateTileSize();
+
 		if (state) this.restoreState(state);
+	}
+
+	getState() {
+		return {
+			size: this.size.toArray(),
+			scale: this.tileScale
+		}
+	}
+
+	updateTileSize() {
+		this.tileSize = new Vector2(2 * this.tileScale, Math.sqrt(3) * this.tileScale);
+	}
+
+	restoreState(state) {
+		this.chessboard = new Chessboard();
+		if (state.size) this.size.restoreState(state.size);
+		if (state.scale) this.tileScale = state.scale;
+		this.updateTileSize();
 	}
 
 	getCoordinates(position) {
@@ -65,7 +92,7 @@ export default class GridModel extends ModelBase {
 
 	getCornerFromCoordinates(coordinates, i) {
 		const angle_rad = (Math.PI/3 * i);
-		return new Vector2(coordinates.x + this.scale * Math.cos(angle_rad), coordinates.y + this.scale * Math.sin(angle_rad));
+		return new Vector2(coordinates.x + this.tileScale * Math.cos(angle_rad), coordinates.y + this.tileScale * Math.sin(angle_rad));
 	}
 
 	getCorner(position, i) {
@@ -151,19 +178,6 @@ export default class GridModel extends ModelBase {
 	getValidNeighbors(position) {
 		const neighbors = this.getNeighbors(position);
 		return neighbors.filter((n) => this.isValidPosition(n));
-	}
-
-	getState() {
-		return {
-			size: this.size.toArray(),
-			scale: this.scale
-		}
-	}
-
-	restoreState(state) {
-		this.size = Vector2.fromArray(state.size);
-		this.scale = state.scale;
-		this.tileSize = new Vector2(2 * this.scale, Math.sqrt(3) * this.scale);
 	}
 
 }

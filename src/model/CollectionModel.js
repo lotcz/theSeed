@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 
 export default class CollectionModel extends ModelBase {
 	constructor(state, restoreFunc) {
@@ -14,6 +14,7 @@ export default class CollectionModel extends ModelBase {
 	}
 
 	restoreState(state, restoreFunc) {
+		this.reset();
 		const children = state.map(restoreFunc);
 		children.forEach((ch) => this.add(ch));
 	}

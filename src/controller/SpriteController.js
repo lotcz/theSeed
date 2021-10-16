@@ -1,4 +1,4 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import BugStrategy from "../strategy/BugStrategy";
 import ButterflyStrategy from "../strategy/ButterflyStrategy";
 import TurnerStrategy from "../strategy/TurnerStrategy";
@@ -7,16 +7,15 @@ import WaterStrategy from "../strategy/WaterStrategy";
 import MineralStrategy from "../strategy/MineralStrategy";
 import RespawnStrategy from "../strategy/RespawnStrategy";
 import ExitStrategy from "../strategy/ExitStrategy";
-
-export const STRATEGY_BUG = 'bug';
-export const STRATEGY_BUTTERFLY = 'butterfly';
-export const STRATEGY_WORM = 'worm';
-export const STRATEGY_WATER = 'water';
-export const STRATEGY_MINERAL = 'mineral';
-
-export const STRATEGY_RESPAWN = 'respawn';
-export const STRATEGY_EXIT = 'exit';
-export const STRATEGY_TURNER = 'turner';
+import EmitterStrategy from "../strategy/EmitterStrategy";
+import {
+	STRATEGY_BUG,
+	STRATEGY_BUTTERFLY, STRATEGY_EMITTER, STRATEGY_EXIT,
+	STRATEGY_MINERAL, STRATEGY_RESPAWN,
+	STRATEGY_TURNER,
+	STRATEGY_WATER,
+	STRATEGY_WORM
+} from "../builder/SpriteStyle";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -51,6 +50,8 @@ export default class SpriteController extends ControllerBase {
 				return new RespawnStrategy(this.game, model, this.controls);
 			case STRATEGY_EXIT:
 				return new ExitStrategy(this.game, model, this.controls);
+			case STRATEGY_EMITTER:
+				return new EmitterStrategy(this.game, model, this.controls);
 			default:
 				console.error('Strategy not found:', id);
 		}

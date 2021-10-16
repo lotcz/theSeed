@@ -1,6 +1,6 @@
 import GroundModel from "../model/GroundModel";
 import Pixies from "../class/Pixies";
-import {GROUND_TYPE_BASIC} from "../renderer/Palette";
+import {GROUND_TYPE_BASIC} from "./GroundStyle";
 
 export const GROUND_PRESET_HILL = {
 	left: {

@@ -1,4 +1,4 @@
-import ControllerBase from "../controller/ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import Pixies from "../class/Pixies";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";

@@ -1,4 +1,4 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import LevelController from "./LevelController";
 import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
@@ -12,7 +12,6 @@ import {
 	GROUND_PRESET_VALLEY
 } from "../builder/GroundBuilder";
 import MenuBuilder from "../builder/MenuBuilder";
-import SpriteBuilder from "../builder/SpriteBuilder";
 import LevelEditorController from "./LevelEditorController";
 
 export default class GameController extends ControllerBase {
@@ -73,19 +72,17 @@ export default class GameController extends ControllerBase {
 
 	loadBackground() {
 		const size = new Vector2(200, 150);
-		const scale = 100;
+		const tileSize = 100;
+		const scale = 12;
 
-		const levelBuilder = new LevelBuilder(size, scale);
+		const levelBuilder = new LevelBuilder();
+		levelBuilder.setSize(size);
+		levelBuilder.setTileScale(tileSize);
 		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
-		levelBuilder.setViewBoxScale(12);
-		levelBuilder.setStartToBottom(scale * 4);
+		levelBuilder.setViewBoxScale(scale);
 
-		const level = levelBuilder.build();
-		level.plant.auto = true;
-
-		const spriteBuilder = new SpriteBuilder(level);
-		spriteBuilder.addBugs();
-		spriteBuilder.addNutrients();
+		const level = levelBuilder.level;
+		level.centerView();
 
 		this.setActiveLevel(level);
 	}
@@ -137,14 +134,17 @@ export default class GameController extends ControllerBase {
 
 	newGame() {
 		const size = new Vector2(500, 175);
+		const start = new Vector2(20, 20);
 		const scale = 50;
 
-		const levelBuilder = new LevelBuilder(size, scale);
+		const levelBuilder = new LevelBuilder();
+		levelBuilder.setSize(size);
+		levelBuilder.setTileScale(scale);
 		levelBuilder.setName('new-game');
-		levelBuilder.setStart(new Vector2(20, 20));
+		levelBuilder.setStart(start);
+		levelBuilder.addBee(start);
+
 		const level = levelBuilder.build();
-		const spriteBuilder = new SpriteBuilder(level);
-		spriteBuilder.addBee(levelBuilder.startPosition);
 
 		this.hideMenu();
 		this.setActiveLevel(level);

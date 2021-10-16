@@ -1,5 +1,5 @@
 import Vector2 from "../class/Vector2";
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import CollectionModel from "./CollectionModel";
 import GroundTileModel from "./GroundTileModel";
 

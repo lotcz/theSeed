@@ -1,5 +1,5 @@
 import ImageModel from "./ImageModel";
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";

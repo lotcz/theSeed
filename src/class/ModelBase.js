@@ -1,5 +1,5 @@
-import Tree from "../class/Tree";
-import EventManager from "../class/EventManager";
+import Tree from "./Tree";
+import EventManager from "./EventManager";
 
 export default class ModelBase extends Tree {
 	eventManager;
@@ -24,22 +24,6 @@ export default class ModelBase extends Tree {
 		for (let i = 0, max = state.length; i < max; i++) {
 			this.addChild(restoreFunc(state[i]));
 		}
-	}
-
-	static restoreArray(state, restoreFunc) {
-		const children = [];
-		for (let i = 0, max = state.length; i < max; i++) {
-			children.push(restoreFunc(state[i]));
-		}
-		return children;
-	}
-
-	static getArrayState(arr) {
-		const children = [];
-		for (let i = 0, max = arr.length; i < max; i++) {
-			children.push(arr[i].getState());
-		}
-		return children;
 	}
 
 	getState() {

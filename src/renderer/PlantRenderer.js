@@ -1,6 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import LivingTreeRenderer, {CURVES_STANDARD, CURVES_WAVY} from "./LivingTreeRenderer";
-import {BROWN_DARK, BROWN_LIGHT, GREEN_DARK, GREEN_LIGHT} from "./Palette";
+import {BROWN_DARK, BROWN_LIGHT, GREEN_DARK, GREEN_LIGHT} from "../builder/Palette";
 
 export default class PlantRenderer extends SvgRenderer {
 

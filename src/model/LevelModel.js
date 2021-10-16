@@ -1,6 +1,6 @@
 import GridModel from "./GridModel";
 import Vector2 from "../class/Vector2";
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
@@ -15,7 +15,7 @@ export default class LevelModel extends ModelBase {
 	name;
 	grid;
 	parallax;
-	plant;
+	plants;
 	bee;
 	sprites;
 	resources;
@@ -26,7 +26,38 @@ export default class LevelModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		this.name = 'untitled';
+		this.grid = new GridModel();
+		this.addChild(this.grid);
+
+		this.parallax = new ParallaxModel();
+		//this.addChild(this.parallax); no need for this, we have listener
+
+		this.plants = new CollectionModel();
+		this.addChild(this.plants);
+
+		this.ground = new GroundModel();
+		this.addChild(this.ground);
+
+		this.sprites = new CollectionModel();
+		this.addChild(this.sprites);
+
+		this.resources = new CollectionModel();
+		this.addChild(this.resources);
+
+		this.viewBoxScale = new DirtyValue(1);
+		this.addChild(this.viewBoxScale);
+		this.viewBoxSize = new Vector2();
+		this.addChild(this.viewBoxSize);
+		this.viewBoxCoordinates = new Vector2();
+		this.addChild(this.viewBoxCoordinates);
+
+		// auto recalculate parallax offset
 		this.viewBoxChangedHandler = () => this.updateCameraOffset();
+		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
+		this.updateCameraOffset();
 
 		if (state) {
 			this.restoreState(state);
@@ -38,7 +69,7 @@ export default class LevelModel extends ModelBase {
 			name: this.name,
 			grid: this.grid.getState(),
 			parallax: this.parallax.getState(),
-			plant: this.plant.getState(),
+			plants: this.plants.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
 			resources: this.resources.getState(),
@@ -51,38 +82,29 @@ export default class LevelModel extends ModelBase {
 
 	restoreState(state) {
 		this.name = state.name;
-		this.grid = new GridModel(state.grid);
-		this.parallax = new ParallaxModel(state.parallax);
-		//this.addChild(this.parallax); no need for this
-		this.plant = new PlantModel(state.plant);
-		this.addChild(this.plant);
-		this.ground = new GroundModel(state.ground);
-		this.addChild(this.ground);
-		if (state.bee) {
-			this.bee = new BeeModel(state.bee);
-			this.addChild(this.bee);
-		}
-		this.sprites = new CollectionModel();
-		if (state.sprites) {
-			this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
-		}
-		this.addChild(this.sprites);
 
-		this.resources = new CollectionModel(state.resources, (r) => new ResourceModel(r));
-		this.addChild(this.resources);
-
-		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
-		this.addChild(this.viewBoxScale);
-		this.viewBoxSize = Vector2.fromArray(state.viewBoxSize);
-		this.addChild(this.viewBoxSize);
-		this.viewBoxCoordinates = Vector2.fromArray(state.viewBoxCoordinates);
-		this.addChild(this.viewBoxCoordinates);
+		if (state.grid) this.grid.restoreState(state.grid);
+		if (state.parallax) this.parallax.restoreState(state.parallax);
+		if (state.plants) this.plants.restoreState(state.plants, (p) => new PlantModel(p));
+		if (state.ground) this.ground.restoreState(state.ground);
+		if (state.bee) this.addBee(state.bee);
+		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
+		if (state.resources) this.resources.restoreState(state.resources, (r) => new ResourceModel(r));
+		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
+		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
+		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
 
 		// auto recalculate parallax offset
 		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
 		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
 		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
 		this.updateCameraOffset();
+	}
+
+	addBee(state) {
+		if (this.bee) this.removeChild(this.bee);
+		this.bee = new BeeModel(state);
+		this.addChild(this.bee);
 	}
 
 	addResource(resType, uri, data) {
@@ -116,6 +138,15 @@ export default class LevelModel extends ModelBase {
 	centerOnCoordinates(coordinates) {
 		this.viewBoxCoordinates.setX(coordinates.x - (this.viewBoxScale.get() * this.viewBoxSize.x / 2));
 		this.viewBoxCoordinates.setY(coordinates.y - (this.viewBoxScale.get() * this.viewBoxSize.y / 2));
+	}
+
+	centerOnPosition(position) {
+		this.centerOnCoordinates(this.grid.getCoordinates(position));
+	}
+
+	centerView() {
+		const center = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
+		this.centerOnPosition(center);
 	}
 
 	isGround(position) {

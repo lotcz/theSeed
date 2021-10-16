@@ -1,5 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import {GROUND_STYLES} from "./Palette";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -8,6 +7,7 @@ import {
 	CORNER_UPPER_LEFT,
 	CORNER_UPPER_RIGHT
 } from "../model/GridModel";
+import {GROUND_STYLES} from "../builder/GroundStyle";
 
 const DEBUG_GROUND_RENDERER = false;
 

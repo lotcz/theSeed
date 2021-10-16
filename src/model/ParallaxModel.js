@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import ParallaxLayerModel from "./ParallaxLayerModel";
 import CollectionModel from "./CollectionModel";
 import Vector2 from "../class/Vector2";
@@ -10,16 +10,20 @@ export default class ParallaxModel extends ModelBase {
 	constructor(state) {
 		super(state);
 
+		this.layers = new CollectionModel();
+		this.addChild(this.layers);
+
+		this.cameraOffset = new Vector2();
+		this.addChild(this.cameraOffset);
+
 		if (state) {
 			this.restoreState(state);
 		}
 	}
 
 	restoreState(state) {
-		this.layers = new CollectionModel(state.layers, (s) => new ParallaxLayerModel(s));
-		this.addChild(this.layers);
-		this.cameraOffset = new Vector2(state.cameraOffset);
-		this.addChild(this.cameraOffset);
+		if (state.layers) this.layers.restoreState(state.layers, (s) => new ParallaxLayerModel(s));
+		if (state.cameraOffset) this.cameraOffset.restoreState(state.cameraOffset);
 	}
 
 	getState() {

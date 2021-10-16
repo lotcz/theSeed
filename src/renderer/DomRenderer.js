@@ -1,4 +1,4 @@
-import RendererBase from "./RendererBase";
+import RendererBase from "../class/RendererBase";
 import Pixies from "../class/Pixies";
 
 const DEBUG_DOM = true;

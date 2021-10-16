@@ -1,4 +1,4 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import SpriteController from "./SpriteController";
 
 export default class SpriteCollectionController extends ControllerBase {

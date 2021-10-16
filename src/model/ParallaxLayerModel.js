@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import ImageModel from "./ImageModel";
 
 export default class ParallaxLayerModel extends ModelBase {

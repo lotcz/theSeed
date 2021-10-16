@@ -1,25 +1,28 @@
-import ActivatedTree from "../class/ActivatedTree";
+import ActivatedTree from "./ActivatedTree";
 
-export default class RendererBase extends ActivatedTree {
+export default class ControllerBase extends ActivatedTree {
 	game;
 	model;
+	controls;
 	level;
 	grid;
 	chessboard;
 
-	constructor(game, model) {
+	constructor(game, model, controls) {
 		super();
 		this.game = game;
 		this.model = model;
+		this.controls = controls;
 
 		this.level = game.level.get();
 		if (this.level) {
 			this.grid = this.level.grid;
 			this.chessboard = this.level.grid.chessboard;
 		}
+
 	}
 
-	render() {
+	update(delta) {
 		if (this.model.isDeleted()) {
 			this.setDeleted(true);
 			return;
@@ -29,15 +32,11 @@ export default class RendererBase extends ActivatedTree {
 			return;
 		}
 
-		if (this.isDirty() || this.model.isDirty()) {
-			this.renderInternal();
-			this.children.forEach((r) => r.render());
-			this.clean();
-			this.model.clean();
-		}
+		this.children.forEach((c) => c.update(delta));
+		this.updateInternal(delta);
 	}
 
-	renderInternal() {
+	updateInternal(delta) {
 
 	}
 

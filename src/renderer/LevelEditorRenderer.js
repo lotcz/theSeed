@@ -1,17 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
-import PlantRenderer from "./PlantRenderer";
-import BeeRenderer from "./BeeRenderer";
-import {GROUND_DARK, GROUND_LIGHT} from "./Palette";
-import GroundRenderer from "./GroundRenderer";
-
-import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
-import ParallaxRenderer from "./ParallaxRenderer";
 import Vector2 from "../class/Vector2";
-import InventoryRenderer from "./InventoryRenderer";
 import * as dat from "dat.gui";
-import LevelModel from "../model/LevelModel";
-import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES, SPRITE_STRATEGIES} from "../model/LevelEditorModel";
-import Pixies from "../class/Pixies";
+import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
 
 const DEBUG_EDITOR = false;
 
@@ -75,7 +65,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		const levelFolder = this.gui.addFolder('Level');
 		const gridFolder = levelFolder.addFolder('grid')
-		gridFolder.add(this.grid, 'scale').listen();
+		gridFolder.add(this.grid, 'tileScale').listen();
 		gridFolder.add(level.grid.size, 'x').listen();
 		gridFolder.add(level.grid.size, 'y').listen();
 		gridFolder.open();
@@ -133,8 +123,13 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	deactivateInternal() {
-		this.toolsFolder = null;
+		this.hideGroundTiles();
+		this.hideSpriteHelpers();
+		this.hideHighlights();
+		this.hideAdditionalGUI();
+
 		const level = this.game.level.get();
+
 		level.sprites.forEach((sprite) => {
 			if (sprite._helper) {
 				sprite._helper = null;
@@ -143,6 +138,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		level.ground.tiles.forEach((tile) => {
 			tile._helper = null;
 		});
+
 		if (this.group) {
 			this.group.remove();
 			this.group = null;
@@ -158,8 +154,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.highlightedTileDef.remove();
 			this.highlightedTileDef = null;
 		}
-		this.hideHighlights();
-		this.hideAdditionalGUI();
+		this.toolsFolder = null;
+		level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
 	}
 
 	getLevelState() {
@@ -257,7 +253,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		const level = this.game.level.get();
 		level.sprites.removeOnAddListener(this.spriteAddedHandler);
 		//level.sprites.removeOnRemoveListener(this.spriteRemovedHandler);
-		this.spriteHelpers.hide();
+		if (this.spriteHelpers) this.spriteHelpers.hide();
 	}
 
 	spriteAdded(sprite) {
@@ -272,17 +268,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	//<editor-fold desc="TILES">
 
-	renderGroundTile(position) {
-		if (DEBUG_EDITOR) console.log('rendering tile position', position);
-
+	renderGroundTile(tile) {
 		const level = this.game.level.get();
-		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_ground === true);
-		if (visitors.length === 0) {
-			console.warn('No visitors for ground tile');
-			return;
-		}
-
-		const tile = visitors[0];
 		const helper = tile._helper;
 		if (!helper) {
 			const hex = this.groundTiles.group();
@@ -293,24 +280,17 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			hex.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
 			hex.circle(20).fill('#000').center(-10, 0);
 			hex.circle(20).fill('#fff').center(10, 0);
-			const coordinates = level.grid.getCoordinates(position);
+			const coordinates = level.grid.getCoordinates(tile.position);
 			hex.center(coordinates.x, coordinates.y);
 			tile._helper = hex;
 		}
-
 	}
 
-	destroyGroundTile(position) {
-		const level = this.game.level.get();
-		const visitors = level.grid.chessboard.getVisitors(position, (v) => v._is_hex === true);
-		if (visitors.length > 1) {
-			console.log('Visitors count more than 1', visitors);
-		}
-		if (visitors.length > 0) {
-			const hex = visitors[0].hex;
-			hex.remove();
-			level.grid.chessboard.removeVisitor(position, visitors[0]);
-		}
+	destroyGroundTile(tile) {
+		//const level = this.game.level.get();
+		const hex = tile._helper;
+		hex.remove();
+		//level.grid.chessboard.removeVisitor(tile.position, tile);
 	}
 
 	hideGroundTiles() {
@@ -318,24 +298,24 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		const level = this.game.level.get();
 		level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
 		//level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
-		this.groundTiles.hide();
+		if (this.groundTiles) this.groundTiles.hide();
 	}
 
 	showGroundTiles() {
 		this.hideGroundTiles();
 		this.level = this.game.level.get();
-		this.level.ground.tiles.forEach((tile) => this.renderGroundTile(tile.position));
+		this.level.ground.tiles.forEach((tile) => this.renderGroundTile(tile));
 		this.groundTiles.show();
 		this.level.ground.tiles.addOnAddListener(this.tileAddedHandler);
 		this.level.ground.tiles.addOnRemoveListener(this.tileRemovedHandler);
 	}
 
 	groundTileAdded(tile) {
-		this.renderGroundTile(tile.position);
+		this.renderGroundTile(tile);
 	}
 
 	groundTileRemoved(tile) {
-		this.destroyGroundTile(tile.position);
+		this.destroyGroundTile(tile);
 	}
 
 	//</editor-fold>

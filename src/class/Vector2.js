@@ -1,4 +1,4 @@
-import ModelBase from "../model/ModelBase";
+import ModelBase from "./ModelBase";
 
 export default class Vector2 extends ModelBase {
 	x;

@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import CollectionModel from "./CollectionModel";
 import Vector2 from "../class/Vector2";
 

@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import MenuLineModel from "./MenuLineModel";
 
 export default class MenuModel extends ModelBase {

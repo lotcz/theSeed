@@ -1,13 +1,10 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import {EDITOR_TOOL_DELETE, EDITOR_TOOL_SELECT} from "../model/LevelEditorModel";
 import {
 	EDITOR_MODE_GROUND,
 	EDITOR_MODE_SPRITES
 } from "../model/LevelEditorModel";
-
-import SpriteBuilder from "../builder/SpriteBuilder";
-import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
-import {SPRITE_STYLES} from "../renderer/Palette";
+import LevelBuilder from "../builder/LevelBuilder";
 
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
@@ -126,7 +123,7 @@ export default class LevelEditorController extends ControllerBase {
 
 	processSpriteClick(position) {
 		const level = this.game.level.get();
-		const builder = new SpriteBuilder(level);
+		const builder = new LevelBuilder(level);
 
 		switch (this.model.selectedSpriteType) {
 			case EDITOR_TOOL_DELETE:
@@ -141,20 +138,7 @@ export default class LevelEditorController extends ControllerBase {
 				visitors2.forEach((sprite) => this.model.selectedSprites.add(sprite));
 				break;
 			default:
-				const style = SPRITE_STYLES[this.model.selectedSpriteType];
-				let uri = null;
-				if (style.image) {
-					level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
-					uri = style.image.uri;
-				}
-				builder.addSprite(
-					position,
-					1,
-					false,
-					0,
-					uri,
-					style.strategy
-				);
+				builder.addSpriteFromStyle(position, this.model.selectedSpriteType);
 				break;
 		}
 

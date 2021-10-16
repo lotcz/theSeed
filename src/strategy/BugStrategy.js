@@ -1,6 +1,6 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
-import {STRATEGY_WATER} from "../controller/SpriteController";
+import {STRATEGY_WATER} from "../builder/SpriteStyle";
 
 const BUG_TIMEOUT = 500;
 

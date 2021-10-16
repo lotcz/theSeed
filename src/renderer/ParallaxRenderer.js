@@ -3,7 +3,7 @@ import ImageRenderer from "./ImageRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
 
-import {BLUE_DARK, BLUE_LIGHT} from "./Palette";
+import {BLUE_DARK, BLUE_LIGHT} from "../builder/Palette";
 
 export default class ParallaxRenderer extends SvgRenderer {
 

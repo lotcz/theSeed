@@ -1,8 +1,6 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
-import Pixies from "../class/Pixies";
-import Vector2 from "../class/Vector2";
-import SpriteBuilder, {IMAGE_WATER, IMAGE_WORM_BODY, IMAGE_WORM_BUTT} from "../builder/SpriteBuilder";
-import {STRATEGY_WATER, STRATEGY_WORM} from "../controller/SpriteController";
+import LevelBuilder from "../builder/LevelBuilder";
+import {IMAGE_WATER, STRATEGY_WATER} from "../builder/SpriteStyle";
 
 const WATER_TIMEOUT = 3000;
 const WATER_FALL_TIMEOUT = 500;
@@ -30,23 +28,10 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 		}
 
 		this.timeout = 0;
-		this.lastSpawn = null;
-	}
-
-	activateInternal() {
-		this.timeout = 0;
-	}
-
-	spawn() {
-		const spriteBuilder = new SpriteBuilder(this.level);
-		this.lastSpawn = spriteBuilder.addSprite(this.position, WATER_UNIT_SIZE, false, this.model.image.rotation.get(), IMAGE_WATER, STRATEGY_WATER, {amount:WATER_UNIT_SIZE, inside: true, insideUp:this.model.data.insideUp });
-		this.model.data.amount -= WATER_UNIT_SIZE;
-		this.model.makeDirty();
-		return this.lastSpawn;
 	}
 
 	absorb(node) {
-		if (node.data.amount <= this.model.data.amount && node !== this.lastSpawn) {
+		if (node.data.amount <= this.model.data.amount) {
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
 			this.level.sprites.remove(node);
@@ -94,59 +79,11 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 			}
 		);
 
-		const plantNodes = visitors.filter((v) => v._is_plant === true);
-
-		if (plantNodes.length > 0) {
-
-			const plantNode = plantNodes[0];
-
-			if (this.model.data.inside) {
-
-				if (plantNode.isRoot()) {
-					this.model.data.insideUp = false;
-				}
-				if ((!this.model.data.insideUp) && (!plantNode.hasChildren())) {
-					this.model.data.insideUp = true;
-				}
-				if (this.model.data.insideUp) {
-					this.setTarget(plantNode.parent.position);
-					this.lastPlantNode = plantNode.parent;
-				} else {
-					const children = Array.from(plantNode.children);
-					children.sort((a, b) => b.power - a.power);
-					const index = Math.floor(Math.pow(Math.random(), 2) * children.length);
-					if (this.model.data.amount > (children[index].power * WATER_UNIT_SIZE)) {
-						const spawn = this.spawn();
-						spawn.image.position.set(children[index].position);
-					} else {
-						this.setTarget(children[index].position);
-						this.lastPlantNode = children[index];
-					}
-				}
-			} else {
-				const capacity = plantNode.power / WATER_UNIT_SIZE;
-				if (capacity > 1) {
-					if (this.model.data.amount > WATER_UNIT_SIZE) {
-						if (Math.random() < 0.5) {
-							this.spawn();
-						} else {
-							this.timeout = WATER_TIMEOUT * (1 + Math.random());
-						}
-					} else {
-						this.model.data.inside = true;
-						this.timeout = 0;
-						this.model.makeDirty();
-					}
-				}
-			}
-			return;
-		}
-
 	}
 
 	updateInternal(delta) {
 		const scale = Math.sqrt(this.model.data.amount / (4 * Math.PI))
-		this.model.image.scale.set(scale * 2);
+		this.targetScale = scale * 2;
 	}
 
 }

@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";

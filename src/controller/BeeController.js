@@ -1,4 +1,4 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;

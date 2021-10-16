@@ -1,4 +1,4 @@
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 
 export default class GroundController extends ControllerBase {
 	constructor(game, model, controls) {

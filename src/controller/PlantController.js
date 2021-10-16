@@ -1,6 +1,6 @@
 import Vector2 from "../class/Vector2";
 import LivingTreeModel from "../model/LivingTreeModel";
-import ControllerBase from "./ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 
 export default class PlantController extends ControllerBase {
