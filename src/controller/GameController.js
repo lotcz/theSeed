@@ -77,7 +77,7 @@ export default class GameController extends ControllerBase {
 
 		const levelBuilder = new LevelBuilder();
 		levelBuilder.setSize(size);
-		levelBuilder.setTileScale(tileSize);
+		levelBuilder.setTileRadius(tileSize);
 		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
 		levelBuilder.setViewBoxScale(scale);
 
@@ -133,14 +133,17 @@ export default class GameController extends ControllerBase {
 	}
 
 	newGame() {
-		const size = new Vector2(500, 175);
-		const start = new Vector2(20, 20);
-		const scale = 50;
+		const size = new Vector2(100, 50);
+		const start = new Vector2(50, 25);
+		const tileRadius = 50;
+		const scale = 3;
 
 		const levelBuilder = new LevelBuilder();
-		levelBuilder.setSize(size);
-		levelBuilder.setTileScale(scale);
 		levelBuilder.setName('new-game');
+		levelBuilder.setSize(size);
+		levelBuilder.setTileRadius(tileRadius);
+		levelBuilder.setViewBoxSize(this.model.viewBoxSize);
+		levelBuilder.setViewBoxScale(scale);
 		levelBuilder.setStart(start);
 		levelBuilder.addBee(start);
 

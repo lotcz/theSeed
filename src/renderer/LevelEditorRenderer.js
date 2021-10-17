@@ -50,8 +50,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	activateInternal() {
 		this.deactivateInternal();
-
 		const level = this.game.level.get();
+
+		if (!level) {
+			console.log('No level to edit');
+			return;
+		}
 
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
@@ -66,23 +70,24 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		const levelFolder = this.gui.addFolder('Level');
 		const gridFolder = levelFolder.addFolder('grid')
-		gridFolder.add(this.grid, 'tileScale').listen();
 		gridFolder.add(level.grid.size, 'x').listen();
 		gridFolder.add(level.grid.size, 'y').listen();
+		gridFolder.add(level.grid.tileRadius, 'value').name('tileRadius').listen();
 		gridFolder.open();
+
 		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen();
 
 		const sizeFolder = levelFolder.addFolder('viewBoxSize')
-		sizeFolder.add(this.level.viewBoxSize, 'x').listen();
-		sizeFolder.add(this.level.viewBoxSize, 'y').listen();
+		sizeFolder.add(level.viewBoxSize, 'x').listen();
+		sizeFolder.add(level.viewBoxSize, 'y').listen();
 		sizeFolder.open();
 		const positionFolder = levelFolder.addFolder('viewBoxCoordinates')
-		positionFolder.add(this.level.viewBoxCoordinates, 'x').listen();
-		positionFolder.add(this.level.viewBoxCoordinates, 'y').listen();
+		positionFolder.add(level.viewBoxCoordinates, 'x').listen();
+		positionFolder.add(level.viewBoxCoordinates, 'y').listen();
 		positionFolder.open();
 		const parallaxFolder = levelFolder.addFolder('Parallax Camera Offset')
-		parallaxFolder.add(this.level.parallax.cameraOffset, 'x').listen();
-		parallaxFolder.add(this.level.parallax.cameraOffset, 'y').listen();
+		parallaxFolder.add(level.parallax.cameraOffset, 'x').listen();
+		parallaxFolder.add(level.parallax.cameraOffset, 'y').listen();
 		parallaxFolder.open();
 
 		this.toolsFolder = this.gui.addFolder('Tools');
@@ -105,13 +110,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			);
 		this.brushController = this.toolsFolder.add(this.model, 'brushSize', 1, 10).name('Brush');
 
-		this.toolsFolder.open();
-
-		const moreFolder = this.gui.addFolder('More');
-		const highlightFolder = moreFolder.addFolder('highlight');
+		const highlightFolder = this.toolsFolder.addFolder('highlight');
 		highlightFolder.add(this.model.highlightedTilePosition, 'x').listen();
 		highlightFolder.add(this.model.highlightedTilePosition, 'y').listen();
 		highlightFolder.open();
+
+		this.toolsFolder.open();
 
 		const actionsFolder = this.gui.addFolder('Actions');
 		actionsFolder.add(this.actions, 'reload').name('Reload');

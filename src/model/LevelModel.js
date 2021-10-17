@@ -93,12 +93,6 @@ export default class LevelModel extends ModelBase {
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
 		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
-
-		// auto recalculate parallax offset
-		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
-		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
-		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
-		this.updateCameraOffset();
 	}
 
 	addBee(state) {

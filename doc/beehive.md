@@ -33,13 +33,10 @@ collect precious nectar
 
 level 3
 
-
-
 TODO:
 
 - plants (render parts in ground system?)
-- bee eating and collecting and dropping
--
+
 
 
 

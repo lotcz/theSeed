@@ -1,5 +1,6 @@
 import ControllerBase from "../class/ControllerBase";
 import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
+import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -34,12 +35,18 @@ export default class BeeController extends ControllerBase {
 		const secsDelta = delta / 1000;
 
 		if (this.controls.interact) {
-			console.log('Interacting');
-			const visitors = this.chessboard.getVisitors(this.model.position, (v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
-			console.log(visitors);
-			if (visitors.length > 0) {
-				this.level.sprites.remove(visitors[0]);
-				this.model.inventory.add(visitors[0]);
+			const position = this.grid.getNeighborDown(this.model.position)
+			const visitors = this.chessboard.getVisitors(position);
+			const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
+			if (minerals.length > 0) {
+				this.level.sprites.remove(minerals[0]);
+				this.model.inventory.add(minerals[0]);
+			} else {
+				const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX);
+				if (wax.length > 0) {
+					const tile = wax[0];
+					this.level.ground.removeTile(tile);
+				}
 			}
 			this.controls.interact = false;
 		}

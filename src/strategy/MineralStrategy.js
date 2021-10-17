@@ -9,8 +9,6 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	constructor(game, model, controls) {
 		super(game, model, controls, MINERAL_TIMEOUT);
 
-		console.log('creating strategy', this.model.is_deleted);
-
 		if (!this.model.data.amount) {
 			this.model.data.amount = this.model.image.scale.get();
 		}

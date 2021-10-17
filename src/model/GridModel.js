@@ -24,7 +24,7 @@ export const CORNER_UPPER_RIGHT = 5;
 
 export default class GridModel extends ModelBase {
 	size;
-	tileScale;
+	tileRadius;
 	tileSize;
 	chessboard;
 
@@ -34,10 +34,12 @@ export default class GridModel extends ModelBase {
 
 		this.size = new Vector2(100, 50);
 		this.addChild(this.size);
-		this.tileScale = new DirtyValue(100);
-		this.addChild(this.tileScale);
-
-		this.updateTileSize();
+		this.tileSize = new Vector2();
+		this.addChild(this.tileSize);
+		this.tileRadius = new DirtyValue();
+		this.tileRadius.addOnChangeListener((sender, value) => this.updateTileSize());
+		this.addChild(this.tileRadius);
+		this.tileRadius.set(50);
 
 		if (state) this.restoreState(state);
 	}
@@ -45,19 +47,18 @@ export default class GridModel extends ModelBase {
 	getState() {
 		return {
 			size: this.size.toArray(),
-			scale: this.tileScale
+			tileRadius: this.tileRadius.get()
 		}
 	}
 
 	updateTileSize() {
-		this.tileSize = new Vector2(2 * this.tileScale, Math.sqrt(3) * this.tileScale);
+		this.tileSize.set(2 * this.tileRadius.get(), Math.sqrt(3) * this.tileRadius.get());
 	}
 
 	restoreState(state) {
 		this.chessboard = new Chessboard();
 		if (state.size) this.size.restoreState(state.size);
-		if (state.scale) this.tileScale = state.scale;
-		this.updateTileSize();
+		if (state.tileRadius) this.tileRadius.set(state.tileRadius);
 	}
 
 	getCoordinates(position) {
@@ -92,7 +93,7 @@ export default class GridModel extends ModelBase {
 
 	getCornerFromCoordinates(coordinates, i) {
 		const angle_rad = (Math.PI/3 * i);
-		return new Vector2(coordinates.x + this.tileScale * Math.cos(angle_rad), coordinates.y + this.tileScale * Math.sin(angle_rad));
+		return new Vector2(coordinates.x + this.tileRadius.get() * Math.cos(angle_rad), coordinates.y + this.tileRadius.get() * Math.sin(angle_rad));
 	}
 
 	getCorner(position, i) {

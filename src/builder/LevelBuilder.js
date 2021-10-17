@@ -22,12 +22,14 @@ export default class LevelBuilder {
 
 	setSize(size) {
 		this.level.grid.size.set(size);
-		this.level.grid.updateTileSize();
 	}
 
-	setTileScale(size) {
-		this.level.grid.tileScale = size;
-		this.level.grid.updateTileSize();
+	setViewBoxSize(size) {
+		this.level.viewBoxSize.set(size);
+	}
+
+	setTileRadius(size) {
+		this.level.grid.tileRadius.set(size);
 	}
 
 	setName(name) {
