@@ -208,7 +208,7 @@ export default class GroundRenderer extends SvgRenderer {
 				//path += ` Z`;
 
 				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
-				if (style.background) {
+				if (style.background === true) {
 					pathDraw.back();
 				} else {
 					pathDraw.front();

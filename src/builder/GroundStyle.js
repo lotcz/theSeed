@@ -66,7 +66,7 @@ GROUND_STYLES[GROUND_TYPE_HONEY] = {
 };
 
 GROUND_STYLES[GROUND_TYPE_WAX] = {
-	fill: 'darkorange',
+	fill: 'darkOrange',
 	stroke: { width: 4, color: 'brown'},
 	renderCorners: true
 };
@@ -74,19 +74,21 @@ GROUND_STYLES[GROUND_TYPE_WAX] = {
 GROUND_STYLES[GROUND_TYPE_WATER] = {
 	fill: BLUE_MEDIUM,
 	stroke: { width: 120, color: BLUE_MEDIUM},
-	background: false
+	background: true
 };
 
 GROUND_STYLES[GROUND_TYPE_CLOUD] = {
 	fill: 'rgba(255, 255, 255, 0.3)',
 	stroke: { width: 0},
-	background: true
+	background: true,
+	penetrable: true
 };
 
 GROUND_STYLES[GROUND_TYPE_ROCK_BACKGROUND] = {
 	fill: GRAY_LIGHT,
 	stroke: { width: 0},
 	background: true,
+	penetrable: true,
 	renderCorners: true
 };
 
@@ -94,13 +96,15 @@ GROUND_STYLES[GROUND_TYPE_SOIL_BACKGROUND] = {
 	fill: BROWN_LIGHT,
 	stroke: { width: 20, color: BROWN_LIGHT},
 	background: true,
+	penetrable: true,
 	renderCorners: true
 };
 
 GROUND_STYLES[GROUND_TYPE_WAX_BACKGROUND] = {
-	fill: 'lightorange',
-	stroke: { width: 20, color: BROWN_LIGHT},
+	fill: '#e49665',
+	stroke: { width: 20, color: '#e49665'},
 	background: true,
+	penetrable: true,
 	renderCorners: true
 };
 
@@ -108,5 +112,6 @@ GROUND_STYLES[GROUND_TYPE_GRASS_BACKGROUND] = {
 	fill: GREEN_LIGHTEST,
 	stroke: { width: 20, color: GREEN_LIGHTEST},
 	background: true,
+	penetrable: true,
 	renderCorners: true
 };

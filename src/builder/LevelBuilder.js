@@ -100,6 +100,14 @@ export default class LevelBuilder {
 		);
 	}
 
+	addTile(position, groundType) {
+		this.level.ground.addTile({position: position.toArray(), type: groundType});
+	}
+
+	addTileFromStyle(position, groundType) {
+		this.addTile(position, groundType);
+	}
+
 	addBee(position) {
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
 		this.level.bee = new BeeModel({

@@ -292,10 +292,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	destroyGroundTile(tile) {
-		//const level = this.game.level.get();
-		const hex = tile._helper;
-		hex.remove();
-		//level.grid.chessboard.removeVisitor(tile.position, tile);
+		const helper = tile._helper;
+		if (helper)	helper.remove();
 	}
 
 	hideGroundTiles() {

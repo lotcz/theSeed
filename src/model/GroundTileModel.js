@@ -7,6 +7,7 @@ export default class GroundTileModel extends ModelBase {
 	type;
 	_is_ground;
 	_is_penetrable;
+	_is_background;
 
 	constructor(state) {
 		super();
@@ -14,6 +15,7 @@ export default class GroundTileModel extends ModelBase {
 		// for visitor to be recognized as ground
 		this._is_ground = true;
 		this._is_penetrable = false;
+		this._is_background = false;
 
 		if (state) {
 			this.restoreState(state);
@@ -32,8 +34,11 @@ export default class GroundTileModel extends ModelBase {
 		this.position = Vector2.fromArray(state.position);
 		this.addChild(this.position);
 		this.type = state.type || GROUND_TYPE_BASIC;
-		if (GROUND_STYLES[this.type].background === true) {
+		if (GROUND_STYLES[this.type].penetrable === true) {
 			this._is_penetrable = true;
+		}
+		if (GROUND_STYLES[this.type].background === true) {
+			this._is_background = true;
 		}
 	}
 

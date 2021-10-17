@@ -36,7 +36,9 @@ level 3
 TODO:
 
 - plants (render parts in ground system?)
-
+- crawling
+- death
+- 
 
 
 

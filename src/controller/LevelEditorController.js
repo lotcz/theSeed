@@ -98,14 +98,14 @@ export default class LevelEditorController extends ControllerBase {
 				const visitors2 = this.chessboard.getTile(position);
 				const groundVisitors2 = visitors2.filter((v) => v._is_ground === true);
 				groundVisitors2.forEach((v) => this.level.ground.removeTile(v));
-				this.level.ground.addTile({position: position.toArray(), type: this.model.selectedGroundType});
+				const builder = new LevelBuilder(this.level);
+				builder.addTileFromStyle(position, this.model.selectedGroundType);
 		}
 
 	}
 
 	processGroundClick(position) {
-		const level = Math.round(this.model.brushSize);
-		const positions = this.getAffectedPositions(position, level);
+		const positions = this.getAffectedPositions(position, Math.round(this.model.brushSize));
 		positions.forEach((p) => this.addGroundTile(p));
 	}
 
@@ -122,15 +122,12 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	processSpriteClick(position) {
-		const level = this.game.level.get();
-		const builder = new LevelBuilder(level);
-
 		switch (this.model.selectedSpriteType) {
 			case EDITOR_TOOL_DELETE:
 				const visitors = this.chessboard.getTile(position);
 				const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
 
-				spriteVisitors.forEach((sprite) => level.sprites.remove(sprite));
+				spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
 				break;
 			case EDITOR_TOOL_SELECT:
 				const visitors2 = this.chessboard.getVisitors(position, (v) => v._is_sprite === true);
@@ -138,6 +135,7 @@ export default class LevelEditorController extends ControllerBase {
 				visitors2.forEach((sprite) => this.model.selectedSprites.add(sprite));
 				break;
 			default:
+				const builder = new LevelBuilder(this.level);
 				builder.addSpriteFromStyle(position, this.model.selectedSpriteType);
 				break;
 		}
