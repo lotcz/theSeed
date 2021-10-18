@@ -6,8 +6,8 @@ export default class SpriteCollectionController extends ControllerBase {
 		super(game, model, controls);
 
 		this.model.children.forEach((m) => this.addController(m));
-		this.model.addOnAddListener((sender, param) => this.addController(param));
-		this.model.addOnRemoveListener((sender, param) => this.removeController(param));
+		this.model.addOnAddListener((param) => this.addController(param));
+		this.model.addOnRemoveListener((param) => this.removeController(param));
 	}
 
 	addController(model) {

@@ -31,13 +31,13 @@ export default class EventManager {
 		}
 	}
 
-	triggerEvent(eventName, sender, param) {
+	triggerEvent(eventName, param) {
 		if (!this.handlers[eventName]) {
 			return;
 		}
 		const handlers = this.handlers[eventName];
 		handlers.forEach((item) => {
-			item(sender, param);
+			item(param);
 		});
 	}
 

@@ -4,8 +4,8 @@ export default class GroundController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
-		this.model.tiles.addOnAddListener((sender, param) => this.addVisitor(param));
-		this.model.tiles.addOnRemoveListener((sender, param) => this.removeVisitor(param));
+		this.model.tiles.addOnAddListener((param) => this.addVisitor(param));
+		this.model.tiles.addOnRemoveListener((param) => this.removeVisitor(param));
 	}
 
 	addVisitor(tile) {

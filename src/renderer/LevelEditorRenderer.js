@@ -33,11 +33,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.groundTiles = null;
 		this.spriteHelpers = null;
 
-		this.tileAddedHandler = (sender, tile) => this.groundTileAdded(tile);
-		this.tileRemovedHandler = (sender, tile) => this.groundTileRemoved(tile);
+		this.tileAddedHandler = (tile) => this.groundTileAdded(tile);
+		this.tileRemovedHandler = (tile) => this.groundTileRemoved(tile);
 
-		this.spriteAddedHandler = (sender, sprite) => this.spriteAdded(sprite);
-		this.spriteRemovedHandler = (sender, sprite) => this.spriteRemoved(sprite);
+		this.spriteAddedHandler = (sprite) => this.spriteAdded(sprite);
+		this.spriteRemovedHandler = (sprite) => this.spriteRemoved(sprite);
 
 		this.actions = {
 			reload: () => this.reload(),
@@ -74,46 +74,40 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		gridFolder.add(level.grid.size, 'y').listen();
 		gridFolder.add(level.grid.tileRadius, 'value').name('tileRadius').listen();
 		gridFolder.open();
-
-		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen();
-
 		const sizeFolder = levelFolder.addFolder('viewBoxSize')
 		sizeFolder.add(level.viewBoxSize, 'x').listen();
 		sizeFolder.add(level.viewBoxSize, 'y').listen();
 		sizeFolder.open();
+		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen();
 		const positionFolder = levelFolder.addFolder('viewBoxCoordinates')
 		positionFolder.add(level.viewBoxCoordinates, 'x').listen();
 		positionFolder.add(level.viewBoxCoordinates, 'y').listen();
 		positionFolder.open();
-		const parallaxFolder = levelFolder.addFolder('Parallax Camera Offset')
-		parallaxFolder.add(level.parallax.cameraOffset, 'x').listen();
-		parallaxFolder.add(level.parallax.cameraOffset, 'y').listen();
+		const parallaxFolder = levelFolder.addFolder('Parallax');
+		parallaxFolder.add(level.parallaxType, 'value', this.model.parallaxTypes).name('parallaxType').onChange(() => level.setParallaxFromStyle(level.parallaxType.get()))
+		parallaxFolder.add(level.parallax.cameraOffset, 'x').name('offset.x').listen();
+		parallaxFolder.add(level.parallax.cameraOffset, 'y').name('offset.y').listen();
 		parallaxFolder.open();
 
-		this.toolsFolder = this.gui.addFolder('Tools');
-		this.toolsFolder.add(this.model.selectedMode, 'value', this.model.modes).name('Mode')
-			.onChange(() => {
-					this.model.selectedMode.makeDirty();
-				}
-			);
-		this.model.selectedMode.makeDirty();
-
-		this.toolsFolder.add(this.model.showGroundTiles, 'value').name('Ground Tiles')
-			.onChange(() => {
-					this.model.showGroundTiles.makeDirty();
-				}
-			);
-		this.toolsFolder.add(this.model.showSpriteHelpers, 'value').name('Sprite Helpers')
-			.onChange(() => {
-					this.model.showSpriteHelpers.makeDirty();
-				}
-			);
-		this.brushController = this.toolsFolder.add(this.model, 'brushSize', 1, 10).name('Brush');
-
-		const highlightFolder = this.toolsFolder.addFolder('highlight');
+		const highlightFolder = this.gui.addFolder('Highlighted Position');
 		highlightFolder.add(this.model.highlightedTilePosition, 'x').listen();
 		highlightFolder.add(this.model.highlightedTilePosition, 'y').listen();
 		highlightFolder.open();
+
+		this.toolsFolder = this.gui.addFolder('Tools');
+		this.toolsFolder.add(this.model.selectedMode, 'value', this.model.modes)
+			.name('Mode')
+			.onChange(() => this.model.selectedMode.makeDirty());
+		this.model.selectedMode.makeDirty();
+
+		this.toolsFolder.add(this.model.showGroundTiles, 'value')
+			.name('Ground Tiles')
+			.onChange(() => this.model.showGroundTiles.makeDirty());
+		this.toolsFolder.add(this.model.showSpriteHelpers, 'value')
+			.name('Sprite Helpers')
+			.onChange(() => this.model.showSpriteHelpers.makeDirty());
+		this.brushController = this.toolsFolder.add(this.model, 'brushSize', 1, 10).name('Brush');
+
 
 		this.toolsFolder.open();
 

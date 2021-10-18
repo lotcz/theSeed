@@ -5,6 +5,7 @@ import CollectionModel from "./CollectionModel";
 import VectorCollectionModel from "./VectorCollectionModel";
 import {GROUND_STYLES} from "../builder/GroundStyle";
 import {SPRITE_STYLES} from "../builder/SpriteStyle";
+import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 
 export const EDITOR_MODE_SPRITES = 'Sprites';
 export const EDITOR_MODE_GROUND = 'Ground';
@@ -25,6 +26,7 @@ export default class LevelEditorModel extends ModelBase {
 	showSpriteHelpers;
 	highlightedTilePosition;
 	highlights;
+	parallaxTypes;
 	levelLoadRequest;
 	selectedSprites;
 
@@ -59,6 +61,8 @@ export default class LevelEditorModel extends ModelBase {
 
 		this.selectedSprites = new CollectionModel();
 		this.addChild(this.selectedSprites);
+
+		this.parallaxTypes = Object.keys(PARALLAX_STYLES);
 
 		this.highlightedTilePosition = new Vector2();
 		this.addChild(this.highlightedTilePosition);

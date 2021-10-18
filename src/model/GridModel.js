@@ -37,7 +37,7 @@ export default class GridModel extends ModelBase {
 		this.tileSize = new Vector2();
 		this.addChild(this.tileSize);
 		this.tileRadius = new DirtyValue();
-		this.tileRadius.addOnChangeListener((sender, value) => this.updateTileSize());
+		this.tileRadius.addOnChangeListener((value) => this.updateTileSize());
 		this.addChild(this.tileRadius);
 		this.tileRadius.set(50);
 

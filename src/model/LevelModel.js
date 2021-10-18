@@ -6,14 +6,17 @@ import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
-import ResourceModel from "./ResourceModel";
+import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
 import BeeModel from "./BeeModel";
 import {GROUND_TYPE_WATER} from "../builder/GroundStyle";
+import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
+import ParallaxLayerModel from "./ParallaxLayerModel";
 
 export default class LevelModel extends ModelBase {
 	name;
 	grid;
+	parallaxType;
 	parallax;
 	plants;
 	bee;
@@ -29,9 +32,6 @@ export default class LevelModel extends ModelBase {
 		this.name = 'untitled';
 		this.grid = new GridModel();
 		this.addChild(this.grid);
-
-		this.parallax = new ParallaxModel();
-		//this.addChild(this.parallax); no need for this, we have listener
 
 		this.plants = new CollectionModel();
 		this.addChild(this.plants);
@@ -52,12 +52,16 @@ export default class LevelModel extends ModelBase {
 		this.viewBoxCoordinates = new Vector2();
 		this.addChild(this.viewBoxCoordinates);
 
+		this.parallaxType = new DirtyValue();
+		this.addChild(this.parallaxType);
+		this.parallaxType.addOnChangeListener((value) => this.setParallaxFromStyle(value));
+		this.parallaxType.set(PARALLAX_HILLS);
+
 		// auto recalculate parallax offset
 		this.viewBoxChangedHandler = () => this.updateCameraOffset();
 		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
 		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
 		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
-		this.updateCameraOffset();
 
 		if (state) {
 			this.restoreState(state);
@@ -68,7 +72,7 @@ export default class LevelModel extends ModelBase {
 		return {
 			name: this.name,
 			grid: this.grid.getState(),
-			parallax: this.parallax.getState(),
+			parallaxType: this.parallaxType.get(),
 			plants: this.plants.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
@@ -84,7 +88,7 @@ export default class LevelModel extends ModelBase {
 		this.name = state.name;
 
 		if (state.grid) this.grid.restoreState(state.grid);
-		if (state.parallax) this.parallax.restoreState(state.parallax);
+		if (state.parallaxType) this.parallaxType.set(state.parallaxType);
 		if (state.plants) this.plants.restoreState(state.plants, (p) => new PlantModel(p));
 		if (state.ground) this.ground.restoreState(state.ground);
 		if (state.bee) this.addBee(state.bee);
@@ -197,6 +201,27 @@ export default class LevelModel extends ModelBase {
 		const center = this.grid.getMaxCoordinates().multiply(0.5);
 		const cameraOffset = cameraCoordinates.subtract(center);
 		this.parallax.cameraOffset.set(cameraOffset);
+	}
+
+	setParallaxFromStyle(parallaxType) {
+		const style = PARALLAX_STYLES[parallaxType];
+		const parallax = new ParallaxModel();
+		parallax.backgroundColor = style.background;
+		parallax.backgroundColorEnd = style.backgroundEnd;
+
+		if (style.layers) {
+			style.layers.forEach((l) => {
+				const layer = new ParallaxLayerModel();
+				layer.distance = l.distance;
+				this.addResource(RESOURCE_TYPE_IMAGE, l.image.uri, l.image.resource);
+				layer.image.path = l.image.uri;
+				parallax.addChild(layer);
+			});
+		}
+
+		this.parallax = parallax;
+		this.updateCameraOffset();
+		this.makeDirty();
 	}
 
 }

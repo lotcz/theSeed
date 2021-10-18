@@ -4,11 +4,16 @@ import CollectionModel from "./CollectionModel";
 import Vector2 from "../class/Vector2";
 
 export default class ParallaxModel extends ModelBase {
+	backgroundColor;
+	backgroundColorEnd;
 	layers;
 	cameraOffset;
 
 	constructor(state) {
 		super(state);
+
+		this.backgroundColor = 'black';
+		this.backgroundColorEnd = 'black';
 
 		this.layers = new CollectionModel();
 		this.addChild(this.layers);
@@ -22,12 +27,14 @@ export default class ParallaxModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		if (state.background) this.backgroundColor = state.background;
 		if (state.layers) this.layers.restoreState(state.layers, (s) => new ParallaxLayerModel(s));
 		if (state.cameraOffset) this.cameraOffset.restoreState(state.cameraOffset);
 	}
 
 	getState() {
 		return {
+			background: this.backgroundColor,
 			layers: this.layers.getState(),
 			cameraOffset: this.cameraOffset.toArray()
 		}

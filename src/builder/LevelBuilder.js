@@ -8,6 +8,7 @@ import BeeImage from "../../res/img/bee.svg";
 import BeeModel from "../model/BeeModel";
 import SpriteModel from "../model/SpriteModel";
 import {IMAGE_BEE, SPRITE_STYLES} from "./SpriteStyle";
+import ParallaxModel from "../model/ParallaxModel";
 
 export default class LevelBuilder {
 	level;
@@ -56,15 +57,6 @@ export default class LevelBuilder {
 		this.ground = builder.build();
 	}
 
-	addParallaxLayer(parallaxType) {
-		const style = PARALLAX_STYLES[parallaxType];
-		this.level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
-		const layer = new ParallaxLayerModel();
-		layer.distance = style.distance;
-		layer.image.path = style.image.uri;
-		this.level.parallax.addChild(layer);
-	}
-
 	addSprite(position, strategy, data, path, scale, rotation, flipped) {
 		const state = {
 			position: position.toArray(),
@@ -107,6 +99,8 @@ export default class LevelBuilder {
 	addTileFromStyle(position, groundType) {
 		this.addTile(position, groundType);
 	}
+
+
 
 	addBee(position) {
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);

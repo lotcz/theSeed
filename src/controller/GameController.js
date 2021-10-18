@@ -22,7 +22,7 @@ export default class GameController extends ControllerBase {
 
 		this.editorController = null;
 		if (this.model.editor) {
-			this.model.editor.levelLoadRequest.addOnChangeListener((sender, value) => this.onLoadLeveRequest(value));
+			this.model.editor.levelLoadRequest.addOnChangeListener((value) => this.onLoadLeveRequest(value));
 		}
 	}
 

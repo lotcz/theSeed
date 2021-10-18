@@ -56,7 +56,7 @@ export default class LevelRenderer extends SvgRenderer {
 			this.addChild(this.beeRenderer);
 		}
 
-		this.model.resources.addOnAddListener((sender, resource) => this.onAddResource(resource));
+		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
 	}
 
 	deactivateInternal() {

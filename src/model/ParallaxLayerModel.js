@@ -8,6 +8,10 @@ export default class ParallaxLayerModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		this.distance = 0.5;
+		this.image = new ImageModel();
+		this.addChild(this.image);
+
 		if (state) {
 			this.restoreState(state);
 		}
@@ -21,9 +25,8 @@ export default class ParallaxLayerModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.distance = state.distance;
-		this.image = new ImageModel(state.image);
-		this.addChild(this.image);
+		if (state.distance)	this.distance = state.distance;
+		if (state.image) this.image.restoreState(state.image);
 	}
 
 }

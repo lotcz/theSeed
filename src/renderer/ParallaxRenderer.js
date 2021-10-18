@@ -3,8 +3,6 @@ import ImageRenderer from "./ImageRenderer";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
 
-import {BLUE_DARK, BLUE_LIGHT} from "../builder/Palette";
-
 export default class ParallaxRenderer extends SvgRenderer {
 
 	constructor(game, model, background, foreground) {
@@ -18,13 +16,18 @@ export default class ParallaxRenderer extends SvgRenderer {
 		this.gridSize = this.grid.getMaxCoordinates();
 		this.center = this.gridSize.multiply(0.5);
 
-		const linear = this.background.gradient('linear', function (add) {
-			add.stop(0, BLUE_LIGHT);
-			add.stop(1, BLUE_DARK);
-			add.from(0, 0);
-			add.to(0, 1);
-		});
-		this.background.rect(this.gridSize.x, this.gridSize.y).fill(linear);
+		let fill = null;
+		if (this.model.backgroundColor !== this.model.backgroundColorEnd) {
+			fill = this.background.gradient('linear', (add) => {
+				add.stop(0, this.model.backgroundColor);
+				add.stop(1, this.model.backgroundColorEnd);
+				add.from(0, 0);
+				add.to(0, 1);
+			});
+		} else {
+			fill = this.model.backgroundColor;
+		}
+		this.background.rect(this.gridSize.x, this.gridSize.y).fill(fill);
 
 		const parallaxBack = this.background.group().addClass('parallax-back');
 		parallaxBack.opacity(0.1);

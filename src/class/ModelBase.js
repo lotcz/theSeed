@@ -48,7 +48,7 @@ export default class ModelBase extends Tree {
 	}
 
 	triggerEvent(eventName, param) {
-		this.eventManager.triggerEvent(eventName, this, param);
+		this.eventManager.triggerEvent(eventName, param);
 	}
 
 }
