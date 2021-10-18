@@ -5,9 +5,10 @@ import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import {PARALLAX_STYLES} from "./ParallaxStyle";
 import ParallaxLayerModel from "../model/ParallaxLayerModel";
 import BeeImage from "../../res/img/bee.svg";
+import BeeWingImage from "../../res/img/wing.svg";
 import BeeModel from "../model/BeeModel";
 import SpriteModel from "../model/SpriteModel";
-import {IMAGE_BEE, SPRITE_STYLES} from "./SpriteStyle";
+import {IMAGE_BEE, IMAGE_BEE_WING, SPRITE_STYLES} from "./SpriteStyle";
 import ParallaxModel from "../model/ParallaxModel";
 
 export default class LevelBuilder {
@@ -100,21 +101,34 @@ export default class LevelBuilder {
 		this.addTile(position, groundType);
 	}
 
-
-
 	addBee(position) {
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
-		this.level.bee = new BeeModel({
-			direction: [0,0],
-			speed: 0,
-			position: position.toArray(),
-			image: {
-				scale: 1,
-				flipped: false,
-				rotation: 0,
-				path: IMAGE_BEE
-			},
-		})
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
+		this.level.addBee(
+			new BeeModel({
+				direction: [0,0],
+				speed: 0,
+				position: position.toArray(),
+				image: {
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE
+				},
+				leftWing: {
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE_WING
+				},
+				rightWing: {
+					scale: 1,
+					flipped: true,
+					rotation: 0,
+					path: IMAGE_BEE_WING
+				},
+			})
+		);
 	}
 
 	build() {

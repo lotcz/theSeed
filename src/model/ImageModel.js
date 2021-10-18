@@ -43,18 +43,10 @@ export default class ImageModel extends ModelBase {
 
 	restoreState(state) {
 		if (state.coordinates) this.coordinates.setFromArray(state.coordinates);
-		if (state.flipped) {
-			this.flipped.set(state.flipped);
-		}
-		if (state.rotation) {
-			this.rotation.set(state.rotation);
-		}
-		if (state.scale) {
-			this.scale.set(state.scale);
-		}
-		if (state.path) {
-			this.path = state.path;
-		}
+		if (state.flipped) this.flipped.set(state.flipped);
+		if (state.rotation) this.rotation.set(state.rotation);
+		if (state.scale) this.scale.set(state.scale);
+		if (state.path) this.path = state.path;
 		if (state.size) {
 			this.size = Vector2.fromArray(state.size);
 			this.addChild(this.size);

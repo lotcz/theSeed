@@ -91,7 +91,7 @@ export default class LevelModel extends ModelBase {
 		if (state.parallaxType) this.parallaxType.set(state.parallaxType);
 		if (state.plants) this.plants.restoreState(state.plants, (p) => new PlantModel(p));
 		if (state.ground) this.ground.restoreState(state.ground);
-		if (state.bee) this.addBee(state.bee);
+		if (state.bee) this.addBee(new BeeModel(state.bee));
 		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		if (state.resources) this.resources.restoreState(state.resources, (r) => new ResourceModel(r));
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
@@ -99,10 +99,12 @@ export default class LevelModel extends ModelBase {
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
 	}
 
-	addBee(state) {
+	addBee(bee) {
 		if (this.bee) this.removeChild(this.bee);
-		this.bee = new BeeModel(state);
-		this.addChild(this.bee);
+		this.bee = bee;
+		if (this.bee) {
+			this.addChild(this.bee);
+		}
 	}
 
 	addResource(resType, uri, data) {

@@ -81,7 +81,6 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
-
 		if (this.model.scale.isDirty()) {
 			this.updateScale();
 		}

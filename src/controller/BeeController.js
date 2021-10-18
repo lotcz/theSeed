@@ -12,15 +12,35 @@ const SLOWDOWN_SPEED = 400;
 const SPEEDUP_SPEED = 800;
 
 export default class BeeController extends ControllerBase {
+	wingRotation;
+	speed;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.updateCoordinates();
+		this.wingRotation = 0;
 	}
 
 	updateCoordinates() {
-		this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
+		const coords = this.grid.getCoordinates(this.model.position);
+		this.setCoordinates(coords);
+	}
+
+	setCoordinates(coords) {
+		this.model.coordinates.set(coords);
+		this.updateBeeCoordinates();
+	}
+
+	updateBeeCoordinates() {
+		const rotation = Math.abs(this.wingRotation) - 30;
+		this.model.leftWing.rotation.set(rotation);
+		this.model.rightWing.rotation.set(-rotation);
+
+		const coords = this.model.coordinates.addY(rotation / 10);
+		this.model.image.coordinates.set(coords);
+		this.model.leftWing.coordinates.set(coords);
+		this.model.rightWing.coordinates.set(coords);
 	}
 
 	emptyInventory() {
@@ -28,7 +48,7 @@ export default class BeeController extends ControllerBase {
 		if (item) {
 			item.position.set(this.model.position);
 			this.level.sprites.add(item);
-		};
+		}
 	}
 
 	updateInternal(delta) {
@@ -86,15 +106,22 @@ export default class BeeController extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
+		//animate wings
+		if (this.wingRotation > 60) {
+			this.wingRotation = -60;
+		}
+		this.wingRotation += secsDelta * (100 + (400 * speed / MAX_SPEED));
+
 		if (speed === 0) {
+			this.updateBeeCoordinates();
 			return;
 		}
 
-		let coords = this.model.image.coordinates.add(direction.multiply(secsDelta));
+		let coords = this.model.coordinates.add(direction.multiply(secsDelta));
 		let position = this.grid.getPosition(coords);
 		const penetrable = this.level.isPenetrable(position);
 		if (!penetrable) {
-			coords = this.model.image.coordinates.subtract(direction.multiply(secsDelta));
+			coords = this.model.coordinates.subtract(direction.multiply(secsDelta));
 			direction = direction.multiply(-0.5);
 
 			const newPosition = this.grid.getPosition(coords);
@@ -115,9 +142,11 @@ export default class BeeController extends ControllerBase {
 		this.model.position.set(position);
 		this.level.centerOnCoordinates(coords);
 		this.level.sanitizeViewBox();
-		this.model.image.coordinates.set(coords);
+
+		this.setCoordinates(coords);
 
 		this.model.direction.set(direction);
+		this.speed = speed;
 	}
 
 }
