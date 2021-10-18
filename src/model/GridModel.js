@@ -8,12 +8,14 @@ const NEIGHBOR_VECTOR_DOWN = new Vector2(0, 1);
 const NEIGHBOR_VECTOR_LEFT = new Vector2(-1, 0);
 const NEIGHBOR_VECTOR_RIGHT = new Vector2(1, 0);
 
-export const NEIGHBOR_UP = 0;
-export const NEIGHBOR_UPPER_RIGHT = 1;
-export const NEIGHBOR_LOWER_RIGHT = 2;
-export const NEIGHBOR_DOWN = 3;
-export const NEIGHBOR_LOWER_LEFT = 4;
-export const NEIGHBOR_UPPER_LEFT = 5;
+export const NEIGHBOR_TYPE_UP = 0;
+export const NEIGHBOR_TYPE_UPPER_RIGHT = 1;
+export const NEIGHBOR_TYPE_LOWER_RIGHT = 2;
+export const NEIGHBOR_TYPE_DOWN = 3;
+export const NEIGHBOR_TYPE_LOWER_LEFT = 4;
+export const NEIGHBOR_TYPE_UPPER_LEFT = 5;
+
+export const NEIGHBOR_TYPES = [NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_RIGHT, NEIGHBOR_TYPE_LOWER_RIGHT, NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_LOWER_LEFT, NEIGHBOR_TYPE_UPPER_LEFT];
 
 export const CORNER_RIGHT = 0;
 export const CORNER_LOWER_RIGHT = 1;
@@ -102,17 +104,17 @@ export default class GridModel extends ModelBase {
 
 	getNeighbor(position, direction, steps = 1) {
 		switch (direction) {
-			case NEIGHBOR_UP:
+			case NEIGHBOR_TYPE_UP:
 				return this.getNeighborUp(position, steps);
-			case NEIGHBOR_UPPER_RIGHT:
+			case NEIGHBOR_TYPE_UPPER_RIGHT:
 				return this.getNeighborUpperRight(position, steps);
-			case NEIGHBOR_LOWER_RIGHT:
+			case NEIGHBOR_TYPE_LOWER_RIGHT:
 				return this.getNeighborLowerRight(position, steps);
-			case NEIGHBOR_DOWN:
+			case NEIGHBOR_TYPE_DOWN:
 				return this.getNeighborDown(position, steps);
-			case NEIGHBOR_LOWER_LEFT:
+			case NEIGHBOR_TYPE_LOWER_LEFT:
 				return this.getNeighborLowerLeft(position, steps);
-			case NEIGHBOR_UPPER_LEFT:
+			case NEIGHBOR_TYPE_UPPER_LEFT:
 				return this.getNeighborUpperLeft(position, steps);
 		};
 	}
@@ -126,6 +128,10 @@ export default class GridModel extends ModelBase {
 			this.getNeighborLowerLeft(position),
 			this.getNeighborUpperLeft(position)
 		];
+	}
+
+	getNeighborType(position, neighbor) {
+		return NEIGHBOR_TYPES.find((type) => this.getNeighbor(position, type).equalsTo(neighbor));
 	}
 
 	getNeighborUp(position, steps = 1) {

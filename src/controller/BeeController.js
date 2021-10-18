@@ -1,6 +1,13 @@
 import ControllerBase from "../class/ControllerBase";
 import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
 import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
+import {
+	NEIGHBOR_TYPE_LOWER_LEFT,
+	NEIGHBOR_TYPE_LOWER_RIGHT,
+	NEIGHBOR_TYPE_UPPER_LEFT,
+	NEIGHBOR_TYPES
+} from "../model/GridModel";
+import Vector2 from "../class/Vector2";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -10,6 +17,9 @@ const SLOWDOWN_SPEED = 400;
 
 // how quickly will speed build up, pixels per second
 const SPEEDUP_SPEED = 800;
+
+export const BEE_CENTER = new Vector2(150, 150);
+export const BEE_WINGS_OFFSET = new Vector2(40, 0);
 
 export default class BeeController extends ControllerBase {
 	wingRotation;
@@ -30,19 +40,37 @@ export default class BeeController extends ControllerBase {
 
 	setCoordinates(coords) {
 		this.model.coordinates.set(coords);
-		this.updateBeeCoordinates();
+		this.updateBee();
 	}
 
-	updateBeeCoordinates() {
-		const rotation = Math.abs(this.wingRotation) - 30;
-		this.model.leftWing.rotation.set(rotation);
-		this.model.rightWing.rotation.set(-rotation);
+	updateBee() {
+		if (this.model.isCrawling()) {
+			this.model.imageCrawl.coordinates.set(BEE_CENTER);
+			const rotation = (60 * (this.model.crawling.get() - 3));
+			const left = this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT;
+			this.model.imageCrawl.rotation.set(rotation);
+			this.model.imageCrawl.flipped.set(left);
+			this.model.leftWing.rotation.set(rotation - 10);
+			this.model.leftWing.flipped.set(left);
+			this.model.rightWing.rotation.set(rotation - 20);
+			this.model.rightWing.flipped.set(left);
+		} else {
+			//this.model.image.coordinates.set(BEE_CENTER);
+			//this.model.rotation.set(0);
 
-		let coords = this.model.coordinates.addY((rotation / 3) * (1 - (this.speed / MAX_SPEED)));
+			this.model.leftWing.flipped.set(false);
+			this.model.rightWing.flipped.set(true);
+			const rotation = Math.abs(this.wingRotation) - 30;
+			this.model.leftWing.rotation.set(rotation);
+			this.model.rightWing.rotation.set(-rotation);
 
-		this.model.image.coordinates.set(coords);
-		this.model.leftWing.coordinates.set(coords);
-		this.model.rightWing.coordinates.set(coords);
+			let idle = BEE_CENTER.addY((rotation / 3) * (1 - (this.speed / MAX_SPEED)));
+
+			this.model.image.coordinates.set(idle);
+			this.model.leftWing.coordinates.set(idle);
+			this.model.rightWing.coordinates.set(idle);
+
+		}
 	}
 
 	emptyInventory() {
@@ -115,7 +143,7 @@ export default class BeeController extends ControllerBase {
 		this.wingRotation += secsDelta * (100 + (400 * speed / MAX_SPEED));
 
 		if (speed === 0) {
-			this.updateBeeCoordinates();
+			this.updateBee();
 			return;
 		}
 
@@ -124,29 +152,38 @@ export default class BeeController extends ControllerBase {
 		const penetrable = this.level.isPenetrable(position);
 		if (!penetrable) {
 			coords = this.model.coordinates.subtract(direction.multiply(secsDelta));
-			direction = direction.multiply(-0.5);
 
-			const newPosition = this.grid.getPosition(coords);
-			const newPenetrable = this.level.isPenetrable(newPosition);
-			if (!newPenetrable) {
-				const nei = this.grid.getNeighbors(position);
-				const free = nei.filter((n) => this.level.isPenetrable(n));
-				if (free.length > 0) {
-					position = newPosition;
-					coords = this.grid.getCoordinates(free[0]);
-				} else {
-					console.log('Lost');
+			if (speed < MAX_SPEED) {
+				this.model.crawling.set(this.grid.getNeighborType(this.model.position, position));
+				direction = new Vector2();
+				position = this.model.position;
+				coords = this.model.coordinates;
+			} else {
+				direction = direction.multiply(-0.5);
+
+				const newPosition = this.grid.getPosition(coords);
+				const newPenetrable = this.level.isPenetrable(newPosition);
+				if (!newPenetrable) {
+					const nei = this.grid.getNeighbors(position);
+					const free = nei.filter((n) => this.level.isPenetrable(n));
+					if (free.length > 0) {
+						position = newPosition;
+						coords = this.grid.getCoordinates(free[0]);
+					} else {
+						console.log('Lost');
+					}
 				}
 			}
+		} else {
+			this.model.crawling.set(null);
 		}
 
-		// apply movement
 		this.model.position.set(position);
+
+		// apply movement
 		this.level.centerOnCoordinates(coords);
 		this.level.sanitizeViewBox();
-
 		this.setCoordinates(coords);
-
 		this.model.direction.set(direction);
 		this.speed = speed;
 	}

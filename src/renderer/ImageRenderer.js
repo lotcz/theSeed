@@ -1,6 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import ResourceLoader from "../class/ResourceLoader";
-import LevelRenderer from "./LevelRenderer";
 
 export default class ImageRenderer extends SvgRenderer {
 	group;
@@ -16,6 +14,8 @@ export default class ImageRenderer extends SvgRenderer {
 		this.flipped = false;
 		this.lastRotation = 0;
 		this.lastScale = 1;
+
+		this.group = null;
 	}
 
 	activateInternal() {
@@ -34,8 +34,14 @@ export default class ImageRenderer extends SvgRenderer {
 			this.group.remove();
 			this.group = null;
 		}
+		this.flipped = false;
 		this.lastRotation = 0;
-		this.lastScale = 1;
+	}
+
+	updateFromModel() {
+		this.updateScale();
+		this.updateFlip();
+		this.updateRotation();
 	}
 
 	updateScale() {
@@ -48,22 +54,21 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	updateCoordinates() {
-		this.group.center(
-			this.model.coordinates.x,
-			this.model.coordinates.y
-		);
+		this.group.center(this.model.coordinates.x, this.model.coordinates.y);
 		this.model.coordinates.clean();
 	}
 
 	updateFlip() {
+		this.image.rotate(-this.lastRotation);
 		if (this.model.flipped.get() && !this.flipped) {
 			this.image.flip('x');
 			this.flipped = true;
 		}
 		if (this.flipped && !this.model.flipped.get()) {
- 			this.image.flip('x');
- 			this.flipped = false;
- 		}
+			this.image.flip('x');
+			this.flipped = false;
+		}
+		this.image.rotate(this.lastRotation);
 		this.model.flipped.clean();
 	}
 
@@ -72,12 +77,6 @@ export default class ImageRenderer extends SvgRenderer {
 		this.lastRotation = this.model.rotation.get();
 		this.image.rotate(this.lastRotation);
 		this.model.rotation.clean();
-	}
-
-	updateFromModel() {
-		this.updateScale();
-		this.updateFlip();
-		this.updateRotation();
 	}
 
 	renderInternal() {

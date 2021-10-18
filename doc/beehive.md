@@ -60,7 +60,7 @@ level 4
 
 feed small bugs to the ants to pass
 
-gather nectar from water lillies, avoid carnivourous plant
+gather nectar from water lilies, avoid carnivorous plant
 
 level 5
 
@@ -70,14 +70,13 @@ gather nectar from inside a giant flower
 
 level 6
 
-make way through ants nest, fee ants to carnivorous plant by luring them with honey
+make way through ants nest, feed ants to carnivorous plant by luring them with honey
 
 gather nectar from inside a giant flower
 
 
 TODO:
 
-- animations
 - bee animations
 - crawling
 - death
