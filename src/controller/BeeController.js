@@ -20,6 +20,7 @@ export default class BeeController extends ControllerBase {
 
 		this.updateCoordinates();
 		this.wingRotation = 0;
+		this.speed = 0;
 	}
 
 	updateCoordinates() {
@@ -37,7 +38,8 @@ export default class BeeController extends ControllerBase {
 		this.model.leftWing.rotation.set(rotation);
 		this.model.rightWing.rotation.set(-rotation);
 
-		const coords = this.model.coordinates.addY(rotation / 10);
+		let coords = this.model.coordinates.addY((rotation / 3) * (1 - (this.speed / MAX_SPEED)));
+
 		this.model.image.coordinates.set(coords);
 		this.model.leftWing.coordinates.set(coords);
 		this.model.rightWing.coordinates.set(coords);
