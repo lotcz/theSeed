@@ -5,6 +5,9 @@ import Vector2 from "../class/Vector2";
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
 
+// max length of direction vector to allow crawling
+const MAX_CRAWL_SPEED = 1000;
+
 // how quickly will speed drop down, pixels per second
 const SLOWDOWN_SPEED = 400;
 
@@ -72,22 +75,29 @@ export default class BeeFlightStrategy extends ControllerBase {
 			return;
 		}
 
-		let coords = this.model.coordinates.add(direction.multiply(secsDelta));
-		let position = this.grid.getPosition(coords);
-		const penetrable = this.level.isPenetrable(position);
-		if (!penetrable) {
-			coords = this.model.coordinates.subtract(direction.multiply(secsDelta));
-
-			if (speed < MAX_SPEED && this.level.isCrawlable(position)) {
-				this.parent.crawl(this.grid.getNeighborType(this.model.position, position));
+		const distance = direction.multiply(secsDelta);
+		const crashDistance = distance.clone();
+		crashDistance.setSize(crashDistance.size() + this.grid.tileRadius.get());
+		let coords = null;
+		let position = null;
+		const crashCoords = this.model.coordinates.add(crashDistance);
+		let crashPosition = this.grid.getPosition(crashCoords);
+		const penetrable = this.level.isPenetrable(crashPosition);
+		if (penetrable) {
+			coords = this.model.coordinates.add(distance);
+			position = this.grid.getPosition(coords);
+		} else {
+			if (speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
+				this.parent.crawl(this.grid.getNeighborType(this.model.position, crashPosition));
 				return;
 			} else {
+				coords = this.model.coordinates.subtract(distance);
 				direction = direction.multiply(-0.5);
 
 				const newPosition = this.grid.getPosition(coords);
 				const newPenetrable = this.level.isPenetrable(newPosition);
 				if (!newPenetrable) {
-					const nei = this.grid.getNeighbors(position);
+					const nei = this.grid.getNeighbors(this.model.position);
 					const free = nei.filter((n) => this.level.isPenetrable(n));
 					if (free.length > 0) {
 						position = newPosition;
@@ -95,6 +105,8 @@ export default class BeeFlightStrategy extends ControllerBase {
 					} else {
 						console.log('Lost');
 					}
+				} else {
+					position = this.grid.getPosition(coords);
 				}
 			}
 		}

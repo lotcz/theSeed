@@ -67,7 +67,6 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_DOWN] = 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_DOWN];
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_UP];
 
-
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UP] = {
 	corners: [CORNER_UPPER_LEFT, CORNER_UPPER_RIGHT],
 	options: []
@@ -144,11 +143,8 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			} else if (this.controls.moveRight) {
 				controllerDirection = CONTROLLER_DIRECTION_RIGHT;
 			}
-			console.log(controllerDirection);
 			const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
-			console.log(matrix);
 			const options = matrix.options[controllerDirection];
-			console.log(options);
 			if (options === false) {
 				return;
 			} else if (options === true) {
@@ -172,7 +168,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 	}
 
 	updateBee() {
-		this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
+		//const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
+		//const corners = matrix.corners.map((c) => this.grid.getCorner(this.model.position, c));
+		//const coordinates = corners[0].add(corners[1]).multiply(0.5);
+		const coordinates = this.grid.getCoordinates(this.model.position);
+		this.model.coordinates.set(coordinates);
 		const rotation = (60 * (this.model.crawling.get() - 3));
 		const left = this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT;
 		this.model.imageCrawl.rotation.set(rotation);
@@ -181,6 +181,10 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.leftWing.flipped.set(left);
 		this.model.rightWing.rotation.set(rotation - 20);
 		this.model.rightWing.flipped.set(left);
+
+		// apply movement
+		this.level.centerOnCoordinates(coordinates);
+		this.level.sanitizeViewBox();
 	}
 
 }
