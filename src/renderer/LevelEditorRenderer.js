@@ -4,7 +4,7 @@ import * as dat from "dat.gui";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
 import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
-const DEBUG_EDITOR = false;
+const DEBUG_EDITOR_RENDERER = false;
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
@@ -46,6 +46,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			download: () => this.downloadSavedGame()
 		};
 
+		if (DEBUG_EDITOR_RENDERER) console.log('Creating editor renderer');
 	}
 
 	activateInternal() {
@@ -219,7 +220,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	//<editor-fold desc="SPRITE HELPERS">
 
 	renderSpriteHelper(sprite) {
-		if (DEBUG_EDITOR) console.log('rendering sprite helper', sprite.position);
+		if (DEBUG_EDITOR_RENDERER) console.log('rendering sprite helper', sprite.position);
 		if (!sprite._helper) {
 			const level = this.game.level.get();
 			const helper = this.spriteHelpers.rect(level.grid.tileSize.x, level.grid.tileSize.y);
@@ -248,7 +249,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	hideSpriteHelpers() {
-		if (DEBUG_EDITOR) console.log('Hiding all sprite helpers');
+		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all sprite helpers');
 		const level = this.game.level.get();
 		level.sprites.removeOnAddListener(this.spriteAddedHandler);
 		//level.sprites.removeOnRemoveListener(this.spriteRemovedHandler);
@@ -291,7 +292,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	hideGroundTiles() {
-		if (DEBUG_EDITOR) console.log('Hiding all ground tiles');
+		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all ground tiles');
 		const level = this.game.level.get();
 		level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
 		//level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
@@ -384,7 +385,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
-		if (DEBUG_EDITOR) console.log('Rendering editor');
+		if (DEBUG_EDITOR_RENDERER) console.log('Rendering editor');
 
 		if (this.model.highlightedTilePosition.isDirty()) {
 			this.renderHighlights();

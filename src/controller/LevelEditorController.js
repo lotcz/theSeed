@@ -6,6 +6,8 @@ import {
 } from "../model/LevelEditorModel";
 import LevelBuilder from "../builder/LevelBuilder";
 
+const DEBUG_EDITOR_CONTROLLER = false;
+
 export default class LevelEditorController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -46,7 +48,6 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	getAffectedPositions(position, steps = 1) {
-		const level = this.game.level.get();
 		const positions = [];
 		let start = position;
 		let stepsRemaining = steps;
@@ -54,9 +55,9 @@ export default class LevelEditorController extends ControllerBase {
 		while (stepsRemaining > 0) {
 			positions.push(start);
 			for (let i = 1; i < steps; i++) {
-				positions.push(level.grid.getNeighborLowerLeft(start, i));
+				positions.push(this.level.grid.getNeighborLowerLeft(start, i));
 			}
-			start = level.grid.getNeighborUp(start);
+			start = this.level.grid.getNeighborUp(start);
 			stepsRemaining--;
 		}
 
@@ -65,9 +66,9 @@ export default class LevelEditorController extends ControllerBase {
 		while (stepsRemaining > 0) {
 			//positions.push(start);
 			for (let i = 1; i < steps; i++) {
-				positions.push(level.grid.getNeighborLowerRight(start, i));
+				positions.push(this.level.grid.getNeighborLowerRight(start, i));
 			}
-			start = level.grid.getNeighborUp(start);
+			start = this.level.grid.getNeighborUp(start);
 			stepsRemaining--;
 		}
 
@@ -76,9 +77,9 @@ export default class LevelEditorController extends ControllerBase {
 		while (stepsRemaining > 0) {
 			//positions.push(start);
 			for (let i = 1; i < steps; i++) {
-				positions.push(level.grid.getNeighborLowerRight(start, i));
+				positions.push(this.level.grid.getNeighborLowerRight(start, i));
 			}
-			start = level.grid.getNeighborLowerLeft(start);
+			start = this.level.grid.getNeighborLowerLeft(start);
 			stepsRemaining--;
 		}
 
@@ -86,6 +87,10 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	addGroundTile(position) {
+		if (!this.level.isValidPosition(position)) {
+			if (DEBUG_EDITOR_CONTROLLER) console.log('Skipping invalid position:', position);
+			return;
+		}
 		switch (this.model.selectedGroundType) {
 			case EDITOR_TOOL_DELETE:
 				const visitors = this.chessboard.getTile(position);
@@ -104,11 +109,6 @@ export default class LevelEditorController extends ControllerBase {
 
 	}
 
-	processGroundClick(position) {
-		const positions = this.getAffectedPositions(position, Math.round(this.model.brushSize));
-		positions.forEach((p) => this.addGroundTile(p));
-	}
-
 	processClick(position) {
 		switch (this.model.selectedMode.get()) {
 			case EDITOR_MODE_SPRITES:
@@ -119,6 +119,11 @@ export default class LevelEditorController extends ControllerBase {
 				this.processGroundClick(position);
 				break;
 		}
+	}
+
+	processGroundClick(position) {
+		const positions = this.getAffectedPositions(position, Math.round(this.model.brushSize));
+		positions.forEach((p) => this.addGroundTile(p));
 	}
 
 	processSpriteClick(position) {

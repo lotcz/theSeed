@@ -179,7 +179,7 @@ export default class GridModel extends ModelBase {
 	}
 
 	isValidPosition(position) {
-		return position.x > 0 && position.x < this.size.x && position.y > 0 && position.y < this.size.y;
+		return position.x >= 0 && position.x < this.size.x && position.y >= 0 && position.y < this.size.y;
 	}
 
 	getValidNeighbors(position) {
