@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
 
 export default class PositionedTreeModel extends ModelBase {

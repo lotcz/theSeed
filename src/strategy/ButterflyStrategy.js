@@ -5,6 +5,8 @@ import Vector2 from "../class/Vector2";
 const BUTTERFLY_TIMEOUT = 300;
 
 export default class ButterflyStrategy extends SpriteControllerStrategy {
+	lastDirection;
+
 	constructor(game, model, controls) {
 		super(game, model, controls, BUTTERFLY_TIMEOUT);
 
@@ -12,21 +14,19 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetInternal() {
-
-		const neighbors = this.game.level.grid.getNeighbors(this.position);
+		const neighbors = this.level.grid.getNeighbors(this.position);
 
 		if (this.lastDirection && (Math.random() < 0.95)) {
 			const next = neighbors[this.lastDirection];
-			if (this.game.level.isValidPosition(next) && this.game.level.isAboveGround(next)) {
+			if (this.level.isPenetrable(next)) {
 				this.setTarget(next);
 				return;
 			}
 		}
 
-		const validNeighbors = neighbors.filter((n) => this.game.level.isValidPosition(n));
-		const airNeighbors = validNeighbors.filter((n) => this.game.level.isAboveGround(n));
-		if (airNeighbors.length > 0) {
-			const next = Pixies.randomElement(airNeighbors);
+		const validNeighbors = neighbors.filter((n) => this.level.isPenetrable(n));
+		if (validNeighbors.length > 0) {
+			const next = Pixies.randomElement(validNeighbors);
 			this.lastDirection = neighbors.indexOf(next);
 			this.setTarget(next);
 		}

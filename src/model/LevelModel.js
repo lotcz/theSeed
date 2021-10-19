@@ -1,30 +1,67 @@
 import GridModel from "./GridModel";
 import Vector2 from "../class/Vector2";
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import DirtyValue from "../class/DirtyValue";
 import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
-import ResourceModel from "./ResourceModel";
+import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
-import InventoryModel from "./InventoryModel";
+import BeeModel from "./BeeModel";
+import {GROUND_TYPE_WATER} from "../builder/GroundStyle";
+import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
+import ParallaxLayerModel from "./ParallaxLayerModel";
 
 export default class LevelModel extends ModelBase {
 	name;
 	grid;
+	parallaxType;
 	parallax;
-	plant;
+	plants;
+	bee;
 	sprites;
 	resources;
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxCoordinates;
-	highlightedTilePosition;
-	inventory;
 
 	constructor(state) {
 		super();
+
+		this.name = 'untitled';
+		this.grid = new GridModel();
+		this.addChild(this.grid);
+
+		this.plants = new CollectionModel();
+		this.addChild(this.plants);
+
+		this.ground = new GroundModel();
+		this.addChild(this.ground);
+
+		this.sprites = new CollectionModel();
+		this.addChild(this.sprites);
+
+		this.resources = new CollectionModel();
+		this.addChild(this.resources);
+
+		this.viewBoxScale = new DirtyValue(1);
+		this.addChild(this.viewBoxScale);
+		this.viewBoxSize = new Vector2();
+		this.addChild(this.viewBoxSize);
+		this.viewBoxCoordinates = new Vector2();
+		this.addChild(this.viewBoxCoordinates);
+
+		this.parallaxType = new DirtyValue();
+		this.addChild(this.parallaxType);
+		this.parallaxType.addOnChangeListener((value) => this.setParallaxFromStyle(value));
+		this.parallaxType.set(PARALLAX_HILLS);
+
+		// auto recalculate parallax offset
+		this.viewBoxChangedHandler = () => this.updateCameraOffset();
+		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxSize.addOnChangeListener(this.viewBoxChangedHandler);
+		this.viewBoxCoordinates.addOnChangeListener(this.viewBoxChangedHandler);
 
 		if (state) {
 			this.restoreState(state);
@@ -35,46 +72,48 @@ export default class LevelModel extends ModelBase {
 		return {
 			name: this.name,
 			grid: this.grid.getState(),
-			parallax: this.parallax.getState(),
-			plant: this.plant.getState(),
+			parallaxType: this.parallaxType.get(),
+			plants: this.plants.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
 			resources: this.resources.getState(),
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
-			inventory: this.inventory.getState()
+			bee: this.bee ? this.bee.getState() : null
 		}
 	}
 
 	restoreState(state) {
 		this.name = state.name;
-		this.grid = new GridModel(state.grid);
-		this.parallax = new ParallaxModel(state.parallax);
-		this.plant = new PlantModel(state.plant);
-		this.addChild(this.plant);
-		this.ground = new GroundModel(state.ground);
-		this.addChild(this.ground);
-		this.sprites = new CollectionModel();
-		this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
-		this.addChild(this.sprites);
 
-		this.resources = new ResourceModel(state.resources);
-		this.addChild(this.resources);
+		if (state.grid) this.grid.restoreState(state.grid);
+		if (state.parallaxType) this.parallaxType.set(state.parallaxType);
+		if (state.plants) this.plants.restoreState(state.plants, (p) => new PlantModel(p));
+		if (state.ground) this.ground.restoreState(state.ground);
+		if (state.bee) this.addBee(new BeeModel(state.bee));
+		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
+		if (state.resources) this.resources.restoreState(state.resources, (r) => new ResourceModel(r));
+		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
+		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
+		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
+	}
 
-		this.viewBoxScale = new DirtyValue(state.viewBoxScale);
-		this.addChild(this.viewBoxScale);
-		this.viewBoxSize = Vector2.fromArray(state.viewBoxSize);
-		this.addChild(this.viewBoxSize);
-		this.viewBoxCoordinates = Vector2.fromArray(state.viewBoxCoordinates);
-		this.addChild(this.viewBoxCoordinates);
+	addBee(bee) {
+		if (this.bee) this.removeChild(this.bee);
+		this.bee = bee;
+		if (this.bee) {
+			this.addChild(this.bee);
+		}
+	}
 
-		this.inventory = new InventoryModel(state.inventory);
-		this.addChild(this.inventory);
-
-		this.highlightedTilePosition = new Vector2();
-		this.highlightedTilePosition.clean();
-		this.addChild(this.highlightedTilePosition);
+	addResource(resType, uri, data) {
+		const existing = this.resources.children.filter((r) => r.uri === uri);
+		if (existing.length > 0) {
+			console.log(`Resource URI ${uri} already exists.`);
+		} else {
+			this.resources.add(new ResourceModel({resType: resType, uri: uri, data: data}));
+		}
 	}
 
 	isPositionInView(position) {
@@ -101,23 +140,31 @@ export default class LevelModel extends ModelBase {
 		this.viewBoxCoordinates.setY(coordinates.y - (this.viewBoxScale.get() * this.viewBoxSize.y / 2));
 	}
 
-	getGroundY(x) {
-		if (!this.ground.points[x]) {
-			return null;
-		}
-		return this.ground.points[x].y;
+	centerOnPosition(position) {
+		this.centerOnCoordinates(this.grid.getCoordinates(position));
+	}
+
+	centerView() {
+		const center = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
+		this.centerOnPosition(center);
 	}
 
 	isGround(position) {
-		return position.y === this.getGroundY(position.x);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type !== GROUND_TYPE_WATER && v._is_penetrable === false);
+		return visitors.length > 0;
 	}
 
-	isAboveGround(position) {
-		return position.y < this.getGroundY(position.x);
+	isWater(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
+		return visitors.length > 0;
 	}
 
-	isUnderGround(position) {
-		return position.y > this.getGroundY(position.x);
+	isPenetrable(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
+		return visitors.length === 0;
 	}
 
 	sanitizeViewBox() {
@@ -149,6 +196,34 @@ export default class LevelModel extends ModelBase {
 		if (this.viewBoxCoordinates.y > maxY) {
 			this.viewBoxCoordinates.setY(maxY);
 		}
+	}
+
+	updateCameraOffset() {
+		const cameraCoordinates = this.viewBoxCoordinates.add(this.viewBoxSize.multiply(0.5).multiply(this.viewBoxScale.get()));
+		const center = this.grid.getMaxCoordinates().multiply(0.5);
+		const cameraOffset = cameraCoordinates.subtract(center);
+		this.parallax.cameraOffset.set(cameraOffset);
+	}
+
+	setParallaxFromStyle(parallaxType) {
+		const style = PARALLAX_STYLES[parallaxType];
+		const parallax = new ParallaxModel();
+		parallax.backgroundColor = style.background;
+		parallax.backgroundColorEnd = style.backgroundEnd;
+
+		if (style.layers) {
+			style.layers.forEach((l) => {
+				const layer = new ParallaxLayerModel();
+				layer.distance = l.distance;
+				this.addResource(RESOURCE_TYPE_IMAGE, l.image.uri, l.image.resource);
+				layer.image.path = l.image.uri;
+				parallax.addChild(layer);
+			});
+		}
+
+		this.parallax = parallax;
+		this.updateCameraOffset();
+		this.makeDirty();
 	}
 
 }

@@ -9,7 +9,9 @@ export default class Pixies {
 	}
 
 	static between(min, max, n) {
-		return Math.min(Math.abs(max), Math.max(-Math.abs(min), n));
+		const minimum = Math.min(min, max);
+		const maximum = Math.max(min, max);
+		return Math.min(maximum, Math.max(minimum, n));
 	}
 
 	static hash(value) {
@@ -41,4 +43,40 @@ export default class Pixies {
 		return token;
 	}
 
+	static addClass(element, css) {
+		if (Array.isArray((css)) && css.length > 0) {
+			css.forEach((c) => element.classList.add(c));
+		} else if (css) {
+			element.classList.add(css);
+		}
+	}
+
+	static createElement(parent, tag, css = null) {
+		const el = document.createElement(tag);
+		if (css !== null) {
+			this.addClass(el, css);
+		}
+		if (parent) {
+			parent.appendChild(el);
+		}
+		return el;
+	}
+
+	static destroyElement(el) {
+		if (el) {
+			el.parentNode.removeChild(el);
+			el.remove();
+		}
+	}
+
+	static startDebugSession(name) {
+		return {
+			name: name,
+			start: performance.now()
+		};
+	}
+
+	static finishDebugSession(session) {
+		console.log(`Finished debug session '${session.name}'. Took ${performance.now() - session.start} ms.`);
+	}
 }

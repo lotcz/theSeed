@@ -1,4 +1,6 @@
 import GroundModel from "../model/GroundModel";
+import Pixies from "../class/Pixies";
+import {GROUND_TYPE_BASIC} from "./GroundStyle";
 
 export const GROUND_PRESET_HILL = {
 	left: {
@@ -53,31 +55,58 @@ export default class GroundBuilder {
 	}
 
 	generateFromPreset(start, preset) {
+		const max = this.grid.getMaxPosition();
 		let position = start.clone();
-
 		this.points.push(position);
+		let vertPos = position.clone();
+		vertPos.setY(max.y - 1);
+		this.points.push(vertPos);
 
-		while (position.x < (this.grid.size.x - 1)) {
+		while (position.x < (max.x - 1)) {
 			position = Math.random() < preset.right.up ? this.grid.getNeighborUpperRight(position) : this.grid.getNeighborLowerRight(position);
 			this.points.push(position);
+
+			let vertPos = position.clone();
+			vertPos.setY(max.y - 1);
+			this.points.push(vertPos);
+		}
+
+		vertPos = position.clone();
+		while (vertPos.y < max.y) {
+			vertPos = vertPos.addY(1);
+			this.points.push(vertPos);
 		}
 
 		position = start.clone();
 		while (position.x > 0) {
 			position = Math.random() < preset.left.up ? this.grid.getNeighborUpperLeft(position) : this.grid.getNeighborLowerLeft(position);
 			this.points.unshift(position);
+
+			let vertPos = position.clone();
+			vertPos.setY(max.y - 1);
+			this.points.push(vertPos);
 		}
 
+		vertPos = position.clone();
+		while (vertPos.y < max.y) {
+			vertPos = vertPos.addY(1);
+			this.points.push(vertPos);
+		}
 	}
 
 	generateRandom(start) {
-		const preset = PRESETS[Math.floor(Math.random() * PRESETS.length)];
+		const preset = Pixies.randomElement(PRESETS);
 		this.generateFromPreset(start, preset);
 	}
 
 	build() {
 		const ground = new GroundModel();
-		ground.points = this.points;
+		this.points.forEach((p) => {
+			ground.addTile({
+				position: p.getState(),
+				type: GROUND_TYPE_BASIC
+			})
+		});
 		return ground;
 	}
 

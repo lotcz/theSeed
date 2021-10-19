@@ -18,21 +18,22 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 		}),
-		
-		new WorkboxPlugin.GenerateSW({   
+
+		new WorkboxPlugin.GenerateSW({
 			clientsClaim: true,
 			skipWaiting: true,
 		}),
-		
+
 		new CopyWebpackPlugin({
 			patterns: [
 				{ from: 'pwa.webmanifest', to: '' },
+				{ from: 'res/favicon.ico', to: '' },
 				{ from: 'res/icon.png', to: '' },
 				{ from: 'res/icon-512.png', to: '' },
 				{ from: 'res/screenshot.png', to: '' }
 			]
 		})
-		
+
 		//,new BundleAnalyzerPlugin()
 	],
 	output: {

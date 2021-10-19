@@ -1,0 +1,74 @@
+import ModelBase from "../class/ModelBase";
+import Vector2 from "../class/Vector2";
+import DirtyValue from "../class/DirtyValue";
+import CollectionModel from "./CollectionModel";
+import VectorCollectionModel from "./VectorCollectionModel";
+import {GROUND_STYLES} from "../builder/GroundStyle";
+import {SPRITE_STYLES} from "../builder/SpriteStyle";
+import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
+
+export const EDITOR_MODE_SPRITES = 'Sprites';
+export const EDITOR_MODE_GROUND = 'Ground';
+export const EDITOR_MODE_PLANT = 'Plant';
+
+export const EDITOR_TOOL_DELETE = '--delete--';
+export const EDITOR_TOOL_SELECT = '--select--';
+
+export default class LevelEditorModel extends ModelBase {
+	modes;
+	selectedMode;
+	showGroundTiles;
+	brushSize;
+	groundTypes;
+	selectedGroundType;
+	spriteTypes;
+	selectedSpriteType;
+	showSpriteHelpers;
+	highlightedTilePosition;
+	highlights;
+	parallaxTypes;
+	levelLoadRequest;
+	selectedSprites;
+
+	constructor() {
+		super();
+
+		this.modes = [
+			EDITOR_MODE_GROUND,
+			EDITOR_MODE_SPRITES,
+			EDITOR_MODE_PLANT
+		];
+		this.selectedMode = new DirtyValue(EDITOR_MODE_SPRITES);
+		this.addChild(this.selectedMode);
+		this.showGroundTiles = new DirtyValue(false);
+		this.addChild(this.showGroundTiles);
+		this.showSpriteHelpers = new DirtyValue(false);
+		this.addChild(this.showSpriteHelpers);
+		this.levelLoadRequest = new DirtyValue(false);
+		this.addChild(this.levelLoadRequest);
+
+		this.brushSize = 2;
+
+		this.groundTypes = Object.keys(GROUND_STYLES);
+		this.groundTypes.unshift(EDITOR_TOOL_DELETE);
+		this.selectedGroundType = this.groundTypes[0];
+
+		this.spriteTypes = Object.keys(SPRITE_STYLES);
+		this.spriteTypes.unshift(EDITOR_TOOL_SELECT);
+		this.spriteTypes.unshift(EDITOR_TOOL_DELETE);
+
+		this.selectedSpriteType = this.spriteTypes[0];
+
+		this.selectedSprites = new CollectionModel();
+		this.addChild(this.selectedSprites);
+
+		this.parallaxTypes = Object.keys(PARALLAX_STYLES);
+
+		this.highlightedTilePosition = new Vector2();
+		this.addChild(this.highlightedTilePosition);
+		this.highlights = new VectorCollectionModel();
+		this.addChild(this.highlights);
+
+	}
+
+}

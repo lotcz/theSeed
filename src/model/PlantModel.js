@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import LivingTreeModel from "./LivingTreeModel";
 
 export default class PlantModel extends ModelBase {

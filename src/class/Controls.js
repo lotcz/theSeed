@@ -2,6 +2,8 @@ import Dirty from "./Dirty";
 import Vector2 from "./Vector2";
 import DirtyValue from "./DirtyValue";
 
+const CLICK_TIMEOUT = 150;
+
 export default class Controls extends Dirty {
 	dom;
 	mouseOver;
@@ -12,11 +14,15 @@ export default class Controls extends Dirty {
 	constructor(dom) {
 		super();
 		this.dom = dom || window.document.body;
+		this.clickTime = 0;
 		this.mouseClick = null;
+		this.mouseClickLeft = false;
+		this.mouseClickRight = false;
 		this.mouseDownLeft = false;
 		this.mouseDownRight = false;
 		this.mouseOver = false;
 		this.mouseCoords = new Vector2(0, 0);
+		this.menuRequested = new DirtyValue(false);
 		this.zoom = new DirtyValue(0);
 		this.resetZoom();
 
@@ -30,12 +36,13 @@ export default class Controls extends Dirty {
 		this.dom.addEventListener('mousemove', (e) => this.onMouseMove(e));
 		this.dom.addEventListener('mouseenter', (e) => this.onMouseEnter(e));
 		this.dom.addEventListener('mouseleave', (e) => this.onMouseLeave(e));
-		this.dom.addEventListener('click', (e) => this.onClick(e));
+		//this.dom.addEventListener('click', (e) => this.onClick(e));
 		this.dom.addEventListener('mousedown', (e) => this.onMouseDown(e));
 		this.dom.addEventListener('mouseup', (e) => this.onMouseUp(e));
 		this.dom.addEventListener('wheel', (e) => this.onZoom(e));
 		window.addEventListener('keydown', (e) => this.onKeyDown(e), false );
 		window.addEventListener('keyup', (e) => this.onKeyUp(e), false );
+		window.addEventListener('contextmenu', (e) => this.onContextMenu(e), false );
 	}
 
 	anyMovement() {
@@ -63,19 +70,32 @@ export default class Controls extends Dirty {
 		}
 	}
 
-	onClick(e) {
-		this.mouseClick = new Vector2(e.offsetX, e.offsetY);
-		this.makeDirty();
+	onContextMenu(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		//this.mouseClick = new Vector2(e.offsetX, e.offsetY);
+		//this.mouseClickLeft = false;
+		//this.makeDirty();
+		return false;
 	}
 
 	onMouseDown(e) {
+		this.clickTime = performance.now();
 		this.mouseDownLeft = ((e.buttons == 1) || (e.buttons == 3));
 		this.mouseDownRight = (e.buttons == 2);
 		this.makeDirty();
 	}
 
 	onMouseUp(e) {
-		this.onMouseDown(e);
+		const time = performance.now();
+		if ((time - this.clickTime) < CLICK_TIMEOUT) {
+			this.mouseClick = new Vector2(e.offsetX, e.offsetY);
+			this.mouseClickLeft = this.mouseDownLeft;
+			this.mouseClickRight = this.mouseDownRight;
+		}
+		this.mouseDownLeft = ((e.buttons == 1) || (e.buttons == 3));
+		this.mouseDownRight = (e.buttons == 2);
+		this.makeDirty();
 	}
 
 	onZoom(e) {
@@ -90,7 +110,7 @@ export default class Controls extends Dirty {
 
 	onKeyDown(event) {
 		this.caps = event.getModifierState("CapsLock");
-		//aconsole.log(event);
+		//console.log(event);
 		const key = event.keyCode ? event.keyCode : event.charCode;
 
 		switch (key) {
@@ -105,6 +125,7 @@ export default class Controls extends Dirty {
 			case 69: /*E*/ this.interact = true; break;
 			case 32: /*space*/
 			case 13: /*Enter*/ this.fire = true; break;
+			case 27: /*Ecs*/ this.menuRequested.set(true); break;
 		}
 		this.makeDirty();
 	}

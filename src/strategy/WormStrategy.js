@@ -1,8 +1,7 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import Pixies from "../class/Pixies";
-import Vector2 from "../class/Vector2";
-import SpriteBuilder, {IMAGE_WORM_BODY, IMAGE_WORM_BUTT} from "../builder/SpriteBuilder";
-import {STRATEGY_WORM} from "../controller/SpriteController";
+import LevelBuilder from "../builder/LevelBuilder";
+import {IMAGE_WORM_BODY, IMAGE_WORM_BUTT, STRATEGY_WORM} from "../builder/SpriteStyle";
 
 const WORM_TIMEOUT = 2500;
 const MAX_WORM_LENGTH = 15;
@@ -24,9 +23,17 @@ export default class WormStrategy extends SpriteControllerStrategy {
 
 	addButt() {
 		this.model.data.wormLength += 1;
-		const spriteBuilder = new SpriteBuilder(this.game.level);
+		const builder = new LevelBuilder(this.game.level);
 		const image = (this.butt) ? IMAGE_WORM_BODY : IMAGE_WORM_BUTT;
-		const butt = spriteBuilder.addSprite(this.position, this.model.image.scale.get(), false, this.model.image.rotation.get(), image, STRATEGY_WORM, {head:this.model, wormLength:this.model.data.wormLength});
+		const butt = builder.addSprite(
+			this.position,
+			STRATEGY_WORM,
+			{head:this.model, wormLength:this.model.data.wormLength},
+			image,
+			this.model.image.scale.get(),
+			this.model.image.rotation.get(),
+			false
+		);
 		if (this.butt) {
 			this.butt.data.head = butt;
 		}
@@ -38,7 +45,7 @@ export default class WormStrategy extends SpriteControllerStrategy {
 		if (Math.random() < 0.5) return;
 
 		const neighbors = this.game.level.grid.getValidNeighbors(this.position);
-		const groundNeighbors = neighbors.filter((n) => this.game.level.isUnderGround(n));
+		const groundNeighbors = neighbors.filter((n) => !this.game.level.isPenetrable(n));
 		if (groundNeighbors.length > 0) {
 			const position = Pixies.randomElement(groundNeighbors);
 			const visitors = this.game.level.grid.chessboard.getTile(position);

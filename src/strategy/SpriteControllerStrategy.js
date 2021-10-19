@@ -1,9 +1,10 @@
-import ControllerBase from "../controller/ControllerBase";
+import ControllerBase from "../class/ControllerBase";
 import Pixies from "../class/Pixies";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 const ROTATION_SPEED = 1000;
+const SCALING_SPEED = 100;
 
 export default class SpriteControllerStrategy extends ControllerBase {
 	position;
@@ -13,8 +14,10 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	timeout;
 	target;
 	targetRotation;
+	targetScale;
 	movementEnabled;
 	turningEnabled;
+	scalingEnabled;
 	lastVisited;
 
 	constructor(game, model, controls, timeout) {
@@ -23,27 +26,49 @@ export default class SpriteControllerStrategy extends ControllerBase {
 		this.position = model.position;
 		this.lastVisited = null;
 		this.target = null;
-		this.coordinates = model.image.coordinates;
-		this.rotation = model.image.rotation;
-		this.targetRotation = new RotationValue(this.rotation.get());
+		this.targetRotation = new RotationValue();
+		this.rotation = new RotationValue();
+		this.targetScale = null;
+
+		this.coordinates = null;
+
+		if (model.image) {
+			this.coordinates = model.image.coordinates;
+			this.rotation = model.image.rotation;
+			this.targetRotation.set(this.rotation.get());
+			this.scale = model.image.scale;
+			this.targetScale = this.scale.get();
+		}
+
 		this.defaultTimeout = timeout;
 		this.timeout = Math.random() * this.defaultTimeout;
 
 		this.movementEnabled = true;
 		this.turningEnabled = true;
+		this.scalingEnabled = true;
 
-		this.visit(this.position);
+	}
+
+	activateInternal() {
+		if (this.position) {
+			if (this.movementEnabled) this.coordinates.set(this.grid.getCoordinates(this.position));
+			this.visit(this.position);
+		}
+	}
+
+	deactivateInternal() {
+		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
 	}
 
 	selectRandomTarget() {
-		const neighbors = this.game.level.grid.getNeighbors(this.position);
+		const neighbors = this.level.grid.getNeighbors(this.position);
 		this.setTarget(Pixies.randomElement(neighbors));
 	}
 
 	visit(position) {
-		if (this.lastVisited) this.game.level.grid.chessboard.removeVisitor(this.lastVisited, this.model);
+		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
 		this.lastVisited = position.clone();
-		this.game.level.grid.chessboard.addVisitor(position, this.model);
+		this.chessboard.addVisitor(position, this.model);
 	}
 
 	setTarget(target) {
@@ -69,10 +94,11 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	selectTargetInternal() {
-		this.selectRandomTarget();
+		//this.selectRandomTarget();
 	}
 
 	update(delta) {
+
 		if (this.turningEnabled) {
 			if (this.targetRotation.get() !== this.rotation.get()) {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
@@ -81,9 +107,19 @@ export default class SpriteControllerStrategy extends ControllerBase {
 			}
 		}
 
+		if (this.scalingEnabled) {
+			if (this.targetScale !== this.scale.get()) {
+				const diff = this.targetScale - this.scale.get();
+				const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (delta * (diff > 0) ? 1 : -1) / SCALING_SPEED);
+				this.scale.set(scale);
+			}
+		}
+
 		if (this.timeout <= 0) {
 			if (this.target) this.setPosition(this.target);
-			this.selectTargetInternal();
+			if (!this.game.isInEditMode.get()) {
+				this.selectTargetInternal();
+			}
 			this.timeout = this.defaultTimeout;
 		}
 
@@ -91,10 +127,12 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		this.updateInternal(delta);
 
+		if (!this.coordinates) return;
+
 		if (this.target && !this.position.equalsTo(this.target)) {
 			const progress = (this.defaultTimeout - this.timeout) / this.defaultTimeout;
-			const a = this.game.level.grid.getCoordinates(this.position);
-			const b = this.game.level.grid.getCoordinates(this.target);
+			const a = this.grid.getCoordinates(this.position);
+			const b = this.grid.getCoordinates(this.target);
 
 			if (this.movementEnabled) {
 				const diff = b.subtract(a);
@@ -107,7 +145,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 			}
 
 		} else {
-			this.coordinates.set(this.game.level.grid.getCoordinates(this.position));
+			this.coordinates.set(this.grid.getCoordinates(this.position));
 		}
 
 	}

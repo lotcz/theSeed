@@ -1,55 +1,45 @@
 import SvgRenderer from "./SvgRenderer";
 import Stats from "../class/stats.module";
-import * as dat from 'dat.gui';
 import LevelRenderer from "./LevelRenderer";
-import ResourceLoader from "../class/ResourceLoader";
-import InventoryRenderer from "./InventoryRenderer";
 import MenuRenderer from "./MenuRenderer";
-import DirtyValue from "../class/DirtyValue";
+import LevelEditorRenderer from "./LevelEditorRenderer";
+import MenuBuilder from "../builder/MenuBuilder";
+import TextRenderer from "./TextRenderer";
+import ResourcesLoader from "../class/ResourcesLoader";
+import DomRenderer from "./DomRenderer";
+import ModelBase from "../class/ModelBase";
+import TextModel from "../model/TextModel";
+import Pixies from "../class/Pixies";
 
 const DEBUG_FPS = true;
 
 export default class GameRenderer extends SvgRenderer {
+	loadingScreenRenderer;
+	levelRenderer;
+	menuRenderer;
+	editorRenderer;
+	dom;
 
 	constructor(model, draw) {
 		super(model, model, draw);
 
+		this.dom = this.draw.root().parent().node;
+
 		if (DEBUG_FPS) {
 			this.stats = new Stats();
-			document.body.appendChild(this.stats.dom);
+			this.dom.appendChild(this.stats.dom);
 		}
 
-		draw.fill('black');
-
-		this.loadingScreen = null;
+		this.loadingScreenDom = null;
+		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
+		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
+		this.addChild(this.editorRenderer);
+
+		this.draw.fill('black');
 
 		this.showLoading();
-	}
-
-	showLoading() {
-		this.hideLoading();
-		this.loadingScreen = this.draw.text(
-			function(add) {
-				add.tspan('Loading...')
-			}
-		).font({
-			family:   'Helvetica',
-			size:     144,
-			anchor:   'middle',
-			leading:  '1.5em'
-		}).fill('blue');
-
-		const center = this.model.viewBoxSize.multiply(0.5);
-		this.loadingScreen.center(center.x, center.y);
-		this.loadingScreen.front();
-		//this.loadingScreen.path('M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80');
-	}
-
-	hideLoading() {
-		if (this.loadingScreen) this.loadingScreen.remove();
-		this.loadingScreen = null;
 	}
 
 	render() {
@@ -62,28 +52,31 @@ export default class GameRenderer extends SvgRenderer {
 			this.model.viewBoxSize.clean();
 		}
 
-		if (this.model.levelChanged.isDirty()) {
-			if (this.model.levelChanged.get()) {
-				this.model.levelChanged.set(false);
-				this.loadLevel();
-			}
-			this.model.levelChanged.clean();
-		}
-
-		if (this.model.loading.isDirty()) {
-			if (this.model.loading.get())
+		if (this.model.level.isDirty()) {
+			if (this.model.level.isEmpty()) {
+				this.hideLevel();
 				this.showLoading();
-			else
-				this.hideLoading();
-			this.model.loading.clean();
+			} else {
+				this.showLevel();
+			}
+			this.model.level.clean();
 		}
 
-		if (this.model.menuChanged.isDirty()) {
-			if (this.model.menuChanged.get()) {
-				this.model.menuChanged.set(false);
+		if (this.model.menu.isDirty()) {
+			if (this.model.menu.isEmpty()) {
+				this.hideMenu();
+			} else {
 				this.showMenu();
 			}
-			this.model.menuChanged.clean();
+			this.model.menu.clean();
+		}
+
+		if (this.model.isInEditMode.isDirty()) {
+			if (this.model.isInEditMode.get())
+				this.showEditor();
+			else
+				this.hideEditor();
+			this.model.isInEditMode.clean();
 		}
 
 		this.children.forEach((r) => r.render());
@@ -91,29 +84,75 @@ export default class GameRenderer extends SvgRenderer {
 		this.model.clean();
 	}
 
-	showMenu() {
-		if (this.menuRenderer) this.removeChild(this.menuRenderer);
-		if (this.game.menu && !this.game.menu.closed) {
-			this.menuRenderer = new MenuRenderer(this.game, this.game.menu, this.draw);
-			this.addChild(this.menuRenderer);
-			this.menuRenderer.activate();
+	showLoading() {
+		if (!this.loadingScreenRenderer) {
+			this.loadingScreenDom = Pixies.createElement(this.dom, 'div', 'loading');
+			this.loadingScreenRenderer = new DomRenderer(this.game, this.model, this.loadingScreenDom);
+			this.loadingScreenRenderer.addChild(new TextRenderer(this.game, new TextModel({label: 'Loading...'}), this.loadingScreenDom));
+			this.addChild(this.loadingScreenRenderer);
+			this.loadingScreenRenderer.activate();
 		}
 	}
 
-	loadLevel() {
+	hideLoading() {
+		if (this.loadingScreenRenderer) {
+			Pixies.destroyElement(this.loadingScreenDom);
+			this.removeChild(this.loadingScreenRenderer);
+		}
+		this.loadingScreenRenderer = null;
+		this.loadingScreenDom = null;
+	}
+
+	showMenu() {
+		this.hideMenu();
+		if (!this.game.menu.isEmpty()) {
+			if (!this.game.menu.get().closed) {
+				this.menuRenderer = new MenuRenderer(this.game, this.game.menu.get(), this.dom);
+				this.addChild(this.menuRenderer);
+				this.menuRenderer.activate();
+			}
+		}
+	}
+
+	hideMenu() {
+		if (this.menuRenderer) this.removeChild(this.menuRenderer);
+		this.menuRenderer = null;
+	}
+
+	showLevel() {
+		this.hideLevel();
+		this.hideEditor();
+		this.hideMenu();
 		this.showLoading();
-		if (this.levelRenderer) this.removeChild(this.levelRenderer);
-		if (this.game.level) {
-			this.model.loading.set(true);
-			const loader = new ResourceLoader(this.draw, this.game.level.resources);
+
+		if (!this.game.level.isEmpty()) {
+			const loader = new ResourcesLoader(this.draw, this.game.level.get().resources);
 			loader.load(() => {
-				this.model.loading.set(false);
-				this.levelRenderer = new LevelRenderer(this.game, this.game.level, this.draw);
+				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw);
 				this.addChild(this.levelRenderer);
 				this.levelRenderer.activate();
 				this.hideLoading();
+				this.showMenu();
+				if (this.model.isInEditMode.get()) {
+					this.showEditor();
+				}
 			});
 		}
+	}
+
+	hideLevel() {
+		if (this.levelRenderer) this.removeChild(this.levelRenderer);
+		this.levelRenderer = null;
+	}
+
+	showEditor() {
+		this.hideEditor();
+		this.addChild(this.editorRenderer);
+		this.editorRenderer.activate();
+	}
+
+	hideEditor() {
+		this.removeChild(this.editorRenderer);
 	}
 
 }

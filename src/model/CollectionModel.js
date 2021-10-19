@@ -1,14 +1,12 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 
 export default class CollectionModel extends ModelBase {
-	on_remove;
-	on_add ;
-
-	constructor() {
+	constructor(state, restoreFunc) {
 		super();
 
-		this.on_remove = [];
-		this.on_add = [];
+		if (state && restoreFunc) {
+			this.restoreState(state, restoreFunc);
+		}
 	}
 
 	getState() {
@@ -16,35 +14,57 @@ export default class CollectionModel extends ModelBase {
 	}
 
 	restoreState(state, restoreFunc) {
+		this.reset();
 		const children = state.map(restoreFunc);
 		children.forEach((ch) => this.add(ch));
 	}
 
 	add(element) {
 		this.addChild(element);
-		this.on_add.forEach((a) => a(element));
+		this.triggerEvent('add', element);
 		return element;
 	}
 
 	remove(element) {
-		this.removeChild(element);
-		this.on_remove.forEach((r) => r(element));
+		const child = this.removeChild(element);
+		if (child) this.triggerEvent('remove', child);
+		return child;
+	}
+
+	reset() {
+		while (this.children.length > 0) {
+			this.remove(this.children[0]);
+		}
+	}
+
+	count() {
+		return this.children.length;
+	}
+
+	removeFirst() {
+		if (this.count() > 0) {
+			return this.remove(this.children[0]);
+		}
 	}
 
 	addOnRemoveListener(listener) {
-		this.on_remove.push(listener);
+		this.addEventListener('remove', listener);
 	}
 
 	removeOnRemoveListener(listener) {
-		this.on_remove.splice(this.on_remove.indexOf(listener), 1);
+		this.removeEventListener('remove', listener);
 	}
 
 	addOnAddListener(listener) {
-		this.on_add.push(listener);
+		this.addEventListener('add', listener);
 	}
 
 	removeOnAddListener(listener) {
-		this.on_add.splice(this.on_add.indexOf(listener), 1);
+		this.removeEventListener('add', listener);
+	}
+
+	forEach(func) {
+		this.children.forEach(func);
 	}
 
 }

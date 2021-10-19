@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
@@ -14,7 +14,10 @@ export default class SpriteModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		// for visitor to be recognized as sprite
 		this._is_sprite = true;
+
+		this.data = {};
 
 		if (state) {
 			this.restoreState(state);
@@ -25,7 +28,7 @@ export default class SpriteModel extends ModelBase {
 	getState() {
 		return {
 			position: this.position.toArray(),
-			image: this.image.getState(),
+			image: (this.image) ? this.image.getState() : null,
 			strategy: this.strategy.get(),
 			data: this.data
 		}
@@ -34,11 +37,15 @@ export default class SpriteModel extends ModelBase {
 	restoreState(state) {
 		this.position = Vector2.fromArray(state.position);
 		this.addChild(this.position);
-		this.image = new ImageModel(state.image);
-		this.addChild(this.image);
+		if (state.image) {
+			this.image = new ImageModel(state.image);
+			this.addChild(this.image);
+		}
 		this.strategy = new DirtyValue(state.strategy);
 		this.addChild(this.strategy);
-		this.data = state.data;
+		if (state.data) {
+			this.data = state.data;
+		}
 	}
 
 }

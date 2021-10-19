@@ -1,13 +1,25 @@
-import ModelBase from "./ModelBase";
-import LivingTreeModel from "./LivingTreeModel";
+import ModelBase from "../class/ModelBase";
+import ParallaxLayerModel from "./ParallaxLayerModel";
+import CollectionModel from "./CollectionModel";
 import Vector2 from "../class/Vector2";
 
 export default class ParallaxModel extends ModelBase {
+	backgroundColor;
+	backgroundColorEnd;
 	layers;
 	cameraOffset;
 
 	constructor(state) {
 		super(state);
+
+		this.backgroundColor = 'black';
+		this.backgroundColorEnd = 'black';
+
+		this.layers = new CollectionModel();
+		this.addChild(this.layers);
+
+		this.cameraOffset = new Vector2();
+		this.addChild(this.cameraOffset);
 
 		if (state) {
 			this.restoreState(state);
@@ -15,15 +27,15 @@ export default class ParallaxModel extends ModelBase {
 	}
 
 	restoreState(state) {
-		this.layers = state.layers;
-		this.cameraOffset = Vector2.fromArray(state.cameraOffset);
-		this.addChild(this.cameraOffset);
-		this.makeDirty();
+		if (state.background) this.backgroundColor = state.background;
+		if (state.layers) this.layers.restoreState(state.layers, (s) => new ParallaxLayerModel(s));
+		if (state.cameraOffset) this.cameraOffset.restoreState(state.cameraOffset);
 	}
 
 	getState() {
 		return {
-			layers: this.layers,
+			background: this.backgroundColor,
+			layers: this.layers.getState(),
 			cameraOffset: this.cameraOffset.toArray()
 		}
 	}

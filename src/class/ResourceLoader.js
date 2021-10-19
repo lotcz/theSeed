@@ -2,6 +2,8 @@ import Tree from "./Tree";
 import ResourceModel, {RESOURCE_TYPE_GROUP, RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import Pixies from "./Pixies";
 
+const DEBUG_RESOURCE_LOADER = false;
+
 export default class ResourceLoader extends Tree {
 	model;
 	loaded;
@@ -14,7 +16,6 @@ export default class ResourceLoader extends Tree {
 
 		this.draw = draw;
 		this.model = model;
-		this.model.children.forEach((ch) => this.addChild(new ResourceLoader(draw, ch)));
 
 		this.loaded = false;
 		this.onLoaded = null;
@@ -24,13 +25,12 @@ export default class ResourceLoader extends Tree {
 
 	update() {
 		if (this.isLoaded()) {
-			this.onLoaded();
+			this.onLoaded(this.resource);
 		}
 	}
 
 	isLoaded() {
-		if (!this.loaded) return false;
-		return this.children.every((ch) => ch.isLoaded());
+		return this.loaded;
 	}
 
 	loadInternal() {
@@ -53,6 +53,7 @@ export default class ResourceLoader extends Tree {
 					this.resource.attr({id:token});
 					//defs.add(this.resource);
 				} else {
+					if (DEBUG_RESOURCE_LOADER) console.log(`Resource ${this.model.uri} already loaded.`);
 					this.loaded = true;
 				}
 				break;
@@ -63,7 +64,6 @@ export default class ResourceLoader extends Tree {
 	load(onLoaded) {
 		this.onLoaded = onLoaded;
 		this.loadInternal();
-		this.children.forEach((ch) => ch.load(() => this.update()));
 	}
 
 }

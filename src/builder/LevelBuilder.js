@@ -1,144 +1,151 @@
 import Vector2 from "../class/Vector2";
-import GridModel from "../model/GridModel";
 import LevelModel from "../model/LevelModel";
 import GroundBuilder from "./GroundBuilder";
-import {RESOURCE_TYPE_GROUP} from "../model/ResourceModel";
-import HillImage from "../../res/img/hill.svg";
-import StalkImage from "../../res/img/stalk.svg";
-import GrassImage from "../../res/img/grass.svg";
-import TreesImage from "../../res/img/trees.svg";
-import EggHillsImage from "../../res/img/egghills.svg";
-import BulbsImage from "../../res/img/bulbs.svg";
-import PlantImage from '../../res/img/plant.svg';
-import RockImage from '../../res/img/rock.svg';
+import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+import {PARALLAX_STYLES} from "./ParallaxStyle";
+import ParallaxLayerModel from "../model/ParallaxLayerModel";
+import BeeImage from "../../res/img/bee.svg";
+import BeeCrawlImage from "../../res/img/bee-walk.svg";
+import BeeWingImage from "../../res/img/wing.svg";
+import BeeModel from "../model/BeeModel";
+import SpriteModel from "../model/SpriteModel";
+import {IMAGE_BEE, IMAGE_BEE_CRAWL, IMAGE_BEE_WING, SPRITE_STYLES} from "./SpriteStyle";
+import ParallaxModel from "../model/ParallaxModel";
+import {BEE_CENTER} from "../controller/BeeController";
 
 export default class LevelBuilder {
-	grid;
+	level;
 
-	constructor(size, scale) {
+	constructor(level) {
+		if (level) {
+			this.level = level;
+		} else {
+			this.level = new LevelModel();
+		}
+	}
 
-		this.viewboxScale = 3;
-		this.viewboxSize = new Vector2(window.innerWidth, window.innerHeight);
+	setSize(size) {
+		this.level.grid.size.set(size);
+	}
 
-		this.grid = new GridModel({ size: size.toArray(), scale: scale});
-		this.setStart(new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2)));
+	setViewBoxSize(size) {
+		this.level.viewBoxSize.set(size);
+	}
 
-		this.name = 'level-0';
+	setTileRadius(size) {
+		this.level.grid.tileRadius.set(size);
 	}
 
 	setName(name) {
-		this.name = name;
+		this.level.name = name;
 	}
 
 	setViewBoxScale(scale) {
-		this.viewboxScale = scale;
+		this.level.viewBoxScale.set(scale);
 	}
 
 	setStart(position) {
-		this.startPosition = position.clone();
-		this.startCoords = this.grid.getCoordinates(this.startPosition);
-		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * this.viewboxSize.y / 2));
+		this.level.centerOnPosition(position);
 	}
 
-	setStartToTop() {
-		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y);
-	}
+	generateGround(preset = null) {
+		const startPosition = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
 
-	setStartToBottom(dist) {
-		this.viewboxCoordinates = new Vector2(this.startCoords.x - (this.viewboxScale * this.viewboxSize.x / 2), this.startCoords.y - (this.viewboxScale * (this.viewboxSize.y / 2)) + dist);
-	}
-
-	plant() {
-		this.plantState = {
-			roots: {
-				position: this.startPosition.toArray(),
-					power: 3,
-					children: [
-					{
-						position: [this.startPosition.x, this.startPosition.y + 1],
-						power: 2,
-						children: [
-							{
-								position: [this.startPosition.x, this.startPosition.y + 2],
-								power: 1
-							}
-						]
-					}
-				]
-			},
-			stem: {
-				position: this.startPosition.toArray(),
-					power: 3,
-					children: [
-					{
-						position: [this.startPosition.x, this.startPosition.y - 1],
-						power: 2,
-						children: [
-							{
-								position: [this.startPosition.x, this.startPosition.y - 2],
-								power: 1
-							}
-						]
-					}
-				]
-			},
-		};
-	}
-
-	ground(preset) {
-		const builder = new GroundBuilder(this.grid);
+		const builder = new GroundBuilder(this.level.grid);
 		if (preset) {
-			builder.generateFromPreset(this.startPosition, preset);
+			builder.generateFromPreset(startPosition, preset);
 		} else {
-			builder.generateRandom(this.startPosition);
+			builder.generateRandom(startPosition);
 		}
-		this.g = builder.build();
+		this.ground = builder.build();
 	}
 
-	parallax() {
-		this.parallaxState = {
-			layers: [
-				false,
-				false,
-				TreesImage,
-				false,
-				false,
-				GrassImage,
-				StalkImage,
-				BulbsImage,
-				EggHillsImage,
-				HillImage,
-				false
-			]
+	addSprite(position, strategy, data, path, scale, rotation, flipped) {
+		const state = {
+			position: position.toArray(),
+			image: (path) ? {
+				scale: scale,
+				flipped: flipped,
+				rotation: rotation,
+				path: path
+			} : null,
+			strategy: strategy,
+			data: data
+		};
+		return this.level.sprites.add(new SpriteModel(state));
+	}
+
+	addSpriteFromStyle(position, spriteType) {
+		const style = SPRITE_STYLES[spriteType];
+		let uri = null;
+		let scale = 1;
+		if (style.image) {
+			this.level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
+			uri = style.image.uri;
+			scale = style.image.scale;
 		}
+		return this.addSprite(
+			position,
+			style.strategy,
+			style.data,
+			uri,
+			scale,
+			0,
+			false
+		);
+	}
+
+	addTile(position, groundType) {
+		this.level.ground.addTile({position: position.toArray(), type: groundType});
+	}
+
+	addTileFromStyle(position, groundType) {
+		this.addTile(position, groundType);
+	}
+
+	addBee(position) {
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
+		this.level.addBee(
+			new BeeModel({
+				direction: [0,0],
+				speed: 0,
+				position: position.toArray(),
+				image: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE
+				},
+				imageCrawl: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE_CRAWL
+				},
+				leftWing: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE_WING
+				},
+				rightWing: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: true,
+					rotation: 0,
+					path: IMAGE_BEE_WING
+				},
+			})
+		);
 	}
 
 	build() {
-		if (!this.g) {
-			this.ground();
-		}
-		if (!this.plantState) {
-			this.plant();
-		}
-		if (!this.parallaxState) {
-			this.parallax();
-		}
-		const state = {
-			name: this.name,
-			grid: this.grid.getState(),
-			parallax: this.parallaxState,
-			ground: this.g.getState(),
-			plant: this.plantState,
-			sprites: [],
-			resources: {
-				resType: RESOURCE_TYPE_GROUP
-			},
-			viewBoxScale: this.viewboxScale,
-			viewBoxSize: this.viewboxSize.toArray(),
-			viewBoxCoordinates: this.viewboxCoordinates.toArray()
-		};
-
-		return new LevelModel(state);
+		return this.level;
 	}
 
 }

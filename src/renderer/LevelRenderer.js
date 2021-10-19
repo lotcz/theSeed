@@ -1,16 +1,14 @@
 import SvgRenderer from "./SvgRenderer";
 import PlantRenderer from "./PlantRenderer";
 import BeeRenderer from "./BeeRenderer";
-import {GROUND_DARK, GROUND_LIGHT} from "./Palette";
 import GroundRenderer from "./GroundRenderer";
-
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ParallaxRenderer from "./ParallaxRenderer";
-import Vector2 from "../class/Vector2";
-import InventoryRenderer from "./InventoryRenderer";
+import ResourceLoader from "../class/ResourceLoader";
 
-export const HIDE_WHEN_OUTTA_SIGHT = true;
-const DEBUG_HIGHLIGHTS = false;
+export const HIDE_WHEN_OUTTA_SIGHT = false;
+
+const DEBUG_LEVEL_RENDERER = false;
 
 export default class LevelRenderer extends SvgRenderer {
 	group;
@@ -21,78 +19,48 @@ export default class LevelRenderer extends SvgRenderer {
 		this.group = this.draw.group();
 		this.group.addClass('level');
 
-		// PARALLAX
-		this.parallax = this.group.group();
-		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.parallax);
-		this.addChild(this.parallaxRenderer);
+		this.background = this.group.group().addClass('background');
 
 		// GROUND
-		this.ground = this.group.group();
-		const groundGradient = this.group.gradient('linear', function(add) {
-			add.stop(0, GROUND_LIGHT);
-			add.stop(1, GROUND_DARK);
-			add.from(0, 0);
-			add.to(0,1);
-		})
-		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground, GROUND_LIGHT, { width: 4, color: GROUND_DARK});
+		this.ground = this.group.group().addClass('ground');
+		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground);
 		this.addChild(this.groundRenderer);
 
 		// FOREGROUND
-		this.foreground = this.group.group();
-		this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
-		this.addChild(this.plantRenderer);
+		this.foreground = this.group.group().addClass('foreground');
+		if (this.model.plant) {
+			this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
+			this.addChild(this.plantRenderer);
+		}
+
+		// PARALLAX
+		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
+		this.addChild(this.parallaxRenderer);
 
 		// SPRITES
-		this.sprites =this.group.group();
+		this.sprites = this.group.group().addClass('sprites');
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, this.model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 
 		// INVENTORY
+		/*
 		if (this.model.inventory) {
-			this.inventory = this.group.group();
+			this.inventory = this.group.group().addClass('inventory');
 			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
 			this.addChild(this.inventoryRenderer);
 		}
-
+		*/
 		//Bee
 		if (this.model.bee) {
 			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
 			this.addChild(this.beeRenderer);
-			console.log(this.model.bee);
 		}
 
+		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
 	}
 
 	deactivateInternal() {
 		if (this.group) this.group.remove();
-	}
-
-	renderGridTile(position, stroke) {
-		const corners = this.model.grid
-			.getCorners(position)
-			.map((c) => [c.x, c.y]);
-		corners.push(corners[0]);
-		for (let i = 0, max = corners.length - 1; i < max; i++) {
-			this.highlightedTiles.line(corners[i].concat(corners[i + 1])).stroke(stroke);
-		}
-	}
-
-	renderHighlights(position) {
-		if (this.highlightedTiles) this.highlightedTiles.remove();
-		this.highlightedTiles = this.group.group();
-
-		this.renderGridTile(position, { width: 2, color: 'blue'});
-
-		if (DEBUG_HIGHLIGHTS) {
-			this.renderGridTile(this.model.grid.getNeighborUpperLeft(position), {width: 2, color: 'orange'});
-			this.renderGridTile(this.model.grid.getNeighborUpperRight(position), {width: 2, color: 'red'});
-
-			this.renderGridTile(this.model.grid.getNeighborLowerLeft(position), {width: 2, color: 'magenta'});
-			this.renderGridTile(this.model.grid.getNeighborLowerRight(position), {width: 2, color: 'cyan'});
-
-			this.renderGridTile(this.model.grid.getNeighborDown(position), {width: 2, color: 'lightgreen'});
-			this.renderGridTile(this.model.grid.getNeighborUp(position), {width: 2, color: 'darkgreen'});
-		}
 	}
 
 	renderInternal() {
@@ -110,10 +78,14 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
-		if (this.model.highlightedTilePosition.isDirty() && this.model.inventory !== null) {
-			this.renderHighlights(this.model.highlightedTilePosition);
-			this.model.highlightedTilePosition.clean();
-		}
+	}
+
+	onAddResource(resource) {
+		if (DEBUG_LEVEL_RENDERER) console.log('Resource added.', resource);
+		const loader = new ResourceLoader(this.draw, resource);
+		loader.load((r) => {
+			if (DEBUG_LEVEL_RENDERER) console.log('Resource loaded', r);
+		});
 	}
 
 }

@@ -15,14 +15,32 @@ export default class Chessboard {
 		return this.tiles[position.x][position.y];
 	}
 
+	getVisitors(position, filter) {
+		const tile = this.getTile(position);
+		if (filter) {
+			return tile.filter(filter);
+		} else {
+			return tile;
+		}
+	}
+
 	addVisitor(position, visitor) {
 		let tile = this.getTile(position);
-		tile.push(visitor);
+		if (tile.includes(visitor)) {
+			console.log('Visitor already present');
+		} else {
+			tile.push(visitor);
+		}
 	}
 
 	removeVisitor(position, visitor) {
 		const tile = this.getTile(position);
-		tile.splice(tile.indexOf(visitor), 1);
+		const index = tile.indexOf(visitor);
+		if (index < 0) {
+			console.log('Visitor not present');
+		} else {
+			tile.splice(index, 1);
+		}
 	}
 
 }

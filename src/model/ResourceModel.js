@@ -1,4 +1,4 @@
-import ModelBase from "./ModelBase";
+import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
@@ -23,8 +23,7 @@ export default class ResourceModel extends ModelBase {
 		return {
 			uri: this.uri,
 			data: this.data,
-			resType: this.resType,
-			children: this.getChildrenState()
+			resType: this.resType
 		}
 	}
 
@@ -32,15 +31,6 @@ export default class ResourceModel extends ModelBase {
 		this.uri = state.uri;
 		this.data = state.data;
 		this.resType = state.resType;
-		if (state.children) this.restoreChildren(state.children, (ch) => new ResourceModel(ch));
-	}
-
-	find(uri) {
-		if (this.uri === uri) return this;
-	}
-
-	exists(uri) {
-		return this.find(uri) !== null;
 	}
 
 }
