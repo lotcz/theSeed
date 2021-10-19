@@ -131,6 +131,13 @@ export default class LevelModel extends ModelBase {
 		return this.grid.isValidPosition(position);
 	}
 
+	isCrawlable(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
+		return (!this.isPenetrable(position));
+	}
+
 	getAbsoluteCoordinates(offset) {
 		return new Vector2(this.viewBoxCoordinates.x + (offset.x * this.viewBoxScale.get()), this.viewBoxCoordinates.y + (offset.y * this.viewBoxScale.get()));
 	}

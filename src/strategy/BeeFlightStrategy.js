@@ -78,7 +78,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (!penetrable) {
 			coords = this.model.coordinates.subtract(direction.multiply(secsDelta));
 
-			if (speed < MAX_SPEED) {
+			if (speed < MAX_SPEED && this.level.isCrawlable(position)) {
 				this.parent.crawl(this.grid.getNeighborType(this.model.position, position));
 				return;
 			} else {

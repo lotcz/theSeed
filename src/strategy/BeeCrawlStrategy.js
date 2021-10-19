@@ -159,8 +159,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				if (this.level.isPenetrable(nextPosition)) {
 					this.model.position.set(nextPosition);
 					this.model.crawling.set(options.nextNeighbor);
-				} else {
+				} else if (this.level.isCrawlable(nextPosition)) {
 					this.model.crawling.set(options.nextPosition);
+				} else {
+					this.parent.fly();
+					return;
 				}
 				this.updateBee();
 			}
