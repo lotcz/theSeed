@@ -1,5 +1,6 @@
 import ControllerBase from "../class/ControllerBase";
 import {BEE_CENTER} from "../controller/BeeController";
+import Vector2 from "../class/Vector2";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -22,9 +23,11 @@ export default class BeeFlightStrategy extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.direction.set(0,0);
+		this.speed = 0;
 		this.updateBee();
 	}
-	
+
 	updateInternal(delta) {
 		const secsDelta = delta / 1000;
 
@@ -77,6 +80,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 			if (speed < MAX_SPEED) {
 				this.parent.crawl(this.grid.getNeighborType(this.model.position, position));
+				return;
 			} else {
 				direction = direction.multiply(-0.5);
 
