@@ -24,6 +24,10 @@ const CONTROLLER_DIRECTION_DOWN = 'down';
 const CONTROLLER_DIRECTION_LEFT = 'left';
 const CONTROLLER_DIRECTION_RIGHT = 'right';
 
+const FALLBACK_STOP = 0;
+const FALLBACK_FLY = 1;
+const FALLBACK_PROCEED = 2;
+
 const CRAWLING_MATRIX = [];
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_DOWN] = {
@@ -35,10 +39,12 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_DOWN].options[CONTROLLER_DIRECTION_DOWN] = false;
 CRAWLING_MATRIX[NEIGHBOR_TYPE_DOWN].options[CONTROLLER_DIRECTION_LEFT] = {
 	nextPosition: NEIGHBOR_TYPE_LOWER_LEFT,
 	nextNeighbor: NEIGHBOR_TYPE_LOWER_RIGHT,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_DOWN].options[CONTROLLER_DIRECTION_RIGHT] = {
 	nextPosition: NEIGHBOR_TYPE_LOWER_RIGHT,
-	nextNeighbor: NEIGHBOR_TYPE_LOWER_LEFT
+	nextNeighbor: NEIGHBOR_TYPE_LOWER_LEFT,
+	fallback: FALLBACK_PROCEED
 };
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT] = {
@@ -47,14 +53,25 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT] = {
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_UP] = {
 	nextPosition: NEIGHBOR_TYPE_UPPER_LEFT,
-	nextNeighbor: NEIGHBOR_TYPE_DOWN
+	nextNeighbor: NEIGHBOR_TYPE_DOWN,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_DOWN] = {
 	nextPosition: NEIGHBOR_TYPE_DOWN,
-	nextNeighbor: NEIGHBOR_TYPE_UPPER_LEFT
+	nextNeighbor: NEIGHBOR_TYPE_UPPER_LEFT,
+	fallback: FALLBACK_STOP
 };
-CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_LEFT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_UP];
-CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_DOWN];
+CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_LEFT] = {
+	nextPosition: NEIGHBOR_TYPE_UPPER_LEFT,
+	nextNeighbor: NEIGHBOR_TYPE_DOWN,
+	fallback: FALLBACK_STOP
+};
+CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_LEFT].options[CONTROLLER_DIRECTION_RIGHT] = {
+	nextPosition: NEIGHBOR_TYPE_DOWN,
+	nextNeighbor: NEIGHBOR_TYPE_UPPER_LEFT,
+	fallback: FALLBACK_FLY,
+	skipMovement: true
+};
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT] = {
 	corners: [CORNER_LOWER_RIGHT, CORNER_RIGHT],
@@ -62,14 +79,25 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT] = {
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_UP] = {
 	nextPosition: NEIGHBOR_TYPE_UPPER_RIGHT,
-	nextNeighbor: NEIGHBOR_TYPE_DOWN
+	nextNeighbor: NEIGHBOR_TYPE_DOWN,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_DOWN] = {
 	nextPosition: NEIGHBOR_TYPE_DOWN,
-	nextNeighbor: NEIGHBOR_TYPE_UPPER_RIGHT
+	nextNeighbor: NEIGHBOR_TYPE_UPPER_RIGHT,
+	fallback: FALLBACK_PROCEED
 };
-CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_DOWN];
-CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_UP];
+CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = {
+	nextPosition: NEIGHBOR_TYPE_DOWN,
+	nextNeighbor: NEIGHBOR_TYPE_UPPER_RIGHT,
+	fallback: FALLBACK_FLY,
+	skipMovement: true
+};
+CRAWLING_MATRIX[NEIGHBOR_TYPE_LOWER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = {
+	nextPosition: NEIGHBOR_TYPE_UPPER_RIGHT,
+	nextNeighbor: NEIGHBOR_TYPE_DOWN,
+	fallback: FALLBACK_STOP
+};
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UP] = {
 	corners: [CORNER_UPPER_LEFT, CORNER_UPPER_RIGHT],
@@ -80,10 +108,12 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_UP].options[CONTROLLER_DIRECTION_DOWN] = true;
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UP].options[CONTROLLER_DIRECTION_LEFT] = {
 	nextPosition: NEIGHBOR_TYPE_UPPER_LEFT,
 	nextNeighbor: NEIGHBOR_TYPE_UPPER_RIGHT,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UP].options[CONTROLLER_DIRECTION_RIGHT] = {
 	nextPosition: NEIGHBOR_TYPE_UPPER_RIGHT,
-	nextNeighbor: NEIGHBOR_TYPE_UPPER_LEFT
+	nextNeighbor: NEIGHBOR_TYPE_UPPER_LEFT,
+	fallback: FALLBACK_PROCEED
 };
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT] = {
@@ -92,14 +122,25 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT] = {
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_UP] = {
 	nextPosition: NEIGHBOR_TYPE_UP,
-	nextNeighbor: NEIGHBOR_TYPE_LOWER_LEFT
+	nextNeighbor: NEIGHBOR_TYPE_LOWER_LEFT,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_DOWN] = {
 	nextPosition: NEIGHBOR_TYPE_LOWER_LEFT,
-	nextNeighbor: NEIGHBOR_TYPE_UP
+	nextNeighbor: NEIGHBOR_TYPE_UP,
+	fallback: FALLBACK_PROCEED,
 };
-CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_LEFT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_DOWN];
-CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_UP];
+CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_LEFT] = {
+	nextPosition: NEIGHBOR_TYPE_LOWER_LEFT,
+	nextNeighbor: NEIGHBOR_TYPE_UP,
+	fallback: FALLBACK_STOP
+};
+CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_LEFT].options[CONTROLLER_DIRECTION_RIGHT] = {
+	nextPosition: NEIGHBOR_TYPE_UP,
+	nextNeighbor: NEIGHBOR_TYPE_LOWER_LEFT,
+	fallback: FALLBACK_FLY,
+	skipMovement: true
+};
 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT] = {
 	corners: [CORNER_UPPER_RIGHT, CORNER_RIGHT],
@@ -107,14 +148,25 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT] = {
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_UP] = {
 	nextPosition: NEIGHBOR_TYPE_UP,
-	nextNeighbor: NEIGHBOR_TYPE_LOWER_RIGHT
+	nextNeighbor: NEIGHBOR_TYPE_LOWER_RIGHT,
+	fallback: FALLBACK_PROCEED
 };
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_DOWN] = {
 	nextPosition: NEIGHBOR_TYPE_LOWER_RIGHT,
-	nextNeighbor: NEIGHBOR_TYPE_UP
+	nextNeighbor: NEIGHBOR_TYPE_UP,
+	fallback: FALLBACK_PROCEED
 };
-CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_UP];
-CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_DOWN];
+CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = {
+	nextPosition: NEIGHBOR_TYPE_UP,
+	nextNeighbor: NEIGHBOR_TYPE_LOWER_RIGHT,
+	fallback: FALLBACK_FLY,
+	skipMovement: true
+};
+CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = {
+	nextPosition: NEIGHBOR_TYPE_LOWER_RIGHT,
+	nextNeighbor: NEIGHBOR_TYPE_UP,
+	fallback: FALLBACK_STOP
+};
 
 export default class BeeCrawlStrategy extends ControllerBase {
 	targetCoordinates;
@@ -129,8 +181,6 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 	activateInternal() {
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
-		this.model.leftWing.coordinates.set(BEE_CENTER);
-		this.model.rightWing.coordinates.set(BEE_CENTER);
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.updateBee();
 	}
@@ -210,18 +260,36 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				this.parent.fly();
 				return;
 			} else {
+				let fallBack = true;
+
 				const nextPosition = this.grid.getNeighbor(this.model.position, options.nextPosition);
-				if (this.level.isPenetrable(nextPosition)) {
-					this.model.position.set(nextPosition);
-					this.targetCoordinates = this.grid.getCoordinates(nextPosition);
-					this.model.crawling.set(options.nextNeighbor);
-					this.targetRotation = new RotationValue(this.getRotation(options.nextNeighbor));
-				} else if (this.level.isCrawlable(nextPosition)) {
-					this.model.crawling.set(options.nextPosition);
-					this.targetRotation = new RotationValue(this.getRotation(options.nextPosition));
+
+				if (options.skipMovement !== true) {
+					if (this.level.isPenetrable(nextPosition)) {
+						this.model.position.set(nextPosition);
+						this.targetCoordinates = this.grid.getCoordinates(nextPosition);
+						this.model.crawling.set(options.nextNeighbor);
+						this.targetRotation = new RotationValue(this.getRotation(options.nextNeighbor));
+						fallBack = false;
+					}
 				} else {
-					this.parent.fly();
-					return;
+					if (this.level.isCrawlable(nextPosition)) {
+						this.model.crawling.set(options.nextPosition);
+						this.targetRotation = new RotationValue(this.getRotation(options.nextPosition));
+						fallBack = false;
+					}
+				}
+
+				if (fallBack) {
+					if (options.fallback === FALLBACK_PROCEED) {
+						if (this.level.isCrawlable(nextPosition)) {
+							this.model.crawling.set(options.nextPosition);
+							this.targetRotation = new RotationValue(this.getRotation(options.nextPosition));
+						}
+					} else if (options.fallback === FALLBACK_FLY) {
+						this.parent.fly();
+						return;
+					}
 				}
 			}
 		}
@@ -231,10 +299,6 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		const rotation = this.model.rotation.get();
 		this.model.crawlingAnimation.image.rotation.set(rotation);
 		this.model.crawlingAnimation.image.flipped.set(this.model.headingLeft.get());
-		this.model.leftWing.rotation.set(rotation - 10);
-		this.model.leftWing.flipped.set(this.model.headingLeft.get());
-		this.model.rightWing.rotation.set(rotation - 20);
-		this.model.rightWing.flipped.set(this.model.headingLeft.get());
 
 		// apply movement
 		this.level.centerOnCoordinates(this.model.coordinates);
