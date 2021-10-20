@@ -28,4 +28,12 @@ export default class DirtyValue extends ModelBase {
 		return this.value === null || this.value === undefined;
 	}
 
+	getState() {
+		return this.get();
+	}
+
+	restoreState(state) {
+		this.set(state);
+	}
+
 }

@@ -5,6 +5,9 @@ import Vector2 from "../class/Vector2";
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
 
+// max length of direction vector to allow crawling
+const MAX_CRAWL_SPEED = 1000;
+
 // how quickly will speed drop down, pixels per second
 const SLOWDOWN_SPEED = 400;
 
@@ -41,10 +44,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 			}
 			if (this.controls.moveLeft) {
 				direction = direction.addX(-SPEEDUP_SPEED * secsDelta);
-				this.model.image.flipped.set(true);
+				this.model.headingLeft.set(true);
 			} else if (this.controls.moveRight) {
 				direction = direction.addX(SPEEDUP_SPEED * secsDelta);
-				this.model.image.flipped.set(false);
+				this.model.headingLeft.set(false);
 			}
 		} else {
 			//slow down
@@ -72,31 +75,44 @@ export default class BeeFlightStrategy extends ControllerBase {
 			return;
 		}
 
-		let coords = this.model.coordinates.add(direction.multiply(secsDelta));
-		let position = this.grid.getPosition(coords);
-		const penetrable = this.level.isPenetrable(position);
-		if (!penetrable) {
-			coords = this.model.coordinates.subtract(direction.multiply(secsDelta));
-
-			if (speed < MAX_SPEED) {
-				this.parent.crawl(this.grid.getNeighborType(this.model.position, position));
-				return;
-			} else {
-				direction = direction.multiply(-0.5);
-
-				const newPosition = this.grid.getPosition(coords);
-				const newPenetrable = this.level.isPenetrable(newPosition);
-				if (!newPenetrable) {
-					const nei = this.grid.getNeighbors(position);
-					const free = nei.filter((n) => this.level.isPenetrable(n));
-					if (free.length > 0) {
-						position = newPosition;
-						coords = this.grid.getCoordinates(free[0]);
-					} else {
-						console.log('Lost');
-					}
+		const distance = direction.multiply(secsDelta);
+		const crashDistance = distance.clone();
+		crashDistance.setSize(crashDistance.size() + this.grid.tileRadius.get());
+		let coords = null;
+		let position = null;
+		const crashCoords = this.model.coordinates.add(crashDistance);
+		let crashPosition = this.grid.getPosition(crashCoords);
+		const penetrable = this.level.isPenetrable(crashPosition);
+		if (penetrable) {
+			coords = this.model.coordinates.add(distance);
+			position = this.grid.getPosition(coords);
+		} else {
+			if (speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
+				const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
+				if (crawl !== undefined) {
+					this.parent.crawl(crawl);
+					return;
 				}
 			}
+
+			coords = this.model.coordinates.subtract(distance);
+			direction = direction.multiply(-0.5);
+
+			const newPosition = this.grid.getPosition(coords);
+			const newPenetrable = this.level.isPenetrable(newPosition);
+			if (!newPenetrable) {
+				const nei = this.grid.getNeighbors(this.model.position);
+				const free = nei.filter((n) => this.level.isPenetrable(n));
+				if (free.length > 0) {
+					position = newPosition;
+					coords = this.grid.getCoordinates(free[0]);
+				} else {
+					console.log('Lost');
+				}
+			} else {
+				position = this.grid.getPosition(coords);
+			}
+
 		}
 
 		// apply movement
@@ -111,6 +127,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 	}
 
 	updateBee() {
+		this.model.image.flipped.set(this.model.headingLeft.get());
 		this.model.leftWing.flipped.set(false);
 		this.model.rightWing.flipped.set(true);
 		const rotation = Math.abs(this.wingRotation) - 30;

@@ -57,9 +57,12 @@ export default class Vector2 extends ModelBase {
 	}
 
 	setSize(size) {
-		const ratio = size / this.size();
-		this.setX(this.x * ratio);
-		this.setY(this.y * ratio);
+		const currentSize = this.size();
+		if (currentSize !== 0) {
+			const ratio = size / currentSize;
+			this.setX(this.x * ratio);
+			this.setY(this.y * ratio);
+		}
 	}
 
 	add(v) {

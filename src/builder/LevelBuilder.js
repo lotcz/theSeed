@@ -119,12 +119,15 @@ export default class LevelBuilder {
 					rotation: 0,
 					path: IMAGE_BEE
 				},
-				imageCrawl: {
-					coordinates: BEE_CENTER.clone(),
-					scale: 1,
-					flipped: false,
-					rotation: 0,
-					path: IMAGE_BEE_CRAWL
+				crawlingAnimation: {
+					image: {
+						coordinates: BEE_CENTER.clone(),
+						scale: 1,
+						flipped: false,
+						rotation: 0,
+						path: IMAGE_BEE_CRAWL
+					},
+					paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
 				},
 				leftWing: {
 					coordinates: BEE_CENTER.clone(),

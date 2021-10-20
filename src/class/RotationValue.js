@@ -6,7 +6,7 @@ export default class RotationValue extends DirtyValue {
 
 	constructor(value) {
 		super();
-		this.value = value;
+		if (value !== undefined) this.set(value);
 	}
 
 	static normalizeValue(value) {
@@ -26,6 +26,10 @@ export default class RotationValue extends DirtyValue {
 			this.value = normalized;
 			this.makeDirty();
 		}
+	}
+
+	add(value) {
+		this.set(this.get() + value);
 	}
 
 }

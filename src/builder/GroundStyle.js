@@ -31,7 +31,7 @@ export const GROUND_STYLES = [];
 
 GROUND_STYLES[GROUND_TYPE_BASIC] = {
 	fill: GRAY_DARK,
-	stroke: { width: 4, color: GRAY_DARKEST},
+	stroke: { width: 10, color: GRAY_DARKEST},
 	renderCorners: true
 };
 
@@ -55,7 +55,7 @@ GROUND_STYLES[GROUND_TYPE_ROCK] = {
 
 GROUND_STYLES[GROUND_TYPE_GRASS] = {
 	fill: GREEN_LIGHT,
-	stroke: { width: 4, color: GREEN_DARK},
+	stroke: { width: 10, color: GREEN_DARK},
 	renderCorners: true
 };
 
@@ -73,7 +73,7 @@ GROUND_STYLES[GROUND_TYPE_WAX] = {
 
 GROUND_STYLES[GROUND_TYPE_WATER] = {
 	fill: BLUE_MEDIUM,
-	stroke: { width: 120, color: BLUE_MEDIUM},
+	stroke: { width: 160, color: BLUE_MEDIUM},
 	background: true
 };
 

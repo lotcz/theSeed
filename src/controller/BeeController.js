@@ -5,12 +5,16 @@ import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
 import Vector2 from "../class/Vector2";
 import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
+import AnimationController from "./AnimationController";
 
 export const BEE_CENTER = new Vector2(150, 150);
 
 export default class BeeController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
+
+		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
+		this.addChild(this.crawlingAnimationController);
 
 		this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
 		if (this.model.crawling.get()) {

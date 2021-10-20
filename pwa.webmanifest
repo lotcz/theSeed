@@ -1,6 +1,6 @@
 {
   "short_name": "Beehive Adventures",
-  "name": "Beehive Adventures by natural Games.",
+  "name": "Beehive Adventures",
   "icons": [
     {
       "src": "/icon.png",
@@ -25,7 +25,7 @@
       "description": "View weather information for today",
       "url": "/new",
       "icons": [{ "src": "icon.png", "sizes": "192x192" }]
-    }    
+    }
   ],
   "description": "A bee game.",
   "screenshots": [

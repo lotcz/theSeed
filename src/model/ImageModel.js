@@ -9,7 +9,6 @@ export default class ImageModel extends ModelBase {
 	rotation;
 	scale;
 	path;
-	size;
 
 	constructor(state) {
 		super();
@@ -22,8 +21,8 @@ export default class ImageModel extends ModelBase {
 		this.addChild(this.rotation);
 		this.scale = new DirtyValue(1);
 		this.addChild(this.scale);
-		this.size = null;
-		this.path = '';
+		this.path = new DirtyValue('');
+		this.addChild(this.path);
 
 		if (state) {
 			this.restoreState(state);
@@ -36,8 +35,7 @@ export default class ImageModel extends ModelBase {
 			flipped: this.flipped.get(),
 			rotation: this.rotation.get(),
 			scale: this.scale.get(),
-			size: (this.size === null) ? null : this.size.toArray(),
-			path: this.path,
+			path: this.path.getState(),
 		}
 	}
 
@@ -46,11 +44,7 @@ export default class ImageModel extends ModelBase {
 		if (state.flipped) this.flipped.set(state.flipped);
 		if (state.rotation) this.rotation.set(state.rotation);
 		if (state.scale) this.scale.set(state.scale);
-		if (state.path) this.path = state.path;
-		if (state.size) {
-			this.size = Vector2.fromArray(state.size);
-			this.addChild(this.size);
-		}
+		if (state.path) this.path.restoreState(state.path);
 	}
 
 }
