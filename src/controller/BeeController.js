@@ -6,12 +6,17 @@ import Vector2 from "../class/Vector2";
 import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
+import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
 
 export const BEE_CENTER = new Vector2(150, 150);
 
 export default class BeeController extends ControllerBase {
+	dead;
+
 	constructor(game, model, controls) {
 		super(game, model, controls);
+
+		this.dead = false;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
@@ -25,6 +30,15 @@ export default class BeeController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
+		if (this.dead) {
+			return;
+		}
+
+		if (this.model.health.get() <= 0) {
+			this.die();
+			return;
+		}
+
 		if (this.controls.interact) {
 			const position = this.grid.getNeighborDown(this.model.position)
 			const visitors = this.chessboard.getVisitors(position);
@@ -57,6 +71,11 @@ export default class BeeController extends ControllerBase {
 	crawl(direction) {
 		this.model.crawling.set(direction);
 		this.setStrategy(new BeeCrawlStrategy(this.game, this.model, this.controls));
+	}
+
+	die() {
+		this.dead = true;
+		this.setStrategy(new BeeDeathStrategy(this.game, this.model, this.controls));
 	}
 
 	setStrategy(strategy) {

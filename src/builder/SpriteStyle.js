@@ -14,7 +14,10 @@ import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
 
+
 export const IMAGE_BEE = 'img/bee.svg';
+export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
+
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
 export const IMAGE_BEE_WING = 'img/wing.svg';
 export const IMAGE_WATER = 'img/water.svg';

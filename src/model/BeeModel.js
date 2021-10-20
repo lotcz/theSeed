@@ -16,6 +16,7 @@ export default class BeeModel extends ModelBase {
 	inventory;
 	health;
 	image;
+	deadImagePath;
 	crawlingAnimation;
 	leftWing;
 	rightWing;
@@ -42,6 +43,8 @@ export default class BeeModel extends ModelBase {
 
 		this.image = new ImageModel();
 		this.addChild(this.image);
+		this.deadImagePath = new DirtyValue();
+		this.addChild(this.deadImagePath);
 		this.crawlingAnimation = new AnimationModel();
 		this.addChild(this.crawlingAnimation);
 		this.leftWing = new ImageModel();
@@ -64,10 +67,10 @@ export default class BeeModel extends ModelBase {
 			inventory: this.inventory.getState(),
 			health: this.health.getState(),
 			image: this.image.getState(),
+			deadImagePath: this.deadImagePath.getState(),
 			crawlingAnimation: this.crawlingAnimation.getState(),
 			leftWing: this.leftWing.getState(),
-			rightWing: this.rightWing.getState(),
-
+			rightWing: this.rightWing.getState()
 		}
 	}
 
@@ -80,6 +83,7 @@ export default class BeeModel extends ModelBase {
 		if (state.inventory) this.inventory.restoreState(state.inventory);
 		if (state.health) this.health.restoreState(state.health);
 		if (state.image) this.image.restoreState(state.image);
+		if (state.deadImagePath) this.deadImagePath.restoreState(state.deadImagePath);
 		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
 		if (state.leftWing) this.leftWing.restoreState(state.leftWing);
 		if (state.rightWing) this.rightWing.restoreState(state.rightWing);

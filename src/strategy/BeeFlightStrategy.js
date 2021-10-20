@@ -51,16 +51,16 @@ export default class BeeFlightStrategy extends ControllerBase {
 			}
 		} else {
 			//slow down
-			const speed = direction.size();
-			if (speed > 0) {
-				direction.setSize(Math.max(0, speed - (SLOWDOWN_SPEED * secsDelta)));
+			this.speed = direction.size();
+			if (this.speed > 0) {
+				direction.setSize(Math.max(0, this.speed - (SLOWDOWN_SPEED * secsDelta)));
 			}
 		}
 
-		const speed = direction.size();
+		this.speed = direction.size();
 
 		// limit speed
-		if (speed > MAX_SPEED) {
+		if (this.speed > MAX_SPEED) {
 			direction.setSize(MAX_SPEED);
 		}
 
@@ -68,9 +68,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (this.wingRotation > 60) {
 			this.wingRotation = -60;
 		}
-		this.wingRotation += secsDelta * (100 + (400 * speed / MAX_SPEED));
+		this.wingRotation += secsDelta * (100 + (400 * this.speed / MAX_SPEED));
 
-		if (speed === 0) {
+		if (this.speed <= 0) {
+			this.speed = 0;
 			this.updateBee();
 			return;
 		}
@@ -87,13 +88,15 @@ export default class BeeFlightStrategy extends ControllerBase {
 			coords = this.model.coordinates.add(distance);
 			position = this.grid.getPosition(coords);
 		} else {
-			if (speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
+			if (this.speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
 				const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
 				if (crawl !== undefined) {
 					this.parent.crawl(crawl);
 					return;
 				}
 			}
+
+			this.model.health.set(this.model.health.get() - (0.5 * this.speed / MAX_SPEED));
 
 			coords = this.model.coordinates.subtract(distance);
 			direction = direction.multiply(-0.5);
@@ -119,7 +122,6 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.position.set(position);
 		this.model.coordinates.set(coords);
 		this.model.direction.set(direction);
-		this.speed = speed;
 		this.updateBee();
 
 		this.level.centerOnCoordinates(coords);

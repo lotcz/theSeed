@@ -2,15 +2,13 @@ import Vector2 from "../class/Vector2";
 import LevelModel from "../model/LevelModel";
 import GroundBuilder from "./GroundBuilder";
 import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
-import {PARALLAX_STYLES} from "./ParallaxStyle";
-import ParallaxLayerModel from "../model/ParallaxLayerModel";
 import BeeImage from "../../res/img/bee.svg";
+import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
 import BeeWingImage from "../../res/img/wing.svg";
 import BeeModel from "../model/BeeModel";
 import SpriteModel from "../model/SpriteModel";
-import {IMAGE_BEE, IMAGE_BEE_CRAWL, IMAGE_BEE_WING, SPRITE_STYLES} from "./SpriteStyle";
-import ParallaxModel from "../model/ParallaxModel";
+import {IMAGE_BEE, IMAGE_BEE_DEAD, IMAGE_BEE_CRAWL, IMAGE_BEE_WING, SPRITE_STYLES} from "./SpriteStyle";
 import {BEE_CENTER} from "../controller/BeeController";
 
 export default class LevelBuilder {
@@ -105,6 +103,7 @@ export default class LevelBuilder {
 
 	addBee(position) {
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
 		this.level.addBee(
@@ -119,6 +118,7 @@ export default class LevelBuilder {
 					rotation: 0,
 					path: IMAGE_BEE
 				},
+				deadImagePath: IMAGE_BEE_DEAD,
 				crawlingAnimation: {
 					image: {
 						coordinates: BEE_CENTER.clone(),

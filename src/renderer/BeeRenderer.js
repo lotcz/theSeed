@@ -9,6 +9,8 @@ export default class BeeRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		this.dead = false;
+
 		this.group = this.draw.nested().addClass('bee');
 
 		this.imageRenderer = new ImageRenderer(game, this.model.image, this.group);
@@ -36,9 +38,10 @@ export default class BeeRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
-		if (this.model.crawling.isDirty()) {
+		if (this.model.crawling.isDirty() || this.model.health.isDirty()) {
 			this.updateBeeState();
 			this.model.crawling.clean();
+			this.model.health.clean();
 		}
 		if (this.model.coordinates.isDirty()) {
 			const coords = this.model.coordinates.subtract(BEE_CENTER);
@@ -53,17 +56,23 @@ export default class BeeRenderer extends SvgRenderer {
 	}
 
 	updateFlip() {
-		if (this.model.image.flipped.get()) {
-			this.leftWingRenderer.group.back();
-			this.rightWingRenderer.group.front();
-		} else {
-			this.leftWingRenderer.group.front();
-			this.rightWingRenderer.group.back();
+		if (this.model.health.get() > 0) {
+			if (this.model.image.flipped.get()) {
+				this.leftWingRenderer.group.back();
+				this.rightWingRenderer.group.front();
+			} else {
+				this.leftWingRenderer.group.front();
+				this.rightWingRenderer.group.back();
+			}
 		}
 	}
 
 	updateBeeState() {
-		if (this.model.isFlying()) {
+		if (this.model.health.get() <= 0) {
+			this.crawlingAnimationRenderer.deactivate();
+			this.leftWingRenderer.deactivate();
+			this.rightWingRenderer.deactivate();
+		} else if (this.model.isFlying()) {
 			this.crawlingAnimationRenderer.deactivate();
 			this.imageRenderer.activate();
 		} else {
