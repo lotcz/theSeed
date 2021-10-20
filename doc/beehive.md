@@ -77,12 +77,12 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- bee animations
-- crawling
+- bee animations - change images
+- crawling - leave side wall
 - death
 - get hurt by clouds and water
--
-
+- opening and closing scene (circular mask animation)
+- new sprite movement type (for monsters to be oriented)
 
 
 

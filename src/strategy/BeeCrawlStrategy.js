@@ -14,6 +14,10 @@ import {
 	NEIGHBOR_TYPE_UPPER_LEFT,
 	NEIGHBOR_TYPE_UPPER_RIGHT
 } from "../model/GridModel";
+import RotationValue from "../class/RotationValue";
+
+const CRAWL_SPEED = 400; //pixels per second
+const ROTATION_SPEED = 180; //angles per second
 
 const CONTROLLER_DIRECTION_UP = 'up';
 const CONTROLLER_DIRECTION_DOWN = 'down';
@@ -113,16 +117,22 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_LEFT] = 
 CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] = CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_DOWN];
 
 export default class BeeCrawlStrategy extends ControllerBase {
+	targetCoordinates;
+	targetRotation;
+
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.targetCoordinates = null;
+		this.targetRotation = null;
 	}
 
 	activateInternal() {
-		this.updateBee();
+		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.leftWing.coordinates.set(BEE_CENTER);
 		this.model.rightWing.coordinates.set(BEE_CENTER);
 		this.model.imageCrawl.coordinates.set(BEE_CENTER);
+		this.updateBee();
 	}
 
 	updateInternal(delta) {
@@ -131,19 +141,68 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			return;
 		}
 
+		if ((this.targetCoordinates !== null) || (this.targetRotation !== null)) {
+			const secsDelta = delta / 1000;
+			if (this.targetCoordinates !== null) {
+				const diff = this.targetCoordinates.subtract(this.model.coordinates);
+				const distance = diff.size();
+				if (distance === 0) {
+					this.targetCoordinates = null;
+				} else {
+					diff.setSize(Math.min(distance, CRAWL_SPEED * secsDelta));
+					this.model.coordinates.set(this.model.coordinates.add(diff));
+				}
+			}
+			if (this.targetRotation !== null) {
+				const diff = new RotationValue(this.targetRotation.get() - this.model.rotation.get()).get();
+				if (Math.abs(diff) > 180) {
+					console.log(diff);
+				}
+				if (diff === 0) {
+					this.targetRotation = null;
+				} else {
+					let step = ((diff < 0) ? -1 : 1) * ROTATION_SPEED * secsDelta;
+					if (Math.abs(step) > Math.abs(diff)) {
+						step = diff;
+					}
+					this.model.rotation.add(step);
+				}
+			}
+			this.updateBee();
+			return;
+		}
+
 		if (this.controls.anyMovement()) {
 			let controllerDirection = null;
 			if (this.controls.moveUp) {
 				controllerDirection = CONTROLLER_DIRECTION_UP;
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_LEFT) {
+					this.model.headingLeft.set(true);
+				}
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT) {
+					this.model.headingLeft.set(false);
+				}
 			} else if (this.controls.moveDown) {
 				controllerDirection = CONTROLLER_DIRECTION_DOWN;
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_LEFT) {
+					this.model.headingLeft.set(false);
+				}
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT) {
+					this.model.headingLeft.set(true);
+				}
 			}
 			if (this.controls.moveLeft) {
 				controllerDirection = CONTROLLER_DIRECTION_LEFT;
+				this.model.headingLeft.set(true);
 			} else if (this.controls.moveRight) {
 				controllerDirection = CONTROLLER_DIRECTION_RIGHT;
+				this.model.headingLeft.set(false);
 			}
 			const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
+			if (!matrix) {
+				console.log('Matrix not found');
+				return;
+			}
 			const options = matrix.options[controllerDirection];
 			if (options === false) {
 				return;
@@ -154,37 +213,36 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				const nextPosition = this.grid.getNeighbor(this.model.position, options.nextPosition);
 				if (this.level.isPenetrable(nextPosition)) {
 					this.model.position.set(nextPosition);
+					this.targetCoordinates = this.grid.getCoordinates(nextPosition);
 					this.model.crawling.set(options.nextNeighbor);
+					this.targetRotation = new RotationValue(this.getRotation(options.nextNeighbor));
 				} else if (this.level.isCrawlable(nextPosition)) {
 					this.model.crawling.set(options.nextPosition);
+					this.targetRotation = new RotationValue(this.getRotation(options.nextPosition));
 				} else {
 					this.parent.fly();
 					return;
 				}
-				this.updateBee();
 			}
 		}
-
 	}
 
 	updateBee() {
-		//const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
-		//const corners = matrix.corners.map((c) => this.grid.getCorner(this.model.position, c));
-		//const coordinates = corners[0].add(corners[1]).multiply(0.5);
-		const coordinates = this.grid.getCoordinates(this.model.position);
-		this.model.coordinates.set(coordinates);
-		const rotation = (60 * (this.model.crawling.get() - 3));
-		const left = this.model.crawling.get() === NEIGHBOR_TYPE_LOWER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT;
+		const rotation = this.model.rotation.get();
 		this.model.imageCrawl.rotation.set(rotation);
-		this.model.imageCrawl.flipped.set(left);
+		this.model.imageCrawl.flipped.set(this.model.headingLeft.get());
 		this.model.leftWing.rotation.set(rotation - 10);
-		this.model.leftWing.flipped.set(left);
+		this.model.leftWing.flipped.set(this.model.headingLeft.get());
 		this.model.rightWing.rotation.set(rotation - 20);
-		this.model.rightWing.flipped.set(left);
+		this.model.rightWing.flipped.set(this.model.headingLeft.get());
 
 		// apply movement
-		this.level.centerOnCoordinates(coordinates);
+		this.level.centerOnCoordinates(this.model.coordinates);
 		this.level.sanitizeViewBox();
+	}
+
+	getRotation(direction) {
+		return (60 * (direction - 3));
 	}
 
 }

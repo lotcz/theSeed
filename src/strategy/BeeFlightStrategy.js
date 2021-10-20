@@ -44,10 +44,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 			}
 			if (this.controls.moveLeft) {
 				direction = direction.addX(-SPEEDUP_SPEED * secsDelta);
-				this.model.image.flipped.set(true);
+				this.model.headingLeft.set(true);
 			} else if (this.controls.moveRight) {
 				direction = direction.addX(SPEEDUP_SPEED * secsDelta);
-				this.model.image.flipped.set(false);
+				this.model.headingLeft.set(false);
 			}
 		} else {
 			//slow down
@@ -88,27 +88,31 @@ export default class BeeFlightStrategy extends ControllerBase {
 			position = this.grid.getPosition(coords);
 		} else {
 			if (speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
-				this.parent.crawl(this.grid.getNeighborType(this.model.position, crashPosition));
-				return;
-			} else {
-				coords = this.model.coordinates.subtract(distance);
-				direction = direction.multiply(-0.5);
-
-				const newPosition = this.grid.getPosition(coords);
-				const newPenetrable = this.level.isPenetrable(newPosition);
-				if (!newPenetrable) {
-					const nei = this.grid.getNeighbors(this.model.position);
-					const free = nei.filter((n) => this.level.isPenetrable(n));
-					if (free.length > 0) {
-						position = newPosition;
-						coords = this.grid.getCoordinates(free[0]);
-					} else {
-						console.log('Lost');
-					}
-				} else {
-					position = this.grid.getPosition(coords);
+				const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
+				if (crawl !== undefined) {
+					this.parent.crawl(crawl);
+					return;
 				}
 			}
+
+			coords = this.model.coordinates.subtract(distance);
+			direction = direction.multiply(-0.5);
+
+			const newPosition = this.grid.getPosition(coords);
+			const newPenetrable = this.level.isPenetrable(newPosition);
+			if (!newPenetrable) {
+				const nei = this.grid.getNeighbors(this.model.position);
+				const free = nei.filter((n) => this.level.isPenetrable(n));
+				if (free.length > 0) {
+					position = newPosition;
+					coords = this.grid.getCoordinates(free[0]);
+				} else {
+					console.log('Lost');
+				}
+			} else {
+				position = this.grid.getPosition(coords);
+			}
+
 		}
 
 		// apply movement
@@ -123,6 +127,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 	}
 
 	updateBee() {
+		this.model.image.flipped.set(this.model.headingLeft.get());
 		this.model.leftWing.flipped.set(false);
 		this.model.rightWing.flipped.set(true);
 		const rotation = Math.abs(this.wingRotation) - 30;

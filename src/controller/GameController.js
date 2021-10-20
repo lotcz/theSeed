@@ -135,7 +135,7 @@ export default class GameController extends ControllerBase {
 	newGame() {
 		const size = new Vector2(100, 50);
 		const start = new Vector2(50, 25);
-		const tileRadius = 50;
+		const tileRadius = 75;
 		const scale = 3;
 
 		const levelBuilder = new LevelBuilder();
