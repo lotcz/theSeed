@@ -4,6 +4,7 @@ import Vector2 from "../class/Vector2";
 import CollectionModel from "./CollectionModel";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
+import AnimationModel from "./AnimationModel";
 
 export default class BeeModel extends ModelBase {
 	position;
@@ -14,7 +15,7 @@ export default class BeeModel extends ModelBase {
 	headingLeft; // if false, then bee is heading right
 	inventory;
 	image;
-	imageCrawl;
+	crawlingAnimation;
 	leftWing;
 	rightWing;
 
@@ -38,8 +39,8 @@ export default class BeeModel extends ModelBase {
 
 		this.image = new ImageModel();
 		this.addChild(this.image);
-		this.imageCrawl = new ImageModel();
-		this.addChild(this.imageCrawl);
+		this.crawlingAnimation = new AnimationModel();
+		this.addChild(this.crawlingAnimation);
 		this.leftWing = new ImageModel();
 		this.addChild(this.leftWing);
 		this.rightWing = new ImageModel();
@@ -59,7 +60,7 @@ export default class BeeModel extends ModelBase {
 			headingLeft: this.headingLeft.get(),
 			inventory: this.inventory.getState(),
 			image: this.image.getState(),
-			imageCrawl: this.imageCrawl.getState(),
+			crawlingAnimation: this.crawlingAnimation.getState(),
 			leftWing: this.leftWing.getState(),
 			rightWing: this.rightWing.getState(),
 
@@ -74,7 +75,7 @@ export default class BeeModel extends ModelBase {
 		if (state.headingLeft) this.headingLeft.set(state.headingLeft);
 		if (state.inventory) this.inventory.restoreState(state.inventory);
 		if (state.image) this.image.restoreState(state.image);
-		if (state.imageCrawl) this.imageCrawl.restoreState(state.imageCrawl);
+		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
 		if (state.leftWing) this.leftWing.restoreState(state.leftWing);
 		if (state.rightWing) this.rightWing.restoreState(state.rightWing);
 	}

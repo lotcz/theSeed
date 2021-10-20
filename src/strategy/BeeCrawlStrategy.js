@@ -131,7 +131,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.leftWing.coordinates.set(BEE_CENTER);
 		this.model.rightWing.coordinates.set(BEE_CENTER);
-		this.model.imageCrawl.coordinates.set(BEE_CENTER);
+		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.updateBee();
 	}
 
@@ -229,8 +229,8 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 	updateBee() {
 		const rotation = this.model.rotation.get();
-		this.model.imageCrawl.rotation.set(rotation);
-		this.model.imageCrawl.flipped.set(this.model.headingLeft.get());
+		this.model.crawlingAnimation.image.rotation.set(rotation);
+		this.model.crawlingAnimation.image.flipped.set(this.model.headingLeft.get());
 		this.model.leftWing.rotation.set(rotation - 10);
 		this.model.leftWing.flipped.set(this.model.headingLeft.get());
 		this.model.rightWing.rotation.set(rotation - 20);

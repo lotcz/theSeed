@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import ImageRenderer from "./ImageRenderer";
 import {BEE_CENTER} from "../controller/BeeController";
+import AnimationRenderer from "./AnimationRenderer";
 
 const DEBUG_BEE = true;
 
@@ -13,8 +14,8 @@ export default class BeeRenderer extends SvgRenderer {
 		this.imageRenderer = new ImageRenderer(game, this.model.image, this.group);
 		this.addChild(this.imageRenderer);
 
-		this.imageCrawlRenderer = new ImageRenderer(game, this.model.imageCrawl, this.group);
-		this.addChild(this.imageCrawlRenderer);
+		this.crawlingAnimationRenderer = new AnimationRenderer(game, this.model.crawlingAnimation, this.group);
+		this.addChild(this.crawlingAnimationRenderer);
 
 		this.leftWingRenderer = new ImageRenderer(game, this.model.leftWing, this.group);
 		this.addChild(this.leftWingRenderer);
@@ -63,10 +64,10 @@ export default class BeeRenderer extends SvgRenderer {
 
 	updateBeeState() {
 		if (this.model.isFlying()) {
-			this.imageCrawlRenderer.deactivate();
+			this.crawlingAnimationRenderer.deactivate();
 			this.imageRenderer.activate();
 		} else {
-			this.imageCrawlRenderer.activate();
+			this.crawlingAnimationRenderer.activate();
 			this.imageRenderer.deactivate();
 		}
 		this.updateFlip();

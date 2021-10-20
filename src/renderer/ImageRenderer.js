@@ -11,22 +11,14 @@ export default class ImageRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
-		this.flipped = false;
-		this.lastRotation = 0;
-		this.lastScale = 1;
-
 		this.group = null;
+		this.image = null;
 	}
 
 	activateInternal() {
 		if (this.isActivated())	this.deactivateInternal();
 		this.group = this.draw.group();
-		const ref = this.getRef(this.model.path);
-		this.image = this.group.use(ref);
-		if (this.onClick) {
-			this.setOnClick(this.onClick);
-		}
-		this.updateFromModel();
+		this.createImage();
 	}
 
 	deactivateInternal() {
@@ -36,6 +28,20 @@ export default class ImageRenderer extends SvgRenderer {
 		}
 		this.flipped = false;
 		this.lastRotation = 0;
+	}
+
+	createImage() {
+		if (this.image) this.image.remove();
+		this.flipped = false;
+		this.lastRotation = 0;
+		this.lastScale = 1;
+		const ref = this.getRef(this.model.path.get());
+		this.model.path.clean();
+		this.image = this.group.use(ref);
+		if (this.onClick) {
+			this.setOnClick(this.onClick);
+		}
+		this.updateFromModel();
 	}
 
 	updateFromModel() {
@@ -91,6 +97,9 @@ export default class ImageRenderer extends SvgRenderer {
 		}
 		if (this.model.rotation.isDirty()) {
 			this.updateRotation();
+		}
+		if (this.model.path.isDirty()) {
+			this.createImage();
 		}
 	}
 
