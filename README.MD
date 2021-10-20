@@ -4,4 +4,8 @@ Build:
 `npm run build`
 
 Development:
-`npm run start`
+`npm run serve`
+
+or
+
+`npm run watch` and `npm run start`

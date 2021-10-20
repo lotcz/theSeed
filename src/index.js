@@ -1,4 +1,3 @@
-import "./style.css";
 import {SVG} from "@svgdotjs/svg.js";
 import Controls from "./class/Controls";
 import GameController from "./controller/GameController";

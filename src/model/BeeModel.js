@@ -14,6 +14,7 @@ export default class BeeModel extends ModelBase {
 	crawling; // null or neighbor type
 	headingLeft; // if false, then bee is heading right
 	inventory;
+	health;
 	image;
 	crawlingAnimation;
 	leftWing;
@@ -36,6 +37,8 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.headingLeft);
 		this.inventory = new CollectionModel();
 		this.addChild(this.inventory);
+		this.health = new DirtyValue(1);
+		this.addChild(this.health);
 
 		this.image = new ImageModel();
 		this.addChild(this.image);
@@ -53,12 +56,13 @@ export default class BeeModel extends ModelBase {
 
 	getState() {
 		return {
-			position: this.position.toArray(),
-			direction: this.direction.toArray(),
+			position: this.position.getState(),
+			direction: this.direction.getState(),
 			rotation: this.rotation.getState(),
-			crawling: this.crawling.get(),
-			headingLeft: this.headingLeft.get(),
+			crawling: this.crawling.getState(),
+			headingLeft: this.headingLeft.getState(),
 			inventory: this.inventory.getState(),
+			health: this.health.getState(),
 			image: this.image.getState(),
 			crawlingAnimation: this.crawlingAnimation.getState(),
 			leftWing: this.leftWing.getState(),
@@ -71,9 +75,10 @@ export default class BeeModel extends ModelBase {
 		if (state.position) this.position.restoreState(state.position);
 		if (state.direction) this.direction.restoreState(state.direction);
 		if (state.rotation) this.rotation.restoreState(state.rotation);
-		if (state.crawling) this.crawling.set(state.crawling);
-		if (state.headingLeft) this.headingLeft.set(state.headingLeft);
+		if (state.crawling) this.crawling.restoreState(state.crawling);
+		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
 		if (state.inventory) this.inventory.restoreState(state.inventory);
+		if (state.health) this.health.restoreState(state.health);
 		if (state.image) this.image.restoreState(state.image);
 		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
 		if (state.leftWing) this.leftWing.restoreState(state.leftWing);
