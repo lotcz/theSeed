@@ -19,6 +19,8 @@ export default class BeeDeathStrategy extends ControllerBase {
 			if (this.level.isWater(this.grid.getPosition(coords))) {
 				this.model.coordinates.set(coords);
 				this.model.position.set(this.grid.getPosition(this.model.coordinates));
+				this.level.centerOnCoordinates(coords);
+				this.level.sanitizeViewBox();
 			}
 			return;
 		}

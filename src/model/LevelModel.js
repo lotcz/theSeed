@@ -9,7 +9,7 @@ import CollectionModel from "./CollectionModel";
 import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
 import BeeModel from "./BeeModel";
-import {GROUND_TYPE_WATER} from "../builder/GroundStyle";
+import {GROUND_TYPE_CLOUD, GROUND_TYPE_WATER} from "../builder/GroundStyle";
 import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import ParallaxLayerModel from "./ParallaxLayerModel";
 
@@ -138,6 +138,11 @@ export default class LevelModel extends ModelBase {
 
 	isWater(position) {
 		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
+		return visitors.length > 0;
+	}
+
+	isCloud(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_CLOUD);
 		return visitors.length > 0;
 	}
 

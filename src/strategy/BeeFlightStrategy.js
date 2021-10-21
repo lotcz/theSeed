@@ -139,8 +139,6 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.direction.set(direction);
 		this.updateBee();
 
-		this.level.centerOnCoordinates(coords);
-		this.level.sanitizeViewBox();
 	}
 
 	updateBee() {

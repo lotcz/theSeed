@@ -36,9 +36,15 @@ export default class BeeController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
+
+		this.level.centerOnCoordinates(this.model.coordinates);
+		this.level.sanitizeViewBox();
+		
 		if (this.dead) {
 			return;
 		}
+
+		const secsDelta = delta / 1000;
 
 		const isHurt = ((this.model.health.get() > 0) && (this.model.health.get() < 1));
 		if (isHurt && !this.starsAnimationController.isActivated()) {
@@ -50,12 +56,16 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.model.health.get() < 1) {
-			this.model.health.set(Math.min(this.model.health.get() + (HEALING_SPEED * delta / 1000), 1));
+			this.model.health.set(Math.min(this.model.health.get() + (HEALING_SPEED * secsDelta), 1));
 		}
 
 		if (this.level.isWater(this.model.position)) {
 			this.die();
 			return;
+		}
+
+		if (this.level.isCloud(this.model.position)) {
+			this.model.health.set(this.model.health.get() - (secsDelta * 0.3));
 		}
 
 		if (this.model.health.get() <= 0) {
@@ -84,7 +94,6 @@ export default class BeeController extends ControllerBase {
 			this.emptyInventory();
 			this.controls.fire = false;
 		}
-
 	}
 
 	fly() {
