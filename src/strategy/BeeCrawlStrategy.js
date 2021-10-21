@@ -1,5 +1,5 @@
 import ControllerBase from "../class/ControllerBase";
-import {BEE_CENTER} from "../controller/BeeController";
+import {BEE_CENTER, WINGS_OFFSET} from "../controller/BeeController";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -15,6 +15,7 @@ import {
 	NEIGHBOR_TYPE_UPPER_RIGHT
 } from "../model/GridModel";
 import RotationValue from "../class/RotationValue";
+import Vector2 from "../class/Vector2";
 
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second
@@ -168,15 +169,19 @@ CRAWLING_MATRIX[NEIGHBOR_TYPE_UPPER_RIGHT].options[CONTROLLER_DIRECTION_RIGHT] =
 	fallback: FALLBACK_STOP
 };
 
+const CONTROLS_TIMEOUT = 500;
+
 export default class BeeCrawlStrategy extends ControllerBase {
 	targetCoordinates;
 	targetRotation;
+	timeout;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.targetCoordinates = null;
 		this.targetRotation = null;
+		this.timeout = CONTROLS_TIMEOUT;
 	}
 
 	activateInternal() {
@@ -219,6 +224,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				}
 			}
 			this.updateBee();
+			return;
+		}
+
+		if (this.timeout > 0) {
+			this.timeout -= delta;
 			return;
 		}
 
@@ -299,6 +309,8 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		const rotation = this.model.rotation.get();
 		this.model.crawlingAnimation.image.rotation.set(rotation);
 		this.model.crawlingAnimation.image.flipped.set(this.model.headingLeft.get());
+		this.model.starsAnimation.image.rotation.set(rotation);
+		this.model.starsAnimation.image.flipped.set(this.model.headingLeft.get());
 
 		// apply movement
 		this.level.centerOnCoordinates(this.model.coordinates);

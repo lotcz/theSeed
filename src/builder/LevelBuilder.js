@@ -2,13 +2,27 @@ import Vector2 from "../class/Vector2";
 import LevelModel from "../model/LevelModel";
 import GroundBuilder from "./GroundBuilder";
 import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+
 import BeeImage from "../../res/img/bee.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
 import BeeWingImage from "../../res/img/wing.svg";
+import Stars1Image from "../../res/img/stars-1.svg";
+import Stars2Image from "../../res/img/stars-2.svg";
+import Stars3Image from "../../res/img/stars-3.svg";
+
 import BeeModel from "../model/BeeModel";
 import SpriteModel from "../model/SpriteModel";
-import {IMAGE_BEE, IMAGE_BEE_DEAD, IMAGE_BEE_CRAWL, IMAGE_BEE_WING, SPRITE_STYLES} from "./SpriteStyle";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_DEAD,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_WING,
+	SPRITE_STYLES,
+	IMAGE_STARS_1,
+	IMAGE_STARS_2,
+	IMAGE_STARS_3
+} from "./SpriteStyle";
 import {BEE_CENTER} from "../controller/BeeController";
 
 export default class LevelBuilder {
@@ -106,6 +120,10 @@ export default class LevelBuilder {
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
 		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);
+		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_3, Stars3Image);
+
 		this.level.addBee(
 			new BeeModel({
 				direction: [0,0],
@@ -128,6 +146,16 @@ export default class LevelBuilder {
 						path: IMAGE_BEE_CRAWL
 					},
 					paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
+				},
+				starsAnimation: {
+					image: {
+						coordinates: BEE_CENTER.clone(),
+						scale: 1,
+						flipped: false,
+						rotation: 0,
+						path: IMAGE_STARS_1
+					},
+					paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3]
 				},
 				leftWing: {
 					coordinates: BEE_CENTER.clone(),

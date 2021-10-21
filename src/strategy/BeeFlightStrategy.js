@@ -26,6 +26,9 @@ export default class BeeFlightStrategy extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.leftWing.flipped.set(false);
+		this.model.rightWing.flipped.set(true);
+		this.model.starsAnimation.image.rotation.set(0);
 		this.model.direction.set(0,0);
 		this.speed = 0;
 		this.updateBee();
@@ -130,8 +133,8 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 	updateBee() {
 		this.model.image.flipped.set(this.model.headingLeft.get());
-		this.model.leftWing.flipped.set(false);
-		this.model.rightWing.flipped.set(true);
+		this.model.starsAnimation.image.flipped.set(this.model.headingLeft.get());
+
 		const rotation = Math.abs(this.wingRotation) - 30;
 		this.model.leftWing.rotation.set(rotation);
 		this.model.rightWing.rotation.set(-rotation);

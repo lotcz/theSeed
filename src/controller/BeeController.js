@@ -7,8 +7,11 @@ import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
+import Pixies from "../class/Pixies";
 
-export const BEE_CENTER = new Vector2(150, 150);
+export const BEE_CENTER = new Vector2(250, 250);
+export const WINGS_OFFSET = BEE_CENTER.addX(50);
+const HEALING_SPEED = 0.1; // health per second
 
 export default class BeeController extends ControllerBase {
 	dead;
@@ -21,6 +24,9 @@ export default class BeeController extends ControllerBase {
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
 
+		this.starsAnimationController = new AnimationController(this.game, this.model.starsAnimation, this.controls);
+		this.addChild(this.starsAnimationController);
+
 		this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
 		if (this.model.crawling.get()) {
 			this.crawl(this.model.crawling.get())
@@ -32,6 +38,19 @@ export default class BeeController extends ControllerBase {
 	updateInternal(delta) {
 		if (this.dead) {
 			return;
+		}
+
+		const isHurt = ((this.model.health.get() > 0) && (this.model.health.get() < 1));
+		if (isHurt && !this.starsAnimationController.isActivated()) {
+			this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
+			this.starsAnimationController.activate();
+		}
+		if (this.starsAnimationController.isActivated() && !isHurt) {
+			this.starsAnimationController.deactivate();
+		}
+
+		if (this.model.health.get() < 1) {
+			this.model.health.set(Math.min(this.model.health.get() + (HEALING_SPEED * delta / 1000), 1));
 		}
 
 		if (this.model.health.get() <= 0) {
@@ -65,15 +84,19 @@ export default class BeeController extends ControllerBase {
 
 	fly() {
 		this.model.crawling.set(null);
+		this.crawlingAnimationController.deactivate();
 		this.setStrategy(new BeeFlightStrategy(this.game, this.model, this.controls));
 	}
 
 	crawl(direction) {
 		this.model.crawling.set(direction);
+		this.crawlingAnimationController.activate();
 		this.setStrategy(new BeeCrawlStrategy(this.game, this.model, this.controls));
 	}
 
 	die() {
+		this.crawlingAnimationController.deactivate();
+		this.starsAnimationController.deactivate();
 		this.dead = true;
 		this.setStrategy(new BeeDeathStrategy(this.game, this.model, this.controls));
 	}
