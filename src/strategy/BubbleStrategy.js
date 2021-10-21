@@ -22,8 +22,8 @@ export default class BubbleStrategy extends SpriteControllerStrategy {
 			return;
 		}
 
-		if (this.level.isWater(this.position)) {
-			const up = this.grid.getNeighborUp(this.position);
+		const up = this.grid.getNeighborUp(this.position);
+		if (this.level.isWater(up)) {
 			this.setTarget(up);
 			this.model.data.amount -= WATER_UNIT_SIZE;
 		} else {

@@ -14,9 +14,12 @@ export default class BeeDeathStrategy extends ControllerBase {
 	}
 
 	updateInternal(delta) {
-		if (this.level.isWater(this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_UP))) {
-			this.model.coordinates.set(this.model.coordinates.addY(- (delta / 1000) * FALL_SPEED / 3));
-			this.model.position.set(this.grid.getPosition(this.model.coordinates));
+		if (this.level.isWater(this.model.position)) {
+			const coords = this.model.coordinates.addY(-(delta / 1000) * FALL_SPEED / 3);
+			if (this.level.isWater(this.grid.getPosition(coords))) {
+				this.model.coordinates.set(coords);
+				this.model.position.set(this.grid.getPosition(this.model.coordinates));
+			}
 			return;
 		}
 		if (this.level.isAir(this.model.position)) {
