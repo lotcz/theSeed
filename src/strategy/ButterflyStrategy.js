@@ -18,7 +18,7 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 
 		if (this.lastDirection && (Math.random() < 0.95)) {
 			const next = neighbors[this.lastDirection];
-			if (this.level.isPenetrable(next)) {
+			if (this.level.isAir(next)) {
 				this.setTarget(next);
 				return;
 			}

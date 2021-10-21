@@ -74,7 +74,8 @@ GROUND_STYLES[GROUND_TYPE_WAX] = {
 GROUND_STYLES[GROUND_TYPE_WATER] = {
 	fill: BLUE_MEDIUM,
 	stroke: { width: 160, color: BLUE_MEDIUM},
-	background: true
+	background: true,
+	penetrable: true
 };
 
 GROUND_STYLES[GROUND_TYPE_CLOUD] = {

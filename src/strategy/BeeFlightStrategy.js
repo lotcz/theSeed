@@ -17,15 +17,20 @@ const SPEEDUP_SPEED = 800;
 export default class BeeFlightStrategy extends ControllerBase {
 	wingRotation;
 	speed;
+	dead;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.wingRotation = 0;
 		this.speed = 0;
+		this.dead = false;
 	}
 
 	activateInternal() {
+		this.model.leftWing.flipped.set(false);
+		this.model.rightWing.flipped.set(true);
+		this.model.starsAnimation.image.rotation.set(0);
 		this.model.direction.set(0,0);
 		this.speed = 0;
 		this.updateBee();
@@ -36,7 +41,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 		let direction = this.model.direction;
 
-		if (this.controls.anyMovement()) {
+		if (this.controls.anyMovement() && !this.dead) {
 			if (this.controls.moveUp) {
 				direction = direction.addY(-SPEEDUP_SPEED * secsDelta);
 			} else if (this.controls.moveDown) {
@@ -51,16 +56,17 @@ export default class BeeFlightStrategy extends ControllerBase {
 			}
 		} else {
 			//slow down
-			const speed = direction.size();
-			if (speed > 0) {
-				direction.setSize(Math.max(0, speed - (SLOWDOWN_SPEED * secsDelta)));
+			this.speed = direction.size();
+			if (this.speed > 0) {
+				const slowDown = (this.dead) ? SLOWDOWN_SPEED * 4 : SLOWDOWN_SPEED;
+				direction.setSize(Math.max(0, this.speed - (slowDown * secsDelta)));
 			}
 		}
 
-		const speed = direction.size();
+		this.speed = direction.size();
 
 		// limit speed
-		if (speed > MAX_SPEED) {
+		if (this.speed > MAX_SPEED) {
 			direction.setSize(MAX_SPEED);
 		}
 
@@ -68,9 +74,14 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (this.wingRotation > 60) {
 			this.wingRotation = -60;
 		}
-		this.wingRotation += secsDelta * (100 + (400 * speed / MAX_SPEED));
+		this.wingRotation += secsDelta * (100 + (400 * this.speed / MAX_SPEED));
 
-		if (speed === 0) {
+		if (this.speed <= 0) {
+			if (this.dead) {
+				this.parent.die();
+				return;
+			}
+			this.speed = 0;
 			this.updateBee();
 			return;
 		}
@@ -87,12 +98,19 @@ export default class BeeFlightStrategy extends ControllerBase {
 			coords = this.model.coordinates.add(distance);
 			position = this.grid.getPosition(coords);
 		} else {
-			if (speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
+			if (this.speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
 				const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
 				if (crawl !== undefined) {
 					this.parent.crawl(crawl);
 					return;
 				}
+			}
+
+			this.model.health.set(this.model.health.get() - (0.5 * this.speed / MAX_SPEED));
+			if (this.model.health.get() <= 0) {
+				this.dead = true;
+				this.parent.emptyInventory();
+				this.model.health.set(0.001);
 			}
 
 			coords = this.model.coordinates.subtract(distance);
@@ -119,17 +137,14 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.position.set(position);
 		this.model.coordinates.set(coords);
 		this.model.direction.set(direction);
-		this.speed = speed;
 		this.updateBee();
 
-		this.level.centerOnCoordinates(coords);
-		this.level.sanitizeViewBox();
 	}
 
 	updateBee() {
 		this.model.image.flipped.set(this.model.headingLeft.get());
-		this.model.leftWing.flipped.set(false);
-		this.model.rightWing.flipped.set(true);
+		this.model.starsAnimation.image.flipped.set(this.model.headingLeft.get());
+
 		const rotation = Math.abs(this.wingRotation) - 30;
 		this.model.leftWing.rotation.set(rotation);
 		this.model.rightWing.rotation.set(-rotation);
