@@ -138,7 +138,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.coordinates.set(coords);
 		this.model.direction.set(direction);
 		this.updateBee();
-
+		this.parent.updateMovement();
 	}
 
 	updateBee() {

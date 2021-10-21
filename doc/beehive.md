@@ -77,7 +77,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- get hurt by clouds and water
 - opening and closing scene (circular mask animation)
 - new sprite movement type (for monsters to be oriented)
 - sounds and music

@@ -14,21 +14,24 @@ export default class BeeDeathStrategy extends ControllerBase {
 	}
 
 	updateInternal(delta) {
+		if (this.level.clipAmount.get() < 1) {
+			this.level.clipCenter.set(this.model.coordinates);
+			this.level.clipAmount.set(Math.min(this.level.clipAmount.get() + (0.5 * delta / 1000), 1));
+		}
 		if (this.level.isWater(this.model.position)) {
 			const coords = this.model.coordinates.addY(-(delta / 1000) * FALL_SPEED / 3);
 			if (this.level.isWater(this.grid.getPosition(coords))) {
 				this.model.coordinates.set(coords);
 				this.model.position.set(this.grid.getPosition(this.model.coordinates));
-				this.level.centerOnCoordinates(coords);
-				this.level.sanitizeViewBox();
+				this.parent.updateMovement();
 			}
 			return;
 		}
 		if (this.level.isAir(this.model.position)) {
 			this.model.coordinates.set(this.model.coordinates.addY((delta / 1000) * FALL_SPEED));
 			this.model.position.set(this.grid.getPosition(this.model.coordinates));
+			this.parent.updateMovement();
 		}
-
 	}
 
 }

@@ -25,6 +25,7 @@ export default class LevelModel extends ModelBase {
 	viewBoxScale;
 	viewBoxSize;
 	viewBoxCoordinates;
+	clipAmount; // 0 - no clipping, 1 - whole image clipped
 
 	constructor(state) {
 		super();
@@ -51,6 +52,10 @@ export default class LevelModel extends ModelBase {
 		this.addChild(this.viewBoxSize);
 		this.viewBoxCoordinates = new Vector2();
 		this.addChild(this.viewBoxCoordinates);
+		this.clipAmount = new DirtyValue(0);
+		this.addChild(this.clipAmount);
+		this.clipCenter = new Vector2();
+		this.addChild(this.clipCenter);
 
 		this.parallaxType = new DirtyValue();
 		this.addChild(this.parallaxType);
@@ -132,16 +137,25 @@ export default class LevelModel extends ModelBase {
 	}
 
 	isGround(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
 		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type !== GROUND_TYPE_WATER && v._is_penetrable === false);
 		return visitors.length > 0;
 	}
 
 	isWater(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
 		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
 		return visitors.length > 0;
 	}
 
 	isCloud(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
 		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_CLOUD);
 		return visitors.length > 0;
 	}

@@ -10,15 +10,6 @@ export default class LevelController extends ControllerBase {
 		this.groundController = new GroundController(game, model.ground, controls);
 		this.addChild(this.groundController);
 
-		/*
-		if (model.plant.auto) {
-			this.plantController = new AutoPlantController(game, model.plant, controls);
-		} else {
-			this.plantController = new PlantController(game, model.plant, controls);
-		}
-		this.addChild(this.plantController);
-*/
-
 		this.spritesController = new SpriteCollectionController(game, model.sprites, controls);
 		this.addChild(this.spritesController);
 

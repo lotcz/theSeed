@@ -57,6 +57,9 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 
 		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
+
+		this.clipPath = null;
+		this.clipCircle = null;
 	}
 
 	deactivateInternal() {
@@ -77,6 +80,30 @@ export default class LevelRenderer extends SvgRenderer {
 			);
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
+		}
+
+		if (this.model.clipAmount.isDirty() || this.model.clipCenter.isDirty()) {
+			if (this.model.clipAmount.get() > 0) {
+				if (!this.clipPath) {
+					this.clipCircle = this.draw.circle(150);
+					this.clipPath = this.draw.clip().add(this.clipCircle);
+					this.group.clipWith(this.clipPath);
+				}
+				const diameter = this.model.viewBoxSize.size();
+				const radius = (diameter * 0.5) * (1 - this.model.clipAmount.get());
+				console.log(radius);
+				this.clipCircle.radius(Math.max(radius, 0));
+				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
+			} else {
+				if (this.clipPath) {
+					this.group.unclip();
+					this.clipPath.remove();
+					this.clipPath = null;
+					this.clipCircle = null;
+				}
+			}
+			this.model.clipAmount.clean();
+			this.model.clipCenter.clean();
 		}
 	}
 

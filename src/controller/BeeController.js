@@ -36,10 +36,6 @@ export default class BeeController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
-
-		this.level.centerOnCoordinates(this.model.coordinates);
-		this.level.sanitizeViewBox();
-		
 		if (this.dead) {
 			return;
 		}
@@ -128,6 +124,11 @@ export default class BeeController extends ControllerBase {
 			item.position.set(this.model.position);
 			this.level.sprites.add(item);
 		}
+	}
+
+	updateMovement() {
+		this.level.centerOnCoordinates(this.model.coordinates);
+		this.level.sanitizeViewBox();
 	}
 
 }
