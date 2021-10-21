@@ -53,6 +53,11 @@ export default class BeeController extends ControllerBase {
 			this.model.health.set(Math.min(this.model.health.get() + (HEALING_SPEED * delta / 1000), 1));
 		}
 
+		if (this.level.isWater(this.model.position)) {
+			this.die();
+			return;
+		}
+
 		if (this.model.health.get() <= 0) {
 			this.die();
 			return;

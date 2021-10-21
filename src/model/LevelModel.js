@@ -131,6 +131,32 @@ export default class LevelModel extends ModelBase {
 		return this.grid.isValidPosition(position);
 	}
 
+	isGround(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type !== GROUND_TYPE_WATER && v._is_penetrable === false);
+		return visitors.length > 0;
+	}
+
+	isWater(position) {
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
+		return visitors.length > 0;
+	}
+
+	isPenetrable(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
+		return visitors.length === 0;
+	}
+
+	isAir(position) {
+		if (!this.isValidPosition(position)) {
+			return false;
+		}
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false || v.type === GROUND_TYPE_WATER);
+		return visitors.length === 0;
+	}
+
 	isCrawlable(position) {
 		if (!this.isValidPosition(position)) {
 			return false;
@@ -154,24 +180,6 @@ export default class LevelModel extends ModelBase {
 	centerView() {
 		const center = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
 		this.centerOnPosition(center);
-	}
-
-	isGround(position) {
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type !== GROUND_TYPE_WATER && v._is_penetrable === false);
-		return visitors.length > 0;
-	}
-
-	isWater(position) {
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
-		return visitors.length > 0;
-	}
-
-	isPenetrable(position) {
-		if (!this.isValidPosition(position)) {
-			return false;
-		}
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
-		return visitors.length === 0;
 	}
 
 	sanitizeViewBox() {
