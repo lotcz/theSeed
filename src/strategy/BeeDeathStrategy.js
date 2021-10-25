@@ -1,5 +1,5 @@
 import ControllerBase from "../class/ControllerBase";
-import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UP} from "../model/GridModel";
+import {IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
 
 const FALL_SPEED = 400; // pixels per second
 
@@ -10,7 +10,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 		this.model.direction.set(0,0);
 		this.speed = 0;
 		this.parent.emptyInventory();
-		this.model.image.path.set(this.model.deadImagePath.get());
+		this.model.image.path.set(IMAGE_BEE_DEAD);
 	}
 
 	updateInternal(delta) {

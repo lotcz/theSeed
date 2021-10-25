@@ -127,7 +127,6 @@ export default class LevelBuilder {
 					rotation: 0,
 					path: IMAGE_BEE
 				},
-				deadImagePath: IMAGE_BEE_DEAD,
 				crawlingAnimation: {
 					image: {
 						coordinates: BEE_CENTER.clone(),
