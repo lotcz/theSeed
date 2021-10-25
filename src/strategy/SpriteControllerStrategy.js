@@ -104,6 +104,9 @@ export default class SpriteControllerStrategy extends ControllerBase {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
 				const step = Pixies.between(-diff, diff, (diff > 0 ? -1 : 1) * 360 * (delta / ROTATION_SPEED));
 				this.rotation.set((this.rotation.get() + step));
+				if (this.model.oriented.get()) {
+					this.model.image.flipped.set(this.rotation.get() < 0);
+				}
 			}
 		}
 

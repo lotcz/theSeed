@@ -7,6 +7,7 @@ export default class SpriteModel extends ModelBase {
 	position;
 	image;
 	strategy;
+	oriented;
 	data;
 	_is_sprite;
 	onClick;
@@ -16,6 +17,9 @@ export default class SpriteModel extends ModelBase {
 
 		// for visitor to be recognized as sprite
 		this._is_sprite = true;
+
+		this.oriented = new DirtyValue(false);
+		this.addChild(this.oriented);
 
 		this.data = {};
 
@@ -29,6 +33,7 @@ export default class SpriteModel extends ModelBase {
 		return {
 			position: this.position.toArray(),
 			image: (this.image) ? this.image.getState() : null,
+			oriented: this.oriented.get(),
 			strategy: this.strategy.get(),
 			data: this.data
 		}
@@ -46,6 +51,7 @@ export default class SpriteModel extends ModelBase {
 		if (state.data) {
 			this.data = state.data;
 		}
+		if (state.oriented) this.oriented.restoreState(state.oriented);
 	}
 
 }

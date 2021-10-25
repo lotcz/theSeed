@@ -19,21 +19,18 @@ export default class BugStrategy extends SpriteControllerStrategy {
 		}
 
 		const lowerNeighbor = this.grid.getNeighborDown(this.position);
-		if ((!this.level.isGround(this.position)) && (this.level.isPenetrable(lowerNeighbor))) {
+		if (this.level.isPenetrable(lowerNeighbor)) {
 			this.setTarget(lowerNeighbor);
 			return;
 		}
 
-		const groundNeighbors = this.level.grid.getNeighbors(this.position).filter((g) => this.level.isGround(g));
-		const surfaceNeighbors = groundNeighbors.filter((g) => {
-			const airNeighbors = this.level.grid.getNeighbors(g).filter((a) => this.level.isPenetrable(a));
-			return airNeighbors.length > 0;
-		});
+		const freeNeighbors = this.level.grid.getNeighbors(this.position).filter((n) => this.level.isPenetrable(n));
+		const surfaceNeighbors = freeNeighbors.filter((n) => !this.level.isPenetrable(this.grid.getNeighborDown(n)));
 
 		if (surfaceNeighbors.length > 0) {
 			this.setTarget(Pixies.randomElement(surfaceNeighbors));
 		} else {
-			this.setTarget(Pixies.randomElement(groundNeighbors));
+			this.setTarget(Pixies.randomElement(freeNeighbors));
 		}
 
 	}

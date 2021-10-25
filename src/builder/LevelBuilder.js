@@ -63,7 +63,7 @@ export default class LevelBuilder {
 		this.ground = builder.build();
 	}
 
-	addSprite(position, strategy, data, path, scale, rotation, flipped) {
+	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {
 		const state = {
 			position: position.toArray(),
 			image: (path) ? {
@@ -73,6 +73,7 @@ export default class LevelBuilder {
 				path: path
 			} : null,
 			strategy: strategy,
+			oriented: oriented,
 			data: data
 		};
 		return this.level.sprites.add(new SpriteModel(state));
@@ -94,7 +95,8 @@ export default class LevelBuilder {
 			uri,
 			scale,
 			0,
-			false
+			false,
+			style.oriented
 		);
 	}
 

@@ -8,7 +8,7 @@ import SulfurImage from "../../res/img/sulfur.svg";
 import MagnesiumImage from "../../res/img/magnesium.svg";
 
 import ButterflyImage from "../../res/img/butterfly.svg";
-import LadybugImage from "../../res/img/my-lady-bug.svg";
+import LadybugImage from "../../res/img/ladybug.svg";
 import GrasshopperImage from "../../res/img/grasshopper.svg";
 import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
@@ -70,7 +70,8 @@ SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 	image: {
 		uri: IMAGE_BUG,
 		resource: LadybugImage
-	}
+	},
+	oriented: true
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUTTERFLY] = {
