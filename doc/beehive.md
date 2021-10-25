@@ -71,13 +71,21 @@ gather nectar from inside a giant flower
 level 6
 
 make way through ants nest, feed ants to carnivorous plant by luring them with honey
+you must gather nectar on the surface first, then make honey, then you can use it
 
 gather nectar from inside a giant flower
 
 
 TODO:
 
-- opening and closing scene (circular mask animation)
+level model - list of resource URIs (as hashtable)
+game model - all resources stored in hash table
+game renderer -  use resourcesLoader to load resources into defs when level is loaded
+
+
+- don't store resources in state (only store uri, load from resource store)
+- hardcode bee animations, don't require any pre-existing model
+- opening and closing scene (circular mask animation, move to level controller)
 - new sprite movement type (for monsters to be oriented)
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)

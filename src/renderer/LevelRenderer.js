@@ -28,10 +28,12 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// FOREGROUND
 		this.foreground = this.group.group().addClass('foreground');
+		/*
 		if (this.model.plant) {
 			this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
 			this.addChild(this.plantRenderer);
 		}
+		*/
 
 		// PARALLAX
 		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
@@ -91,7 +93,6 @@ export default class LevelRenderer extends SvgRenderer {
 				}
 				const diameter = this.model.viewBoxSize.size();
 				const radius = (diameter * 0.5) * (1 - this.model.clipAmount.get());
-				console.log(radius);
 				this.clipCircle.radius(Math.max(radius, 0));
 				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
@@ -109,7 +110,7 @@ export default class LevelRenderer extends SvgRenderer {
 
 	onAddResource(resource) {
 		if (DEBUG_LEVEL_RENDERER) console.log('Resource added.', resource);
-		const loader = new ResourceLoader(this.draw, resource);
+		const loader = new ResourceLoader(this.game.resources, this.draw, resource);
 		loader.load((r) => {
 			if (DEBUG_LEVEL_RENDERER) console.log('Resource loaded', r);
 		});

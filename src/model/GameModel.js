@@ -3,6 +3,24 @@ import LevelModel from "./LevelModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 import LevelEditorModel from "./LevelEditorModel";
+import HashTableModel from "./HashTableModel";
+import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_DEAD,
+	IMAGE_BEE_WING,
+	IMAGE_STARS_1,
+	IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES
+} from "../builder/SpriteStyle";
+import BeeImage from "../../res/img/bee.svg";
+import BeeDeadImage from "../../res/img/bee-dead.svg";
+import BeeCrawlImage from "../../res/img/bee-walk.svg";
+import BeeWingImage from "../../res/img/wing.svg";
+import Stars1Image from "../../res/img/stars-1.svg";
+import Stars2Image from "../../res/img/stars-2.svg";
+import Stars3Image from "../../res/img/stars-3.svg";
+import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 
 const DEBUG_MODE = true;
 
@@ -12,14 +30,17 @@ export default class GameModel extends ModelBase {
 	editor;
 	isInEditMode;
 	viewBoxSize;
+	resources;
 
 	constructor() {
 		super();
 
 		this.level = new DirtyValue();
 		this.addChild(this.level);
+
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
+
 		this.editor = new LevelEditorModel();
 		this.addChild(this.editor);
 		this.isInEditMode = new DirtyValue(DEBUG_MODE);
@@ -27,6 +48,47 @@ export default class GameModel extends ModelBase {
 
 		this.viewBoxSize = new Vector2();
 		this.addChild(this.viewBoxSize);
+
+		this.resources = new HashTableModel();
+		this.addChild(this.resources);
+		this.initResources();
+	}
+
+	initResources() {
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_3, Stars3Image);
+
+		for (let type in SPRITE_STYLES) {
+			const style = SPRITE_STYLES[type];
+			if (style.image) {
+				this.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource)
+			}
+		};
+
+		for (let type in PARALLAX_STYLES) {
+			const style = PARALLAX_STYLES[type];
+			if (style.layers) {
+				style.layers.forEach((layer) => {
+					if (layer.image) {
+						this.addResource(RESOURCE_TYPE_IMAGE, layer.image.uri, layer.image.resource)
+					}
+				});
+			}
+		};
+
+	}
+
+	addResource(resType, uri, data) {
+		if (this.resources.exists(uri)) {
+			console.log(`Resource URI ${uri} already exists in game resources store.`);
+		} else {
+			this.resources.add(uri, new ResourceModel({type: resType, uri: uri, data: data}));
+		}
 	}
 
 }

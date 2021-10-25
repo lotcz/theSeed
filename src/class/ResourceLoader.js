@@ -1,31 +1,32 @@
 import Tree from "./Tree";
-import ResourceModel, {RESOURCE_TYPE_GROUP, RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import Pixies from "./Pixies";
 
 const DEBUG_RESOURCE_LOADER = false;
 
 export default class ResourceLoader extends Tree {
-	model;
+	resources;
+	uri;
 	loaded;
 	onLoaded;
-	resource;
 	draw;
+	def;
 
-	constructor(draw, model) {
+	constructor(resources, draw, uri) {
 		super();
 
+		this.resources = resources;
 		this.draw = draw;
-		this.model = model;
+		this.uri = uri;
 
 		this.loaded = false;
 		this.onLoaded = null;
-		this.resource = null;
-
+		this.def = null;
 	}
 
 	update() {
 		if (this.isLoaded()) {
-			this.onLoaded(this.resource);
+			this.onLoaded(this.def);
 		}
 	}
 
@@ -34,29 +35,33 @@ export default class ResourceLoader extends Tree {
 	}
 
 	loadInternal() {
-		switch (this.model.resType) {
-			case RESOURCE_TYPE_GROUP:
-				this.loaded = true;
-				break;
+		const resource = this.resources.get(this.uri);
+		if (resource === undefined) {
+			console.error(`Resource '${this.uri}' not found!`);
+			return;
+		}
+
+		switch (resource.type) {
 			case RESOURCE_TYPE_IMAGE:
 				const defs = this.draw.root().defs();
-				const token = Pixies.token(this.model.uri);
-				this.resource = defs.findOne('#' + token);
-				if (!this.resource) {
-					this.resource = defs.image(
-						this.model.data,
+				const token = Pixies.token(resource.uri);
+				this.def = defs.findOne('#' + token);
+				if (!this.def) {
+					this.def = defs.image(
+						resource.data,
 						() => {
 							this.loaded = true;
 							this.update();
 						}
 					);
-					this.resource.attr({id:token});
-					//defs.add(this.resource);
+					this.def.attr({id:token});
 				} else {
-					if (DEBUG_RESOURCE_LOADER) console.log(`Resource ${this.model.uri} already loaded.`);
+					if (DEBUG_RESOURCE_LOADER) console.log(`Resource ${resource.uri} already loaded in defs.`);
 					this.loaded = true;
 				}
 				break;
+			default:
+				console.error(`Resource type '${resource.type}' doesn't exist!`);
 		}
 		this.update();
 	}

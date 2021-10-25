@@ -1,15 +1,6 @@
 import Vector2 from "../class/Vector2";
 import LevelModel from "../model/LevelModel";
 import GroundBuilder from "./GroundBuilder";
-import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
-
-import BeeImage from "../../res/img/bee.svg";
-import BeeDeadImage from "../../res/img/bee-dead.svg";
-import BeeCrawlImage from "../../res/img/bee-walk.svg";
-import BeeWingImage from "../../res/img/wing.svg";
-import Stars1Image from "../../res/img/stars-1.svg";
-import Stars2Image from "../../res/img/stars-2.svg";
-import Stars3Image from "../../res/img/stars-3.svg";
 
 import BeeModel from "../model/BeeModel";
 import SpriteModel from "../model/SpriteModel";
@@ -92,7 +83,7 @@ export default class LevelBuilder {
 		let uri = null;
 		let scale = 1;
 		if (style.image) {
-			this.level.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
+			this.level.addResource(style.image.uri);
 			uri = style.image.uri;
 			scale = style.image.scale;
 		}
@@ -116,13 +107,13 @@ export default class LevelBuilder {
 	}
 
 	addBee(position) {
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);
-		this.level.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_3, Stars3Image);
+		this.level.addResource(IMAGE_BEE);
+		this.level.addResource(IMAGE_BEE_DEAD);
+		this.level.addResource(IMAGE_BEE_CRAWL);
+		this.level.addResource(IMAGE_BEE_WING);
+		this.level.addResource(IMAGE_STARS_1);
+		this.level.addResource(IMAGE_STARS_2);
+		this.level.addResource(IMAGE_STARS_3);
 
 		this.level.addBee(
 			new BeeModel({

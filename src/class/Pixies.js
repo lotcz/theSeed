@@ -28,19 +28,13 @@ export default class Pixies {
 
 	static token(value) {
 		let hash = Pixies.hash(value);
-		if (hash == 0) return '0';
+		if (hash == 0) return null;
 		let token = 'a';
 		if (hash < 0) {
 			token = 'b';
 			hash = -hash;
 		}
-		while (hash > 0)
-		{
-			const rem = hash % 256;
-			hash = (hash - rem) / 256;
-			token += rem;
-		}
-		return token;
+		return token + hash;
 	}
 
 	static addClass(element, css) {

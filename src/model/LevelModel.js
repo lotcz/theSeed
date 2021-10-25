@@ -12,6 +12,7 @@ import BeeModel from "./BeeModel";
 import {GROUND_TYPE_CLOUD, GROUND_TYPE_WATER} from "../builder/GroundStyle";
 import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import ParallaxLayerModel from "./ParallaxLayerModel";
+import HashTableModel from "./HashTableModel";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -43,7 +44,7 @@ export default class LevelModel extends ModelBase {
 		this.sprites = new CollectionModel();
 		this.addChild(this.sprites);
 
-		this.resources = new CollectionModel();
+		this.resources = new HashTableModel();
 		this.addChild(this.resources);
 
 		this.viewBoxScale = new DirtyValue(1);
@@ -98,7 +99,7 @@ export default class LevelModel extends ModelBase {
 		if (state.ground) this.ground.restoreState(state.ground);
 		if (state.bee) this.addBee(new BeeModel(state.bee));
 		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
-		if (state.resources) this.resources.restoreState(state.resources, (r) => new ResourceModel(r));
+		if (state.resources) this.resources.restoreState(state.resources, (r) => null);
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
 		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
@@ -112,12 +113,11 @@ export default class LevelModel extends ModelBase {
 		}
 	}
 
-	addResource(resType, uri, data) {
-		const existing = this.resources.children.filter((r) => r.uri === uri);
-		if (existing.length > 0) {
-			console.log(`Resource URI ${uri} already exists.`);
+	addResource(uri) {
+		if (this.resources.exists(uri)) {
+			console.log(`Resource URI ${uri} already exists in this level.`);
 		} else {
-			this.resources.add(new ResourceModel({resType: resType, uri: uri, data: data}));
+			this.resources.add(uri);
 		}
 	}
 
@@ -249,7 +249,7 @@ export default class LevelModel extends ModelBase {
 			style.layers.forEach((l) => {
 				const layer = new ParallaxLayerModel();
 				layer.distance = l.distance;
-				this.addResource(RESOURCE_TYPE_IMAGE, l.image.uri, l.image.resource);
+				this.addResource(l.image.uri);
 				layer.image.path = l.image.uri;
 				parallax.addChild(layer);
 			});
