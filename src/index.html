@@ -3,87 +3,11 @@
     <head>
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
         <title>Beehive Adventures</title>
-
 		<link rel="manifest" href="/pwa.webmanifest">
-
-		<style>
-			@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lobster&family=Racing+Sans+One&display=swap');
-
-			svg * {
-				pointer-events: none;
-			}
-
-			.menu, svg {
-				-webkit-user-select: none;
-				-khtml-user-select: none;
-				-moz-user-select: none;
-				-o-user-select: none;
-				user-select: none;
-			}
-
-			html, body {
-				background: #000;
-				margin: 0;
-				padding: 0;
-				overflow: hidden;
-				font-family: 'Lobster', Arial, sans-serif;
-				color: yellow;
-				font-size: 170%;
-			}
-
-			.menu {
-				position: fixed;
-				cursor: pointer;
-				left: 0;
-				top: 0;
-				z-index: 1000;
-			}
-
-			.menu a:hover {
-				color: white;
-				cursor: pointer;
-			}
-
-			.menu ul,
-			.menu ul li {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-			}
-
-			.menu.main {
-				top: 15%;
-				left: 15%;
-			}
-
-			.menu.play {
-				left: 100px;
-			}
-
-			.centered,
-			.loading {
-				position: fixed;
-				left: 0;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				background-color: #000;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.loading {
-				z-index: 2000;
-			}
-
-		</style>
-
     </head>
     <body>
-		<div class="centered" style="z-index: -1"><span>Beehive Adventures</span></div>
+		<div class="centered" style="z-index: -1"><span>Loading Beehive Adventures. Please wait...</span></div>
     </body>
 	<script>
 		if ('serviceWorker' in navigator) {

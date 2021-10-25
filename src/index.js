@@ -1,3 +1,4 @@
+import "./style.css";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
 import Controls from "./class/Controls";
