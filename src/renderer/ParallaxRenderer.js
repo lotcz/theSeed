@@ -4,12 +4,16 @@ import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
 
 export default class ParallaxRenderer extends SvgRenderer {
+	gradient;
+	filter;
 
 	constructor(game, model, background, foreground) {
 		super(game, model, background);
 
 		this.background = background;
 		this.foreground = foreground;
+		this.fill = null;
+		this.filter = null;
 	}
 
 	activateInternal() {
@@ -18,12 +22,13 @@ export default class ParallaxRenderer extends SvgRenderer {
 
 		let fill = null;
 		if (this.model.backgroundColor !== this.model.backgroundColorEnd) {
-			fill = this.background.gradient('linear', (add) => {
+			this.gradient = this.background.gradient('linear', (add) => {
 				add.stop(0, this.model.backgroundColor);
 				add.stop(1, this.model.backgroundColorEnd);
 				add.from(0, 0);
 				add.to(0, 1);
 			});
+			fill = this.gradient;
 		} else {
 			fill = this.model.backgroundColor;
 		}
@@ -31,13 +36,18 @@ export default class ParallaxRenderer extends SvgRenderer {
 
 		const parallaxBack = this.background.group().addClass('parallax-back');
 		parallaxBack.opacity(0.1);
-		parallaxBack.filterWith(function (add) {
-			add.colorMatrix('matrix',
-				[0, 0, 1, 0, 0
-					, 0, 0, 1, 0, 0
-					, 0, 0, 1, 0, 0
-					, .000, .000, .000, 1, 0])
-		});
+
+		this.filter = this.draw.defs().filter();
+		this.filter.colorMatrix(
+			'matrix',
+			[
+				0, 0, 1, 0, 0,
+				0, 0, 1, 0, 0,
+				0, 0, 1, 0, 0,
+				.000, .000, .000, 1, 0
+			]
+		);
+		parallaxBack.filterWith(this.filter);
 
 		// TODO: sort parallax layers by distance
 
@@ -48,6 +58,11 @@ export default class ParallaxRenderer extends SvgRenderer {
 			layerRenderer.activate();
 		});
 
+	}
+
+	deactivateInternal() {
+		if (this.gradient) this.gradient.remove();
+		if (this.filter) this.filter.remove();
 	}
 
 	renderInternal() {

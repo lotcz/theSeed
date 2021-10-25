@@ -78,12 +78,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-level model - list of resource URIs (as hashtable)
-game model - all resources stored in hash table
-game renderer -  use resourcesLoader to load resources into defs when level is loaded
-
-
-- don't store resources in state (only store uri, load from resource store)
 - hardcode bee animations, don't require any pre-existing model
 - opening and closing scene (circular mask animation, move to level controller)
 - new sprite movement type (for monsters to be oriented)
