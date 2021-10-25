@@ -4,6 +4,7 @@ import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 
 export default class LevelController extends ControllerBase {
+
 	constructor(game, model, controls) {
 		super(game, model, controls);
 

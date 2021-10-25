@@ -253,10 +253,18 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			}
 			if (this.controls.moveLeft) {
 				controllerDirection = CONTROLLER_DIRECTION_LEFT;
-				this.model.headingLeft.set(true);
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UP) {
+					this.model.headingLeft.set(false);
+				} else {
+					this.model.headingLeft.set(true);
+				}
 			} else if (this.controls.moveRight) {
 				controllerDirection = CONTROLLER_DIRECTION_RIGHT;
-				this.model.headingLeft.set(false);
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UP) {
+					this.model.headingLeft.set(true);
+				} else {
+					this.model.headingLeft.set(false);
+				}
 			}
 			const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
 			if (!matrix) {

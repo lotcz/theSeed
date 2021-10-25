@@ -78,9 +78,8 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- hardcode bee animations, don't require any pre-existing model
-- opening and closing scene (circular mask animation, move to level controller)
 - new sprite movement type (for monsters to be oriented)
+- movement between levels, respawn locations, opening and closing
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)
 

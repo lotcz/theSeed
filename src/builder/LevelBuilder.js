@@ -145,7 +145,8 @@ export default class LevelBuilder {
 						rotation: 0,
 						path: IMAGE_STARS_1
 					},
-					paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3]
+					paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3],
+					frameRate: 5
 				},
 				leftWing: {
 					coordinates: BEE_CENTER.clone(),
