@@ -69,6 +69,12 @@ export default class LevelRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
+		if (this.beeRenderer && this.beeRenderer.isDeleted()) {
+			this.removeChild(this.beeRenderer);
+			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
+			this.addChild(this.beeRenderer);
+		}
+
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
 			if (HIDE_WHEN_OUTTA_SIGHT) {
 				this.spritesRenderer.updateOuttaSight();

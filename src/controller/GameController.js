@@ -13,6 +13,7 @@ import {
 } from "../builder/GroundBuilder";
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
+import {STRATEGY_RESPAWN} from "../builder/SpriteStyle";
 
 export default class GameController extends ControllerBase {
 	constructor(model, controls) {
@@ -22,8 +23,10 @@ export default class GameController extends ControllerBase {
 
 		this.editorController = null;
 		if (this.model.editor) {
-			this.model.editor.levelLoadRequest.addOnChangeListener((value) => this.onLoadLeveRequest(value));
+			this.model.editor.levelLoadRequest.addOnChangeListener((value) => this.onEditorLoadLevelRequest(value));
 		}
+
+		this.model.levelName.addOnChangeListener((value) => this.onLoadLevelRequest(value));
 	}
 
 	activateInternal() {
@@ -42,18 +45,33 @@ export default class GameController extends ControllerBase {
 		window.removeEventListener('resize', this.onResizeEvent);
 	}
 
-	async onLoadLeveRequest(levelName) {
+	async onLoadLevelRequest(levelName) {
 		if (levelName) {
 			console.log('Level request', levelName);
+			this.model.lastLevelName = this.model.level.get().name;
+			await this.loadSaveGame(levelName);
+			const respawn = this.model.level.get().sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === this.model.lastLevelName);
+			if (!respawn) {
+				console.log('Respawn spot not found!');
+				return;
+			}
+			const builder = new LevelBuilder(this.model.level.get());
+			builder.addBee(respawn.position);
+		}
+	}
+
+	async onEditorLoadLevelRequest(levelName) {
+		if (levelName) {
+			console.log('Editor Level request', levelName);
 			this.model.editor.levelLoadRequest.set(false);
 			await this.loadSaveGame(levelName);
 		}
 		this.model.editor.levelLoadRequest.clean();
 	}
 
-	setActiveLevel(levelModel) {
+	setActiveLevel(level) {
 		if (this.levelController) this.removeChild(this.levelController);
-		this.model.level.set(levelModel);
+		this.model.level.set(level);
 		this.levelController = new LevelController(this.model, this.model.level.get(), this.controls);
 		this.addChild(this.levelController);
 		this.levelController.activate();
@@ -110,9 +128,9 @@ export default class GameController extends ControllerBase {
 
 	showLevelSelection() {
 		const builder = new MenuBuilder('main');
+		builder.addLine("Beehive", (e) => this.loadSaveGame('beehive'));
 		builder.addLine("Level 1", (e) => this.loadSaveGame('level-1'));
 		builder.addLine("Level 2", (e) => this.loadSaveGame('level-2'));
-		builder.addLine("Playground", (e) => this.loadSaveGame('playground'));
 		builder.addLine("Back", (e) => this.showMainMenu());
 		this.model.menu.set(builder.build());
 	}
@@ -178,7 +196,6 @@ export default class GameController extends ControllerBase {
 			console.warn(`Level ${name} not found!`);
 			this.newGame();
 		}
-
 	}
 
 	activateEditor() {

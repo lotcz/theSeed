@@ -32,6 +32,11 @@ Jellymaker - turns nectar into jelly
 Waxmaker - turns potassium and jelly into wax
 Honeymaker - turns jelly and pollen into honey
 
+red bug - eats jelly
+ant -
+butterfly -
+grasshopper -
+
 level 1
 
 jelly maker asks for nectar
@@ -78,8 +83,8 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- new sprite movement type (for monsters to be oriented)
-- movement between levels, respawn locations, opening and closing
+- movement between levels, respawn locations
+- opening and closing
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)
 

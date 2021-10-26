@@ -10,6 +10,7 @@ export default class SpriteModel extends ModelBase {
 	oriented;
 	data;
 	_is_sprite;
+	_is_penetrable;
 	onClick;
 
 	constructor(state) {
@@ -17,6 +18,7 @@ export default class SpriteModel extends ModelBase {
 
 		// for visitor to be recognized as sprite
 		this._is_sprite = true;
+		this._is_penetrable = true;
 
 		this.oriented = new DirtyValue(false);
 		this.addChild(this.oriented);

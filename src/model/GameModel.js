@@ -26,6 +26,8 @@ const DEBUG_MODE = true;
 
 export default class GameModel extends ModelBase {
 	level;
+	levelName;
+	lastLevelName;
 	menu;
 	editor;
 	isInEditMode;
@@ -37,6 +39,9 @@ export default class GameModel extends ModelBase {
 
 		this.level = new DirtyValue();
 		this.addChild(this.level);
+		this.levelName = new DirtyValue();
+		this.addChild(this.levelName);
+		this.lastLevelName = null;
 
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
@@ -54,6 +59,18 @@ export default class GameModel extends ModelBase {
 		this.initResources();
 	}
 
+	getState() {
+		return {
+			lastLevelName: this.lastLevelName,
+			levelName: this.levelName.get(),
+		}
+	}
+
+	restoreState(state) {
+		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
+		if (state.levelName) this.levelName.restoreState(state.levelName);
+	}
+
 	initResources() {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
@@ -68,7 +85,7 @@ export default class GameModel extends ModelBase {
 			if (style.image) {
 				this.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource)
 			}
-		};
+		}
 
 		for (let type in PARALLAX_STYLES) {
 			const style = PARALLAX_STYLES[type];
@@ -79,8 +96,7 @@ export default class GameModel extends ModelBase {
 					}
 				});
 			}
-		};
-
+		}
 	}
 
 	addResource(resType, uri, data) {

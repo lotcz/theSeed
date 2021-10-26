@@ -21,4 +21,19 @@ export default class LevelController extends ControllerBase {
 
 	}
 
+	updateInternal(delta) {
+		if (this.beeController) {
+			if (this.beeController.isDeleted()) {
+				this.removeChild(this.beeController);
+				console.log(this.model.bee);
+				if (this.model.bee) {
+					if (!this.model.bee.isDeleted()) {
+						this.beeController = new BeeController(this.game, this.model.bee, this.controls);
+						this.addChild(this.beeController);
+						this.beeController.activate();
+					}
+				}
+			}
+		}
+	}
 }

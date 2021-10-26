@@ -110,14 +110,16 @@ SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
 };
 
 SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
-	strategy: STRATEGY_RESPAWN
+	strategy: STRATEGY_RESPAWN,
+	data: {name: 'start'}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
-	strategy: STRATEGY_EXIT
+	strategy: STRATEGY_EXIT,
+	data: {level: 'level-0'}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	strategy: STRATEGY_EMITTER,
-	data: {type:'water',timeout:1000,max:5}
+	data: {type:'water', timeout:1000, max:5}
 };

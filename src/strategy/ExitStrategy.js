@@ -10,20 +10,12 @@ export default class ExitStrategy extends SpriteControllerStrategy {
 		this.movementEnabled = false;
 		this.turningEnabled = false;
 		this.scalingEnabled = false;
-
-		this.respawn = this.level.sprites.children.find((sprite) => sprite.strategy.get() === STRATEGY_RESPAWN);
 	}
 
 	selectTargetInternal() {
-		if (this.model.position.distanceTo(this.level.bee.position) < 5) {
+		if (this.model.position.distanceTo(this.level.bee.position) < 3) {
 			console.log('Exit');
-			if (!this.respawn) {
-				console.log('No respawn location');
-				return;
-			}
-			this.level.bee.position.set(this.respawn.position);
-			this.level.bee.image.coordinates.set(this.grid.getCoordinates(this.respawn.position));
-
+			this.game.levelName.set(this.model.data.level);
 		}
 		//const visitors = this.chessboard.getVisitors(this.position)
 	}
