@@ -4,7 +4,6 @@ import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 
 export default class LevelController extends ControllerBase {
-
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
@@ -21,19 +20,21 @@ export default class LevelController extends ControllerBase {
 
 	}
 
+	activateInternal() {
+		this.model.clipAmount.set(1);
+	}
+
 	updateInternal(delta) {
-		if (this.beeController) {
-			if (this.beeController.isDeleted()) {
-				this.removeChild(this.beeController);
-				console.log(this.model.bee);
-				if (this.model.bee) {
-					if (!this.model.bee.isDeleted()) {
-						this.beeController = new BeeController(this.game, this.model.bee, this.controls);
-						this.addChild(this.beeController);
-						this.beeController.activate();
-					}
-				}
-			}
+		if (this.beeController && this.beeController.isDeleted()) {
+			this.removeChild(this.beeController);
+			this.beeController = new BeeController(this.game, this.model.bee, this.controls);
+			this.addChild(this.beeController);
+			this.beeController.activate();
+		}
+		if (this.model.clipAmount.get() > 0) {
+			this.model.clipCenter.set(this.model.bee.coordinates);
+			this.model.clipAmount.set(Math.max(this.level.clipAmount.get() - (0.5 * delta / 1000), 0));
 		}
 	}
+
 }

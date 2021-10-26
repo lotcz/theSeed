@@ -98,7 +98,7 @@ export default class LevelRenderer extends SvgRenderer {
 					this.group.clipWith(this.clipPath);
 				}
 				const diameter = this.model.viewBoxSize.size();
-				const radius = (diameter * 0.5) * (1 - this.model.clipAmount.get());
+				const radius = (diameter * 0.5 * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
 				this.clipCircle.radius(Math.max(radius, 0));
 				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
@@ -111,6 +111,19 @@ export default class LevelRenderer extends SvgRenderer {
 			}
 			this.model.clipAmount.clean();
 			this.model.clipCenter.clean();
+		}
+	}
+
+	openTween(value) {
+		const boundary1 = 0.3;
+		const boundary2 = 0.7;
+		const staticValue = 0.8;
+		if (value < boundary1) {
+			return staticValue * (value / boundary1);
+		} else if (value < boundary2) {
+			return staticValue;
+		} else {
+			return staticValue + ((value - boundary2) / (1 - boundary2));
 		}
 	}
 

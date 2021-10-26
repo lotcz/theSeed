@@ -35,6 +35,11 @@ export default class BeeController extends ControllerBase {
 		}
 	}
 
+	activateInternal() {
+		this.level.centerOnPosition(this.model.position);
+		this.level.sanitizeViewBox();
+	}
+
 	updateInternal(delta) {
 		if (this.dead) {
 			return;
