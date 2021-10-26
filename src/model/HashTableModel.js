@@ -30,6 +30,10 @@ export default class HashTableModel extends ModelBase {
 		return element;
 	}
 
+	set(key, element = null) {
+		this.add(key, element);
+	}
+
 	remove(key) {
 		const element = this.get(key);
 		if (element === undefined) {

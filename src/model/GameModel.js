@@ -21,10 +21,12 @@ import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
+import Pixies from "../class/Pixies";
 
 const DEBUG_MODE = true;
 
 export default class GameModel extends ModelBase {
+	id;
 	level;
 	levelName;
 	lastLevelName;
@@ -36,6 +38,8 @@ export default class GameModel extends ModelBase {
 
 	constructor() {
 		super();
+
+		this.id = Date.now();
 
 		this.level = new DirtyValue();
 		this.addChild(this.level);
@@ -61,6 +65,7 @@ export default class GameModel extends ModelBase {
 
 	getState() {
 		return {
+			id: this.id,
 			lastLevelName: this.lastLevelName,
 			levelName: this.levelName.get(),
 		}
@@ -69,6 +74,7 @@ export default class GameModel extends ModelBase {
 	restoreState(state) {
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
+		if (state.id) this.id = state.id;
 	}
 
 	initResources() {

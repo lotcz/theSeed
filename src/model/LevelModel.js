@@ -280,7 +280,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	centerView() {
-		const center = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
+		const center = new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2));
 		this.centerOnPosition(center);
 	}
 

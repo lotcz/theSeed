@@ -51,12 +51,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	activateInternal() {
 		this.deactivateInternal();
-		const level = this.game.level.get();
 
-		if (!level) {
-			console.log('No level to edit');
-			return;
-		}
+		const level = this.game.level.get();
 
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
@@ -123,12 +119,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	deactivateInternal() {
+		const level = this.game.level.get();
+
 		this.hideGroundTiles();
 		this.hideSpriteHelpers();
 		this.hideHighlights();
 		this.hideAdditionalGUI();
-
-		const level = this.game.level.get();
 
 		level.sprites.forEach((sprite) => {
 			if (sprite._helper) {
