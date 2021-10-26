@@ -109,63 +109,8 @@ export default class LevelBuilder {
 	}
 
 	addBee(position) {
-		this.level.addResource(IMAGE_BEE);
-		this.level.addResource(IMAGE_BEE_DEAD);
-		this.level.addResource(IMAGE_BEE_CRAWL);
-		this.level.addResource(IMAGE_BEE_WING);
-		this.level.addResource(IMAGE_STARS_1);
-		this.level.addResource(IMAGE_STARS_2);
-		this.level.addResource(IMAGE_STARS_3);
-
-		this.level.addBee(
-			new BeeModel({
-				direction: [0,0],
-				speed: 0,
-				position: position.toArray(),
-				image: {
-					coordinates: BEE_CENTER.clone(),
-					scale: 1,
-					flipped: false,
-					rotation: 0,
-					path: IMAGE_BEE
-				},
-				crawlingAnimation: {
-					image: {
-						coordinates: BEE_CENTER.clone(),
-						scale: 1,
-						flipped: false,
-						rotation: 0,
-						path: IMAGE_BEE_CRAWL
-					},
-					paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
-				},
-				starsAnimation: {
-					image: {
-						coordinates: BEE_CENTER.clone(),
-						scale: 1,
-						flipped: false,
-						rotation: 0,
-						path: IMAGE_STARS_1
-					},
-					paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3],
-					frameRate: 5
-				},
-				leftWing: {
-					coordinates: BEE_CENTER.clone(),
-					scale: 1,
-					flipped: false,
-					rotation: 0,
-					path: IMAGE_BEE_WING
-				},
-				rightWing: {
-					coordinates: BEE_CENTER.clone(),
-					scale: 1,
-					flipped: true,
-					rotation: 0,
-					path: IMAGE_BEE_WING
-				},
-			})
-		);
+		const bee = this.level.createBee(position);
+		return this.level.addBee(bee);
 	}
 
 	build() {

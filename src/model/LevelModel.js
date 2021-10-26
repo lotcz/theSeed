@@ -13,6 +13,16 @@ import {GROUND_TYPE_CLOUD, GROUND_TYPE_WATER} from "../builder/GroundStyle";
 import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import ParallaxLayerModel from "./ParallaxLayerModel";
 import HashTableModel from "./HashTableModel";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_DEAD,
+	IMAGE_BEE_WING,
+	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3,
+	STRATEGY_RESPAWN
+} from "../builder/SpriteStyle";
+import LevelBuilder from "../builder/LevelBuilder";
+import {BEE_CENTER} from "../controller/BeeController";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -105,12 +115,85 @@ export default class LevelModel extends ModelBase {
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
 	}
 
+	createBee(position) {
+		return new BeeModel({
+			direction: [0,0],
+			speed: 0,
+			position: position.toArray(),
+			coordinates: this.grid.getCoordinates(position),
+			image: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE
+			},
+			crawlingAnimation: {
+				image: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE_CRAWL
+				},
+				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
+			},
+			starsAnimation: {
+				image: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_STARS_1
+				},
+				paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3],
+				frameRate: 5
+			},
+			leftWing: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE_WING
+			},
+			rightWing: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: true,
+				rotation: 0,
+				path: IMAGE_BEE_WING
+			},
+		});
+	}
+
 	addBee(bee) {
+		this.addResource(IMAGE_BEE);
+		this.addResource(IMAGE_BEE_DEAD);
+		this.addResource(IMAGE_BEE_CRAWL);
+		this.addResource(IMAGE_BEE_WING);
+		this.addResource(IMAGE_STARS_1);
+		this.addResource(IMAGE_STARS_2);
+		this.addResource(IMAGE_STARS_3);
+
 		if (this.bee) this.removeChild(this.bee);
 		this.bee = bee;
-		if (this.bee) {
-			this.addChild(this.bee);
+		return this.addChild(this.bee);
+	}
+
+	spawn(bee, name) {
+		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === name);
+		if (!respawn) {
+			console.log(`Respawn spot '${name}' not found!`);
+			return;
 		}
+		if (bee) {
+			bee.position.set(respawn.position);
+			bee.coordinates.set(this.grid.getCoordinates(respawn.position));
+		} else {
+			bee = this.createBee(respawn.position);
+		}
+		bee.health.set(1);
+		this.addBee(bee);
 	}
 
 	addResource(uri) {

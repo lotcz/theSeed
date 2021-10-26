@@ -1,6 +1,5 @@
 import ControllerBase from "../class/ControllerBase";
 import Pixies from "../class/Pixies";
-import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 const ROTATION_SPEED = 1000;
@@ -83,10 +82,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	setPosition(position) {
-		//this.game.level.grid.chessboard.removeVisitor(this.position, this.model);
-		//if (this.target) this.game.level.grid.chessboard.removeVisitor(this.target, this.model);
 		this.position.set(position);
-		//this.game.level.grid.chessboard.addVisitor(this.position, this.model);
 	}
 
 	onClick(e) {

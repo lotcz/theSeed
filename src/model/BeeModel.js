@@ -15,6 +15,7 @@ export default class BeeModel extends ModelBase {
 	headingLeft; // if false, then bee is heading right
 	inventory;
 	health;
+	lives;
 	image;
 	deadImagePath;
 	crawlingAnimation;
@@ -41,6 +42,8 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.inventory);
 		this.health = new DirtyValue(1);
 		this.addChild(this.health);
+		this.lives = new DirtyValue(1);
+		this.addChild(this.lives);
 
 		this.image = new ImageModel();
 		this.addChild(this.image);
@@ -69,6 +72,7 @@ export default class BeeModel extends ModelBase {
 			headingLeft: this.headingLeft.getState(),
 			inventory: this.inventory.getState(),
 			health: this.health.getState(),
+			lives: this.lives.getState(),
 			image: this.image.getState(),
 			deadImagePath: this.deadImagePath.getState(),
 			crawlingAnimation: this.crawlingAnimation.getState(),
@@ -86,6 +90,7 @@ export default class BeeModel extends ModelBase {
 		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
 		if (state.inventory) this.inventory.restoreState(state.inventory);
 		if (state.health) this.health.restoreState(state.health);
+		if (state.lives) this.lives.restoreState(state.lives);
 		if (state.image) this.image.restoreState(state.image);
 		if (state.deadImagePath) this.deadImagePath.restoreState(state.deadImagePath);
 		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
@@ -100,6 +105,30 @@ export default class BeeModel extends ModelBase {
 
 	isCrawling() {
 		return !this.isFlying();
+	}
+
+	addOnDeathListener(listener) {
+		this.addEventListener('death', listener);
+	}
+
+	removeOnDeathListener(listener) {
+		this.removeEventListener('death', listener);
+	}
+
+	triggerOnDeathEvent() {
+		this.triggerEvent('death');
+	}
+
+	addOnTravelListener(listener) {
+		this.addEventListener('travel', listener);
+	}
+
+	removeOnTravelListener(listener) {
+		this.removeEventListener('travel', listener);
+	}
+
+	triggerOnTravelEvent(levelName) {
+		this.triggerEvent('travel', levelName);
 	}
 
 }

@@ -29,34 +29,48 @@ export default class GameController extends ControllerBase {
 		this.model.levelName.addOnChangeListener((value) => this.onLoadLevelRequest(value));
 	}
 
-	activateInternal() {
-		window.addEventListener('resize', this.onResizeEvent);
-		this.onResize();
-		this.newGame();
-	}
-
 	reset() {
 		this.model.level.set(null);
 		this.loadBackground();
 		this.showMainMenu();
 	}
 
+	activateInternal() {
+		window.addEventListener('resize', this.onResizeEvent);
+		this.onResize();
+		this.newGame();
+	}
+
 	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
+	}
+
+	updateInternal() {
+		if (this.controls.menuRequested.isDirty()) {
+			if (this.controls.menuRequested.get()) {
+				if (!this.model.isInEditMode.get()) {
+					this.model.isInEditMode.set(true);
+					this.activateEditor();
+				} else {
+					this.model.isInEditMode.set(false);
+					this.deactivateEditor();
+				}
+			}
+			this.controls.menuRequested.set(false);
+			this.controls.menuRequested.clean();
+		}
 	}
 
 	async onLoadLevelRequest(levelName) {
 		if (levelName) {
 			console.log('Level request', levelName);
 			this.model.lastLevelName = this.model.level.get().name;
-			await this.loadSaveGame(levelName);
-			const respawn = this.model.level.get().sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === this.model.lastLevelName);
-			if (!respawn) {
-				console.log('Respawn spot not found!');
-				return;
+			const bee = this.model.level.get().bee;
+			if (bee && bee.health.get() > 0) {
+				await this.loadSaveGame(levelName, this.model.lastLevelName, bee);
+			} else {
+				await this.loadSaveGame(levelName, 'start');
 			}
-			const builder = new LevelBuilder(this.model.level.get());
-			builder.addBee(respawn.position);
 		}
 	}
 
@@ -82,27 +96,35 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	onResize() {
-		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
-		if (!this.model.level.isEmpty())
-			this.model.level.get().viewBoxSize.set(this.model.viewBoxSize);
+	async loadSaveGameAsync(name) {
+		return new Promise(
+			function(resolve) {
+				resolve(localStorage.getItem('beehive-savegame-' + name));
+			}
+		);
 	}
 
-	loadBackground() {
-		const size = new Vector2(200, 150);
-		const tileSize = 100;
-		const scale = 12;
+	async loadSaveGame(name, spawn = null, bee = null) {
+		if (this.levelController) this.levelController.deactivate();
+		this.model.level.set(null);
+		this.deactivateEditor();
+		this.hideMenu();
 
-		const levelBuilder = new LevelBuilder();
-		levelBuilder.setSize(size);
-		levelBuilder.setTileRadius(tileSize);
-		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
-		levelBuilder.setViewBoxScale(scale);
+		const store = await this.loadSaveGameAsync(name);
 
-		const level = levelBuilder.level;
-		level.centerView();
-
-		this.setActiveLevel(level);
+		let level = null;
+		if (store) {
+			const state = JSON.parse(store);
+			level = new LevelModel(state);
+			console.log(`Level ${level.name} loaded.`);
+			if (spawn) {
+				level.spawn(bee, spawn);
+			}
+			this.setActiveLevel(level);
+		} else {
+			console.warn(`Level ${name} not found!`);
+			this.newGame();
+		}
 	}
 
 	showMainMenu() {
@@ -135,20 +157,23 @@ export default class GameController extends ControllerBase {
 		this.model.menu.set(builder.build());
 	}
 
-	hideMenu() {
-		this.model.menu.set(null);
+	loadBackground() {
+		const size = new Vector2(200, 150);
+		const tileSize = 100;
+		const scale = 12;
+
+		const levelBuilder = new LevelBuilder();
+		levelBuilder.setSize(size);
+		levelBuilder.setTileRadius(tileSize);
+		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
+		levelBuilder.setViewBoxScale(scale);
+
+		const level = levelBuilder.level;
+		level.centerView();
+
+		this.setActiveLevel(level);
 	}
 
-	showPlayMenu() {
-		const builder = new MenuBuilder('play');
-		builder.addLine("menu", (e) => this.showMainMenu());
-		this.model.menu.set(builder.build());
-	}
-
-	resume() {
-		this.showPlayMenu();
-		this.levelController.activate();
-	}
 
 	newGame() {
 		const size = new Vector2(100, 50);
@@ -171,31 +196,19 @@ export default class GameController extends ControllerBase {
 		this.setActiveLevel(level);
 	}
 
-	async loadSaveGameAsync(name) {
-		return new Promise(
-			function(resolve) {
-				resolve(localStorage.getItem('beehive-savegame-' + name));
-			}
-		);
+	hideMenu() {
+		this.model.menu.set(null);
 	}
 
-	async loadSaveGame(name) {
-		this.model.level.set(null);
-		this.deactivateEditor();
-		this.hideMenu();
+	showPlayMenu() {
+		const builder = new MenuBuilder('play');
+		builder.addLine("menu", (e) => this.showMainMenu());
+		this.model.menu.set(builder.build());
+	}
 
-		const store = await this.loadSaveGameAsync(name);
-
-		let level = null;
-		if (store) {
-			const state = JSON.parse(store);
-			level = new LevelModel(state);
-			console.log(`Level ${level.name} loaded.`);
-			this.setActiveLevel(level);
-		} else {
-			console.warn(`Level ${name} not found!`);
-			this.newGame();
-		}
+	resume() {
+		this.showPlayMenu();
+		this.levelController.activate();
 	}
 
 	activateEditor() {
@@ -213,19 +226,10 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	updateInternal() {
-		if (this.controls.menuRequested.isDirty()) {
-			if (this.controls.menuRequested.get()) {
-				if (!this.model.isInEditMode.get()) {
-					this.model.isInEditMode.set(true);
-					this.activateEditor();
-				} else {
-					this.model.isInEditMode.set(false);
-					this.deactivateEditor();
-				}
-			}
-			this.controls.menuRequested.set(false);
-			this.controls.menuRequested.clean();
-		}
+	onResize() {
+		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
+		if (!this.model.level.isEmpty())
+			this.model.level.get().viewBoxSize.set(this.model.viewBoxSize);
 	}
+
 }

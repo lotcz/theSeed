@@ -1,6 +1,7 @@
 import ControllerBase from "../class/ControllerBase";
 import {BEE_CENTER} from "../controller/BeeController";
 import Vector2 from "../class/Vector2";
+import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -28,6 +29,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.image.path.set(IMAGE_BEE);
 		this.model.leftWing.flipped.set(false);
 		this.model.rightWing.flipped.set(true);
 		this.model.starsAnimation.image.rotation.set(0);

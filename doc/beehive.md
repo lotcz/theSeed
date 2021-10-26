@@ -83,8 +83,17 @@ gather nectar from inside a giant flower
 
 TODO:
 
+1. respawn in same level when dies and has lives
+2. respawn in beehive otherwise
+3. respawn in new level when travelling
+4. close scene when bee dies --> respawn
+5. close scene when travelling to another level --> load level
+
 - movement between levels, respawn locations
 - opening and closing
+- keep inventory
+- manage bee lives
+
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)
 
