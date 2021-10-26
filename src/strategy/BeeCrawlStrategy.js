@@ -224,7 +224,10 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				}
 			}
 			this.updateBee();
+			this.model.crawlingAnimation.paused.set(false);
 			return;
+		} else {
+			this.model.crawlingAnimation.paused.set(true);
 		}
 
 		if (this.timeout > 0) {
