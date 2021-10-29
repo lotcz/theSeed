@@ -60,7 +60,8 @@ export default class LevelBuilder {
 		} else {
 			builder.generateRandom(startPosition);
 		}
-		this.ground = builder.build();
+		const ground = builder.build();
+		this.level.ground.restoreState(ground.getState());
 	}
 
 	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {

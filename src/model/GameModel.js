@@ -23,7 +23,7 @@ import Stars3Image from "../../res/img/stars-3.svg";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import Pixies from "../class/Pixies";
 
-const DEBUG_MODE = true;
+export const DEBUG_MODE = true;
 
 export default class GameModel extends ModelBase {
 	id;

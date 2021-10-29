@@ -164,21 +164,21 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.model.levelLoadRequest.set(level.name);
 	}
 
-	saveGame() {
+	saveLevel() {
 		const level = this.game.level.get();
 		localStorage.setItem('beehive-savegame-' + level.name, this.getLevelState());
 		console.log('Level saved.');
 	}
 
 	saveAndReload() {
-		this.saveGame();
+		this.saveLevel();
 		this.reload();
 	}
 
 	downloadSavedGame() {
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
-		element.setAttribute('download', 'beehive-adventures-' + this.game.level.get().name + '.json');
+		element.setAttribute('download', this.game.level.get().name + '.json');
 		element.style.display = 'none';
 		document.body.appendChild(element);
 		element.click();

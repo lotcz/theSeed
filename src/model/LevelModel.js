@@ -37,11 +37,14 @@ export default class LevelModel extends ModelBase {
 	viewBoxSize;
 	viewBoxCoordinates;
 	clipAmount; // 0 - no clipping, 1 - whole image clipped
+	isPlayable;
 
 	constructor(state) {
 		super();
 
 		this.name = 'untitled';
+		this.isPlayable = true;
+
 		this.grid = new GridModel();
 		this.addChild(this.grid);
 
