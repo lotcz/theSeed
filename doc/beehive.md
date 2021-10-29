@@ -83,7 +83,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- consider initial and user level states
 - show inventory
 - hints
 

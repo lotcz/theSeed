@@ -2,6 +2,7 @@ import SvgRenderer from "./SvgRenderer";
 import ImageRenderer from "./ImageRenderer";
 import {BEE_CENTER} from "../controller/BeeController";
 import AnimationRenderer from "./AnimationRenderer";
+import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 
 const DEBUG_BEE = false;
 
@@ -27,6 +28,9 @@ export default class BeeRenderer extends SvgRenderer {
 
 		this.rightWingRenderer = new ImageRenderer(game, this.model.rightWing, this.group);
 		this.addChild(this.rightWingRenderer);
+
+		this.inventoryRenderer = new SpriteCollectionRenderer(game, this.model.inventory, this.group);
+		this.addChild(this.inventoryRenderer);
 
 		if (DEBUG_BEE) {
 			this.helper = this.group.group();

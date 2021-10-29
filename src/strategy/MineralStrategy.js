@@ -17,6 +17,10 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetInternal() {
+		if (this.model.data.carried) {
+			return;
+		}
+
 		if (!this.level.isValidPosition(this.position)) {
 			console.log('Mineral over board.');
 			this.level.sprites.remove(this.model);

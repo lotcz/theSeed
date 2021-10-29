@@ -8,6 +8,7 @@ import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
 import Pixies from "../class/Pixies";
+import SpriteCollectionController from "./SpriteCollectionController";
 
 export const BEE_CENTER = new Vector2(250, 250);
 export const WINGS_OFFSET = BEE_CENTER.addX(50);
@@ -78,8 +79,11 @@ export default class BeeController extends ControllerBase {
 			const visitors = this.chessboard.getVisitors(position);
 			const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
 			if (minerals.length > 0) {
-				this.level.sprites.remove(minerals[0]);
-				this.model.inventory.add(minerals[0]);
+				const item = minerals[0];
+				item.image.coordinates.set(BEE_CENTER);
+				item.data.carried = true;
+				this.level.sprites.remove(item);
+				this.model.inventory.add(item);
 			} else {
 				const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX);
 				if (wax.length > 0) {
@@ -126,6 +130,7 @@ export default class BeeController extends ControllerBase {
 		const item = this.model.inventory.removeFirst();
 		if (item) {
 			item.position.set(this.model.position);
+			item.data.carried = false;
 			this.level.sprites.add(item);
 		}
 	}
