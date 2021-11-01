@@ -39,7 +39,7 @@ export default class Controls extends Dirty {
 		//this.dom.addEventListener('click', (e) => this.onClick(e));
 		this.dom.addEventListener('mousedown', (e) => this.onMouseDown(e));
 		this.dom.addEventListener('mouseup', (e) => this.onMouseUp(e));
-		this.dom.addEventListener('wheel', (e) => this.onZoom(e));
+		this.dom.addEventListener('wheel', (e) => this.onZoom(e), {passive: true});
 		window.addEventListener('keydown', (e) => this.onKeyDown(e), false );
 		window.addEventListener('keyup', (e) => this.onKeyUp(e), false );
 		window.addEventListener('contextmenu', (e) => this.onContextMenu(e), false );

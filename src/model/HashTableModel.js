@@ -1,5 +1,7 @@
 import ModelBase from "../class/ModelBase";
 
+const DEBUG_HASH_TABLE = false;
+
 export default class HashTableModel extends ModelBase {
 	keyValues;
 
@@ -23,7 +25,7 @@ export default class HashTableModel extends ModelBase {
 
 	add(key, element = null) {
 		if (this.exists(key)) {
-			console.log(`Key ${key} already exists in hash table, replacing value.`);
+			if (DEBUG_HASH_TABLE) console.log(`Key ${key} already exists in hash table, replacing value.`);
 		}
 		this.keyValues[key] = element;
 		this.triggerEvent('add', key);
@@ -35,12 +37,12 @@ export default class HashTableModel extends ModelBase {
 	}
 
 	remove(key) {
-		const element = this.get(key);
-		if (element === undefined) {
-			console.log(`Key ${key} doesn't exist in hash table`);
+		if (!this.exists(key)) {
+			if (DEBUG_HASH_TABLE) console.log(`Key ${key} doesn't exist in hash table`);
 			return;
 		}
-		this.keyValues.splice(key, 1);
+		const element = this.get(key);
+		delete this.keyValues[key];
 		this.triggerEvent('remove', key);
 		return element;
 	}

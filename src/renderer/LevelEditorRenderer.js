@@ -53,6 +53,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.deactivateInternal();
 
 		const level = this.game.level.get();
+		if (!level) {
+			console.log('No level to edit.');
+			return;
+		}
 
 		this.group = this.draw.group();
 		this.group.addClass('level-editor');
@@ -119,21 +123,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	deactivateInternal() {
-		const level = this.game.level.get();
-
 		this.hideGroundTiles();
 		this.hideSpriteHelpers();
 		this.hideHighlights();
 		this.hideAdditionalGUI();
-
-		level.sprites.forEach((sprite) => {
-			if (sprite._helper) {
-				sprite._helper = null;
-			}
-		});
-		level.ground.tiles.forEach((tile) => {
-			tile._helper = null;
-		});
 
 		if (this.group) {
 			this.group.remove();
@@ -151,6 +144,20 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.highlightedTileDef = null;
 		}
 		this.toolsFolder = null;
+
+		const level = this.game.level.get();
+		if (!level) {
+			return;
+		}
+
+		level.sprites.forEach((sprite) => {
+			if (sprite._helper) {
+				sprite._helper = null;
+			}
+		});
+		level.ground.tiles.forEach((tile) => {
+			tile._helper = null;
+		});
 		level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
 	}
 
@@ -246,10 +253,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	hideSpriteHelpers() {
 		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all sprite helpers');
-		const level = this.game.level.get();
-		level.sprites.removeOnAddListener(this.spriteAddedHandler);
-		//level.sprites.removeOnRemoveListener(this.spriteRemovedHandler);
 		if (this.spriteHelpers) this.spriteHelpers.hide();
+
+		const level = this.game.level.get();
+		if (level) {
+			level.sprites.removeOnAddListener(this.spriteAddedHandler);
+		}
 	}
 
 	spriteAdded(sprite) {
@@ -289,10 +298,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	hideGroundTiles() {
 		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all ground tiles');
-		const level = this.game.level.get();
-		level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
-		//level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
 		if (this.groundTiles) this.groundTiles.hide();
+		const level = this.game.level.get();
+		if (level) {
+			level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
+		}
 	}
 
 	showGroundTiles() {

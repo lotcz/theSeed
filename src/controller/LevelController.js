@@ -3,6 +3,8 @@ import SpriteCollectionController from "./SpriteCollectionController";
 import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 
+const DEBUG_LEVEL_CONTROLLER = false;
+
 export default class LevelController extends ControllerBase {
 	isDead;
 	travelling; // false or level name
@@ -63,7 +65,7 @@ export default class LevelController extends ControllerBase {
 	}
 
 	activateInternal() {
-		//this.model.clipAmount.set(1);
+		if (DEBUG_LEVEL_CONTROLLER) console.log('Activated level controller');
 	}
 
 	updateInternal(delta) {

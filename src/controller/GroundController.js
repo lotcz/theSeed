@@ -1,5 +1,7 @@
 import ControllerBase from "../class/ControllerBase";
 
+const DEBUG_GROUND_CONTROLLER = true;
+
 export default class GroundController extends ControllerBase {
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -18,10 +20,12 @@ export default class GroundController extends ControllerBase {
 
 	activateInternal() {
 		this.model.tiles.forEach((tile) => this.addVisitor(tile));
+		if (DEBUG_GROUND_CONTROLLER) console.log('Ground controller activated.');
 	}
 
 	deactivateInternal() {
 		this.model.tiles.forEach((tile) => this.removeVisitor(tile));
+		if (DEBUG_GROUND_CONTROLLER) console.log('Ground controller deactivated.');
 	}
 
 }

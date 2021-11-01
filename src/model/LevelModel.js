@@ -200,11 +200,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	addResource(uri) {
-		if (this.resources.exists(uri)) {
-			console.log(`Resource URI ${uri} already exists in this level.`);
-		} else {
-			this.resources.add(uri);
-		}
+		this.resources.add(uri);
 	}
 
 	isPositionInView(position) {

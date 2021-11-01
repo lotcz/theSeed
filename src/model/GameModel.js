@@ -72,9 +72,9 @@ export default class GameModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		if (state.id) this.id = state.id;
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
-		if (state.id) this.id = state.id;
 	}
 
 	initResources() {

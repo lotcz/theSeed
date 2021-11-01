@@ -131,6 +131,7 @@ export default class GameRenderer extends SvgRenderer {
 				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw);
 				this.addChild(this.levelRenderer);
 				this.levelRenderer.activate();
+				console.log('activated Level renderer');
 				this.hideLoading();
 				this.showMenu();
 				if (this.model.isInEditMode.get()) {
