@@ -203,6 +203,10 @@ export default class LevelModel extends ModelBase {
 		this.resources.add(uri);
 	}
 
+	removeResource(uri) {
+		this.resources.remove(uri);
+	}
+
 	isPositionInView(position) {
 		const coords = this.grid.getCoordinates(position);
 		return this.isCoordinateInView(coords);
@@ -327,13 +331,22 @@ export default class LevelModel extends ModelBase {
 		parallax.backgroundColor = style.background;
 		parallax.backgroundColorEnd = style.backgroundEnd;
 
+		console.log(this.parallax);
+
+		if (this.parallax) {
+			this.parallax.layers.forEach((l) => {
+				console.log(l.image.path);
+				this.removeResource(l.image.path.get());
+			});
+		}
+
 		if (style.layers) {
 			style.layers.forEach((l) => {
 				const layer = new ParallaxLayerModel();
 				layer.distance = l.distance;
 				this.addResource(l.image.uri);
-				layer.image.path = l.image.uri;
-				parallax.addChild(layer);
+				layer.image.path.set(l.image.uri);
+				parallax.layers.add(layer);
 			});
 		}
 

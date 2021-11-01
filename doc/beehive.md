@@ -83,8 +83,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- remove unused parallax resources
-- improve saving/loading (remove async?)
 - hints
 
 - sounds and music

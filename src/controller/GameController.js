@@ -16,10 +16,11 @@ import LevelEditorController from "./LevelEditorController";
 import {STRATEGY_RESPAWN} from "../builder/SpriteStyle";
 import HashTableModel from "../model/HashTableModel";
 import {DEBUG_MODE} from "../model/GameModel";
+import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 
 const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
-const SAVE_LEVEL_NAME_PREFIX = 'beehive-save-game-';
+const SAVE_LEVEL_NAME_PREFIX = 'beehive-save-game';
 
 export default class GameController extends ControllerBase {
 	levels;
@@ -107,7 +108,28 @@ export default class GameController extends ControllerBase {
 		if (levelName) {
 			if (DEBUG_GAME_CONTROLLER) console.log('Editor level request: ', levelName);
 			this.model.editor.levelLoadRequest.set(false);
-			await this.loadLevelAsync(levelName);
+			this.model.level.set(null);
+			this.deactivateEditor();
+			this.hideMenu();
+
+			let state = null;
+			const store = await this.loadLevelFromStorageAsync(this.getEditorLevelName(levelName));
+
+			if (store) {
+				state = JSON.parse(store);
+				console.log(`Editor level ${levelName} loaded from local storage.`);
+			} else {
+				state = this.levels.get(levelName);
+				if (state) console.log(`Editor level ${levelName} loaded from initial state.`);
+			}
+
+			if (!state) {
+				console.error(`Level ${levelName} not found!`);
+				return;
+			}
+
+			let level = new LevelModel(state);
+			this.setActiveLevel(level);
 		}
 
 	}
@@ -136,11 +158,14 @@ export default class GameController extends ControllerBase {
 		return `${SAVE_LEVEL_NAME_PREFIX}-${levelName}-${gameId}`;
 	}
 
+	getEditorLevelName(levelName) {
+		return `${EDITOR_LEVEL_NAME_PREFIX}-${levelName}`;
+	}
+
 	async loadLevelFromStorageAsync(name) {
-		const savedLeveName = this.getSavedLevelName(this.model.id, name);
 		return new Promise(
 			function(resolve) {
-				resolve(localStorage.getItem(savedLeveName));
+				resolve(localStorage.getItem(name));
 			}
 		);
 	}
@@ -165,7 +190,7 @@ export default class GameController extends ControllerBase {
 
 		let state = null;
 
-		const store = await this.loadLevelFromStorageAsync(name);
+		const store = await this.loadLevelFromStorageAsync(this.getSavedLevelName(this.model.id, name));
 
 		if (store) {
 			state = JSON.parse(store);
@@ -243,9 +268,9 @@ export default class GameController extends ControllerBase {
 
 	showLevelSelection() {
 		const builder = new MenuBuilder('main');
-		builder.addLine("Beehive", (e) => this.loadLevelAsync('beehive'));
-		builder.addLine("Level 1", (e) => this.loadLevelAsync('level-1'));
-		builder.addLine("Level 2", (e) => this.loadLevelAsync('level-2'));
+		builder.addLine("Beehive", (e) => this.onEditorLoadLevelRequestAsync('beehive'));
+		builder.addLine("Level 1", (e) => this.onEditorLoadLevelRequestAsync('level-1'));
+		builder.addLine("Level 2", (e) => this.onEditorLoadLevelRequestAsync('level-2'));
 		builder.addLine("Back", (e) => this.showEditorMenu());
 		this.model.menu.set(builder.build());
 	}

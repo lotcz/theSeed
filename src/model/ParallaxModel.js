@@ -28,6 +28,7 @@ export default class ParallaxModel extends ModelBase {
 
 	restoreState(state) {
 		if (state.background) this.backgroundColor = state.background;
+		if (state.backgroundColorEnd) this.backgroundColorEnd = state.backgroundColorEnd;
 		if (state.layers) this.layers.restoreState(state.layers, (s) => new ParallaxLayerModel(s));
 		if (state.cameraOffset) this.cameraOffset.restoreState(state.cameraOffset);
 	}
@@ -35,6 +36,7 @@ export default class ParallaxModel extends ModelBase {
 	getState() {
 		return {
 			background: this.backgroundColor,
+			backgroundColorEnd: this.backgroundColorEnd,
 			layers: this.layers.getState(),
 			cameraOffset: this.cameraOffset.toArray()
 		}

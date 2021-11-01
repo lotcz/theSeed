@@ -5,6 +5,7 @@ import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel
 import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
 const DEBUG_EDITOR_RENDERER = false;
+export const EDITOR_LEVEL_NAME_PREFIX = 'beehive-editor';
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
@@ -173,7 +174,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	saveLevel() {
 		const level = this.game.level.get();
-		localStorage.setItem('beehive-savegame-' + level.name, this.getLevelState());
+		localStorage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState());
 		console.log('Level saved.');
 	}
 
