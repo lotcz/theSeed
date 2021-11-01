@@ -5,6 +5,7 @@ import CollectionModel from "./CollectionModel";
 import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 import AnimationModel from "./AnimationModel";
+import SpriteModel from "./SpriteModel";
 
 export default class BeeModel extends ModelBase {
 	position;
@@ -88,7 +89,7 @@ export default class BeeModel extends ModelBase {
 		if (state.rotation) this.rotation.restoreState(state.rotation);
 		if (state.crawling) this.crawling.restoreState(state.crawling);
 		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
-		if (state.inventory) this.inventory.restoreState(state.inventory);
+		if (state.inventory) this.inventory.restoreState(state.inventory, (s) => new SpriteModel(s));
 		if (state.health) this.health.restoreState(state.health);
 		if (state.lives) this.lives.restoreState(state.lives);
 		if (state.image) this.image.restoreState(state.image);

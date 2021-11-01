@@ -83,7 +83,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- show inventory
 - hints
 
 - sounds and music

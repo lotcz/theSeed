@@ -27,10 +27,10 @@ export default class GameController extends ControllerBase {
 
 		this.editorController = null;
 		if (this.model.editor) {
-			this.model.editor.levelLoadRequest.addOnChangeListener((value) => this.onEditorLoadLevelRequest(value));
+			this.model.editor.levelLoadRequest.addOnChangeListener(async (value) => await this.onEditorLoadLevelRequestAsync(value));
 		}
 
-		this.model.levelName.addOnChangeListener((value) => this.onLoadLevelRequest(value));
+		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 
 		this.levels = new HashTableModel();
 		this.levels.set('beehive', LevelBeehive);
@@ -43,13 +43,14 @@ export default class GameController extends ControllerBase {
 		this.showMainMenu();
 	}
 
-	activateInternal() {
+	async activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
-		this.loadGame();
-		if (this.model.level.isEmpty()) {
-			this.reset();
+		const loaded = await this.loadGameAsync();
+		if (!loaded) {
+			this.loadBackground();
 		}
+		this.showMainMenu();
 	}
 
 	deactivateInternal() {
@@ -72,22 +73,26 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	async onLoadLevelRequest(levelName) {
+	async onLoadLevelRequestAsync(levelName) {
 		if (levelName) {
 			console.log('Level request', levelName);
 			let bee = null;
 			if (!this.model.level.isEmpty()) {
-				this.model.lastLevelName = this.model.level.get().name;
-				bee = this.model.level.get().bee;
+				const level = this.model.level.get();
+				if (level.isPlayable) {
+					this.saveGame();
+				}
+				this.model.lastLevelName = level.name;
+				bee = level.bee;
 			}
 			if (bee) {
 				if (bee.health.get() > 0) {
-					await this.loadLevel(levelName, this.model.lastLevelName, bee);
+					await this.loadLevelAsync(levelName, this.model.lastLevelName, bee);
 				} else {
-					await this.loadLevel(levelName, 'start');
+					await this.loadLevelAsync(levelName, 'start');
 				}
 			} else {
-				await this.loadLevel(levelName, this.model.lastLevelName);
+				await this.loadLevelAsync(levelName, this.model.lastLevelName);
 			}
 		} else {
 			this.model.level.set(null);
@@ -95,13 +100,14 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	async onEditorLoadLevelRequest(levelName) {
+	async onEditorLoadLevelRequestAsync(levelName) {
+		this.model.editor.levelLoadRequest.clean();
 		if (levelName) {
 			console.log('Editor Level request', levelName);
 			this.model.editor.levelLoadRequest.set(false);
-			await this.loadLevel(levelName);
+			await this.loadLevelAsync(levelName);
 		}
-		this.model.editor.levelLoadRequest.clean();
+
 	}
 
 	setActiveLevel(level) {
@@ -116,9 +122,12 @@ export default class GameController extends ControllerBase {
 		if (this.model.isInEditMode.get()) {
 			this.activateEditor();
 		}
+		if (level.isPlayable) {
+			this.saveGame();
+		}
 	}
 
-	async loadLevelFromStorage(name) {
+	async loadLevelFromStorageAsync(name) {
 		const id = this.model.id;
 		return new Promise(
 			function(resolve) {
@@ -139,7 +148,7 @@ export default class GameController extends ControllerBase {
 		console.log('Level saved.');
 	}
 
-	async loadLevel(name, spawn = null, bee = null) {
+	async loadLevelAsync(name, spawn = null, bee = null) {
 		if (this.levelController) this.levelController.deactivate();
 		this.model.level.set(null);
 		this.deactivateEditor();
@@ -147,7 +156,7 @@ export default class GameController extends ControllerBase {
 
 		let state = null;
 
-		const store = await this.loadLevelFromStorage(name);
+		const store = await this.loadLevelFromStorageAsync(name);
 
 		if (store) {
 			state = JSON.parse(store);
@@ -167,20 +176,21 @@ export default class GameController extends ControllerBase {
 			level.spawn(bee, spawn);
 		}
 		this.setActiveLevel(level);
-		this.saveGame();
 	}
 
-	loadGame() {
-		const store = localStorage.getItem('beehive-savegame');
-		if (store) {
-			const state = JSON.parse(store);
-			this.model.restoreState(state);
-			console.log('Game loaded');
-			return true;
-		} else {
-			console.log('No saved game found.');
-			return false;
-		}
+	async loadGameAsync() {
+		return new Promise((resolve) => {
+			const store = localStorage.getItem('beehive-savegame');
+			if (store) {
+				const state = JSON.parse(store);
+				this.model.restoreState(state);
+				console.log('Game loaded');
+				resolve(true);
+			} else {
+				console.log('No saved game found.');
+				resolve(false);
+			}
+		});
 	}
 
 	saveGame() {
@@ -226,9 +236,9 @@ export default class GameController extends ControllerBase {
 
 	showLevelSelection() {
 		const builder = new MenuBuilder('main');
-		builder.addLine("Beehive", (e) => this.loadLevel('beehive'));
-		builder.addLine("Level 1", (e) => this.loadLevel('level-1'));
-		builder.addLine("Level 2", (e) => this.loadLevel('level-2'));
+		builder.addLine("Beehive", (e) => this.loadLevelAsync('beehive'));
+		builder.addLine("Level 1", (e) => this.loadLevelAsync('level-1'));
+		builder.addLine("Level 2", (e) => this.loadLevelAsync('level-2'));
 		builder.addLine("Back", (e) => this.showEditorMenu());
 		this.model.menu.set(builder.build());
 	}
