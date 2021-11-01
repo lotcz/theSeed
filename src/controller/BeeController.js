@@ -129,6 +129,7 @@ export default class BeeController extends ControllerBase {
 	emptyInventory() {
 		const item = this.model.inventory.removeFirst();
 		if (item) {
+			this.level.addResource(item.image.path.get());
 			item.position.set(this.model.position);
 			item.data.carried = false;
 			this.level.sprites.add(item);

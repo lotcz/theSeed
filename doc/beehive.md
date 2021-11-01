@@ -83,7 +83,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- add resources when moved minerals between levels
 - remove unused parallax resources
 - improve saving/loading (remove async?)
 - hints
