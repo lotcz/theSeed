@@ -83,9 +83,9 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- improve inventory
 - tune level designs
 - build experimental level
+
 
 - mobile widgets
 - improve graphics

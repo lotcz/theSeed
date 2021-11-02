@@ -36,6 +36,7 @@ export default class BeeController extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.inventory.forEach((i) => this.level.addResource(i.image.path.get()));
 		this.updateMovement();
 	}
 
