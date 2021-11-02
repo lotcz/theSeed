@@ -33,15 +33,17 @@
      inkscape:window-y="-8"
      inkscape:window-x="1272"
      inkscape:window-height="1017"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:window-width="1920"
-     inkscape:pagecheckerboard="1"
+     inkscape:pagecheckerboard="true"
      showgrid="false"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     inkscape:showpageshadow="false"
+     showborder="true" />
   <g
      id="g7896"
      transform="matrix(-0.39571586,-1.1594153,1.1830763,-0.38780174,47.558718,171.10923)">

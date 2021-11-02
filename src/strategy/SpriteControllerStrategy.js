@@ -108,9 +108,13 @@ export default class SpriteControllerStrategy extends ControllerBase {
 
 		if (this.scalingEnabled) {
 			if (this.targetScale !== this.scale.get()) {
-				const diff = this.targetScale - this.scale.get();
-				const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (delta * (diff > 0) ? 1 : -1) / SCALING_SPEED);
-				this.scale.set(scale);
+				if (this.timeout <= 0) {
+					this.scale.set(this.targetScale);
+				} else {
+					const diff = this.targetScale - this.scale.get();
+					const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (diff * delta / this.timeout));
+					this.scale.set(scale);
+				}
 			}
 		}
 

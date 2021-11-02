@@ -18,7 +18,7 @@ import {
 	IMAGE_BEE_CRAWL,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING,
-	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3,
+	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
 	STRATEGY_RESPAWN
 } from "../builder/SpriteStyle";
 import LevelBuilder from "../builder/LevelBuilder";
@@ -325,17 +325,53 @@ export default class LevelModel extends ModelBase {
 		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
+	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {
+		if (path) {
+			this.addResource(path);
+		}
+		const state = {
+			position: position.toArray(),
+			image: (path) ? {
+				scale: scale,
+				flipped: flipped,
+				rotation: rotation,
+				path: path
+			} : null,
+			strategy: strategy,
+			oriented: oriented,
+			data: data
+		};
+		return this.sprites.add(new SpriteModel(state));
+	}
+
+	addSpriteFromStyle(position, spriteType) {
+		const style = SPRITE_STYLES[spriteType];
+		let uri = null;
+		let scale = 1;
+		if (style.image) {
+			uri = style.image.uri;
+			scale = style.image.scale;
+		}
+		return this.addSprite(
+			position,
+			style.strategy,
+			style.data,
+			uri,
+			scale,
+			0,
+			false,
+			style.oriented
+		);
+	}
+
 	setParallaxFromStyle(parallaxType) {
 		const style = PARALLAX_STYLES[parallaxType];
 		const parallax = new ParallaxModel();
 		parallax.backgroundColor = style.background;
 		parallax.backgroundColorEnd = style.backgroundEnd;
 
-		console.log(this.parallax);
-
 		if (this.parallax) {
 			this.parallax.layers.forEach((l) => {
-				console.log(l.image.path);
 				this.removeResource(l.image.path.get());
 			});
 		}

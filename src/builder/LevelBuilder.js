@@ -65,40 +65,11 @@ export default class LevelBuilder {
 	}
 
 	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {
-		const state = {
-			position: position.toArray(),
-			image: (path) ? {
-				scale: scale,
-				flipped: flipped,
-				rotation: rotation,
-				path: path
-			} : null,
-			strategy: strategy,
-			oriented: oriented,
-			data: data
-		};
-		return this.level.sprites.add(new SpriteModel(state));
+		return this.level.addSprite(position, strategy, data, path, scale, rotation, flipped, oriented);
 	}
 
 	addSpriteFromStyle(position, spriteType) {
-		const style = SPRITE_STYLES[spriteType];
-		let uri = null;
-		let scale = 1;
-		if (style.image) {
-			this.level.addResource(style.image.uri);
-			uri = style.image.uri;
-			scale = style.image.scale;
-		}
-		return this.addSprite(
-			position,
-			style.strategy,
-			style.data,
-			uri,
-			scale,
-			0,
-			false,
-			style.oriented
-		);
+		return this.level.addSpriteFromStyle(position, spriteType);
 	}
 
 	addTile(position, groundType) {

@@ -2,12 +2,9 @@ import Tree from "./Tree";
 import EventManager from "./EventManager";
 
 export default class ModelBase extends Tree {
-	eventManager;
-
 	constructor(state) {
 		super();
 
-		this.eventManager = new EventManager();
 		this.children = [];
 
 		if (state) {
@@ -37,18 +34,6 @@ export default class ModelBase extends Tree {
 			children.push(this.children[i].getState());
 		}
 		return children;
-	}
-
-	addEventListener(eventName, eventHandler) {
-		this.eventManager.addEventListener(eventName, eventHandler);
-	}
-
-	removeEventListener(eventName, eventHandler) {
-		this.eventManager.removeEventListener(eventName, eventHandler);
-	}
-
-	triggerEvent(eventName, param) {
-		this.eventManager.triggerEvent(eventName, param);
 	}
 
 }

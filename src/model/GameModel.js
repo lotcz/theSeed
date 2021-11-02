@@ -5,14 +5,18 @@ import Vector2 from "../class/Vector2";
 import LevelEditorModel from "./LevelEditorModel";
 import HashTableModel from "./HashTableModel";
 import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
+import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {
 	IMAGE_BEE,
 	IMAGE_BEE_CRAWL,
 	IMAGE_BEE_DEAD,
-	IMAGE_BEE_WING,
+	IMAGE_BEE_WING, IMAGE_HINT_BACKGROUND,
 	IMAGE_STARS_1,
-	IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES
+	IMAGE_STARS_2,
+	IMAGE_STARS_3,
+	SPRITE_STYLES
 } from "../builder/SpriteStyle";
+
 import BeeImage from "../../res/img/bee.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
@@ -20,8 +24,7 @@ import BeeWingImage from "../../res/img/wing.svg";
 import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
-import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
-import Pixies from "../class/Pixies";
+import HintBackgroundImage from "../../res/img/hint-background.svg";
 
 export const DEBUG_MODE = true;
 
@@ -85,6 +88,7 @@ export default class GameModel extends ModelBase {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_3, Stars3Image);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_HINT_BACKGROUND, HintBackgroundImage);
 
 		for (let type in SPRITE_STYLES) {
 			const style = SPRITE_STYLES[type];
