@@ -17,6 +17,9 @@ import {
 import RotationValue from "../class/RotationValue";
 import Vector2 from "../class/Vector2";
 
+import CrawlSound from "../../res/sound/crawl.wav";
+import Sound from "../class/Sound";
+
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second
 
@@ -182,9 +185,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetCoordinates = null;
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
+		this.crawlSound = new Sound(CrawlSound);
 	}
 
 	activateInternal() {
+		this.crawlSound.play();
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.updateBee();

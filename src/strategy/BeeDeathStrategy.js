@@ -1,5 +1,7 @@
 import ControllerBase from "../class/ControllerBase";
 import {IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
+import DeathSound from "../../res/sound/death.wav";
+import Sound from "../class/Sound";
 
 const FALL_SPEED = 800; // pixels per second
 const DEATH_TIMEOUT = 3000;
@@ -8,7 +10,14 @@ export default class BeeDeathStrategy extends ControllerBase {
 	timeout;
 	triggered;
 
+	constructor(game, model, controls) {
+		super(game, model, controls);
+
+		this.deathSound = new Sound(DeathSound);
+	}
+
 	activateInternal() {
+		this.deathSound.play();
 		this.model.health.set(0);
 		this.model.direction.set(0,0);
 		this.timeout = DEATH_TIMEOUT;

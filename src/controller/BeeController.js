@@ -7,8 +7,6 @@ import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
-import Pixies from "../class/Pixies";
-import SpriteCollectionController from "./SpriteCollectionController";
 
 export const BEE_CENTER = new Vector2(250, 250);
 export const WINGS_OFFSET = BEE_CENTER.addX(50);

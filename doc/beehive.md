@@ -83,8 +83,6 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- hints
-
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)
 

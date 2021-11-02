@@ -50,6 +50,10 @@ module.exports = {
 				},
 			},
 			{
+				test: /\.(mp3|flv|wav)$/,
+				loader: 'file-loader',
+			},
+			{
 				test: /\.css$/,
 				use: [
 					'style-loader',
