@@ -44,11 +44,22 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(jpg|png|svg)$/,
+				test: /\.(jpg|png|svg|woff|woff2|ttf)$/,
 				use: {
 					loader: 'url-loader',
 				},
-			}
+			},
+			{
+				test: /\.(mp3|flv|wav)$/,
+				loader: 'file-loader',
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			},
 		]
 	}
 };

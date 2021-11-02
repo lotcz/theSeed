@@ -28,10 +28,12 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// FOREGROUND
 		this.foreground = this.group.group().addClass('foreground');
+		/*
 		if (this.model.plant) {
 			this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
 			this.addChild(this.plantRenderer);
 		}
+		*/
 
 		// PARALLAX
 		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
@@ -67,6 +69,12 @@ export default class LevelRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
+		if (this.beeRenderer && this.beeRenderer.isDeleted()) {
+			this.removeChild(this.beeRenderer);
+			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
+			this.addChild(this.beeRenderer);
+		}
+
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
 			if (HIDE_WHEN_OUTTA_SIGHT) {
 				this.spritesRenderer.updateOuttaSight();
@@ -90,8 +98,7 @@ export default class LevelRenderer extends SvgRenderer {
 					this.group.clipWith(this.clipPath);
 				}
 				const diameter = this.model.viewBoxSize.size();
-				const radius = (diameter * 0.5) * (1 - this.model.clipAmount.get());
-				console.log(radius);
+				const radius = (diameter * 0.5 * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
 				this.clipCircle.radius(Math.max(radius, 0));
 				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
@@ -107,9 +114,22 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 	}
 
+	openTween(value) {
+		const boundary1 = 0.3;
+		const boundary2 = 0.7;
+		const staticValue = 0.8;
+		if (value < boundary1) {
+			return staticValue * (value / boundary1);
+		} else if (value < boundary2) {
+			return staticValue;
+		} else {
+			return staticValue + ((value - boundary2) / (1 - boundary2));
+		}
+	}
+
 	onAddResource(resource) {
 		if (DEBUG_LEVEL_RENDERER) console.log('Resource added.', resource);
-		const loader = new ResourceLoader(this.draw, resource);
+		const loader = new ResourceLoader(this.game.resources, this.draw, resource);
 		loader.load((r) => {
 			if (DEBUG_LEVEL_RENDERER) console.log('Resource loaded', r);
 		});

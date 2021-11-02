@@ -5,6 +5,7 @@ import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel
 import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
 const DEBUG_EDITOR_RENDERER = false;
+export const EDITOR_LEVEL_NAME_PREFIX = 'beehive-editor';
 
 export default class LevelEditorRenderer extends SvgRenderer {
 	group;
@@ -51,10 +52,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	activateInternal() {
 		this.deactivateInternal();
-		const level = this.game.level.get();
 
+		const level = this.game.level.get();
 		if (!level) {
-			console.log('No level to edit');
+			console.log('No level to edit.');
 			return;
 		}
 
@@ -128,17 +129,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.hideHighlights();
 		this.hideAdditionalGUI();
 
-		const level = this.game.level.get();
-
-		level.sprites.forEach((sprite) => {
-			if (sprite._helper) {
-				sprite._helper = null;
-			}
-		});
-		level.ground.tiles.forEach((tile) => {
-			tile._helper = null;
-		});
-
 		if (this.group) {
 			this.group.remove();
 			this.group = null;
@@ -155,6 +145,20 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.highlightedTileDef = null;
 		}
 		this.toolsFolder = null;
+
+		const level = this.game.level.get();
+		if (!level) {
+			return;
+		}
+
+		level.sprites.forEach((sprite) => {
+			if (sprite._helper) {
+				sprite._helper = null;
+			}
+		});
+		level.ground.tiles.forEach((tile) => {
+			tile._helper = null;
+		});
 		level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
 	}
 
@@ -168,21 +172,21 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.model.levelLoadRequest.set(level.name);
 	}
 
-	saveGame() {
+	saveLevel() {
 		const level = this.game.level.get();
-		localStorage.setItem('beehive-savegame-' + level.name, this.getLevelState());
+		localStorage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState());
 		console.log('Level saved.');
 	}
 
 	saveAndReload() {
-		this.saveGame();
+		this.saveLevel();
 		this.reload();
 	}
 
 	downloadSavedGame() {
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
-		element.setAttribute('download', 'beehive-adventures-' + this.game.level.get().name + '.json');
+		element.setAttribute('download', this.game.level.get().name + '.json');
 		element.style.display = 'none';
 		document.body.appendChild(element);
 		element.click();
@@ -250,10 +254,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	hideSpriteHelpers() {
 		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all sprite helpers');
-		const level = this.game.level.get();
-		level.sprites.removeOnAddListener(this.spriteAddedHandler);
-		//level.sprites.removeOnRemoveListener(this.spriteRemovedHandler);
 		if (this.spriteHelpers) this.spriteHelpers.hide();
+
+		const level = this.game.level.get();
+		if (level) {
+			level.sprites.removeOnAddListener(this.spriteAddedHandler);
+		}
 	}
 
 	spriteAdded(sprite) {
@@ -293,10 +299,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	hideGroundTiles() {
 		if (DEBUG_EDITOR_RENDERER) console.log('Hiding all ground tiles');
-		const level = this.game.level.get();
-		level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
-		//level.ground.tiles.removeOnRemoveListener(this.tileRemovedHandler);
 		if (this.groundTiles) this.groundTiles.hide();
+		const level = this.game.level.get();
+		if (level) {
+			level.ground.tiles.removeOnAddListener(this.tileAddedHandler);
+		}
 	}
 
 	showGroundTiles() {
@@ -336,6 +343,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('strategy').onChange(() => sprite.strategy.makeDirty());
+		gui.add(sprite.oriented, 'value').name('oriented').onChange(() => sprite.oriented.makeDirty());
+
 		const obj = {str: JSON.stringify(sprite.data)};
 		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));
 		if (sprite.image) {

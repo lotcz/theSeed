@@ -1,4 +1,6 @@
+import "./style.css";
 import {SVG} from "@svgdotjs/svg.js";
+import {} from "@svgdotjs/svg.filter.js";
 import Controls from "./class/Controls";
 import GameController from "./controller/GameController";
 import GameModel from "./model/GameModel";

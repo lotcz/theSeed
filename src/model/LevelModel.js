@@ -12,6 +12,17 @@ import BeeModel from "./BeeModel";
 import {GROUND_TYPE_CLOUD, GROUND_TYPE_WATER} from "../builder/GroundStyle";
 import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import ParallaxLayerModel from "./ParallaxLayerModel";
+import HashTableModel from "./HashTableModel";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_DEAD,
+	IMAGE_BEE_WING,
+	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
+	STRATEGY_RESPAWN
+} from "../builder/SpriteStyle";
+import LevelBuilder from "../builder/LevelBuilder";
+import {BEE_CENTER} from "../controller/BeeController";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -26,11 +37,14 @@ export default class LevelModel extends ModelBase {
 	viewBoxSize;
 	viewBoxCoordinates;
 	clipAmount; // 0 - no clipping, 1 - whole image clipped
+	isPlayable;
 
 	constructor(state) {
 		super();
 
 		this.name = 'untitled';
+		this.isPlayable = true;
+
 		this.grid = new GridModel();
 		this.addChild(this.grid);
 
@@ -43,7 +57,7 @@ export default class LevelModel extends ModelBase {
 		this.sprites = new CollectionModel();
 		this.addChild(this.sprites);
 
-		this.resources = new CollectionModel();
+		this.resources = new HashTableModel();
 		this.addChild(this.resources);
 
 		this.viewBoxScale = new DirtyValue(1);
@@ -98,27 +112,99 @@ export default class LevelModel extends ModelBase {
 		if (state.ground) this.ground.restoreState(state.ground);
 		if (state.bee) this.addBee(new BeeModel(state.bee));
 		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
-		if (state.resources) this.resources.restoreState(state.resources, (r) => new ResourceModel(r));
+		if (state.resources) this.resources.restoreState(state.resources, (r) => null);
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
 		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
 	}
 
-	addBee(bee) {
-		if (this.bee) this.removeChild(this.bee);
-		this.bee = bee;
-		if (this.bee) {
-			this.addChild(this.bee);
-		}
+	createBee(position) {
+		return new BeeModel({
+			direction: [0,0],
+			speed: 0,
+			position: position.toArray(),
+			coordinates: this.grid.getCoordinates(position),
+			image: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE
+			},
+			crawlingAnimation: {
+				image: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_BEE_CRAWL
+				},
+				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
+			},
+			starsAnimation: {
+				image: {
+					coordinates: BEE_CENTER.clone(),
+					scale: 1,
+					flipped: false,
+					rotation: 0,
+					path: IMAGE_STARS_1
+				},
+				paths: [IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3],
+				frameRate: 5
+			},
+			leftWing: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: false,
+				rotation: 0,
+				path: IMAGE_BEE_WING
+			},
+			rightWing: {
+				coordinates: BEE_CENTER.clone(),
+				scale: 1,
+				flipped: true,
+				rotation: 0,
+				path: IMAGE_BEE_WING
+			},
+		});
 	}
 
-	addResource(resType, uri, data) {
-		const existing = this.resources.children.filter((r) => r.uri === uri);
-		if (existing.length > 0) {
-			console.log(`Resource URI ${uri} already exists.`);
-		} else {
-			this.resources.add(new ResourceModel({resType: resType, uri: uri, data: data}));
+	addBee(bee) {
+		this.addResource(IMAGE_BEE);
+		this.addResource(IMAGE_BEE_DEAD);
+		this.addResource(IMAGE_BEE_CRAWL);
+		this.addResource(IMAGE_BEE_WING);
+		this.addResource(IMAGE_STARS_1);
+		this.addResource(IMAGE_STARS_2);
+		this.addResource(IMAGE_STARS_3);
+
+		if (this.bee) this.removeChild(this.bee);
+		this.bee = bee;
+		return this.addChild(this.bee);
+	}
+
+	spawn(bee, name) {
+		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === name);
+		if (!respawn) {
+			console.log(`Respawn spot '${name}' not found!`);
+			return;
 		}
+		if (bee) {
+			bee.position.set(respawn.position);
+			bee.coordinates.set(this.grid.getCoordinates(respawn.position));
+		} else {
+			bee = this.createBee(respawn.position);
+		}
+		bee.health.set(1);
+		this.addBee(bee);
+	}
+
+	addResource(uri) {
+		this.resources.add(uri);
+	}
+
+	removeResource(uri) {
+		this.resources.remove(uri);
 	}
 
 	isPositionInView(position) {
@@ -197,7 +283,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	centerView() {
-		const center = new Vector2(Math.round(this.level.grid.size.x / 2), Math.round(this.level.grid.size.y / 2));
+		const center = new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2));
 		this.centerOnPosition(center);
 	}
 
@@ -239,19 +325,64 @@ export default class LevelModel extends ModelBase {
 		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
+	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {
+		if (path) {
+			this.addResource(path);
+		}
+		const state = {
+			position: position.toArray(),
+			image: (path) ? {
+				scale: scale,
+				flipped: flipped,
+				rotation: rotation,
+				path: path
+			} : null,
+			strategy: strategy,
+			oriented: oriented,
+			data: data
+		};
+		return this.sprites.add(new SpriteModel(state));
+	}
+
+	addSpriteFromStyle(position, spriteType) {
+		const style = SPRITE_STYLES[spriteType];
+		let uri = null;
+		let scale = 1;
+		if (style.image) {
+			uri = style.image.uri;
+			scale = style.image.scale;
+		}
+		return this.addSprite(
+			position,
+			style.strategy,
+			style.data,
+			uri,
+			scale,
+			0,
+			false,
+			style.oriented
+		);
+	}
+
 	setParallaxFromStyle(parallaxType) {
 		const style = PARALLAX_STYLES[parallaxType];
 		const parallax = new ParallaxModel();
 		parallax.backgroundColor = style.background;
 		parallax.backgroundColorEnd = style.backgroundEnd;
 
+		if (this.parallax) {
+			this.parallax.layers.forEach((l) => {
+				this.removeResource(l.image.path.get());
+			});
+		}
+
 		if (style.layers) {
 			style.layers.forEach((l) => {
 				const layer = new ParallaxLayerModel();
 				layer.distance = l.distance;
-				this.addResource(RESOURCE_TYPE_IMAGE, l.image.uri, l.image.resource);
-				layer.image.path = l.image.uri;
-				parallax.addChild(layer);
+				this.addResource(l.image.uri);
+				layer.image.path.set(l.image.uri);
+				parallax.layers.add(layer);
 			});
 		}
 

@@ -48,42 +48,7 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	getAffectedPositions(position, steps = 1) {
-		const positions = [];
-		let start = position;
-		let stepsRemaining = steps;
-
-		while (stepsRemaining > 0) {
-			positions.push(start);
-			for (let i = 1; i < steps; i++) {
-				positions.push(this.level.grid.getNeighborLowerLeft(start, i));
-			}
-			start = this.level.grid.getNeighborUp(start);
-			stepsRemaining--;
-		}
-
-		stepsRemaining = steps;
-		start = position;
-		while (stepsRemaining > 0) {
-			//positions.push(start);
-			for (let i = 1; i < steps; i++) {
-				positions.push(this.level.grid.getNeighborLowerRight(start, i));
-			}
-			start = this.level.grid.getNeighborUp(start);
-			stepsRemaining--;
-		}
-
-		stepsRemaining = steps;
-		start = position;
-		while (stepsRemaining > 0) {
-			//positions.push(start);
-			for (let i = 1; i < steps; i++) {
-				positions.push(this.level.grid.getNeighborLowerRight(start, i));
-			}
-			start = this.level.grid.getNeighborLowerLeft(start);
-			stepsRemaining--;
-		}
-
-		return positions;
+		return this.level.grid.getAffectedPositions(position, steps);
 	}
 
 	addGroundTile(position) {

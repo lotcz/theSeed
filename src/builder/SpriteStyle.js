@@ -1,20 +1,21 @@
 import WaterImage from "../../res/img/water.svg";
 import BubbleImage from "../../res/img/bubble.svg";
+import JellymakerImage from "../../res/img/jellymaker.svg";
+import HintBackgroundImage from "../../res/img/hint-background.svg";
+import PotassiumImage from "../../res/img/potassium.svg";
+import ButterflyImage from "../../res/img/butterfly.svg";
+import LadybugImage from "../../res/img/ladybug.svg";
+/*
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import CalciumImage from "../../res/img/calcium.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
-import PotassiumImage from "../../res/img/potassium.svg";
 import SulfurImage from "../../res/img/sulfur.svg";
 import MagnesiumImage from "../../res/img/magnesium.svg";
-
-import ButterflyImage from "../../res/img/butterfly.svg";
-import LadybugImage from "../../res/img/my-lady-bug.svg";
 import GrasshopperImage from "../../res/img/grasshopper.svg";
 import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
-
-
+*/
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
@@ -23,6 +24,8 @@ export const IMAGE_BEE_WING = 'img/wing.svg';
 export const IMAGE_STARS_1 = 'img/stars-1.svg';
 export const IMAGE_STARS_2 = 'img/stars-2.svg';
 export const IMAGE_STARS_3 = 'img/stars-3.svg';
+
+export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';
 
 export const IMAGE_WATER = 'img/water.svg';
 export const IMAGE_BUBBLE = 'img/bubble.svg';
@@ -33,6 +36,7 @@ export const IMAGE_CALCIUM = 'img/calcium.svg';
 export const IMAGE_MAGNESIUM = 'img/magnesium.svg';
 export const IMAGE_PHOSPHORUS = 'img/phosphorus.svg';
 
+export const IMAGE_JELLYMAKER = 'img/jellymaker.svg';
 export const IMAGE_BUG = 'img/ladybug.svg';
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
@@ -40,6 +44,8 @@ export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
+export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
+export const SPRITE_TYPE_HINT_BACKGROUND = 'hint-background';
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
@@ -49,6 +55,9 @@ export const SPRITE_TYPE_RESPAWN = 'respawn';
 export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
 
+export const STRATEGY_JELLYMAKER = 'jellymaker';
+export const STRATEGY_HINT_BACKGROUND = 'hint-background';
+export const STRATEGY_HINT = 'hint';
 export const STRATEGY_BUG = 'bug';
 export const STRATEGY_BUTTERFLY = 'butterfly';
 export const STRATEGY_WORM = 'worm';
@@ -61,16 +70,35 @@ export const STRATEGY_RESPAWN = 'respawn';
 export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 
-export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER];
+export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT_BACKGROUND, STRATEGY_HINT];
 
 export const SPRITE_STYLES = [];
+
+SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
+	strategy: STRATEGY_JELLYMAKER,
+	image: {
+		uri: IMAGE_JELLYMAKER,
+		resource: JellymakerImage
+	},
+	oriented: true
+};
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_BACKGROUND] = {
+	strategy: STRATEGY_HINT_BACKGROUND,
+	image: {
+		uri: IMAGE_HINT_BACKGROUND,
+		resource: HintBackgroundImage,
+		scale: 0.1
+	},
+};
 
 SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 	strategy: STRATEGY_BUG,
 	image: {
 		uri: IMAGE_BUG,
 		resource: LadybugImage
-	}
+	},
+	oriented: true
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUTTERFLY] = {
@@ -109,14 +137,16 @@ SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
 };
 
 SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
-	strategy: STRATEGY_RESPAWN
+	strategy: STRATEGY_RESPAWN,
+	data: {name: 'start'}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
-	strategy: STRATEGY_EXIT
+	strategy: STRATEGY_EXIT,
+	data: {level: 'level-0'}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	strategy: STRATEGY_EMITTER,
-	data: {type:'water',timeout:1000,max:5}
+	data: {type:'water', timeout:1000, max:5}
 };

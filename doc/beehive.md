@@ -32,6 +32,11 @@ Jellymaker - turns nectar into jelly
 Waxmaker - turns potassium and jelly into wax
 Honeymaker - turns jelly and pollen into honey
 
+red bug - eats jelly
+ant -
+butterfly -
+grasshopper -
+
 level 1
 
 jelly maker asks for nectar
@@ -71,14 +76,13 @@ gather nectar from inside a giant flower
 level 6
 
 make way through ants nest, feed ants to carnivorous plant by luring them with honey
+you must gather nectar on the surface first, then make honey, then you can use it
 
 gather nectar from inside a giant flower
 
 
 TODO:
 
-- opening and closing scene (circular mask animation)
-- new sprite movement type (for monsters to be oriented)
 - sounds and music
 - production mode (exception handling and logging, hide all dev UI)
 

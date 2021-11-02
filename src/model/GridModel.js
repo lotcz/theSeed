@@ -187,6 +187,43 @@ export default class GridModel extends ModelBase {
 		return neighbors.filter((n) => this.isValidPosition(n));
 	}
 
+	getAffectedPositions(position, steps = 1) {
+		const positions = [];
+		let start = position;
+		let stepsRemaining = steps;
+
+		while (stepsRemaining > 0) {
+			positions.push(start);
+			for (let i = 1; i < steps; i++) {
+				positions.push(this.getNeighborLowerLeft(start, i));
+			}
+			start = this.getNeighborUp(start);
+			stepsRemaining--;
+		}
+
+		stepsRemaining = steps;
+		start = position;
+		while (stepsRemaining > 0) {
+			for (let i = 1; i < steps; i++) {
+				positions.push(this.getNeighborLowerRight(start, i));
+			}
+			start = this.getNeighborUp(start);
+			stepsRemaining--;
+		}
+
+		stepsRemaining = steps;
+		start = position;
+		while (stepsRemaining > 0) {
+			for (let i = 1; i < steps; i++) {
+				positions.push(this.getNeighborLowerRight(start, i));
+			}
+			start = this.getNeighborLowerLeft(start);
+			stepsRemaining--;
+		}
+
+		return positions;
+	}
+
 }
 
 

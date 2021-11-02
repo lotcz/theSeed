@@ -1,6 +1,5 @@
 import ControllerBase from "../class/ControllerBase";
 import Pixies from "../class/Pixies";
-import DirtyValue from "../class/DirtyValue";
 import RotationValue from "../class/RotationValue";
 
 const ROTATION_SPEED = 1000;
@@ -83,10 +82,7 @@ export default class SpriteControllerStrategy extends ControllerBase {
 	}
 
 	setPosition(position) {
-		//this.game.level.grid.chessboard.removeVisitor(this.position, this.model);
-		//if (this.target) this.game.level.grid.chessboard.removeVisitor(this.target, this.model);
 		this.position.set(position);
-		//this.game.level.grid.chessboard.addVisitor(this.position, this.model);
 	}
 
 	onClick(e) {
@@ -104,14 +100,21 @@ export default class SpriteControllerStrategy extends ControllerBase {
 				let diff = RotationValue.normalizeValue(this.rotation.get() - this.targetRotation.get());
 				const step = Pixies.between(-diff, diff, (diff > 0 ? -1 : 1) * 360 * (delta / ROTATION_SPEED));
 				this.rotation.set((this.rotation.get() + step));
+				if (this.model.oriented.get()) {
+					this.model.image.flipped.set(this.rotation.get() < 0);
+				}
 			}
 		}
 
 		if (this.scalingEnabled) {
 			if (this.targetScale !== this.scale.get()) {
-				const diff = this.targetScale - this.scale.get();
-				const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (delta * (diff > 0) ? 1 : -1) / SCALING_SPEED);
-				this.scale.set(scale);
+				if (this.timeout <= 0) {
+					this.scale.set(this.targetScale);
+				} else {
+					const diff = this.targetScale - this.scale.get();
+					const scale = Pixies.between(this.scale.get(), this.targetScale, this.scale.get() + (diff * delta / this.timeout));
+					this.scale.set(scale);
+				}
 			}
 		}
 

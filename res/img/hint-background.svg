@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="150"
+   height="150"
+   viewBox="0 0 39.687501 39.687503"
+   version="1.1"
+   id="svg7958"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="hint-background.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7960"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.7709666"
+     inkscape:cx="13.172299"
+     inkscape:cy="71.274767"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px" />
+  <defs
+     id="defs7955" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-70.446548,-80.699328)">
+    <a
+       id="a8343"
+       transform="matrix(0.624584,0,0,0.55826503,54.953667,50.234098)"
+       style="fill:#ffffff;fill-opacity:0.538462">
+      <ellipse
+         style="fill:#ffffff;fill-opacity:0.538462;stroke-width:0.264999;stroke-linejoin:bevel"
+         id="path8041"
+         cx="56.059578"
+         cy="89.79454"
+         rx="31.254457"
+         ry="35.223274" />
+    </a>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#a8343"
+       id="use9053"
+       transform="matrix(0.89657652,0,0,0.92184929,9.5022112,7.8588335)"
+       width="100%"
+       height="100%"
+       style="fill:#ffffff;fill-opacity:0.405594" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#a8343"
+       id="use10963"
+       transform="matrix(0.77876478,0,0,0.80384139,20.396149,19.475268)"
+       width="100%"
+       height="100%"
+       style="fill:#ffffff;fill-opacity:0.405594" />
+  </g>
+</svg>

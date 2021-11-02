@@ -1,6 +1,9 @@
 import ControllerBase from "../class/ControllerBase";
+import Sound from "../class/Sound";
+import HitSound from "../../res/sound/hit.wav";
+
 import {BEE_CENTER} from "../controller/BeeController";
-import Vector2 from "../class/Vector2";
+import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -25,9 +28,12 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.wingRotation = 0;
 		this.speed = 0;
 		this.dead = false;
+
+		this.hitSound = new Sound(HitSound);
 	}
 
 	activateInternal() {
+		this.model.image.path.set(IMAGE_BEE);
 		this.model.leftWing.flipped.set(false);
 		this.model.rightWing.flipped.set(true);
 		this.model.starsAnimation.image.rotation.set(0);
@@ -105,6 +111,8 @@ export default class BeeFlightStrategy extends ControllerBase {
 					return;
 				}
 			}
+
+			this.hitSound.play();
 
 			this.model.health.set(this.model.health.get() - (0.5 * this.speed / MAX_SPEED));
 			if (this.model.health.get() <= 0) {

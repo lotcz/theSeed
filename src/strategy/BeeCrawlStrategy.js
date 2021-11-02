@@ -17,6 +17,9 @@ import {
 import RotationValue from "../class/RotationValue";
 import Vector2 from "../class/Vector2";
 
+import CrawlSound from "../../res/sound/crawl.wav";
+import Sound from "../class/Sound";
+
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second
 
@@ -182,9 +185,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetCoordinates = null;
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
+		this.crawlSound = new Sound(CrawlSound);
 	}
 
 	activateInternal() {
+		this.crawlSound.play();
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.updateBee();
@@ -224,7 +229,10 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				}
 			}
 			this.updateBee();
+			this.model.crawlingAnimation.paused.set(false);
 			return;
+		} else {
+			this.model.crawlingAnimation.paused.set(true);
 		}
 
 		if (this.timeout > 0) {
@@ -253,10 +261,18 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			}
 			if (this.controls.moveLeft) {
 				controllerDirection = CONTROLLER_DIRECTION_LEFT;
-				this.model.headingLeft.set(true);
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UP) {
+					this.model.headingLeft.set(false);
+				} else {
+					this.model.headingLeft.set(true);
+				}
 			} else if (this.controls.moveRight) {
 				controllerDirection = CONTROLLER_DIRECTION_RIGHT;
-				this.model.headingLeft.set(false);
+				if (this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_LEFT || this.model.crawling.get() === NEIGHBOR_TYPE_UPPER_RIGHT || this.model.crawling.get() === NEIGHBOR_TYPE_UP) {
+					this.model.headingLeft.set(true);
+				} else {
+					this.model.headingLeft.set(false);
+				}
 			}
 			const matrix = CRAWLING_MATRIX[this.model.crawling.get()];
 			if (!matrix) {

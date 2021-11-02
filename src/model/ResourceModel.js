@@ -1,15 +1,11 @@
 import ModelBase from "../class/ModelBase";
-import Vector2 from "../class/Vector2";
-import DirtyValue from "../class/DirtyValue";
-import RotationValue from "../class/RotationValue";
 
-export const RESOURCE_TYPE_GROUP = 'group';
 export const RESOURCE_TYPE_IMAGE = 'image';
 
 export default class ResourceModel extends ModelBase {
+	type;
 	uri;
 	data;
-	resType;
 
 	constructor(state) {
 		super();
@@ -21,16 +17,17 @@ export default class ResourceModel extends ModelBase {
 
 	getState() {
 		return {
+			type: this.type,
 			uri: this.uri,
 			data: this.data,
-			resType: this.resType
+
 		}
 	}
 
 	restoreState(state) {
+		this.type = state.type;
 		this.uri = state.uri;
 		this.data = state.data;
-		this.resType = state.resType;
 	}
 
 }

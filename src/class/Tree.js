@@ -1,16 +1,19 @@
 import Dirty from "./Dirty";
+import EventManager from "./EventManager";
 
 export default class Tree extends Dirty {
 	is_deleted;
 	children;
 	parent;
 	dirtyParent;
+	eventManager;
 
 	constructor() {
 		super();
 		this.parent = null;
 		this.children = [];
 		this.is_deleted = false;
+		this.eventManager = new EventManager();
 	}
 
 	isDeleted() {
@@ -81,6 +84,18 @@ export default class Tree extends Dirty {
 			const child = this.children[i];
 			child.forEach(func);
 		}
+	}
+
+	addEventListener(eventName, eventHandler) {
+		this.eventManager.addEventListener(eventName, eventHandler);
+	}
+
+	removeEventListener(eventName, eventHandler) {
+		this.eventManager.removeEventListener(eventName, eventHandler);
+	}
+
+	triggerEvent(eventName, param) {
+		this.eventManager.triggerEvent(eventName, param);
 	}
 
 }

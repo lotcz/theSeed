@@ -1,4 +1,4 @@
-const DEBUG_EVENT_MANAGER = true;
+const DEBUG_EVENT_MANAGER = false;
 
 export default class EventManager {
 	handlers;

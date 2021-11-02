@@ -18,7 +18,6 @@ export default class SpriteRenderer extends SvgRenderer {
 	}
 
 	updateOuttaSight() {
-
 		if (!this.imageRenderer) return;
 
 		if (!this.imageRenderer.isActivated()) {

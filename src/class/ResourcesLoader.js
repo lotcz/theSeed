@@ -1,21 +1,14 @@
 import Tree from "./Tree";
-import ResourceModel, {RESOURCE_TYPE_GROUP, RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
-import Pixies from "./Pixies";
 import ResourceLoader from "./ResourceLoader";
 
 export default class ResourcesLoader extends Tree {
-	collection;
-	loaded;
 	onLoaded;
-	draw;
 
-	constructor(draw, collection) {
+	constructor(resources, draw, uris) {
 		super();
 
 		this.draw = draw;
-		this.collection = collection;
-		this.collection.forEach((ch) => this.addChild(new ResourceLoader(draw, ch)));
-
+		uris.forEach((uri) => this.addChild(new ResourceLoader(resources, draw, uri)));
 		this.onLoaded = null;
 	}
 

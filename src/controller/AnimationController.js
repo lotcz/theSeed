@@ -14,6 +14,8 @@ export default class AnimationController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
+		if (this.model.paused.get()) return;
+
 		if (this.frameTimeout <= 0) {
 			this.currentFrame += 1;
 			if (this.currentFrame >= this.model.paths.length) {
