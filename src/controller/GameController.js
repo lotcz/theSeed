@@ -243,7 +243,7 @@ export default class GameController extends ControllerBase {
 		} else if (this.savedGameExists) {
 			builder.addLine("Continue", (e) => this.loadGameAsync());
 		}
-		builder.addLine("Start a New Game", (e) => this.newGame());
+		builder.addLine("New Game", (e) => this.newGame());
 		if (DEBUG_MODE) {
 			builder.addLine("Editor", (e) => this.showEditorMenu());
 		}
@@ -352,8 +352,17 @@ export default class GameController extends ControllerBase {
 
 	onResize() {
 		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
-		if (!this.model.level.isEmpty())
-			this.model.level.get().viewBoxSize.set(this.model.viewBoxSize);
+		if (!this.model.level.isEmpty()) {
+			const level = this.model.level.get();
+			level.viewBoxSize.set(this.model.viewBoxSize);
+			if (level.isPlayable && level.bee) {
+				const isMobile = this.model.viewBoxSize.x < 650;
+				const scale = isMobile ? 6.5 : 4;
+				level.viewBoxScale.set(scale);
+				level.centerOnCoordinates(level.bee.coordinates);
+			}
+			level.sanitizeViewBox();
+		}
 	}
 
 }
