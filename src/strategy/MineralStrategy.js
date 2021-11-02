@@ -54,16 +54,20 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 		visitors.forEach(
 			(v) => {
 				if (this.model.data.amount >= v.data.amount) {
+					console.log('absorb');
 					this.absorb(v);
 				}
 			}
 		);
+	}
 
+	static getScale(amount) {
+		const scale = Math.sqrt(amount / (4 * Math.PI));
+		return (scale * 2);
 	}
 
 	updateInternal(delta) {
-		const scale = Math.sqrt(this.model.data.amount / (4 * Math.PI));
-		this.targetScale = (scale * 2);
+		this.targetScale = MineralStrategy.getScale(this.model.data.amount);
 	}
 
 	absorb(node) {

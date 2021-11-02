@@ -29,7 +29,8 @@ export default class BeeRenderer extends SvgRenderer {
 		this.rightWingRenderer = new ImageRenderer(game, this.model.rightWing, this.group);
 		this.addChild(this.rightWingRenderer);
 
-		this.inventoryRenderer = new SpriteCollectionRenderer(game, this.model.inventory, this.group);
+		this.inventoryGroup = this.group.group();
+		this.inventoryRenderer = new SpriteCollectionRenderer(game, this.model.inventory, this.inventoryGroup);
 		this.addChild(this.inventoryRenderer);
 
 		if (DEBUG_BEE) {
@@ -102,7 +103,7 @@ export default class BeeRenderer extends SvgRenderer {
 			this.rightWingRenderer.deactivate();
 			this.imageRenderer.deactivate();
 		}
-
+		this.inventoryGroup.front();
 	}
 
 }

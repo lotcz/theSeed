@@ -352,8 +352,14 @@ export default class GameController extends ControllerBase {
 
 	onResize() {
 		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
-		if (!this.model.level.isEmpty())
-			this.model.level.get().viewBoxSize.set(this.model.viewBoxSize);
+		if (!this.model.level.isEmpty()) {
+			const level = this.model.level.get();
+			level.viewBoxSize.set(this.model.viewBoxSize);
+			if (level.isPlayable && level.bee) {
+				level.centerOnCoordinates(level.bee.coordinates);
+			}
+			level.sanitizeViewBox();
+		}
 	}
 
 }

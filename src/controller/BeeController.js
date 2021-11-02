@@ -7,6 +7,7 @@ import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
+import MineralStrategy from "../strategy/MineralStrategy";
 
 export const BEE_CENTER = new Vector2(250, 250);
 export const WINGS_OFFSET = BEE_CENTER.addX(50);
@@ -72,16 +73,20 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
+		const visitors = this.chessboard.getVisitors(this.model.position);
+		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
+		if (minerals.length > 0) {
+			const item = minerals[0];
+			this.takeItem(item);
+		}
+
 		if (this.controls.interact) {
 			const position = this.grid.getNeighborDown(this.model.position)
 			const visitors = this.chessboard.getVisitors(position);
 			const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
 			if (minerals.length > 0) {
 				const item = minerals[0];
-				item.image.coordinates.set(BEE_CENTER);
-				item.data.carried = true;
-				this.level.sprites.remove(item);
-				this.model.inventory.add(item);
+				this.takeItem(item);
 			} else {
 				const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX);
 				if (wax.length > 0) {
@@ -93,18 +98,20 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.controls.fire) {
-			this.emptyInventory();
+			this.dropItem();
 			this.controls.fire = false;
 		}
 	}
 
 	fly() {
+		this.model.inventory.forEach((i) => i.image.coordinates.set(BEE_CENTER.addY(80)));
 		this.model.crawling.set(null);
 		this.crawlingAnimationController.deactivate();
 		this.setStrategy(new BeeFlightStrategy(this.game, this.model, this.controls));
 	}
 
 	crawl(direction) {
+		this.model.inventory.forEach((i) => i.image.coordinates.set(BEE_CENTER));
 		this.model.crawling.set(direction);
 		this.crawlingAnimationController.activate();
 		this.setStrategy(new BeeCrawlStrategy(this.game, this.model, this.controls));
@@ -124,7 +131,25 @@ export default class BeeController extends ControllerBase {
 		this.strategy.activate();
 	}
 
-	emptyInventory() {
+	takeItem(item) {
+		if (this.model.isFlying()) {
+			item.image.coordinates.set(BEE_CENTER.addY(80));
+		} else {
+			item.image.coordinates.set(BEE_CENTER);
+		}
+		item.data.carried = true;
+		this.level.sprites.remove(item);
+		const sameType = this.model.inventory.children.find((i) => i.image.path.get() === item.image.path.get());
+		if (sameType) {
+			sameType.data.amount += item.data.amount;
+			sameType.image.scale.set(MineralStrategy.getScale(sameType.data.amount));
+			console.log('add');
+		} else {
+			this.model.inventory.add(item);
+		}
+	}
+
+	dropItem() {
 		const item = this.model.inventory.removeFirst();
 		if (item) {
 			this.level.addResource(item.image.path.get());

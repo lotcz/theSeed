@@ -83,7 +83,12 @@ gather nectar from inside a giant flower
 
 TODO:
 
-- sounds and music
+- improve inventory
+- tune level designs
+- build experimental level
+
+- mobile widgets
+- improve graphics
 - production mode (exception handling and logging, hide all dev UI)
 
 

@@ -45,7 +45,7 @@ export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
-export const SPRITE_TYPE_HINT_BACKGROUND = 'hint-background';
+export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
@@ -56,7 +56,6 @@ export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
 
 export const STRATEGY_JELLYMAKER = 'jellymaker';
-export const STRATEGY_HINT_BACKGROUND = 'hint-background';
 export const STRATEGY_HINT = 'hint';
 export const STRATEGY_BUG = 'bug';
 export const STRATEGY_BUTTERFLY = 'butterfly';
@@ -70,7 +69,7 @@ export const STRATEGY_RESPAWN = 'respawn';
 export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 
-export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT_BACKGROUND, STRATEGY_HINT];
+export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT];
 
 export const SPRITE_STYLES = [];
 
@@ -83,8 +82,8 @@ SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
 	oriented: true
 };
 
-SPRITE_STYLES[SPRITE_TYPE_HINT_BACKGROUND] = {
-	strategy: STRATEGY_HINT_BACKGROUND,
+SPRITE_STYLES[SPRITE_TYPE_HINT] = {
+	strategy: STRATEGY_HINT,
 	image: {
 		uri: IMAGE_HINT_BACKGROUND,
 		resource: HintBackgroundImage,
