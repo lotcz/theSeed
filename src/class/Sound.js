@@ -13,11 +13,22 @@ export default class Sound {
 		this.audio.muted = options.muted || false;
 	}
 
+	rewind() {
+		this.audio.currentTime = 0;
+	}
+
+	stop() {
+		this.pause();
+		this.rewind();
+	}
+
+	replay() {
+		this.stop();
+		this.play();
+	}
+
 	play() {
 		if (this.audio.readyState === HAVE_ENOUGH_DATA) {
-			if (this.audio.currentTime > 0) {
-				this.audio.currentTime = 0;
-			}
 			this.audio.play();
 		} else {
 			this.audio.addEventListener("canplaythrough", event => {

@@ -4,7 +4,7 @@ import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 import LevelEditorModel from "./LevelEditorModel";
 import HashTableModel from "./HashTableModel";
-import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
+import ResourceModel, {RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_SOUND} from "./ResourceModel";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {
 	IMAGE_BEE,
@@ -25,6 +25,7 @@ import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
+import {MUSIC_STYLES} from "../builder/MusicStyle";
 
 export const DEBUG_MODE = true;
 
@@ -93,7 +94,14 @@ export default class GameModel extends ModelBase {
 		for (let type in SPRITE_STYLES) {
 			const style = SPRITE_STYLES[type];
 			if (style.image) {
-				this.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource)
+				this.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
+			}
+		}
+
+		for (let type in MUSIC_STYLES) {
+			const style = MUSIC_STYLES[type];
+			if (style.resource) {
+				this.addResource(RESOURCE_TYPE_SOUND, style.url, style.resource);
 			}
 		}
 
@@ -102,7 +110,7 @@ export default class GameModel extends ModelBase {
 			if (style.layers) {
 				style.layers.forEach((layer) => {
 					if (layer.image) {
-						this.addResource(RESOURCE_TYPE_IMAGE, layer.image.uri, layer.image.resource)
+						this.addResource(RESOURCE_TYPE_IMAGE, layer.image.uri, layer.image.resource);
 					}
 				});
 			}

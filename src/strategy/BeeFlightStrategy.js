@@ -112,7 +112,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 				}
 			}
 
-			this.hitSound.play();
+			this.hitSound.replay();
 
 			this.model.health.set(this.model.health.get() - (0.5 * this.speed / MAX_SPEED));
 			if (this.model.health.get() <= 0) {

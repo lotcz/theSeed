@@ -160,6 +160,12 @@ export default class BeeController extends ControllerBase {
 		}
 	}
 
+	emptyInventory() {
+		while (this.model.inventory.count() > 0) {
+			this.dropItem();
+		}
+	}
+
 	updateMovement() {
 		this.level.centerOnCoordinates(this.model.coordinates);
 		this.level.sanitizeViewBox();

@@ -76,6 +76,9 @@ export default class LevelModel extends ModelBase {
 		this.parallaxType.addOnChangeListener((value) => this.setParallaxFromStyle(value));
 		this.parallaxType.set(PARALLAX_HILLS);
 
+		this.levelMusic = new DirtyValue(null);
+		this.addChild(this.levelMusic);
+
 		// auto recalculate parallax offset
 		this.viewBoxChangedHandler = () => this.updateCameraOffset();
 		this.viewBoxScale.addOnChangeListener(this.viewBoxChangedHandler);
@@ -92,6 +95,7 @@ export default class LevelModel extends ModelBase {
 			name: this.name,
 			grid: this.grid.getState(),
 			parallaxType: this.parallaxType.get(),
+			levelMusic: this.levelMusic.get(),
 			plants: this.plants.getState(),
 			ground: this.ground.getState(),
 			sprites: this.sprites.getState(),
@@ -108,6 +112,7 @@ export default class LevelModel extends ModelBase {
 
 		if (state.grid) this.grid.restoreState(state.grid);
 		if (state.parallaxType) this.parallaxType.set(state.parallaxType);
+		if (state.levelMusic) this.levelMusic.set(state.levelMusic);
 		if (state.plants) this.plants.restoreState(state.plants, (p) => new PlantModel(p));
 		if (state.ground) this.ground.restoreState(state.ground);
 		if (state.bee) this.addBee(new BeeModel(state.bee));
