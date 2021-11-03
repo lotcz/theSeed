@@ -8,6 +8,14 @@ Basics
 - queen can eat and then lay eggs
 - bee can fly, crawl, take and drop small things
 - when Bee dies and has no followers, she respawns in a hive
+- motivation to travel to advanced levels is also quantity of resources
+
+How to open blocked access?
+
+- bring certain item for guarding NPC
+- lure away guarding animal
+- bring pollen to blossom to get to nectar
+
 
 Items
 -----
@@ -27,6 +35,9 @@ Items
 - wax - made from green and yellow jelly, can be dropped to form a wall
 - egg - produced by Queen, becomes a larva when placed in a jelly basin
 - larva - becomes a follower when fed with yellow jelly
+
+- rock spike
+- carnivorous plant
 
 Bees
 ----
@@ -57,13 +68,18 @@ Animals
 - Pupa/Cocoon - will grow into butterfly
 - Butterfly - eats pollen, can spawn cocoons
 
+- Hornet - killer wasp
+
 Plants
 ------
 
 - grass stalks - produces potassium
 - red blossoms - produces pollen
 - yellow blossoms - produces nectar
--
+- pumpkin/gourd
+- tree
+- cave moss
+- water lilies
 
 LEVELS
 ======
@@ -80,9 +96,8 @@ when danger mission is finished, safer way may open for later
 when you die and have no followers, you respawn in beehive
 followers follow the bee in the beehive, in levels they stay at safe location
 
-
-level 1
--------
+Cave 1
+------
 
 jelly maker asks for nectar
 fly to surface, avoid water
@@ -92,39 +107,44 @@ A Meadow
 
 collect some nectar and play with bugs
 
-level 2
--------
+Cave 2
+------
 
 unborn follower is requesting jelly
+you must collect pollen
 little more challenging caves, have vegan bugs to eat your way out
 
-find plant almost eaten by bugs, save it by luring all bugs away
+find plants almost eaten, lure bugs away to let pollen grow
 
-collect precious nectar
-
-level 3
--------
+Cave 3
+------
 
 avoid ants
 
+Party Table
+-----------
+
 get few drops from the lemonade
 
-level 4
--------
+Cave 4
+------
 
 feed small bugs to the ants to pass
 
+Pond
+----
+
 gather nectar from water lilies, avoid carnivorous plant
 
-level 5
--------
+Cave 5
+------
 
 avoid rain by hiding under leaves and rocks
 
 gather nectar from inside a giant flower
 
-level 6
--------
+Ant Nest
+--------
 
 make way through ants nest, feed ants to carnivorous plant by luring them with honey
 you must gather nectar on the surface first, then make honey, then you can use it
@@ -138,15 +158,21 @@ TODO:
 - non-saved sprites (hints, )
 - placeable hints
 - sprite placement (drop to ground gravity-like)
+- dynamic ground (make pieces disappear or be replaced)
 - dying animals
+- some minerals flow on water
+- json editor
+- emitters will not spawn if something is present
+- emitters can be configured to spawn certain amount (custom data)
 - limit inventory, slow down when carrying too much
 - slow when in cloud or on water (by adding visible burden)
-- solve hurting exit
+- add exit image and shrink bee when exiting
+- make edges of level work as an exit
 - bubbles turn to water on surface and can be collected
 - ground rendering order (to fix water underground)
+- different properties of ground in terms of bouncing, hurting and crawling
 - impenetrable sprites (e.g. water drops)
 - lives/followers
-- tune level designs
 - add diagonal directions?
 - build experimental levels
 
@@ -154,9 +180,16 @@ Sprites
 
 - penetrable
 - takeable
--
+- striking/hurting
 
 - mobile widgets
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
-- ads and monetization
+
+
+Ads and monetization
+--------------------
+
+- free 2 or 3 levels
+- pay to remove ads and unlock whole game
+- how to use same system for ads and payment on all platforms?
