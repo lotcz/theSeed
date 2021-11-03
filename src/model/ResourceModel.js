@@ -1,6 +1,7 @@
 import ModelBase from "../class/ModelBase";
 
 export const RESOURCE_TYPE_IMAGE = 'image';
+export const RESOURCE_TYPE_SOUND = 'sound';
 
 export default class ResourceModel extends ModelBase {
 	type;

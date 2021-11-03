@@ -85,8 +85,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		positionFolder.add(level.viewBoxCoordinates, 'x').listen();
 		positionFolder.add(level.viewBoxCoordinates, 'y').listen();
 		positionFolder.open();
+		console.log(level.levelMusic);
+		levelFolder.add(level.levelMusic, 'value', this.model.levelMusicTypes).name('levelMusic').onChange(() => level.levelMusic.set(level.levelMusic.value));
 		const parallaxFolder = levelFolder.addFolder('Parallax');
-		parallaxFolder.add(level.parallaxType, 'value', this.model.parallaxTypes).name('parallaxType').onChange(() => level.setParallaxFromStyle(level.parallaxType.get()))
+		parallaxFolder.add(level.parallaxType, 'value', this.model.parallaxTypes).name('parallaxType').onChange(() => level.setParallaxFromStyle(level.parallaxType.get()));
 		parallaxFolder.add(level.parallax.cameraOffset, 'x').name('offset.x').listen();
 		parallaxFolder.add(level.parallax.cameraOffset, 'y').name('offset.y').listen();
 		parallaxFolder.open();
