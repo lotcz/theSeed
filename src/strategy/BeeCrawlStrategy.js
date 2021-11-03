@@ -327,6 +327,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.crawlingAnimation.image.flipped.set(this.model.headingLeft.get());
 		this.model.starsAnimation.image.rotation.set(rotation);
 		this.model.starsAnimation.image.flipped.set(this.model.headingLeft.get());
+		this.parent.updateMovement();
 	}
 
 	getRotation(direction) {

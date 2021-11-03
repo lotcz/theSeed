@@ -4,7 +4,7 @@ import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 import Sound from "../class/Sound";
 
-const DEBUG_LEVEL_CONTROLLER = false;
+const DEBUG_LEVEL_CONTROLLER = true;
 
 export default class LevelController extends ControllerBase {
 	isDead;
@@ -72,16 +72,19 @@ export default class LevelController extends ControllerBase {
 		if (this.model.levelMusic.isEmpty()) {
 			if (this.music) this.music.pause();
 			this.music = null;
+			if (DEBUG_LEVEL_CONTROLLER) console.log('level music empty');
 		} else {
 			const resource = this.game.resources.get(this.model.levelMusic.get());
-			if (this.music && resource && this.music.src === resource.data) {
+			if (this.music && resource && this.music.audio.src === resource.data) {
 				this.music.play();
+				if (DEBUG_LEVEL_CONTROLLER) console.log('restored playing');
 			} else {
 				if (this.music) this.music.pause();
 				this.music = null;
 				if (resource && resource.data) {
 					this.music = new Sound(resource.data, {loop: true});
 					this.music.play();
+					if (DEBUG_LEVEL_CONTROLLER) console.log('loaded level music:', resource.uri);
 				}
 			}
 		}
@@ -89,6 +92,7 @@ export default class LevelController extends ControllerBase {
 
 	deactivateInternal() {
 		if (this.music) this.music.pause();
+		if (DEBUG_LEVEL_CONTROLLER) console.log('Deactivated level controller');
 	}
 
 	updateInternal(delta) {

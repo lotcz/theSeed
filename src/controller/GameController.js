@@ -3,8 +3,11 @@ import LevelController from "./LevelController";
 import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import LevelBuilder from "../builder/LevelBuilder";
+
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
+import LevelLevel2 from "../../levels/level-2.json";
+
 import {
 	GROUND_PRESET_HILL,
 	GROUND_PRESET_SLOPE_LEFT,
@@ -40,6 +43,7 @@ export default class GameController extends ControllerBase {
 		this.levels = new HashTableModel();
 		this.levels.set('beehive', LevelBeehive);
 		this.levels.set('level-1', LevelLevel1);
+		this.levels.set('level-2', LevelLevel2);
 
 		this.savedGameExists = (localStorage.getItem(SAVE_GAME_NAME) !== null);
 	}
