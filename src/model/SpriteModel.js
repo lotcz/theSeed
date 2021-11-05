@@ -9,6 +9,7 @@ export default class SpriteModel extends ModelBase {
 	strategy;
 	oriented;
 	data;
+	type;
 	_is_sprite;
 	_is_penetrable;
 	onClick;
@@ -20,9 +21,14 @@ export default class SpriteModel extends ModelBase {
 		this._is_sprite = true;
 		this._is_penetrable = true;
 
+		this.position = new Vector2();
+		this.addChild(this.position);
+		this.strategy = new DirtyValue();
+		this.addChild(this.strategy);
 		this.oriented = new DirtyValue(false);
 		this.addChild(this.oriented);
 
+		this.type = '';
 		this.data = {};
 
 		if (state) {
@@ -37,23 +43,22 @@ export default class SpriteModel extends ModelBase {
 			image: (this.image) ? this.image.getState() : null,
 			oriented: this.oriented.get(),
 			strategy: this.strategy.get(),
-			data: this.data
+			data: this.data,
+			type: this.type
 		}
 	}
 
 	restoreState(state) {
-		this.position = Vector2.fromArray(state.position);
-		this.addChild(this.position);
+		if (state.position) this.position.restoreState(state.position);
 		if (state.image) {
+			if (this.image) this.removeChild(this.image);
 			this.image = new ImageModel(state.image);
 			this.addChild(this.image);
 		}
-		this.strategy = new DirtyValue(state.strategy);
-		this.addChild(this.strategy);
-		if (state.data) {
-			this.data = state.data;
-		}
+		if (state.strategy) this.strategy.restoreState(state.strategy);
+		if (state.data) this.data = state.data;
 		if (state.oriented) this.oriented.restoreState(state.oriented);
+		if (state.type) this.type = state.type;
 	}
 
 }

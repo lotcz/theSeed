@@ -155,7 +155,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- limit inventory, slow down when carrying too much
+- slow down when carrying too much - concept of burden
 - slow when in cloud or on water (by adding visible burden)
 - add exit image and shrink bee when exiting
 - make edges of level work as an exit
@@ -188,7 +188,7 @@ Animals
 Minerals
 --------
 
-- impenetrable sprites (e.g. water drops)
+- impenetrable sprites (e.g. water drops), make minerals stack
 - some minerals flow on water
 - bubbles turn to water on surface and can be collected
 -

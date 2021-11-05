@@ -4,6 +4,7 @@ import HitSound from "../../res/sound/hit.wav";
 
 import {BEE_CENTER} from "../controller/BeeController";
 import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
+import {MINERAL_MAX_AMOUNT} from "./MineralStrategy";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -48,16 +49,18 @@ export default class BeeFlightStrategy extends ControllerBase {
 		let direction = this.model.direction;
 
 		if (this.controls.anyMovement() && !this.dead) {
+			const carriedAmount = this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);
+			const speedup = SPEEDUP_SPEED * (1.1 - (carriedAmount / MINERAL_MAX_AMOUNT));
 			if (this.controls.moveUp) {
-				direction = direction.addY(-SPEEDUP_SPEED * secsDelta);
+				direction = direction.addY(-speedup * secsDelta);
 			} else if (this.controls.moveDown) {
-				direction = direction.addY(SPEEDUP_SPEED * secsDelta);
+				direction = direction.addY(speedup * secsDelta);
 			}
 			if (this.controls.moveLeft) {
-				direction = direction.addX(-SPEEDUP_SPEED * secsDelta);
+				direction = direction.addX(-speedup * secsDelta);
 				this.model.headingLeft.set(true);
 			} else if (this.controls.moveRight) {
-				direction = direction.addX(SPEEDUP_SPEED * secsDelta);
+				direction = direction.addX(speedup * secsDelta);
 				this.model.headingLeft.set(false);
 			}
 		} else {

@@ -7,10 +7,9 @@ import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
-import MineralStrategy from "../strategy/MineralStrategy";
+import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/MineralStrategy";
 
 export const BEE_CENTER = new Vector2(250, 250);
-export const WINGS_OFFSET = BEE_CENTER.addX(50);
 const HEALING_SPEED = 0.1; // health per second
 
 export default class BeeController extends ControllerBase {
@@ -76,27 +75,7 @@ export default class BeeController extends ControllerBase {
 
 		const visitors = this.chessboard.getVisitors(this.model.position);
 		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
-		if (minerals.length > 0) {
-			const item = minerals[0];
-			this.takeItem(item);
-		}
-
-		if (this.controls.interact) {
-			const position = this.grid.getNeighborDown(this.model.position)
-			const visitors = this.chessboard.getVisitors(position);
-			const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
-			if (minerals.length > 0) {
-				const item = minerals[0];
-				this.takeItem(item);
-			} else {
-				const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX);
-				if (wax.length > 0) {
-					const tile = wax[0];
-					this.level.ground.removeTile(tile);
-				}
-			}
-			this.controls.interact = false;
-		}
+		minerals.forEach((m) =>	this.takeItem(m));
 
 		if (this.controls.fire) {
 			this.dropItem();
@@ -133,21 +112,26 @@ export default class BeeController extends ControllerBase {
 	}
 
 	takeItem(item) {
+		const sameType = this.model.inventory.children.find((i) => i.image.path.get() === item.image.path.get());
+		if (this.model.inventory.count() > 0 && !sameType) {
+			return;
+		}
+		if (sameType && (sameType.data.amount + item.data.amount) >= MINERAL_MAX_AMOUNT) {
+			return;
+		}
+		this.level.sprites.remove(item);
+		if (sameType) {
+			sameType.data.amount += item.data.amount;
+			sameType.image.scale.set(MineralStrategy.getScale(sameType.data.amount));
+		} else {
+			this.model.inventory.add(item);
+		}
 		if (this.model.isFlying()) {
 			item.image.coordinates.set(BEE_CENTER.addY(80));
 		} else {
 			item.image.coordinates.set(BEE_CENTER);
 		}
 		item.data.carried = true;
-		this.level.sprites.remove(item);
-		const sameType = this.model.inventory.children.find((i) => i.image.path.get() === item.image.path.get());
-		if (sameType) {
-			sameType.data.amount += item.data.amount;
-			sameType.image.scale.set(MineralStrategy.getScale(sameType.data.amount));
-			console.log('add');
-		} else {
-			this.model.inventory.add(item);
-		}
 	}
 
 	dropItem() {

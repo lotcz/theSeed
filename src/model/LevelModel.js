@@ -330,7 +330,7 @@ export default class LevelModel extends ModelBase {
 		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
-	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented) {
+	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented, type) {
 		if (path) {
 			this.addResource(path);
 		}
@@ -344,7 +344,8 @@ export default class LevelModel extends ModelBase {
 			} : null,
 			strategy: strategy,
 			oriented: oriented,
-			data: data
+			data: data,
+			type: type
 		};
 		return this.sprites.add(new SpriteModel(state));
 	}
@@ -365,7 +366,8 @@ export default class LevelModel extends ModelBase {
 			scale,
 			0,
 			false,
-			style.oriented
+			style.oriented,
+			spriteType
 		);
 	}
 
