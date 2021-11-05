@@ -23,7 +23,10 @@ export default class JellymakerStrategy extends SpriteControllerStrategy {
 		if (!this.hintController) {
 			const hintModel = new HintModel();
 			hintModel.position.set(this.model.position);
-			hintModel.imagePath.set(IMAGE_POTASSIUM);
+			hintModel.imagePath = IMAGE_POTASSIUM;
+			if (this.model.data.hintDirection !== undefined) {
+				hintModel.direction = this.model.data.hintDirection;
+			}
 			this.hintController = new HintController(this.game, hintModel, this.controls);
 			this.addChild(this.hintController);
 			this.hintController.deactivate();

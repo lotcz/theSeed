@@ -1,5 +1,6 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import LevelBuilder from "../builder/LevelBuilder";
+import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
 
 const EMITTER_TIMEOUT = 1000;
 
@@ -13,7 +14,7 @@ export default class EmitterStrategy extends SpriteControllerStrategy {
 		this.movementEnabled = false;
 		this.turningEnabled = false;
 		this.scalingEnabled = false;
-		this.max = 10;
+		this.max = -1;
 		this.emitted = 0;
 
 		this.builder = new LevelBuilder(this.level);
@@ -22,7 +23,7 @@ export default class EmitterStrategy extends SpriteControllerStrategy {
 			this.defaultTimeout = this.model.data.timeout;
 		}
 
-		if (this.model.data.timeout) {
+		if (this.model.data.max) {
 			this.max = this.model.data.max;
 		}
 
@@ -30,8 +31,14 @@ export default class EmitterStrategy extends SpriteControllerStrategy {
 
 	selectTargetInternal() {
 		if (this.max === -1 || this.emitted <= this.max) {
-			this.emitted++;
-			this.builder.addSpriteFromStyle(this.position, this.model.data.type);
+			const visitors = this.chessboard.getVisitors(this.position, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_MINERAL));
+			if (visitors.length === 0) {
+				this.emitted++;
+				const sprite = this.builder.addSpriteFromStyle(this.position, this.model.data.type);
+				if (this.model.data.amount) {
+					sprite.data.amount = this.model.data.amount;
+				}
+			}
 		}
 	}
 

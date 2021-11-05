@@ -155,36 +155,44 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- non-saved sprites (hints, )
-- placeable hints
-- sprite placement (drop to ground gravity-like)
-- dynamic ground (make pieces disappear or be replaced)
-- dying animals
-- some minerals flow on water
-- json editor
-- emitters will not spawn if something is present
-- emitters can be configured to spawn certain amount (custom data)
 - limit inventory, slow down when carrying too much
 - slow when in cloud or on water (by adding visible burden)
 - add exit image and shrink bee when exiting
 - make edges of level work as an exit
-- bubbles turn to water on surface and can be collected
+- show lives
+- add diagonal directions?
+
+- build experimental levels
+- mobile widgets
+- improve graphics
+- production mode (exception handling and logging, hide all dev UI)
+
+
+Ground
+------
+
+- dynamic ground (make pieces disappear or be replaced)
 - ground rendering order (to fix water underground)
 - different properties of ground in terms of bouncing, hurting and crawling
-- impenetrable sprites (e.g. water drops)
-- lives/followers
-- add diagonal directions?
-- build experimental levels
 
-Sprites
+
+Animals
+-------
 
 - penetrable
 - takeable
 - striking/hurting
+- sprite placement (drop to ground gravity-like)
+- dying animals
 
-- mobile widgets
-- improve graphics
-- production mode (exception handling and logging, hide all dev UI)
+Minerals
+--------
+
+- impenetrable sprites (e.g. water drops)
+- some minerals flow on water
+- bubbles turn to water on surface and can be collected
+-
+
 
 
 Ads and monetization
