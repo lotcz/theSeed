@@ -2,7 +2,7 @@ Basics
 ------
 
 - start in beehive with a queen and some bees
-- choose a door to a level
+- choose door to a level
 - collect pollen and nectar
 - bring it to the hive to create followers
 - queen can eat and then lay eggs
@@ -16,6 +16,12 @@ How to open blocked access?
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
 
+Bee Personality
+---------------
+
+- curious (likes to explore new things)
+- rebelling (doesn't like authorities)
+- helpful (sympathises with other animals)
 
 Items
 -----
@@ -26,6 +32,7 @@ Items
 - nectar (yellow) - basic reward from visiting flowers
 - pollen (red) - another flower product
 - drop of lemonade
+- insecticide (poisonous to all insect)
 
 - yellow jelly - made from nectar and water
 - pink jelly - made from pollen and water
@@ -37,7 +44,7 @@ Items
 - larva - becomes a follower when fed with yellow jelly
 
 - rock spike
-- carnivorous plant
+
 
 Bees
 ----
@@ -69,6 +76,7 @@ Animals
 - Butterfly - eats pollen, can spawn cocoons
 
 - Hornet - killer wasp
+- Earthworm - eats through green material
 
 Plants
 ------
@@ -80,6 +88,7 @@ Plants
 - tree
 - cave moss
 - water lilies
+- carnivorous plant
 
 LEVELS
 ======
@@ -112,36 +121,37 @@ Cave 2
 
 unborn follower is requesting jelly
 you must collect pollen
-little more challenging caves, have vegan bugs to eat your way out
+little more challenging caves, have worms eat your way through
+
+Forest Gorge
+------------
 
 find plants almost eaten, lure bugs away to let pollen grow
 
 Cave 3
 ------
 
-avoid ants
+avoid ants, spikes and water
+feed small bugs to the ants to pass
 
 Party Table
 -----------
 
+there is field littered with insecticide and dead bugs
+ants have stolen butterfly cocoons, kill ants with insecticide or lure them away
+butterflies block access to straw
 get few drops from the lemonade
 
-Cave 4
-------
+Big Flyby
+---------
 
-feed small bugs to the ants to pass
+Fly over large distance, avoid clouds and hornets
+
 
 Pond
 ----
 
 gather nectar from water lilies, avoid carnivorous plant
-
-Cave 5
-------
-
-avoid rain by hiding under leaves and rocks
-
-gather nectar from inside a giant flower
 
 Ant Nest
 --------
@@ -149,24 +159,39 @@ Ant Nest
 make way through ants nest, feed ants to carnivorous plant by luring them with honey
 you must gather nectar on the surface first, then make honey, then you can use it
 
-gather nectar from inside a giant flower
+The Tree
+--------
 
+save bee eggs or larvae from ant abduction
+
+Rainy Day
+---------
+
+avoid rain by hiding under leaves and rocks
+hide under a car
+
+Pumpkin
+-------
+
+gather nectar from inside a giant flower
 
 TODO:
 =====
 
+- bee thoughts (hints)
 - slow down when carrying too much - concept of burden
 - slow when in cloud or on water (by adding visible burden)
 - add exit image and shrink bee when exiting
 - make edges of level work as an exit
 - show lives
 - add diagonal directions?
+- allow animals to carry things
+- moving animals must have better collisions
 
 - build experimental levels
 - mobile widgets
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
-
 
 Ground
 ------
@@ -184,6 +209,7 @@ Animals
 - striking/hurting
 - sprite placement (drop to ground gravity-like)
 - dying animals
+- collisions
 
 Minerals
 --------
@@ -191,9 +217,6 @@ Minerals
 - impenetrable sprites (e.g. water drops), make minerals stack
 - some minerals flow on water
 - bubbles turn to water on surface and can be collected
--
-
-
 
 Ads and monetization
 --------------------
