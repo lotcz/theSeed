@@ -7,10 +7,11 @@ import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/ladybug.svg";
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
-/*
 import NitrogenImage from "../../res/img/nitrogen.svg";
-import CalciumImage from "../../res/img/calcium.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
+
+/*
+
 import SulfurImage from "../../res/img/sulfur.svg";
 import MagnesiumImage from "../../res/img/magnesium.svg";
 import GrasshopperImage from "../../res/img/grasshopper.svg";
@@ -53,6 +54,8 @@ export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
 export const SPRITE_TYPE_BUBBLE = 'bubble';
 export const SPRITE_TYPE_POTASSIUM = 'potassium';
+export const SPRITE_TYPE_POLLEN = 'pollen';
+export const SPRITE_TYPE_NECTAR = 'nectar';
 export const SPRITE_TYPE_RESPAWN = 'respawn';
 export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
@@ -135,12 +138,31 @@ SPRITE_STYLES[SPRITE_TYPE_BUBBLE] = {
 	data: {amount: 1}
 };
 
-
 SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_POTASSIUM,
 		resource: PotassiumImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_POLLEN] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_PHOSPHORUS,
+		resource: PhosphorusImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_NECTAR] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_NITROGEN,
+		resource: NitrogenImage,
 		scale: 0.01
 	},
 	data: {amount: 1}
