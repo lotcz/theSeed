@@ -200,8 +200,6 @@ Ground
 ------
 
 - dynamic ground (make pieces disappear or be replaced)
-- ground rendering order (to fix water underground)
-- different properties of ground in terms of bouncing, hurting and crawling
 
 
 Animals

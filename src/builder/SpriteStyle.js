@@ -151,5 +151,5 @@ SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
 
 SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	strategy: STRATEGY_EMITTER,
-	data: {type:'water', timeout:1000, max:5}
+	data: {type:'water', timeout:3000, max:-1}
 };

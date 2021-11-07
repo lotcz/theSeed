@@ -72,6 +72,8 @@ export default class GroundRenderer extends SvgRenderer {
 
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
+		this.back = this.group.group();
+		this.front = this.group.group();
 
 		const tilesCollection = this.model.tiles;
 		const remaining = [...tilesCollection.children];
@@ -119,7 +121,7 @@ export default class GroundRenderer extends SvgRenderer {
 
 			if (DEBUG_GROUND_RENDERER) {
 				const corner = this.grid.getCorner(startTile.position, startCorner);
-				this.group.circle(10).fill('purple').center(corner.x, corner.y);
+				this.front.circle(10).fill('purple').center(corner.x, corner.y);
 			}
 
 			const points = [];
@@ -191,24 +193,23 @@ export default class GroundRenderer extends SvgRenderer {
 				path = `M${middle.x} ${middle.y} `;
 
 				if (DEBUG_GROUND_RENDERER) {
-					this.group.circle(25).fill('green').center(points[0].x, points[0].y);
-					this.group.circle(22).fill('green').center(points[1].x, points[1].y);
-					this.group.circle(20).fill('yellow').center(middle.x, middle.y);
+					this.front.circle(25).fill('green').center(points[0].x, points[0].y);
+					this.front.circle(22).fill('green').center(points[1].x, points[1].y);
+					this.front.circle(20).fill('yellow').center(middle.x, middle.y);
 				}
 
 				for (let i = 1, max = points.length - 1; i < max; i++) {
 					middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
 					path += `S ${points[i].x} ${points[i].y}, ${middle.x} ${middle.y}`;
 					if (DEBUG_GROUND_RENDERER) {
-						this.group.circle(15).fill('lightgreen').center(points[i].x, points[i].y);
-						this.group.circle(10).fill('blue').center(middle.x, middle.y);
+						this.front.circle(15).fill('lightgreen').center(points[i].x, points[i].y);
+						this.front.circle(10).fill('blue').center(middle.x, middle.y);
 					}
 				}
 
-				//path += ` Z`;
-
-				const pathDraw = this.group.path(path).stroke(style.stroke).fill(style.fill);
-				if (style.background === true) {
+				let group = (style.background === true) ? this.back : this.front;
+				const pathDraw = group.path(path).stroke(style.stroke).fill(style.fill);
+				if (style.renderCorners === true) {
 					pathDraw.back();
 				} else {
 					pathDraw.front();

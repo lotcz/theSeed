@@ -44,7 +44,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			reload: () => this.reload(),
 			saveAndReload: () => this.saveAndReload(),
 			fitGrid: () => this.fitGrid(),
-			download: () => this.downloadSavedGame()
+			download: () => this.download()
 		};
 
 		if (DEBUG_EDITOR_RENDERER) console.log('Creating editor renderer');
@@ -184,7 +184,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.reload();
 	}
 
-	downloadSavedGame() {
+	download() {
+		this.saveLevel();
 		const element = document.createElement('a');
 		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
 		element.setAttribute('download', this.game.level.get().name + '.json');
