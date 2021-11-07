@@ -173,7 +173,7 @@ export default class GameController extends ControllerBase {
 		return localForage.getItem(name);
 	}
 
-	saveLevelToStorage() {
+	async saveLevelToStorageAsync() {
 		if (this.game.level.isEmpty()) {
 			if (DEBUG_GAME_CONTROLLER) console.log('No level to save.');
 			return;
@@ -181,10 +181,8 @@ export default class GameController extends ControllerBase {
 		const level = this.game.level.get();
 		const id = this.model.id;
 		const state = level.getState();
-		localForage.setItem(this.getSavedLevelName(id, level.name), state)
-			.then(() => {
-				if (DEBUG_GAME_CONTROLLER) console.log('Level saved.');
-			});
+		await localForage.setItem(this.getSavedLevelName(id, level.name), state)
+		if (DEBUG_GAME_CONTROLLER) console.log('Level saved.');
 	}
 
 	async loadLevelAsync(name, spawn = null, bee = null) {
@@ -232,10 +230,11 @@ export default class GameController extends ControllerBase {
 	}
 
 	saveGame() {
-		this.saveLevelToStorage();
-		const state = this.game.getState();
-		localForage.setItem(SAVE_GAME_NAME, state)
-			.then(() => console.log('Game saved.'));
+		this.saveLevelToStorageAsync().then(() => {
+			const state = this.game.getState();
+			localForage.setItem(SAVE_GAME_NAME, state)
+				.then(() => console.log('Game saved.'));
+		});
 	}
 
 	showMainMenu() {
@@ -296,10 +295,12 @@ export default class GameController extends ControllerBase {
 	}
 
 	newGame() {
-		this.model.id = Date.now();
-		this.model.lastLevelName = null;
-		this.model.levelName.set(null);
-		this.model.levelName.set('beehive');
+		localForage.clear().then(() => {
+			this.model.id = Date.now();
+			this.model.lastLevelName = null;
+			this.model.levelName.set(null);
+			this.model.levelName.set('beehive');
+		});
 	}
 
 	newLevel() {

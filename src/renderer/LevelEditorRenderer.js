@@ -173,27 +173,27 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.model.levelLoadRequest.set(level.name);
 	}
 
-	saveLevel() {
+	async saveLevelAsync() {
 		const level = this.game.level.get();
 		localForage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState())
 			.then(() => console.log('Level saved.'));
 	}
 
 	saveAndReload() {
-		this.saveLevel();
-		this.reload();
+		this.saveLevelAsync().then(() => this.reload());
 	}
 
 	download() {
-		this.saveLevel();
-		const element = document.createElement('a');
-		const str = JSON.stringify(this.getLevelState());
-		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(str));
-		element.setAttribute('download', this.game.level.get().name + '.json');
-		element.style.display = 'none';
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
+		this.saveLevelAsync().then(() => {
+			const element = document.createElement('a');
+			const str = JSON.stringify(this.getLevelState());
+			element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(str));
+			element.setAttribute('download', this.game.level.get().name + '.json');
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		});
 	}
 
 	//<editor-fold desc="HIGHLIGHTS">
