@@ -120,7 +120,7 @@ SPRITE_STYLES[SPRITE_TYPE_WATER] = {
 	image: {
 		uri: IMAGE_WATER,
 		resource: WaterImage,
-		scale: 0
+		scale: 0.01
 	},
 	data: {amount: 1}
 };

@@ -23,6 +23,7 @@ import {
 } from "../builder/SpriteStyle";
 import LevelBuilder from "../builder/LevelBuilder";
 import {BEE_CENTER} from "../controller/BeeController";
+import Pixies from "../class/Pixies";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -356,12 +357,12 @@ export default class LevelModel extends ModelBase {
 		let scale = 1;
 		if (style.image) {
 			uri = style.image.uri;
-			scale = style.image.scale;
+			scale = style.image.scale || 1;
 		}
 		return this.addSprite(
 			position,
 			style.strategy,
-			style.data,
+			Pixies.clone(style.data),
 			uri,
 			scale,
 			0,

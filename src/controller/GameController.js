@@ -93,7 +93,7 @@ export default class GameController extends ControllerBase {
 					this.saveGame();
 					this.model.lastLevelName = level.name;
 					bee = level.bee;
-				}						
+				}
 			}
 			if (bee) {
 				if (bee.health.get() > 0) {
@@ -123,7 +123,7 @@ export default class GameController extends ControllerBase {
 			const store = await this.loadLevelFromStorageAsync(this.getEditorLevelName(levelName));
 
 			if (store) {
-				state = JSON.parse(store);
+				state = store;
 				console.log(`Editor level ${levelName} loaded from local storage.`);
 			} else {
 				state = this.levels.get(levelName);
@@ -170,11 +170,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	async loadLevelFromStorageAsync(name) {
-		return new Promise(
-			function(resolve) {
-				resolve(localStorage.getItem(name));
-			}
-		);
+		return localForage.getItem(name);
 	}
 
 	saveLevelToStorage() {

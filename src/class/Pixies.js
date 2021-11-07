@@ -73,4 +73,8 @@ export default class Pixies {
 	static finishDebugSession(session) {
 		console.log(`Finished debug session '${session.name}'. Took ${performance.now() - session.start} ms.`);
 	}
+
+	static clone(obj) {
+		return JSON.parse(JSON.stringify(obj));
+	}
 }

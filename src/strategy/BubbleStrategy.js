@@ -26,6 +26,9 @@ export default class BubbleStrategy extends SpriteControllerStrategy {
 		if (this.level.isWater(up)) {
 			this.setTarget(up);
 			this.model.data.amount -= WATER_UNIT_SIZE;
+			if (this.model.data.amount <= 0) {
+				this.level.sprites.remove(this.model);
+			}
 		} else {
 			this.level.sprites.remove(this.model);
 		}
