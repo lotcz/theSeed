@@ -3,6 +3,7 @@ import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
+export const MINERAL_MAX_AMOUNT = 3;
 
 export default class MineralStrategy extends SpriteControllerStrategy {
 
@@ -51,14 +52,7 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 		}
 
 		const visitors = this.chessboard.getTile(this.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_MINERAL);
-		visitors.forEach(
-			(v) => {
-				if (this.model.data.amount >= v.data.amount) {
-					console.log('absorb');
-					this.absorb(v);
-				}
-			}
-		);
+		visitors.forEach((v) => this.absorb(v));
 	}
 
 	static getScale(amount) {
@@ -71,7 +65,8 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	absorb(node) {
-		if (node.data.amount <= this.model.data.amount) {
+		if (node.data.amount <= this.model.data.amount && (node.data.amount + this.model.data.amount) <= MINERAL_MAX_AMOUNT) {
+			console.log('Absorb');
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
 			this.level.sprites.remove(node);

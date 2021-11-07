@@ -61,7 +61,7 @@ GROUND_STYLES[GROUND_TYPE_GRASS] = {
 
 GROUND_STYLES[GROUND_TYPE_HONEY] = {
 	fill: 'orange',
-	stroke: { width: 40, color: 'darkOrange'},
+	stroke: { width: 140, color: 'darkOrange'},
 	background: true,
 };
 

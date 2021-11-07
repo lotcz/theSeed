@@ -5,6 +5,7 @@ import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/ladybug.svg";
+import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 /*
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import CalciumImage from "../../res/img/calcium.svg";
@@ -78,6 +79,9 @@ SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
 	image: {
 		uri: IMAGE_JELLYMAKER,
 		resource: JellymakerImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP
 	},
 	oriented: true
 };

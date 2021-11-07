@@ -32,6 +32,10 @@ export default class DirtyValue extends ModelBase {
 		return this.get();
 	}
 
+	equalsTo(value) {
+		return (this.value === value);
+	}
+
 	restoreState(state) {
 		this.set(state);
 	}

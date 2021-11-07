@@ -1,6 +1,6 @@
 import ControllerBase from "../class/ControllerBase";
 
-const DEBUG_GROUND_CONTROLLER = true;
+const DEBUG_GROUND_CONTROLLER = false;
 
 export default class GroundController extends ControllerBase {
 	constructor(game, model, controls) {

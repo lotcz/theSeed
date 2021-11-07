@@ -1,11 +1,13 @@
 import Tree from "./Tree";
-import EventManager from "./EventManager";
 
 export default class ModelBase extends Tree {
+	isPersistent;
+
 	constructor(state) {
 		super();
 
 		this.children = [];
+		this.isPersistent = true; // if set to false, state will not be saved
 
 		if (state) {
 			this.restoreState(state);
@@ -31,7 +33,9 @@ export default class ModelBase extends Tree {
 		if (this.children.length === 0) return null;
 		const children = [];
 		for (let i = 0, max = this.children.length; i < max; i++) {
-			children.push(this.children[i].getState());
+			if (this.children[i].isPersistent) {
+				children.push(this.children[i].getState());
+			}
 		}
 		return children;
 	}

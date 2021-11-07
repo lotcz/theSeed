@@ -1,23 +1,18 @@
 import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
-import DirtyValue from "../class/DirtyValue";
+import {NEIGHBOR_TYPE_UP} from "./GridModel";
 
 export default class HintModel extends ModelBase {
 	position;
 	imagePath;
+	direction;
 
-	constructor(state) {
+	constructor() {
 		super();
 
 		this.position = new Vector2();
-		this.addChild(this.position);
-
-		this.imagePath = new DirtyValue();
-		this.addChild(this.imagePath);
-
-		if (state) {
-			this.restoreState(state);
-		}
+		this.imagePath = '';
+		this.direction = NEIGHBOR_TYPE_UP;
 	}
 
 }
