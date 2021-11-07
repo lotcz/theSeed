@@ -4,6 +4,7 @@ import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import LevelBuilder from "../builder/LevelBuilder";
 import * as localForage from "localforage";
+import LevelIntro from "../../levels/intro.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
@@ -41,6 +42,7 @@ export default class GameController extends ControllerBase {
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 
 		this.levels = new HashTableModel();
+		this.levels.set('intro', LevelIntro);
 		this.levels.set('beehive', LevelBeehive);
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);
@@ -269,26 +271,17 @@ export default class GameController extends ControllerBase {
 
 	showLevelSelection() {
 		const builder = new MenuBuilder('main');
-		builder.addLine("Beehive", (e) => this.onEditorLoadLevelRequestAsync('beehive'));
-		builder.addLine("Level 1", (e) => this.onEditorLoadLevelRequestAsync('level-1'));
-		builder.addLine("Level 2", (e) => this.onEditorLoadLevelRequestAsync('level-2'));
+		const levelNames = this.levels.keys();
+		levelNames.forEach((name) => {
+			builder.addLine(name, (e) => this.onEditorLoadLevelRequestAsync(name));
+		});
 		builder.addLine("Back", (e) => this.showEditorMenu());
 		this.model.menu.set(builder.build());
 	}
 
 	loadBackground() {
-		const size = new Vector2(200, 150);
-		const tileSize = 100;
-		const scale = 12;
-
-		const levelBuilder = new LevelBuilder();
-		levelBuilder.setSize(size);
-		levelBuilder.setTileRadius(tileSize);
-		levelBuilder.generateGround(GROUND_PRESET_SLOPE_LEFT);
-		levelBuilder.setViewBoxScale(scale);
-		levelBuilder.setViewBoxSize(this.model.viewBoxSize);
-
-		const level = levelBuilder.build();
+		const level = new LevelModel(this.levels.get('intro'));
+		level.removeBee();
 		level.isPlayable = false;
 		level.centerView();
 		this.setActiveLevel(level);

@@ -37,7 +37,6 @@ export default class EmitterStrategy extends SpriteControllerStrategy {
 			if (totalAmount < MINERAL_MAX_AMOUNT) {
 				this.emitted++;
 				const sprite = this.builder.addSpriteFromStyle(this.position, this.model.data.type);
-				console.log(sprite.data.amount);
 				if (this.model.data.amount) {
 					sprite.data.amount = this.model.data.amount;
 				}

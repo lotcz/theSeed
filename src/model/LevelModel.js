@@ -184,9 +184,14 @@ export default class LevelModel extends ModelBase {
 		this.addResource(IMAGE_STARS_2);
 		this.addResource(IMAGE_STARS_3);
 
-		if (this.bee) this.removeChild(this.bee);
+		this.removeBee();
 		this.bee = bee;
 		return this.addChild(this.bee);
+	}
+
+	removeBee() {
+		if (this.bee) this.removeChild(this.bee);
+		this.bee = null;
 	}
 
 	spawn(bee, name) {
