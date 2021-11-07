@@ -193,6 +193,9 @@ TODO:
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
 
+- BETA for friends
+- RELEASE
+
 Ground
 ------
 
