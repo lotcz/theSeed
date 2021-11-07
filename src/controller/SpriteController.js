@@ -11,8 +11,15 @@ import EmitterStrategy from "../strategy/EmitterStrategy";
 import {
 	STRATEGY_BUBBLE,
 	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY, STRATEGY_EMITTER, STRATEGY_EXIT, STRATEGY_HINT, STRATEGY_HINT_BACKGROUND, STRATEGY_JELLYMAKER,
-	STRATEGY_MINERAL, STRATEGY_RESPAWN,
+	STRATEGY_BUTTERFLY,
+	STRATEGY_DOOR_SLOT,
+	STRATEGY_EMITTER,
+	STRATEGY_EXIT,
+	STRATEGY_HINT,
+	STRATEGY_HINT_BACKGROUND,
+	STRATEGY_JELLYMAKER,
+	STRATEGY_MINERAL,
+	STRATEGY_RESPAWN,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
 	STRATEGY_WORM
@@ -20,6 +27,7 @@ import {
 import BubbleStrategy from "../strategy/BubbleStrategy";
 import JellymakerStrategy from "../strategy/JellymakerStrategy";
 import HintStrategy from "../strategy/HintStrategy";
+import DoorSlotStrategy from "../strategy/DoorSlotStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -62,6 +70,8 @@ export default class SpriteController extends ControllerBase {
 				return new JellymakerStrategy(this.game, model, this.controls);
 			case STRATEGY_HINT:
 				return new HintStrategy(this.game, model, this.controls);
+			case STRATEGY_DOOR_SLOT:
+				return new DoorSlotStrategy(this.game, model, this.controls);
 			default:
 				console.error('Strategy not found:', id);
 		}

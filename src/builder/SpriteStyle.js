@@ -6,6 +6,7 @@ import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/ladybug.svg";
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
+import {GROUND_TYPE_GRASS} from "./GroundStyle";
 /*
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import CalciumImage from "../../res/img/calcium.svg";
@@ -55,6 +56,7 @@ export const SPRITE_TYPE_POTASSIUM = 'potassium';
 export const SPRITE_TYPE_RESPAWN = 'respawn';
 export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
+export const SPRITE_TYPE_DOOR_SLOT = 'door-slot';
 
 export const STRATEGY_JELLYMAKER = 'jellymaker';
 export const STRATEGY_HINT = 'hint';
@@ -69,8 +71,9 @@ export const STRATEGY_EMITTER = 'emitter';
 export const STRATEGY_RESPAWN = 'respawn';
 export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
+export const STRATEGY_DOOR_SLOT = 'door-slot';
 
-export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT];
+export const SPRITE_STRATEGIES = [STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_RESPAWN, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT];
 
 export const SPRITE_STYLES = [];
 
@@ -152,4 +155,9 @@ SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
 SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	strategy: STRATEGY_EMITTER,
 	data: {type:'water', timeout:3000, max:-1}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_DOOR_SLOT] = {
+	strategy: STRATEGY_DOOR_SLOT,
+	data: {key: SPRITE_TYPE_POTASSIUM, door: GROUND_TYPE_GRASS, size:4}
 };

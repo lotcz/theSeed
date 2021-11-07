@@ -199,6 +199,12 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		if (this.model.crawling.get() === null) {
 			this.parent.fly();
 			return;
+		} else {
+			const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
+			if (!this.level.isCrawlable(crawlingPosition)) {
+				this.parent.fly();
+				return;
+			}
 		}
 
 		if ((this.targetCoordinates !== null) || (this.targetRotation !== null)) {
