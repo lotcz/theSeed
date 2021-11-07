@@ -1,5 +1,6 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
+import Pixies from "../class/Pixies";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
@@ -18,36 +19,39 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetInternal() {
-		if (this.model.data.carried) {
-			return;
-		}
-
-		if (!this.level.isValidPosition(this.position)) {
+		const down = this.grid.getNeighborDown(this.position);
+		if (!this.level.isValidPosition(down)) {
 			console.log('Mineral over board.');
 			this.level.sprites.remove(this.model);
 			return;
 		}
 
-		const down = this.grid.getNeighborDown(this.position);
+		if (this.level.isWater(this.position)) {
+			const up = this.grid.getNeighborUp(this.position);
+			this.setTarget(up);
+			this.defaultTimeout = MINERAL_TIMEOUT;
+			return;
+		}
+
 		if (this.level.isPenetrable(down)) {
 			this.setTarget(down);
 			this.defaultTimeout = MINERAL_FALL_TIMEOUT;
 			return;
 		} else {
+			const available = [];
 			const ll = this.grid.getNeighborLowerLeft(this.position);
 			if (this.level.isPenetrable(ll)) {
-				this.setTarget(ll);
+				available.push(ll);
+			}
+			const lr = this.grid.getNeighborLowerRight(this.position);
+			if (this.level.isPenetrable(lr)) {
+				available.push(lr);
+			}
+			if (available.length > 0) {
+				this.setTarget(Pixies.randomElement(available));
 				this.defaultTimeout = MINERAL_FALL_TIMEOUT * 2;
-				return;
 			} else {
-				const lr = this.grid.getNeighborLowerRight(this.position);
-				if (this.level.isPenetrable(lr)) {
-					this.setTarget(lr);
-					this.defaultTimeout = MINERAL_FALL_TIMEOUT * 2;
-					return;
-				} else {
-					this.defaultTimeout = MINERAL_TIMEOUT;
-				}
+				this.defaultTimeout = MINERAL_TIMEOUT;
 			}
 		}
 

@@ -135,7 +135,7 @@ export default class GroundRenderer extends SvgRenderer {
 			// find edged tiles and push them into single group
 			do {
 				let nextPosition = this.getCornerNeighbor(currentTile, currentCorner);
-				let visitors = this.chessboard.getVisitors(nextPosition, (v) => v.type === startTile.type);
+				let visitors = this.chessboard.getVisitors(nextPosition, (v) => v._is_ground && v.type === startTile.type);
 				const endCorner = (currentCorner + 5) % 6;
 				while (visitors.length === 0 && endCorner !== currentCorner)
 				{
@@ -144,7 +144,7 @@ export default class GroundRenderer extends SvgRenderer {
 						break;
 					}
 					nextPosition = this.getCornerNeighbor(currentTile, currentCorner);
-					visitors = this.chessboard.getVisitors(nextPosition, (v) => v.type === startTile.type);
+					visitors = this.chessboard.getVisitors(nextPosition, (v) => v._is_ground && v.type === startTile.type);
 					if (style.renderCorners)
 						points.push(this.grid.getCorner(currentTile.position, currentCorner));
 				}

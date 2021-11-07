@@ -126,13 +126,13 @@ export default class BeeController extends ControllerBase {
 			sameType.image.scale.set(MineralStrategy.getScale(sameType.data.amount));
 		} else {
 			this.model.inventory.add(item);
+			item.image.scale.set(MineralStrategy.getScale(item.data.amount));
 		}
 		if (this.model.isFlying()) {
 			item.image.coordinates.set(BEE_CENTER.addY(80));
 		} else {
 			item.image.coordinates.set(BEE_CENTER);
 		}
-		item.data.carried = true;
 	}
 
 	dropItem() {
@@ -142,7 +142,6 @@ export default class BeeController extends ControllerBase {
 			const position = this.level.isPenetrable(down) ? down : this.model.position;
 			this.level.addResource(item.image.path.get());
 			item.position.set(position);
-			item.data.carried = false;
 			this.level.sprites.add(item);
 		}
 	}

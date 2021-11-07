@@ -1,5 +1,6 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import {WATER_UNIT_SIZE} from "./WaterStrategy";
+import {SPRITE_TYPE_WATER} from "../builder/SpriteStyle";
 
 const BUBBLE_TIMEOUT = 2000;
 
@@ -22,8 +23,8 @@ export default class BubbleStrategy extends SpriteControllerStrategy {
 			return;
 		}
 
-		const up = this.grid.getNeighborUp(this.position);
-		if (this.level.isWater(up)) {
+		if (this.level.isWater(this.position)) {
+			const up = this.grid.getNeighborUp(this.position);
 			this.setTarget(up);
 			this.model.data.amount -= WATER_UNIT_SIZE;
 			if (this.model.data.amount <= 0) {
@@ -31,6 +32,7 @@ export default class BubbleStrategy extends SpriteControllerStrategy {
 			}
 		} else {
 			this.level.sprites.remove(this.model);
+			this.level.addSpriteFromStyle(this.position, SPRITE_TYPE_WATER);
 		}
 
 	}

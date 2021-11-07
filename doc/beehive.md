@@ -209,8 +209,6 @@ Minerals
 --------
 
 -  make minerals stack
-- minerals flow on water
-- bubbles turn to water on surface and can be collected
 
 Ads and monetization
 --------------------

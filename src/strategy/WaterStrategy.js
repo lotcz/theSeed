@@ -1,9 +1,10 @@
 import SpriteControllerStrategy from "./SpriteControllerStrategy";
 import LevelBuilder from "../builder/LevelBuilder";
-import {IMAGE_WATER, STRATEGY_WATER} from "../builder/SpriteStyle";
+import {IMAGE_WATER, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/SpriteStyle";
+import Pixies from "../class/Pixies";
 
-const WATER_TIMEOUT = 3000;
-const WATER_FALL_TIMEOUT = 300;
+const WATER_TIMEOUT = 700;
+const WATER_FALL_TIMEOUT = 250;
 export const WATER_UNIT_SIZE = 0.1;
 
 export default class WaterStrategy extends SpriteControllerStrategy {
@@ -40,50 +41,49 @@ export default class WaterStrategy extends SpriteControllerStrategy {
 	}
 
 	selectTargetInternal() {
-		if (!this.level.isValidPosition(this.position)) {
-			console.log('Water over board');
+		const down = this.grid.getNeighborDown(this.position);
+		if (!this.level.isValidPosition(down)) {
+			console.log('Water over board.');
 			this.level.sprites.remove(this.model);
 			return;
 		}
-		const visitors = this.chessboard.getTile(this.position).filter((v) => v !== this.model);
-
-		const waterNodes = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_WATER);
-		waterNodes.forEach(
-			(w) => {
-				if (this.model.data.amount >= w.data.amount) {
-					this.absorb(w);
-				}
-			}
-		);
 
 		if (this.level.isWater(this.position)) {
-			this.level.sprites.remove(this.model);
+			this.model.data.amount -= WATER_UNIT_SIZE;
+			if (this.model.data.amount <= 0) {
+				this.level.sprites.remove(this.model);
+				return;
+			}
+			const up = this.grid.getNeighborUp(this.position);
+			this.setTarget(up);
+			this.defaultTimeout = WATER_TIMEOUT;
 			return;
 		}
 
-		const down = this.grid.getNeighborDown(this.position);
-		if (this.level.isPenetrable(down) || this.level.isWater(down)) {
+		if (this.level.isPenetrable(down)) {
 			this.setTarget(down);
 			this.defaultTimeout = WATER_FALL_TIMEOUT;
 			return;
+		} else {
+			const available = [];
+			const ll = this.grid.getNeighborLowerLeft(this.position);
+			if (this.level.isPenetrable(ll)) {
+				available.push(ll);
+			}
+			const lr = this.grid.getNeighborLowerRight(this.position);
+			if (this.level.isPenetrable(lr)) {
+				available.push(lr);
+			}
+			if (available.length > 0) {
+				this.setTarget(Pixies.randomElement(available));
+				this.defaultTimeout = WATER_FALL_TIMEOUT * 2;
+			} else {
+				this.defaultTimeout = WATER_TIMEOUT;
+			}
 		}
 
-		const ll = this.grid.getNeighborLowerLeft(this.position);
-		if (this.level.isPenetrable(ll) || this.level.isWater(ll)) {
-			this.setTarget(ll);
-			this.defaultTimeout = WATER_FALL_TIMEOUT * 2;
-			return;
-		}
-
-		const lr = this.grid.getNeighborLowerRight(this.position);
-		if (this.level.isPenetrable(lr) || this.level.isWater(lr)) {
-			this.setTarget(lr);
-			this.defaultTimeout = WATER_FALL_TIMEOUT * 2;
-			return;
-		}
-
-		this.defaultTimeout = WATER_TIMEOUT;
-
+		const visitors = this.chessboard.getTile(this.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_WATER);
+		visitors.forEach((v) => this.absorb(v));
 	}
 
 	updateInternal(delta) {
