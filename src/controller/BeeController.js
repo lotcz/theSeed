@@ -8,6 +8,7 @@ import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
 import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/MineralStrategy";
+import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
 
 export const BEE_CENTER = new Vector2(250, 250);
 const HEALING_SPEED = 0.1; // health per second
@@ -137,8 +138,10 @@ export default class BeeController extends ControllerBase {
 	dropItem() {
 		const item = this.model.inventory.removeFirst();
 		if (item) {
+			const down = this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_DOWN);
+			const position = this.level.isPenetrable(down) ? down : this.model.position;
 			this.level.addResource(item.image.path.get());
-			item.position.set(this.model.position);
+			item.position.set(position);
 			item.data.carried = false;
 			this.level.sprites.add(item);
 		}

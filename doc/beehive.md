@@ -196,12 +196,6 @@ TODO:
 - BETA for friends
 - RELEASE
 
-Ground
-------
-
-- dynamic ground (make pieces disappear or be replaced)
-
-
 Animals
 -------
 

@@ -121,7 +121,8 @@ SPRITE_STYLES[SPRITE_TYPE_WATER] = {
 		uri: IMAGE_WATER,
 		resource: WaterImage,
 		scale: 0
-	}
+	},
+	data: {amount: 1}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUBBLE] = {
@@ -129,8 +130,9 @@ SPRITE_STYLES[SPRITE_TYPE_BUBBLE] = {
 	image: {
 		uri: IMAGE_BUBBLE,
 		resource: BubbleImage,
-		scale: 0
-	}
+		scale: 0.01
+	},
+	data: {amount: 1}
 };
 
 
@@ -138,8 +140,10 @@ SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_POTASSIUM,
-		resource: PotassiumImage
-	}
+		resource: PotassiumImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
