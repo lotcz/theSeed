@@ -209,7 +209,7 @@ Minerals
 --------
 
 - impenetrable sprites (e.g. water drops), make minerals stack
-- some minerals flow on water
+- minerals flow on water
 - bubbles turn to water on surface and can be collected
 
 Ads and monetization

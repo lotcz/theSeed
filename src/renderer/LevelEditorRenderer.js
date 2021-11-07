@@ -275,7 +275,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	//</editor-fold>
 
-	//<editor-fold desc="TILES">
+	//<editor-fold desc="GROUND TILES">
 
 	renderGroundTile(tile) {
 		const level = this.game.level.get();
@@ -360,6 +360,15 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation');
 			imgFolder.open();
 		}
+
+		const actions = {
+			deleteSprite: () => {
+				this.model.selectedSprites.remove(sprite);
+				this.level.sprites.remove(sprite);
+				gui.hide();
+			}
+		}
+		gui.add(actions, 'deleteSprite').name('Delete');
 	}
 
 	//</editor-fold>

@@ -47,8 +47,8 @@ export default class LevelEditorController extends ControllerBase {
 		this.scroll(delta);
 	}
 
-	getAffectedPositions(position, steps = 1) {
-		return this.level.grid.getAffectedPositions(position, steps);
+	getAffectedPositions(position) {
+		return this.level.grid.getAffectedPositions(position, Math.round(this.model.brushSize));
 	}
 
 	addGroundTile(position) {
@@ -87,17 +87,19 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	processGroundClick(position) {
-		const positions = this.getAffectedPositions(position, Math.round(this.model.brushSize));
+		const positions = this.getAffectedPositions(position);
 		positions.forEach((p) => this.addGroundTile(p));
 	}
 
 	processSpriteClick(position) {
 		switch (this.model.selectedSpriteType) {
 			case EDITOR_TOOL_DELETE:
-				const visitors = this.chessboard.getTile(position);
-				const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
-
-				spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
+				const positions = this.getAffectedPositions(position);
+				positions.forEach((pos) => {
+					const visitors = this.chessboard.getTile(pos);
+					const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
+					spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
+				});
 				break;
 			case EDITOR_TOOL_SELECT:
 				const visitors2 = this.chessboard.getVisitors(position, (v) => v._is_sprite === true);
@@ -134,10 +136,7 @@ export default class LevelEditorController extends ControllerBase {
 			if (moved) {
 				this.model.highlightedTilePosition.set(mousePosition);
 				this.model.highlights.resetChildren();
-				const level = Math.round(this.model.brushSize);
-				//const session = Pixies.startDebugSession('affected positions');
-				const positions = this.getAffectedPositions(mousePosition, level);
-				//Pixies.finishDebugSession(session);
+				const positions = this.getAffectedPositions(mousePosition);
 				positions.forEach((p) => this.model.highlights.add(p));
 				this.lastHighlight = mousePosition;
 			}
