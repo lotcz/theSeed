@@ -34,8 +34,7 @@ export default class GameRenderer extends SvgRenderer {
 		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
-		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
-		this.addChild(this.editorRenderer);
+		this.editorRenderer = null;
 
 		this.draw.fill('black');
 
@@ -72,10 +71,11 @@ export default class GameRenderer extends SvgRenderer {
 		}
 
 		if (this.model.isInEditMode.isDirty()) {
-			if (this.model.isInEditMode.get())
+			if (this.model.isInEditMode.get() && !this.model.level.isEmpty()) {
 				this.showEditor();
-			else
+			} else {
 				this.hideEditor();
+			}
 			this.model.isInEditMode.clean();
 		}
 
@@ -144,16 +144,19 @@ export default class GameRenderer extends SvgRenderer {
 	hideLevel() {
 		if (this.levelRenderer) this.removeChild(this.levelRenderer);
 		this.levelRenderer = null;
+		this.hideEditor();
 	}
 
 	showEditor() {
 		this.hideEditor();
+		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
 		this.addChild(this.editorRenderer);
 		this.editorRenderer.activate();
 	}
 
 	hideEditor() {
-		this.removeChild(this.editorRenderer);
+		if (this.editorRenderer) this.removeChild(this.editorRenderer);
+		this.editorRenderer = null;
 	}
 
 }

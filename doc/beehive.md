@@ -187,7 +187,7 @@ TODO:
 - add diagonal directions?
 - allow animals to carry things
 - moving animals must have better collisions
-
+- saving (localStorage is limited, use localForage lib?)
 - build experimental levels
 - mobile widgets
 - improve graphics

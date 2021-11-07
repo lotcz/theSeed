@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import Vector2 from "../class/Vector2";
 import * as dat from "dat.gui";
+import * as localForage from "localforage";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
 import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
@@ -164,8 +165,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	getLevelState() {
-		const state = this.game.level.get().getState();
-		return JSON.stringify(state);
+		return this.game.level.get().getState();
 	}
 
 	reload() {
@@ -175,8 +175,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	saveLevel() {
 		const level = this.game.level.get();
-		localStorage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState());
-		console.log('Level saved.');
+		localForage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState())
+			.then(() => console.log('Level saved.'));
 	}
 
 	saveAndReload() {
@@ -187,7 +187,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	download() {
 		this.saveLevel();
 		const element = document.createElement('a');
-		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
+		const str = JSON.stringify(this.getLevelState());
+		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(str));
 		element.setAttribute('download', this.game.level.get().name + '.json');
 		element.style.display = 'none';
 		document.body.appendChild(element);

@@ -3,7 +3,7 @@ import LevelController from "./LevelController";
 import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import LevelBuilder from "../builder/LevelBuilder";
-
+import * as localForage from "localforage";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
@@ -45,7 +45,7 @@ export default class GameController extends ControllerBase {
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);
 
-		this.savedGameExists = (localStorage.getItem(SAVE_GAME_NAME) !== null);
+		this.savedGameExists = false;
 	}
 
 	reset() {
@@ -54,10 +54,13 @@ export default class GameController extends ControllerBase {
 		this.showMainMenu();
 	}
 
-	async activateInternal() {
+	activateInternal() {
 		window.addEventListener('resize', this.onResizeEvent);
 		this.onResize();
-		this.reset();
+		localForage.getItem(SAVE_GAME_NAME).then((saveGame) => {
+			this.savedGameExists = (saveGame !== null);
+			this.reset();
+		});
 	}
 
 	deactivateInternal() {
@@ -88,9 +91,9 @@ export default class GameController extends ControllerBase {
 				const level = this.model.level.get();
 				if (level.isPlayable) {
 					this.saveGame();
-				}
-				this.model.lastLevelName = level.name;
-				bee = level.bee;
+					this.model.lastLevelName = level.name;
+					bee = level.bee;
+				}						
 			}
 			if (bee) {
 				if (bee.health.get() > 0) {
@@ -182,8 +185,10 @@ export default class GameController extends ControllerBase {
 		const level = this.game.level.get();
 		const id = this.model.id;
 		const state = level.getState();
-		localStorage.setItem(this.getSavedLevelName(id, level.name), JSON.stringify(state));
-		if (DEBUG_GAME_CONTROLLER) console.log('Level saved.');
+		localForage.setItem(this.getSavedLevelName(id, level.name), state)
+			.then(() => {
+				if (DEBUG_GAME_CONTROLLER) console.log('Level saved.');
+			});
 	}
 
 	async loadLevelAsync(name, spawn = null, bee = null) {
@@ -197,7 +202,7 @@ export default class GameController extends ControllerBase {
 		const store = await this.loadLevelFromStorageAsync(this.getSavedLevelName(this.model.id, name));
 
 		if (store) {
-			state = JSON.parse(store);
+			state = store;
 			console.log(`Level ${name} loaded from local storage.`);
 		} else {
 			state = this.levels.get(name);
@@ -218,26 +223,23 @@ export default class GameController extends ControllerBase {
 	}
 
 	async loadGameAsync() {
-		return new Promise((resolve) => {
-			const store = localStorage.getItem(SAVE_GAME_NAME);
-			if (store) {
-				console.log('Game loaded');
-				const state = JSON.parse(store);
-				this.model.restoreState(state);
-				resolve(true);
-			} else {
-				console.log('No saved game found.');
-				resolve(false);
-			}
-		});
+		const store = await localForage.getItem(SAVE_GAME_NAME);
+		if (store) {
+			console.log('Game loaded');
+			const state = store;
+			this.model.restoreState(state);
+			return true;
+		} else {
+			console.log('No saved game found.');
+			return false;
+		}
 	}
 
 	saveGame() {
-		const state = this.game.getState();
-		const str = JSON.stringify(state);
-		localStorage.setItem(SAVE_GAME_NAME, str);
 		this.saveLevelToStorage();
-		console.log('Game saved.');
+		const state = this.game.getState();
+		localForage.setItem(SAVE_GAME_NAME, state)
+			.then(() => console.log('Game saved.'));
 	}
 
 	showMainMenu() {
