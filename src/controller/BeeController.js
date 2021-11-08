@@ -66,7 +66,10 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.level.isCloud(this.model.position)) {
-			this.model.health.set(this.model.health.get() - (secsDelta * 0.3));
+			this.model.health.set(this.model.health.get() - (secsDelta * 0.5));
+			if (this.model.health.get() < 0.5) {
+				this.emptyInventory();
+			}
 		}
 
 		if (this.model.health.get() <= 0) {

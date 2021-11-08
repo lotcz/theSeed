@@ -394,8 +394,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			max.y = Math.max(max.y, position.y);
 		});
 
-		console.log(min, max);
-
 		if (min.x % 2 !== 0 ) {
 			min.x = min.x - 1;
 		}
