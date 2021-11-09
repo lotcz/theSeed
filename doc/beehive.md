@@ -16,6 +16,10 @@ How to open blocked access?
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
 
+Puzzles
+
+- bees presence can trigger opening/closing of gate
+
 Bee Personality
 ---------------
 
@@ -77,6 +81,7 @@ Animals
 
 - Hornet - killer wasp
 - Earthworm - eats through green material
+- Frog
 
 Plants
 ------
@@ -151,7 +156,7 @@ Fly over large distance, avoid clouds and hornets
 Pond
 ----
 
-gather nectar from water lilies, avoid carnivorous plant
+gather nectar from water lilies, avoid carnivorous plants and frog
 
 Ant Nest
 --------
@@ -179,7 +184,6 @@ TODO:
 =====
 
 - bee thoughts (hints)
-- slow down when carrying too much - concept of burden
 - slow when in cloud or on water (by adding visible burden)
 - add exit image and shrink bee when exiting
 - make edges of level work as an exit
