@@ -1,13 +1,11 @@
 import ControllerBase from "../class/ControllerBase";
-import BugStrategy from "../strategy/BugStrategy";
-import ButterflyStrategy from "../strategy/ButterflyStrategy";
-import TurnerStrategy from "../strategy/TurnerStrategy";
-import WormStrategy from "../strategy/WormStrategy";
-import WaterStrategy from "../strategy/WaterStrategy";
-import MineralStrategy from "../strategy/MineralStrategy";
-import RespawnStrategy from "../strategy/RespawnStrategy";
-import ExitStrategy from "../strategy/ExitStrategy";
-import EmitterStrategy from "../strategy/EmitterStrategy";
+import BugStrategy from "../strategy/sprites/animals/BugStrategy";
+import ButterflyStrategy from "../strategy/sprites/animals/ButterflyStrategy";
+import StaticStrategy from "../strategy/sprites/StaticStrategy";
+import WaterStrategy from "../strategy/sprites/minerals/WaterStrategy";
+import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
+import ExitStrategy from "../strategy/sprites/special/ExitStrategy";
+import EmitterStrategy from "../strategy/sprites/special/EmitterStrategy";
 import {
 	STRATEGY_BUBBLE,
 	STRATEGY_BUG,
@@ -16,18 +14,17 @@ import {
 	STRATEGY_EMITTER,
 	STRATEGY_EXIT,
 	STRATEGY_HINT,
-	STRATEGY_HINT_BACKGROUND,
 	STRATEGY_JELLYMAKER,
 	STRATEGY_MINERAL,
-	STRATEGY_RESPAWN,
+	STRATEGY_STATIC,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
 	STRATEGY_WORM
 } from "../builder/SpriteStyle";
-import BubbleStrategy from "../strategy/BubbleStrategy";
-import JellymakerStrategy from "../strategy/JellymakerStrategy";
-import HintStrategy from "../strategy/HintStrategy";
-import DoorSlotStrategy from "../strategy/DoorSlotStrategy";
+import BubbleStrategy from "../strategy/sprites/minerals/BubbleStrategy";
+import JellymakerStrategy from "../strategy/sprites/animals/JellymakerStrategy";
+import HintStrategy from "../strategy/sprites/special/HintStrategy";
+import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -51,17 +48,15 @@ export default class SpriteController extends ControllerBase {
 			case STRATEGY_BUTTERFLY:
 				return new ButterflyStrategy(this.game, model, this.controls);
 			case STRATEGY_TURNER:
-				return new TurnerStrategy(this.game, model, this.controls);
-			case STRATEGY_WORM:
-				return new WormStrategy(this.game, model, this.controls);
+				return new StaticStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:
 				return new WaterStrategy(this.game, model, this.controls);
 			case STRATEGY_BUBBLE:
 				return new BubbleStrategy(this.game, model, this.controls);
 			case STRATEGY_MINERAL:
 				return new MineralStrategy(this.game, model, this.controls);
-			case STRATEGY_RESPAWN:
-				return new RespawnStrategy(this.game, model, this.controls);
+			case STRATEGY_STATIC:
+				return new StaticStrategy(this.game, model, this.controls);
 			case STRATEGY_EXIT:
 				return new ExitStrategy(this.game, model, this.controls);
 			case STRATEGY_EMITTER:

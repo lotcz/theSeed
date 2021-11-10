@@ -1,21 +1,18 @@
-import SpriteControllerStrategy from "./SpriteControllerStrategy";
+import MovementStrategy from "../MovementStrategy";
+import UpdatedStrategy from "../UpdatedStrategy";
 
-const TURNER_TIMEOUT = 2000;
+const DOOR_TIMEOUT = 2000;
 
-export default class DoorSlotStrategy extends SpriteControllerStrategy {
+export default class DoorSlotStrategy extends UpdatedStrategy {
 	isOpen;
 
 	constructor(game, model, controls) {
-		super(game, model, controls, TURNER_TIMEOUT);
-
-		this.movementEnabled = false;
-		this.turningEnabled = false;
-		this.scalingEnabled = false;
+		super(game, model, controls, DOOR_TIMEOUT);
 
 		this.isOpen = false;
 	}
 
-	selectTargetInternal() {
+	updateStrategy() {
 		if (this.isOpen) {
 			return;
 		}

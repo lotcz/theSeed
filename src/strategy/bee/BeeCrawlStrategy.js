@@ -1,5 +1,5 @@
-import ControllerBase from "../class/ControllerBase";
-import {BEE_CENTER, WINGS_OFFSET} from "../controller/BeeController";
+import ControllerBase from "../../class/ControllerBase";
+import {BEE_CENTER, WINGS_OFFSET} from "../../controller/BeeController";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -13,12 +13,12 @@ import {
 	NEIGHBOR_TYPE_UP,
 	NEIGHBOR_TYPE_UPPER_LEFT,
 	NEIGHBOR_TYPE_UPPER_RIGHT
-} from "../model/GridModel";
-import RotationValue from "../class/RotationValue";
-import Vector2 from "../class/Vector2";
+} from "../../model/GridModel";
+import RotationValue from "../../class/RotationValue";
+import Vector2 from "../../class/Vector2";
 
-import CrawlSound from "../../res/sound/crawl.wav";
-import Sound from "../class/Sound";
+import CrawlSound from "../../../res/sound/crawl.wav";
+import Sound from "../../class/Sound";
 
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second

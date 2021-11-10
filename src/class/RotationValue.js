@@ -1,4 +1,3 @@
-import Tree from "./Tree";
 import DirtyValue from "./DirtyValue";
 
 export default class RotationValue extends DirtyValue {
@@ -30,6 +29,14 @@ export default class RotationValue extends DirtyValue {
 
 	add(value) {
 		this.set(this.get() + value);
+	}
+
+	equalsTo(value) {
+		return (this.value === RotationValue.normalizeValue(value));
+	}
+
+	clone() {
+		return new RotationValue(this.value);
 	}
 
 }

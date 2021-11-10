@@ -1,10 +1,10 @@
-import ControllerBase from "../class/ControllerBase";
-import Sound from "../class/Sound";
-import HitSound from "../../res/sound/hit.wav";
+import ControllerBase from "../../class/ControllerBase";
+import Sound from "../../class/Sound";
+import HitSound from "../../../res/sound/hit.wav";
 
-import {BEE_CENTER} from "../controller/BeeController";
-import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
-import {MINERAL_MAX_AMOUNT} from "./MineralStrategy";
+import {BEE_CENTER} from "../../controller/BeeController";
+import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../../builder/SpriteStyle";
+import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;

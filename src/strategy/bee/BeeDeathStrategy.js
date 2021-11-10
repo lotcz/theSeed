@@ -1,7 +1,7 @@
-import ControllerBase from "../class/ControllerBase";
-import {IMAGE_BEE_DEAD} from "../builder/SpriteStyle";
-import DeathSound from "../../res/sound/death.wav";
-import Sound from "../class/Sound";
+import ControllerBase from "../../class/ControllerBase";
+import {IMAGE_BEE_DEAD} from "../../builder/SpriteStyle";
+import DeathSound from "../../../res/sound/death.wav";
+import Sound from "../../class/Sound";
 
 const FALL_SPEED = 800; // pixels per second
 const DEATH_TIMEOUT = 3000;

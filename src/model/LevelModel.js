@@ -19,7 +19,7 @@ import {
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING,
 	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
-	STRATEGY_RESPAWN
+	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
 import LevelBuilder from "../builder/LevelBuilder";
 import {BEE_CENTER} from "../controller/BeeController";
@@ -195,7 +195,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	spawn(bee, name) {
-		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === name);
+		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_STATIC && s.data.name === name);
 		if (!respawn) {
 			console.log(`Respawn spot '${name}' not found!`);
 			return;

@@ -3,11 +3,11 @@ import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
 import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
 
 import Vector2 from "../class/Vector2";
-import BeeFlightStrategy from "../strategy/BeeFlightStrategy";
-import BeeCrawlStrategy from "../strategy/BeeCrawlStrategy";
+import BeeFlightStrategy from "../strategy/bee/BeeFlightStrategy";
+import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
-import BeeDeathStrategy from "../strategy/BeeDeathStrategy";
-import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/MineralStrategy";
+import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
+import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
 
 export const BEE_CENTER = new Vector2(250, 250);

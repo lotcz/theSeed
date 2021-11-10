@@ -1,13 +1,12 @@
-import SpriteControllerStrategy from "./SpriteControllerStrategy";
-import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
-import Pixies from "../class/Pixies";
+import MovementStrategy from "../MovementStrategy";
+import {STRATEGY_MINERAL} from "../../../builder/SpriteStyle";
+import Pixies from "../../../class/Pixies";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
 export const MINERAL_MAX_AMOUNT = 3;
 
-export default class MineralStrategy extends SpriteControllerStrategy {
-
+export default class MineralStrategy extends MovementStrategy {
 	constructor(game, model, controls) {
 		super(game, model, controls, MINERAL_TIMEOUT);
 
@@ -18,44 +17,44 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 		this.timeout = 0;
 	}
 
-	selectTargetInternal() {
-		const down = this.grid.getNeighborDown(this.position);
+	updateStrategy() {
+		const down = this.grid.getNeighborDown(this.model.position);
 		if (!this.level.isValidPosition(down)) {
 			console.log('Mineral over board.');
 			this.level.sprites.remove(this.model);
 			return;
 		}
 
-		if (this.level.isWater(this.position)) {
-			const up = this.grid.getNeighborUp(this.position);
-			this.setTarget(up);
+		if (this.level.isWater(this.model.position)) {
+			const up = this.grid.getNeighborUp(this.model.position);
 			this.defaultTimeout = MINERAL_TIMEOUT;
+			this.setTargetPosition(up);
 			return;
 		}
 
 		if (this.level.isPenetrable(down)) {
-			this.setTarget(down);
 			this.defaultTimeout = MINERAL_FALL_TIMEOUT;
+			this.setTargetPosition(down);
 			return;
 		} else {
 			const available = [];
-			const ll = this.grid.getNeighborLowerLeft(this.position);
+			const ll = this.grid.getNeighborLowerLeft(this.model.position);
 			if (this.level.isPenetrable(ll)) {
 				available.push(ll);
 			}
-			const lr = this.grid.getNeighborLowerRight(this.position);
+			const lr = this.grid.getNeighborLowerRight(this.model.position);
 			if (this.level.isPenetrable(lr)) {
 				available.push(lr);
 			}
 			if (available.length > 0) {
-				this.setTarget(Pixies.randomElement(available));
 				this.defaultTimeout = MINERAL_FALL_TIMEOUT * 2;
+				this.setTargetPosition(Pixies.randomElement(available));
 			} else {
 				this.defaultTimeout = MINERAL_TIMEOUT;
 			}
 		}
 
-		const visitors = this.chessboard.getTile(this.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_MINERAL);
+		const visitors = this.chessboard.getTile(this.model.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_MINERAL);
 		visitors.forEach((v) => this.absorb(v));
 	}
 
@@ -65,7 +64,8 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 	}
 
 	updateInternal(delta) {
-		this.targetScale = MineralStrategy.getScale(this.model.data.amount);
+		this.setTargetScale(MineralStrategy.getScale(this.model.data.amount));
+		super.updateInternal(delta);
 	}
 
 	absorb(node) {
@@ -74,7 +74,6 @@ export default class MineralStrategy extends SpriteControllerStrategy {
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
 			this.level.sprites.remove(node);
-			this.chessboard.removeVisitor(this.position, node);
 		}
 	}
 

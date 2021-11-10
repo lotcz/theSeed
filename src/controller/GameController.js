@@ -17,7 +17,7 @@ import {
 } from "../builder/GroundBuilder";
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
-import {STRATEGY_RESPAWN} from "../builder/SpriteStyle";
+import {STRATEGY_STATIC} from "../builder/SpriteStyle";
 import HashTableModel from "../model/HashTableModel";
 import {DEBUG_MODE} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";

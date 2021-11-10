@@ -1,10 +1,9 @@
-import SpriteControllerStrategy from "./SpriteControllerStrategy";
-import Pixies from "../class/Pixies";
-import Vector2 from "../class/Vector2";
+import MovementStrategy from "../MovementStrategy";
+import Pixies from "../../../class/Pixies";
 
 const BUTTERFLY_TIMEOUT = 300;
 
-export default class ButterflyStrategy extends SpriteControllerStrategy {
+export default class ButterflyStrategy extends MovementStrategy {
 	lastDirection;
 
 	constructor(game, model, controls) {
@@ -13,13 +12,13 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 		this.lastDirection = null;
 	}
 
-	selectTargetInternal() {
-		const neighbors = this.level.grid.getNeighbors(this.position);
+	updateStrategy() {
+		const neighbors = this.level.grid.getNeighbors(this.model.position);
 
 		if (this.lastDirection && (Math.random() < 0.95)) {
 			const next = neighbors[this.lastDirection];
 			if (this.level.isAir(next)) {
-				this.setTarget(next);
+				this.setTargetPosition(next);
 				return;
 			}
 		}
@@ -28,7 +27,7 @@ export default class ButterflyStrategy extends SpriteControllerStrategy {
 		if (validNeighbors.length > 0) {
 			const next = Pixies.randomElement(validNeighbors);
 			this.lastDirection = neighbors.indexOf(next);
-			this.setTarget(next);
+			this.setTargetPosition(next);
 		}
 	}
 
