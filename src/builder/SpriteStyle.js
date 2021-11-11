@@ -5,10 +5,12 @@ import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import LadybugImage from "../../res/img/ladybug.svg";
-import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
-import {GROUND_TYPE_GRASS} from "./GroundStyle";
+import ExitImage from "../../res/img/exit.svg";
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
+
+import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
+import {GROUND_TYPE_GRASS} from "./GroundStyle";
 
 /*
 
@@ -29,6 +31,7 @@ export const IMAGE_STARS_2 = 'img/stars-2.svg';
 export const IMAGE_STARS_3 = 'img/stars-3.svg';
 
 export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';
+export const IMAGE_EXIT = 'img/exit.svg';
 
 export const IMAGE_WATER = 'img/water.svg';
 export const IMAGE_BUBBLE = 'img/bubble.svg';
@@ -177,6 +180,10 @@ SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
 
 SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
 	strategy: STRATEGY_EXIT,
+	image: {
+		uri: IMAGE_EXIT,
+		resource: ExitImage
+	},
 	data: {level: 'level-0'}
 };
 

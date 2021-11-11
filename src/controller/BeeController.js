@@ -9,6 +9,7 @@ import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
+import BeeLeavingStrategy from "../strategy/bee/BeeLeavingStrategy";
 
 export const BEE_CENTER = new Vector2(250, 250);
 const HEALING_SPEED = 0.1; // health per second
@@ -38,6 +39,7 @@ export default class BeeController extends ControllerBase {
 			this.fly();
 		}
 
+		this.model.addOnTravelListener(() => this.leave());
 		this.model.addOnHurtListener((amount) => this.onHurt(amount));
 	}
 
@@ -47,7 +49,7 @@ export default class BeeController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
-		if (this.dead) {
+		if (this.dead || this.travelling) {
 			return;
 		}
 
@@ -111,6 +113,10 @@ export default class BeeController extends ControllerBase {
 		this.starsAnimationController.deactivate();
 		this.dead = true;
 		this.setStrategy(new BeeDeathStrategy(this.game, this.model, this.controls));
+	}
+
+	leave() {
+		this.setStrategy(new BeeLeavingStrategy(this.game, this.model, this.controls));
 	}
 
 	setStrategy(strategy) {

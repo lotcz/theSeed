@@ -191,7 +191,6 @@ TODO:
 - dying animals
 - add diagonal directions
 - allow animals to carry things
-- moving animals must have better collisions
 - build experimental levels
 - mobile widgets
 - improve graphics

@@ -11,6 +11,13 @@ export default class ExitStrategy extends UpdatedStrategy {
 		this.triggered = false;
 	}
 
+	activateInternal() {
+		super.activateInternal();
+		if (this.model.image) {
+			this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
+		}
+	}
+
 	updateStrategy() {
 		if (!this.triggered) {
 			if (this.model.position.distanceTo(this.level.bee.position) < 3) {
