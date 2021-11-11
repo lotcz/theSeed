@@ -277,7 +277,8 @@ export default class LevelModel extends ModelBase {
 		if (!this.isValidPosition(position)) {
 			return false;
 		}
-		return (!this.isPenetrable(position));
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false && v._is_crawlable !== false);
+		return visitors.length > 0;
 	}
 
 	getAbsoluteCoordinates(offset) {

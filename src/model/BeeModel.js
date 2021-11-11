@@ -108,6 +108,23 @@ export default class BeeModel extends ModelBase {
 		return !this.isFlying();
 	}
 
+	hurt(amount) {
+		this.heal(-amount);
+	}
+
+	heal(amount) {
+		this.health.set(this.health.get() + amount);
+		this.triggerEvent(amount < 0 ? 'hurt' : 'heal', Math.abs(amount));
+	}
+
+	addOnHurtListener(listener) {
+		this.addEventListener('hurt', listener);
+	}
+
+	removeOnHurtListener(listener) {
+		this.removeEventListener('hurt', listener);
+	}
+
 	addOnDeathListener(listener) {
 		this.addEventListener('death', listener);
 	}

@@ -205,7 +205,6 @@ Animals
 - penetrable
 - takeable
 - striking/hurting
-- sprite placement (drop to ground gravity-like)
 - dying animals
 - collisions
 

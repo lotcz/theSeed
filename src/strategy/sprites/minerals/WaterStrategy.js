@@ -9,7 +9,7 @@ const DEBUG_WATER = false;
 
 const WATER_TIMEOUT = 700;
 const WATER_FALL_TIMEOUT = 250;
-export const WATER_UNIT_SIZE = 0.1;
+export const WATER_UNIT_SIZE = 0.5;
 
 export default class WaterStrategy extends MovementStrategy {
 	static splashSound = new Sound(SplashSound);
@@ -48,6 +48,7 @@ export default class WaterStrategy extends MovementStrategy {
 			this.setTargetPosition(down);
 			if (down.equalsTo(this.level.bee.position)) {
 				WaterStrategy.splashSound.replay();
+				this.level.bee.hurt(0.5);
 			}
 			return;
 		} else {

@@ -37,6 +37,8 @@ export default class BeeController extends ControllerBase {
 		} else {
 			this.fly();
 		}
+
+		this.model.addOnHurtListener((amount) => this.onHurt(amount));
 	}
 
 	activateInternal() {
@@ -51,17 +53,13 @@ export default class BeeController extends ControllerBase {
 
 		const secsDelta = delta / 1000;
 
-		const isHurt = ((this.model.health.get() > 0) && (this.model.health.get() < 1));
-		if (isHurt && !this.starsAnimationController.isActivated()) {
-			this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
-			this.starsAnimationController.activate();
-		}
-		if (this.starsAnimationController.isActivated() && !isHurt) {
-			this.starsAnimationController.deactivate();
+		if (this.level.isCloud(this.model.position)) {
+			this.model.hurt(secsDelta);
 		}
 
-		if (this.model.health.get() < 1) {
-			this.model.health.set(Math.min(this.model.health.get() + (HEALING_SPEED * secsDelta), 1));
+		if (this.model.health.get() <= 0) {
+			this.die();
+			return;
 		}
 
 		if (this.level.isWater(this.model.position)) {
@@ -69,16 +67,17 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
-		if (this.level.isCloud(this.model.position)) {
-			this.model.health.set(this.model.health.get() - (secsDelta * 0.5));
-			if (this.model.health.get() < 0.5) {
-				this.emptyInventory();
+		const isHurt = this.model.health.get() < 1;
+		if (isHurt) {
+			if (!this.starsAnimationController.isActivated()) {
+				this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
+				this.starsAnimationController.activate();
 			}
-		}
-
-		if (this.model.health.get() <= 0) {
-			this.die();
-			return;
+			this.model.heal(HEALING_SPEED * secsDelta);
+		} else {
+			if (this.starsAnimationController.isActivated()) {
+				this.starsAnimationController.deactivate();
+			}
 		}
 
 		if (this.dropItemTimeout > 0) {
@@ -181,6 +180,13 @@ export default class BeeController extends ControllerBase {
 	updateMovement() {
 		this.level.centerOnCoordinates(this.model.coordinates);
 		this.level.sanitizeViewBox();
+	}
+
+	onHurt(amount) {
+		console.log('hurt', amount);
+		if (amount > 0.3 || this.model.health.get() < 0.5) {
+			this.dropItem();
+		}
 	}
 
 }

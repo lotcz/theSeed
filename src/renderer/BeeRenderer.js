@@ -87,6 +87,7 @@ export default class BeeRenderer extends SvgRenderer {
 
 	updateBeeState() {
 		if (this.model.health.get() <= 0) {
+			this.imageRenderer.activate();
 			this.crawlingAnimationRenderer.deactivate();
 			this.leftWingRenderer.deactivate();
 			this.rightWingRenderer.deactivate();

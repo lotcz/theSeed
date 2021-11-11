@@ -12,6 +12,7 @@ export default class SpriteModel extends ModelBase {
 	type;
 	_is_sprite;
 	_is_penetrable;
+	_is_crawlable;
 	onClick;
 
 	constructor(state) {
@@ -20,6 +21,7 @@ export default class SpriteModel extends ModelBase {
 		// for visitor to be recognized as sprite
 		this._is_sprite = true;
 		this._is_penetrable = true;
+		this._is_crawlable = false;
 
 		this.position = new Vector2();
 		this.addChild(this.position);

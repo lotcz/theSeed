@@ -4,7 +4,7 @@ import Pixies from "../../../class/Pixies";
 import Vector2 from "../../../class/Vector2";
 
 const MINERAL_TIMEOUT = 1000;
-const MINERAL_FALL_TIMEOUT = 200;
+export const MINERAL_FALL_TIMEOUT = 200;
 const DEBUG_MINERAL_STRATEGY = true;
 
 export const MINERAL_MAX_AMOUNT = 5;
@@ -76,6 +76,7 @@ export default class MineralStrategy extends MovementStrategy {
 		visitors.forEach((v) => this.absorb(v));
 
 		this.model._is_penetrable = (this.model.data.amount < MINERAL_MAX_AMOUNT);
+		this.model._is_crawlable = (this.model.data.amount >= MINERAL_MAX_AMOUNT);
 	}
 
 	static getScale(amount) {
