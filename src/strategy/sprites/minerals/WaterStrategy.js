@@ -47,8 +47,7 @@ export default class WaterStrategy extends MovementStrategy {
 			this.defaultTimeout = WATER_FALL_TIMEOUT;
 			this.setTargetPosition(down);
 			if (down.equalsTo(this.level.bee.position)) {
-				WaterStrategy.splashSound.replay();
-				this.level.bee.hurt(0.5);
+				this.hitBee();
 			}
 			return;
 		} else {
@@ -74,7 +73,7 @@ export default class WaterStrategy extends MovementStrategy {
 				const next = Pixies.randomElement(available);
 				this.setTargetPosition(next);
 				if (next.equalsTo(this.level.bee.position)) {
-					WaterStrategy.splashSound.replay();
+					this.hitBee();
 				}
 			} else {
 				this.defaultTimeout = WATER_TIMEOUT;
@@ -102,5 +101,10 @@ export default class WaterStrategy extends MovementStrategy {
 	remove() {
 		if (DEBUG_WATER) console.log('Water over board.');
 		this.level.sprites.remove(this.model);
+	}
+
+	hitBee() {
+		WaterStrategy.splashSound.replay();
+		this.level.bee.hurt(0.5);
 	}
 }

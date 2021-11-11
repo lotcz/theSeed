@@ -188,7 +188,8 @@ TODO:
 - add exit image and shrink bee when exiting
 - make edges of level work as an exit
 - show lives
-- add diagonal directions?
+- dying animals
+- add diagonal directions
 - allow animals to carry things
 - moving animals must have better collisions
 - build experimental levels
@@ -199,14 +200,6 @@ TODO:
 - BETA for friends
 - RELEASE
 
-Animals
--------
-
-- penetrable
-- takeable
-- striking/hurting
-- dying animals
-- collisions
 
 Ads and monetization
 --------------------

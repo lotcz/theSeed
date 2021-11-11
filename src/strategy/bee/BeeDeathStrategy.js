@@ -20,6 +20,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 		this.deathSound.play();
 		this.model.health.set(0);
 		this.model.direction.set(0,0);
+		this.model.crawling.set(null);
 		this.timeout = DEATH_TIMEOUT;
 		this.triggered = false;
 		this.parent.emptyInventory();
