@@ -209,11 +209,6 @@ Animals
 - dying animals
 - collisions
 
-Minerals
---------
-
--  make minerals stack
-
 Ads and monetization
 --------------------
 

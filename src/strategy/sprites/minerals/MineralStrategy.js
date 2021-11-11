@@ -1,6 +1,7 @@
 import MovementStrategy from "../MovementStrategy";
 import {STRATEGY_MINERAL} from "../../../builder/SpriteStyle";
 import Pixies from "../../../class/Pixies";
+import Vector2 from "../../../class/Vector2";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
@@ -17,6 +18,11 @@ export default class MineralStrategy extends MovementStrategy {
 		}
 
 		this.timeout = 0;
+	}
+
+	activateInternal() {
+		this.updateOffset();
+		super.activateInternal();
 	}
 
 	updateStrategy() {
@@ -69,11 +75,7 @@ export default class MineralStrategy extends MovementStrategy {
 				&& v.type === this.model.type);
 		visitors.forEach((v) => this.absorb(v));
 
-		if (this.model.data.amount >= MINERAL_MAX_AMOUNT) {
-			this.model._is_penetrable = false;
-		} else {
-			this.model._is_penetrable = true;
-		}
+		this.model._is_penetrable = (this.model.data.amount < MINERAL_MAX_AMOUNT);
 	}
 
 	static getScale(amount) {
@@ -82,8 +84,24 @@ export default class MineralStrategy extends MovementStrategy {
 	}
 
 	updateInternal(delta) {
-		this.setTargetScale(MineralStrategy.getScale(this.model.data.amount));
+		const scale = MineralStrategy.getScale(this.model.data.amount);
+		this.setTargetScale(scale);
 		super.updateInternal(delta);
+	}
+
+	updateOffset() {
+		if (this.model.data.amount < MINERAL_MAX_AMOUNT) {
+			this.offset = new Vector2(0, this.grid.tileSize.y * 0.4 * (1 - (this.model.data.amount / MINERAL_MAX_AMOUNT)));
+		} else {
+			this.offset = null;
+		}
+	}
+
+	amountChanged() {
+		this.updateOffset();
+		if (!this.isMoving()) {
+			this.setTargetCoordinates(this.getCoords(this.model.position));
+		}
 	}
 
 	separate(amount) {
@@ -98,15 +116,17 @@ export default class MineralStrategy extends MovementStrategy {
 		if (this.level.isPenetrable(position)) {
 			if (DEBUG_MINERAL_STRATEGY) console.log('Separate');
 			this.model.data.amount -= amount;
+			this.amountChanged();
 			const sprite = this.level.addSpriteFromStyle(position, this.model.type);
 			sprite.data.amount = amount;
 		}
 	}
 
 	absorb(node) {
-		if ((node.data.amount < this.model.data.amount) || (node.data.amount === this.model.data.amount && node.image.scale.get() < this.model.image.scale.get())) {
+		if (node.data.amount <= this.model.data.amount && node.image.scale.get() <= this.model.image.scale.get()) {
 			if (DEBUG_MINERAL_STRATEGY) console.log('Absorb');
 			this.model.data.amount += node.data.amount;
+			this.amountChanged();
 			this.model.makeDirty();
 			this.level.sprites.remove(node);
 		}

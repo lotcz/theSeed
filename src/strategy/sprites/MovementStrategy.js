@@ -3,11 +3,13 @@ import RotationValue from "../../class/RotationValue";
 import UpdatedStrategy from "./UpdatedStrategy";
 import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
+import Vector2 from "../../class/Vector2";
 
 export default class MovementStrategy extends UpdatedStrategy {
 	animatedCoordinates;
 	animatedRotation;
 	animatedScale;
+	offset;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
@@ -15,16 +17,20 @@ export default class MovementStrategy extends UpdatedStrategy {
 		this.animatedCoordinates = null;
 		this.animatedRotation = null;
 		this.animatedScale = null;
+		this.offset = null;
 	}
 
 	activateInternal() {
 		super.activateInternal();
-		this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
+		this.model.image.coordinates.set(this.getCoords(this.model.position));
 	}
 
-	selectRandomTarget() {
-		const neighbors = this.level.grid.getNeighbors(this.model.position);
-		this.setTargetPosition(Pixies.randomElement(neighbors));
+	getCoords(position) {
+		const coords = this.grid.getCoordinates(position);
+		if (!this.offset) {
+			return coords;
+		}
+		return coords.add(this.offset);
 	}
 
 	setTargetRotation(rotation, timeout = null) {
@@ -42,7 +48,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 
 	setTargetPosition(position) {
 		if (!this.model.position.equalsTo(position)) {
-			this.setTargetCoordinates(this.grid.getCoordinates(position));
+			this.setTargetCoordinates(this.getCoords(position));
 		}
 	}
 
@@ -51,6 +57,10 @@ export default class MovementStrategy extends UpdatedStrategy {
 			this.animatedCoordinates = new AnimatedVector2(this.model.image.coordinates, coordinates, this.defaultTimeout);
 			this.setTargetRotation(this.model.image.coordinates.getAngleToY(coordinates), 500);
 		}
+	}
+
+	isMoving() {
+		return (this.animatedCoordinates !== null);
 	}
 
 	updateInternal(delta) {
