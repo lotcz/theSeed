@@ -2,6 +2,8 @@ import MovementStrategy from "../MovementStrategy";
 import {STRATEGY_WATER} from "../../../builder/SpriteStyle";
 import Pixies from "../../../class/Pixies";
 import MineralStrategy from "./MineralStrategy";
+import SplashSound from "../../../../res/sound/splash.wav";
+import Sound from "../../../class/Sound";
 
 const DEBUG_WATER = false;
 
@@ -10,6 +12,8 @@ const WATER_FALL_TIMEOUT = 250;
 export const WATER_UNIT_SIZE = 0.1;
 
 export default class WaterStrategy extends MovementStrategy {
+	static splashSound = new Sound(SplashSound);
+
 	constructor(game, model, controls) {
 		super(game, model, controls, WATER_TIMEOUT);
 
@@ -42,6 +46,9 @@ export default class WaterStrategy extends MovementStrategy {
 		if (this.level.isPenetrable(down)) {
 			this.defaultTimeout = WATER_FALL_TIMEOUT;
 			this.setTargetPosition(down);
+			if (down.equalsTo(this.level.bee.position)) {
+				WaterStrategy.splashSound.replay();
+			}
 			return;
 		} else {
 			const available = [];
@@ -65,6 +72,9 @@ export default class WaterStrategy extends MovementStrategy {
 				this.defaultTimeout = WATER_FALL_TIMEOUT * 2;
 				const next = Pixies.randomElement(available);
 				this.setTargetPosition(next);
+				if (next.equalsTo(this.level.bee.position)) {
+					WaterStrategy.splashSound.replay();
+				}
 			} else {
 				this.defaultTimeout = WATER_TIMEOUT;
 			}

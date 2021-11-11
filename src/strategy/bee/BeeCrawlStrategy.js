@@ -205,6 +205,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 				this.parent.fly();
 				return;
 			}
+			this.parent.inspectForMinerals(crawlingPosition);
 		}
 
 		if ((this.targetCoordinates !== null) || (this.targetRotation !== null)) {

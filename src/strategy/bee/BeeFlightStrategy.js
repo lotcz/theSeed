@@ -5,6 +5,7 @@ import HitSound from "../../../res/sound/hit.wav";
 import {BEE_CENTER} from "../../controller/BeeController";
 import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../../builder/SpriteStyle";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
+import Pixies from "../../class/Pixies";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -45,12 +46,13 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 	updateInternal(delta) {
 		const secsDelta = delta / 1000;
-
 		let direction = this.model.direction;
+
+		this.parent.inspectForMinerals(this.model.position);
 
 		if (this.controls.anyMovement() && !this.dead) {
 			const carriedAmount = this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);
-			const speedup = SPEEDUP_SPEED * (1 - (0.5 * carriedAmount / MINERAL_MAX_AMOUNT));
+			const speedup = SPEEDUP_SPEED * (1 - Pixies.between(0, 0.5, 0.5 * carriedAmount / MINERAL_MAX_AMOUNT));
 			if (this.controls.moveUp) {
 				direction = direction.addY(-speedup * secsDelta);
 			} else if (this.controls.moveDown) {

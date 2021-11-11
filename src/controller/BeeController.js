@@ -7,19 +7,23 @@ import BeeFlightStrategy from "../strategy/bee/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
-import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
+import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
 
 export const BEE_CENTER = new Vector2(250, 250);
 const HEALING_SPEED = 0.1; // health per second
+const MAX_INVENTORY_AMOUNT = 3;
+const DROP_ITEM_TIMEOUT = 1000;
 
 export default class BeeController extends ControllerBase {
 	dead;
+	dropItemTimeout;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.dead = false;
+		this.dropItemTimeout = 0;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
@@ -77,9 +81,11 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
-		const visitors = this.chessboard.getVisitors(this.model.position);
-		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
-		minerals.forEach((m) =>	this.takeItem(m));
+		if (this.dropItemTimeout > 0) {
+			this.dropItemTimeout -= delta;
+		} else {
+			this.inspectForMinerals(this.model.position);
+		}
 
 		if (this.controls.fire) {
 			this.dropItem();
@@ -115,12 +121,28 @@ export default class BeeController extends ControllerBase {
 		this.strategy.activate();
 	}
 
+	inspectForMinerals(position) {
+		if (this.carriedAmount() >= MAX_INVENTORY_AMOUNT) {
+			return;
+		}
+		const visitors = this.chessboard.getVisitors(position);
+		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
+		minerals.forEach((m) =>	this.takeItem(m));
+	}
+
+	carriedAmount() {
+		return this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);
+	}
+
 	takeItem(item) {
-		const sameType = this.model.inventory.children.find((i) => i.image.path.get() === item.image.path.get());
+		if (this.dropItemTimeout > 0) {
+			return;
+		}
+		const sameType = this.model.inventory.children.find((i) => i.type === item.type);
 		if (this.model.inventory.count() > 0 && !sameType) {
 			return;
 		}
-		if (sameType && (sameType.data.amount + item.data.amount) >= MINERAL_MAX_AMOUNT) {
+		if (sameType && (sameType.data.amount + item.data.amount) >= MAX_INVENTORY_AMOUNT) {
 			return;
 		}
 		this.level.sprites.remove(item);
@@ -146,6 +168,7 @@ export default class BeeController extends ControllerBase {
 			this.level.addResource(item.image.path.get());
 			item.position.set(position);
 			this.level.sprites.add(item);
+			this.dropItemTimeout = DROP_ITEM_TIMEOUT;
 		}
 	}
 

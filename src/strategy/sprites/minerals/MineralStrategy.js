@@ -4,7 +4,9 @@ import Pixies from "../../../class/Pixies";
 
 const MINERAL_TIMEOUT = 1000;
 const MINERAL_FALL_TIMEOUT = 200;
-export const MINERAL_MAX_AMOUNT = 3;
+const DEBUG_MINERAL_STRATEGY = true;
+
+export const MINERAL_MAX_AMOUNT = 5;
 
 export default class MineralStrategy extends MovementStrategy {
 	constructor(game, model, controls) {
@@ -18,6 +20,11 @@ export default class MineralStrategy extends MovementStrategy {
 	}
 
 	updateStrategy() {
+		if (this.model.data.amount > MINERAL_MAX_AMOUNT) {
+			const amount = this.model.data.amount - MINERAL_MAX_AMOUNT;
+			this.separate(amount);
+		}
+
 		const down = this.grid.getNeighborDown(this.model.position);
 		if (!this.level.isValidPosition(down)) {
 			console.log('Mineral over board.');
@@ -54,8 +61,19 @@ export default class MineralStrategy extends MovementStrategy {
 			}
 		}
 
-		const visitors = this.chessboard.getTile(this.model.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_MINERAL);
+		const visitors = this.chessboard.getTile(this.model.position)
+			.filter((v) =>
+				v !== this.model
+				&& v._is_sprite === true
+				&& v.strategy.get() === STRATEGY_MINERAL
+				&& v.type === this.model.type);
 		visitors.forEach((v) => this.absorb(v));
+
+		if (this.model.data.amount >= MINERAL_MAX_AMOUNT) {
+			this.model._is_penetrable = false;
+		} else {
+			this.model._is_penetrable = true;
+		}
 	}
 
 	static getScale(amount) {
@@ -68,9 +86,26 @@ export default class MineralStrategy extends MovementStrategy {
 		super.updateInternal(delta);
 	}
 
+	separate(amount) {
+		if (amount > this.model.data.amount) amount = this.model.data.amount;
+		let position = this.grid.getNeighborUp(this.model.position);
+		if (!this.level.isPenetrable(position)) {
+			position = this.grid.getNeighborUpperLeft(this.model.position);
+			if (!this.level.isPenetrable(position)) {
+				position = this.grid.getNeighborUpperRight(this.model.position);
+			}
+		}
+		if (this.level.isPenetrable(position)) {
+			if (DEBUG_MINERAL_STRATEGY) console.log('Separate');
+			this.model.data.amount -= amount;
+			const sprite = this.level.addSpriteFromStyle(position, this.model.type);
+			sprite.data.amount = amount;
+		}
+	}
+
 	absorb(node) {
-		if (node.data.amount <= this.model.data.amount && (node.data.amount + this.model.data.amount) <= MINERAL_MAX_AMOUNT) {
-			console.log('Absorb');
+		if ((node.data.amount < this.model.data.amount) || (node.data.amount === this.model.data.amount && node.image.scale.get() < this.model.image.scale.get())) {
+			if (DEBUG_MINERAL_STRATEGY) console.log('Absorb');
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
 			this.level.sprites.remove(node);
