@@ -448,7 +448,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		if (this.model.selectedSprites.isDirty()) {
 			this.hideAdditionalGUI();
-			this.model.selectedSprites.forEach((sprite) => this.addSpriteGUI(sprite));
+			const selected = this.model.selectedSprites.get();
+			selected.forEach((sprite) => this.addSpriteGUI(sprite));
 			this.model.selectedSprites.clean();
 		}
 

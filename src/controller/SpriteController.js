@@ -43,6 +43,9 @@ export default class SpriteController extends ControllerBase {
 	createStrategy(model) {
 		const id = model.strategy.get();
 		switch (id) {
+			case STRATEGY_STATIC:
+			case 'respawn':
+				return new StaticStrategy(this.game, model, this.controls);
 			case STRATEGY_BUG:
 				return new BugStrategy(this.game, model, this.controls);
 			case STRATEGY_BUTTERFLY:
@@ -55,8 +58,7 @@ export default class SpriteController extends ControllerBase {
 				return new BubbleStrategy(this.game, model, this.controls);
 			case STRATEGY_MINERAL:
 				return new MineralStrategy(this.game, model, this.controls);
-			case STRATEGY_STATIC:
-				return new StaticStrategy(this.game, model, this.controls);
+
 			case STRATEGY_EXIT:
 				return new ExitStrategy(this.game, model, this.controls);
 			case STRATEGY_EMITTER:

@@ -133,4 +133,8 @@ export default class Vector2 extends ModelBase {
 		this.addEventListener('change', eventHandler);
 	}
 
+	toDiscreteSpace() {
+		return new Vector2(Math.round(this.x), Math.round(this.y));
+	}
+
 }
