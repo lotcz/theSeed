@@ -20,13 +20,6 @@ Puzzles
 
 - bees presence can trigger opening/closing of gate
 
-Bee Personality
----------------
-
-- curious (likes to explore new things)
-- rebelling (doesn't like authorities)
-- helpful (sympathises with other animals)
-
 Items
 -----
 
@@ -185,7 +178,6 @@ TODO:
 
 - bee thoughts (hints)
 - slow when in cloud or on water (by adding visible burden)
-- add exit image and shrink bee when exiting
 - make edges of level work as an exit
 - show lives
 - dying animals

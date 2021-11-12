@@ -64,7 +64,7 @@ export default class GameRenderer extends SvgRenderer {
 		if (this.model.menu.isDirty()) {
 			if (this.model.menu.isEmpty()) {
 				this.hideMenu();
-			} else {
+			} else if (this.loadingScreenRenderer === null) {
 				this.showMenu();
 			}
 			this.model.menu.clean();
@@ -85,6 +85,7 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	showLoading() {
+		this.hideMenu();
 		if (!this.loadingScreenRenderer) {
 			this.loadingScreenDom = Pixies.createElement(this.dom, 'div', 'loading');
 			this.loadingScreenRenderer = new DomRenderer(this.game, this.model, this.loadingScreenDom);
@@ -95,6 +96,7 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	hideLoading() {
+		this.showMenu();
 		if (this.loadingScreenRenderer) {
 			Pixies.destroyElement(this.loadingScreenDom);
 			this.removeChild(this.loadingScreenRenderer);

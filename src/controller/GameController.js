@@ -210,7 +210,7 @@ export default class GameController extends ControllerBase {
 			return;
 		}
 
-		let level = new LevelModel(state);
+		const level = new LevelModel(state);
 		if (spawn === null) {
 			spawn = 'start';
 		}
@@ -240,8 +240,9 @@ export default class GameController extends ControllerBase {
 	}
 
 	showMainMenu() {
+		const level = this.model.level.get();
 		const builder = new MenuBuilder('main');
-		if (this.model.level.get().isPlayable) {
+		if (level && level.isPlayable) {
 			builder.addLine("Continue", (e) => this.resume());
 		} else if (this.savedGameExists) {
 			builder.addLine("Continue", (e) => this.loadGameAsync());
@@ -252,10 +253,8 @@ export default class GameController extends ControllerBase {
 		}
 		this.model.menu.set(builder.build());
 
-		if (!this.model.level.isEmpty()) {
-			if (this.model.level.get().isPlayable) {
-				this.levelController.deactivate();
-			}
+		if (level && level.isPlayable) {
+			this.levelController.deactivate();
 		}
 
 	}
