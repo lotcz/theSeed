@@ -7,12 +7,18 @@ import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 const DEBUG_BEE = false;
 
 export default class BeeRenderer extends SvgRenderer {
+	lastScale;
+	dead;
+	group;
+
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		this.lastScale = this.model.scale.get();
 		this.dead = false;
 
-		this.group = this.draw.nested().addClass('bee');
+		this.svg = this.draw.nested().addClass('bee');
+		this.group = this.svg.group();
 
 		this.imageRenderer = new ImageRenderer(game, this.model.image, this.group);
 		this.addChild(this.imageRenderer);
@@ -53,8 +59,14 @@ export default class BeeRenderer extends SvgRenderer {
 		}
 		if (this.model.coordinates.isDirty()) {
 			const coords = this.model.coordinates.subtract(BEE_CENTER);
-			this.group.move(coords.x, coords.y);
+			this.svg.move(coords.x, coords.y);
 			this.model.coordinates.clean();
+		}
+		if (this.model.scale.isDirty()) {
+			const scale = this.model.scale.get() / this.lastScale;
+			this.lastScale = this.model.scale.get();
+			this.model.scale.clean();
+			this.group.scale(scale);
 		}
 		if (this.model.image.flipped.isDirty()) {
 			this.updateFlip();

@@ -8,6 +8,7 @@ import AnimationModel from "./AnimationModel";
 import SpriteModel from "./SpriteModel";
 
 export default class BeeModel extends ModelBase {
+	scale;
 	position;
 	coordinates;
 	direction; // vector of movement
@@ -27,6 +28,8 @@ export default class BeeModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		this.scale = new DirtyValue(1);
+		this.addChild(this.scale);
 		this.position = new Vector2();
 		this.addChild(this.position);
 		this.coordinates = new Vector2();
@@ -66,6 +69,7 @@ export default class BeeModel extends ModelBase {
 
 	getState() {
 		return {
+			scale: this.scale.getState(),
 			position: this.position.getState(),
 			direction: this.direction.getState(),
 			rotation: this.rotation.getState(),
@@ -84,6 +88,7 @@ export default class BeeModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		if (state.scale) this.scale.restoreState(state.scale);
 		if (state.position) this.position.restoreState(state.position);
 		if (state.direction) this.direction.restoreState(state.direction);
 		if (state.rotation) this.rotation.restoreState(state.rotation);

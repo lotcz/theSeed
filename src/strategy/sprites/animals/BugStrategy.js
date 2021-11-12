@@ -43,10 +43,12 @@ export default class BugStrategy extends MovementStrategy {
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 		neighbors.push(this.model.position);
 
-		const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
-		if (beePresent) {
-			BugStrategy.biteSound.replay();
-			this.level.bee.hurt(0.5);
+		if (this.level.isPlayable && this.level.bee) {
+			const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
+			if (beePresent) {
+				BugStrategy.biteSound.replay();
+				this.level.bee.hurt(0.5);
+			}
 		}
 
 		const freeNeighbors = neighbors.filter((n) => this.level.isPenetrable(n));

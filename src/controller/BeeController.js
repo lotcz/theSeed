@@ -9,7 +9,9 @@ import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
-import BeeLeavingStrategy from "../strategy/bee/BeeLeavingStrategy";
+
+import OuchSound from "../../res/sound/ouch.mp3";
+import Sound from "../class/Sound";
 
 export const BEE_CENTER = new Vector2(250, 250);
 const HEALING_SPEED = 0.1; // health per second
@@ -17,13 +19,16 @@ const MAX_INVENTORY_AMOUNT = 3;
 const DROP_ITEM_TIMEOUT = 1000;
 
 export default class BeeController extends ControllerBase {
+	static ouchSound = new Sound(OuchSound);
 	dead;
+	leaving;
 	dropItemTimeout;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
 		this.dead = false;
+		this.leaving = null;
 		this.dropItemTimeout = 0;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
@@ -44,12 +49,13 @@ export default class BeeController extends ControllerBase {
 	}
 
 	activateInternal() {
+		this.model.scale.set(1);
 		this.model.inventory.forEach((i) => this.level.addResource(i.image.path.get()));
 		this.updateMovement();
 	}
 
 	updateInternal(delta) {
-		if (this.dead || this.travelling) {
+		if (this.dead || this.leaving) {
 			return;
 		}
 
@@ -116,7 +122,9 @@ export default class BeeController extends ControllerBase {
 	}
 
 	leave() {
-		this.setStrategy(new BeeLeavingStrategy(this.game, this.model, this.controls));
+		this.leaving = true;
+		if (!this.model.isFlying()) this.fly();
+		this.strategy.leave();
 	}
 
 	setStrategy(strategy) {
@@ -189,7 +197,7 @@ export default class BeeController extends ControllerBase {
 	}
 
 	onHurt(amount) {
-		console.log('hurt', amount);
+		BeeController.ouchSound.play();
 		if (amount > 0.3 || this.model.health.get() < 0.5) {
 			this.dropItem();
 		}

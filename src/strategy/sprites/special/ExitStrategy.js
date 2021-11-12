@@ -21,7 +21,7 @@ export default class ExitStrategy extends UpdatedStrategy {
 	updateStrategy() {
 		if (!this.triggered) {
 			if (this.model.position.distanceTo(this.level.bee.position) < 3) {
-				console.log('Exit');
+				this.level.bee.position.set(this.model.position);
 				this.level.bee.triggerOnTravelEvent(this.model.data.level);
 				this.triggered = true;
 			}

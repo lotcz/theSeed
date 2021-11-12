@@ -6,6 +6,8 @@ import {BEE_CENTER} from "../../controller/BeeController";
 import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../../builder/SpriteStyle";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 import Pixies from "../../class/Pixies";
+import AnimatedValue from "../../class/AnimatedValue";
+import AnimatedVector2 from "../../class/AnimatedVector2";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -20,9 +22,13 @@ const SLOWDOWN_SPEED = 400;
 const SPEEDUP_SPEED = 800;
 
 export default class BeeFlightStrategy extends ControllerBase {
+	static hitSound = new Sound(HitSound);
 	wingRotation;
 	speed;
 	dead;
+	leaving;
+	scaleAnimation;
+	coordinatesAnimation;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -30,8 +36,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.wingRotation = 0;
 		this.speed = 0;
 		this.dead = false;
-
-		this.hitSound = new Sound(HitSound);
+		this.leaving = false;
 	}
 
 	activateInternal() {
@@ -46,6 +51,21 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 	updateInternal(delta) {
 		const secsDelta = delta / 1000;
+
+		//animate wings
+		if (this.wingRotation > 60) {
+			this.wingRotation = -60;
+		}
+		this.wingRotation += secsDelta * (100 + (400 * this.speed / MAX_SPEED));
+
+		if (this.leaving) {
+			this.model.scale.set(this.scaleAnimation.get(delta));
+			this.model.coordinates.set(this.coordinatesAnimation.get(delta));
+			this.updateBee();
+			this.parent.updateMovement();
+			return;
+		}
+
 		let direction = this.model.direction;
 
 		this.parent.inspectForMinerals(this.model.position);
@@ -81,11 +101,6 @@ export default class BeeFlightStrategy extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
-		//animate wings
-		if (this.wingRotation > 60) {
-			this.wingRotation = -60;
-		}
-		this.wingRotation += secsDelta * (100 + (400 * this.speed / MAX_SPEED));
 
 		if (this.speed <= 0) {
 			if (this.dead) {
@@ -117,7 +132,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 				}
 			}
 
-			this.hitSound.replay();
+			BeeFlightStrategy.hitSound.replay();
 			this.parent.emptyInventory();
 
 			this.model.hurt(0.5 * this.speed / MAX_SPEED);
@@ -169,4 +184,9 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.rightWing.coordinates.set(idle);
 	}
 
+	leave() {
+		this.leaving = true;
+		this.scaleAnimation = new AnimatedValue(this.model.scale.get(), 0.1, 2000);
+		this.coordinatesAnimation = new AnimatedVector2(this.model.coordinates, this.grid.getCoordinates(this.model.position), 2000);
+	}
 }
