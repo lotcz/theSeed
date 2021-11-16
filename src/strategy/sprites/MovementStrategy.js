@@ -10,6 +10,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 	animatedRotation;
 	animatedScale;
 	offset;
+	turnWhenMoving;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
@@ -18,6 +19,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 		this.animatedRotation = null;
 		this.animatedScale = null;
 		this.offset = null;
+		this.turnWhenMoving = true;
 	}
 
 	activateInternal() {
@@ -55,7 +57,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 	setTargetCoordinates(coordinates) {
 		if (!this.model.image.coordinates.equalsTo(coordinates)) {
 			this.animatedCoordinates = new AnimatedVector2(this.model.image.coordinates, coordinates, this.defaultTimeout);
-			this.setTargetRotation(this.model.image.coordinates.getAngleToY(coordinates), 500);
+			if (this.turnWhenMoving) this.setTargetRotation(this.model.image.coordinates.getAngleToY(coordinates), 500);
 		}
 	}
 

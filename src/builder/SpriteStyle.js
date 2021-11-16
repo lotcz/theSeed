@@ -8,6 +8,8 @@ import LadybugImage from "../../res/img/ladybug.svg";
 import ExitImage from "../../res/img/exit.svg";
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
+import HintWasdImage from "../../res/img/hint-wasd.svg";
+import HintArrowsImage from "../../res/img/hint-arrows.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
@@ -21,6 +23,10 @@ import WormHeadImage from "../../res/img/worm-head.svg";
 import WormBodyImage from "../../res/img/worm-body.svg";
 import WormButtImage from "../../res/img/worm-butt.svg";
 */
+
+export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
+export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
+
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
@@ -52,6 +58,8 @@ export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
 export const SPRITE_TYPE_HINT = 'hint';
+export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
+export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
 export const SPRITE_TYPE_BUG = 'bug';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
@@ -85,6 +93,15 @@ export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_BUG, STRATEGY_WATER,
 
 export const SPRITE_STYLES = [];
 
+SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
+	strategy: STRATEGY_EXIT,
+	image: {
+		uri: IMAGE_EXIT,
+		resource: ExitImage
+	},
+	data: {level: 'level-0'}
+};
+
 SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
 	strategy: STRATEGY_JELLYMAKER,
 	image: {
@@ -102,6 +119,24 @@ SPRITE_STYLES[SPRITE_TYPE_HINT] = {
 	image: {
 		uri: IMAGE_HINT_BACKGROUND,
 		resource: HintBackgroundImage,
+		scale: 0.1
+	},
+};
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_WASD] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_WASD,
+		resource: HintWasdImage,
+		scale: 0.1
+	},
+};
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_ARROWS] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_ARROWS,
+		resource: HintArrowsImage,
 		scale: 0.1
 	},
 };

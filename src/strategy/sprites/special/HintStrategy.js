@@ -1,15 +1,14 @@
 import MovementStrategy from "../MovementStrategy";
-import AhaSound from "../../../../res/sound/a-ha.mp3";
-import Sound from "../../../class/Sound";
 
 const HINT_TIMEOUT = 1000;
 
 export default class HintStrategy extends MovementStrategy {
-	static ahaSound = new Sound(AhaSound);
 	start;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, HINT_TIMEOUT);
+
+		this.turnWhenMoving = false;
 	}
 
 	activateInternal() {
@@ -18,7 +17,6 @@ export default class HintStrategy extends MovementStrategy {
 		this.start = this.model.position.clone();
 		this.timeout = 0;
 
-		HintStrategy.ahaSound.play();
 	}
 
 	updateStrategy() {

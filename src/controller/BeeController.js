@@ -1,5 +1,11 @@
 import ControllerBase from "../class/ControllerBase";
-import {STRATEGY_MINERAL} from "../builder/SpriteStyle";
+import {
+	IMAGE_HINT_ARROWS,
+	IMAGE_HINT_WASD,
+	IMAGE_POTASSIUM,
+	STRATEGY_MINERAL,
+	STRATEGY_STATIC
+} from "../builder/SpriteStyle";
 import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
 
 import Vector2 from "../class/Vector2";
@@ -8,12 +14,15 @@ import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
-import {NEIGHBOR_TYPE_DOWN} from "../model/GridModel";
+import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
 
 import OuchSound from "../../res/sound/ouch.mp3";
 import Sound from "../class/Sound";
+import SpriteCollectionController from "./SpriteCollectionController";
+import HintModel from "../model/HintModel";
+import HintController from "./HintController";
 
-export const BEE_CENTER = new Vector2(250, 250);
+export const BEE_CENTER = new Vector2(750, 750);
 const HEALING_SPEED = 0.1; // health per second
 const MAX_INVENTORY_AMOUNT = 3;
 const DROP_ITEM_TIMEOUT = 1000;
@@ -23,6 +32,7 @@ export default class BeeController extends ControllerBase {
 	dead;
 	leaving;
 	dropItemTimeout;
+	showingControlsHint;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -30,12 +40,16 @@ export default class BeeController extends ControllerBase {
 		this.dead = false;
 		this.leaving = null;
 		this.dropItemTimeout = 0;
+		this.showingControlsHint = false;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
 
 		this.starsAnimationController = new AnimationController(this.game, this.model.starsAnimation, this.controls);
 		this.addChild(this.starsAnimationController);
+
+		this.spritesController = new SpriteCollectionController(this.game, this.model.sprites, this.controls);
+		this.addChild(this.spritesController);
 
 		this.model.coordinates.set(this.grid.getCoordinates(this.model.position));
 		if (this.model.crawling.get()) {
@@ -50,8 +64,14 @@ export default class BeeController extends ControllerBase {
 
 	activateInternal() {
 		this.model.scale.set(1);
-		this.model.inventory.forEach((i) => this.level.addResource(i.image.path.get()));
+		if (this.model.inventory.isSet()) {
+			this.level.addResource(this.model.inventory.get().image.path.get());
+		}
 		this.updateMovement();
+
+		if (!this.game.historyExists('hint-controls-displayed')) {
+			setTimeout(() => this.showControlsHint(), 3000);
+		}
 	}
 
 	updateInternal(delta) {
@@ -94,24 +114,30 @@ export default class BeeController extends ControllerBase {
 			this.inspectForMinerals(this.model.position);
 		}
 
-		if (this.controls.fire) {
+		if (this.controls.fire || this.controls.interact) {
 			this.dropItem();
 			this.controls.fire = false;
+		}
+
+		if (this.showingControlsHint && this.controls.anyMovement()) {
+			this.hideHint();
+			this.game.setHistory('hint-controls-displayed');
+			this.showingControlsHint = false;
 		}
 	}
 
 	fly() {
-		this.model.inventory.forEach((i) => i.image.coordinates.set(BEE_CENTER.addY(80)));
 		this.model.crawling.set(null);
 		this.crawlingAnimationController.deactivate();
 		this.setStrategy(new BeeFlightStrategy(this.game, this.model, this.controls));
+		this.updateInventory();
 	}
 
 	crawl(direction) {
-		this.model.inventory.forEach((i) => i.image.coordinates.set(BEE_CENTER));
 		this.model.crawling.set(direction);
 		this.crawlingAnimationController.activate();
 		this.setStrategy(new BeeCrawlStrategy(this.game, this.model, this.controls));
+		this.updateInventory();
 	}
 
 	die() {
@@ -125,6 +151,17 @@ export default class BeeController extends ControllerBase {
 		this.leaving = true;
 		if (!this.model.isFlying()) this.fly();
 		this.strategy.leave();
+	}
+
+	updateInventory() {
+		if (!this.model.inventory.isEmpty()) {
+			if (this.model.isFlying()) {
+				this.model.inventory.get().image.coordinates.set(BEE_CENTER.addY(80));
+			} else {
+				this.model.inventory.get().image.coordinates.set(BEE_CENTER);
+			}
+			this.model.inventory.get().image.scale.set(MineralStrategy.getScale(this.model.inventory.get().data.amount));
+		}
 	}
 
 	setStrategy(strategy) {
@@ -144,15 +181,15 @@ export default class BeeController extends ControllerBase {
 	}
 
 	carriedAmount() {
-		return this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);
+		return this.model.inventory.isEmpty() ? 0 : this.model.inventory.get().data.amount;
 	}
 
 	takeItem(item) {
 		if (this.dropItemTimeout > 0) {
 			return;
 		}
-		const sameType = this.model.inventory.children.find((i) => i.type === item.type);
-		if (this.model.inventory.count() > 0 && !sameType) {
+		const sameType = this.model.inventory.isEmpty() ? null : this.model.inventory.get().type === item.type ? this.model.inventory.get() : null;
+		if (this.model.inventory.isSet() && !sameType) {
 			return;
 		}
 		if (sameType && (sameType.data.amount + item.data.amount) >= MAX_INVENTORY_AMOUNT) {
@@ -161,34 +198,28 @@ export default class BeeController extends ControllerBase {
 		this.level.sprites.remove(item);
 		if (sameType) {
 			sameType.data.amount += item.data.amount;
-			sameType.image.scale.set(MineralStrategy.getScale(sameType.data.amount));
 		} else {
-			this.model.inventory.add(item);
-			item.image.scale.set(MineralStrategy.getScale(item.data.amount));
+			this.model.inventory.set(item);
 		}
-		if (this.model.isFlying()) {
-			item.image.coordinates.set(BEE_CENTER.addY(80));
-		} else {
-			item.image.coordinates.set(BEE_CENTER);
-		}
+		this.updateInventory();
 	}
 
 	dropItem() {
-		const item = this.model.inventory.removeFirst();
-		if (item) {
-			const down = this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_DOWN);
-			const position = this.level.isPenetrable(down) ? down : this.model.position;
-			this.level.addResource(item.image.path.get());
-			item.position.set(position);
-			this.level.sprites.add(item);
-			this.dropItemTimeout = DROP_ITEM_TIMEOUT;
+		if (this.model.inventory.isEmpty()) {
+			return;
 		}
+		const item = this.model.inventory.get();
+		this.model.inventory.set(null);
+		const down = this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_DOWN);
+		const position = this.level.isPenetrable(down) ? down : this.model.position;
+		this.level.addResource(item.image.path.get());
+		item.position.set(position);
+		this.level.sprites.add(item);
+		this.dropItemTimeout = DROP_ITEM_TIMEOUT;
 	}
 
 	emptyInventory() {
-		while (this.model.inventory.count() > 0) {
-			this.dropItem();
-		}
+		this.dropItem();
 	}
 
 	updateMovement() {
@@ -200,6 +231,30 @@ export default class BeeController extends ControllerBase {
 		BeeController.ouchSound.play();
 		if (amount > 0.3 || this.model.health.get() < 0.5) {
 			this.dropItem();
+		}
+	}
+
+	showControlsHint() {
+		this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
+		this.showingControlsHint = true;
+	}
+
+	showHint(images) {
+		if (!this.hintController) {
+			const hintModel = new HintModel();
+			hintModel.position.set(this.grid.getPosition(BEE_CENTER));
+			hintModel.imagePaths = images;
+			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
+			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
+			this.addChild(this.hintController);
+			this.hintController.deactivate();
+		}
+		this.hintController.show();
+	}
+
+	hideHint() {
+		if (this.hintController) {
+			this.hintController.hide();
 		}
 	}
 

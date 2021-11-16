@@ -3,6 +3,8 @@ import ImageRenderer from "./ImageRenderer";
 import {BEE_CENTER} from "../controller/BeeController";
 import AnimationRenderer from "./AnimationRenderer";
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
+import SpriteController from "../controller/SpriteController";
+import SpriteRenderer from "./SpriteRenderer";
 
 const DEBUG_BEE = false;
 
@@ -36,8 +38,11 @@ export default class BeeRenderer extends SvgRenderer {
 		this.addChild(this.rightWingRenderer);
 
 		this.inventoryGroup = this.group.group();
-		this.inventoryRenderer = new SpriteCollectionRenderer(game, this.model.inventory, this.inventoryGroup);
-		this.addChild(this.inventoryRenderer);
+		this.inventoryChangeHandler = () => this.updateInventory();
+
+		this.spritesGroup = this.group.group();
+		this.spritesRenderer = new SpriteCollectionRenderer(game, this.model.sprites, this.spritesGroup);
+		this.addChild(this.spritesRenderer);
 
 		if (DEBUG_BEE) {
 			this.helper = this.group.group();
@@ -49,6 +54,12 @@ export default class BeeRenderer extends SvgRenderer {
 	activateInternal() {
 		this.updateFlip();
 		this.updateBeeState();
+		this.updateInventory();
+		this.model.inventory.addOnChangeListener(this.inventoryChangeHandler);
+	}
+
+	deactivateInternal() {
+		this.model.inventory.removeOnChangeListener(this.inventoryChangeHandler);
 	}
 
 	renderInternal() {
@@ -81,6 +92,15 @@ export default class BeeRenderer extends SvgRenderer {
 		}
 
 		if (DEBUG_BEE) this.helper.front();
+	}
+
+	updateInventory() {
+		if (this.inventoryRenderer) this.removeChild(this.inventoryRenderer);
+		if (this.model.inventory.isSet()) {
+			this.inventoryRenderer = new ImageRenderer(this.game, this.model.inventory.get().image, this.inventoryGroup);
+			this.addChild(this.inventoryRenderer);
+			this.inventoryRenderer.activate();
+		}
 	}
 
 	updateFlip() {
@@ -116,6 +136,7 @@ export default class BeeRenderer extends SvgRenderer {
 			this.rightWingRenderer.deactivate();
 			this.imageRenderer.deactivate();
 		}
+		this.spritesGroup.front();
 		this.inventoryGroup.front();
 	}
 

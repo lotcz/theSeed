@@ -17,7 +17,7 @@ export default class JellymakerStrategy extends MovementStrategy {
 		if (!this.hintController) {
 			const hintModel = new HintModel();
 			hintModel.position.set(this.model.position);
-			hintModel.imagePath = IMAGE_POTASSIUM;
+			hintModel.imagePaths = [IMAGE_POTASSIUM];
 			if (this.model.data.hintDirection !== undefined) {
 				hintModel.direction = this.model.data.hintDirection;
 			}

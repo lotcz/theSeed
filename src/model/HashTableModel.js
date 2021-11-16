@@ -50,6 +50,7 @@ export default class HashTableModel extends ModelBase {
 	reset() {
 		const keys = this.keys();
 		keys.forEach((key) => this.remove(key));
+		this.keyValues = [];
 	}
 
 	count() {

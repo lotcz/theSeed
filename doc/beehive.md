@@ -177,11 +177,11 @@ TODO:
 =====
 
 - bee thoughts (hints)
+- add diagonal directions
 - slow when in cloud or on water (by adding visible burden)
 - make edges of level work as an exit
 - show lives
 - dying animals
-- add diagonal directions
 - allow animals to carry things
 - build experimental levels
 - mobile widgets

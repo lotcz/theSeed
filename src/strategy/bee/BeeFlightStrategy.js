@@ -66,9 +66,9 @@ export default class BeeFlightStrategy extends ControllerBase {
 			return;
 		}
 
-		let direction = this.model.direction;
+		//this.parent.inspectForMinerals(this.grid.getNeighborDown(this.model.position));
 
-		this.parent.inspectForMinerals(this.model.position);
+		let direction = this.model.direction;
 
 		if (this.controls.anyMovement() && !this.dead) {
 			const carriedAmount = this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);

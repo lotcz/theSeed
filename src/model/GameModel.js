@@ -45,6 +45,9 @@ export default class GameModel extends ModelBase {
 
 		this.id = Date.now();
 
+		this.history = new HashTableModel();
+		this.addChild(this.history);
+
 		this.level = new DirtyValue();
 		this.addChild(this.level);
 		this.levelName = new DirtyValue();
@@ -72,6 +75,7 @@ export default class GameModel extends ModelBase {
 			id: this.id,
 			lastLevelName: this.lastLevelName,
 			levelName: this.levelName.get(),
+			history: this.history.getState()
 		}
 	}
 
@@ -79,6 +83,7 @@ export default class GameModel extends ModelBase {
 		if (state.id) this.id = state.id;
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
+		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
 	}
 
 	initResources() {
@@ -123,6 +128,22 @@ export default class GameModel extends ModelBase {
 		} else {
 			this.resources.add(uri, new ResourceModel({type: resType, uri: uri, data: data}));
 		}
+	}
+
+	historyExists(eventName) {
+		return this.history.exists(eventName);
+	}
+
+	setHistory(eventName, value = true) {
+		return this.history.set(eventName, new DirtyValue(value));
+	}
+
+	getHistory(eventName) {
+		return this.history.get(eventName);
+	}
+
+	removeHistory(eventName) {
+		return this.history.remove(eventName);
 	}
 
 }
