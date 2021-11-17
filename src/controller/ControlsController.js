@@ -80,6 +80,7 @@ export default class ControlsController extends ControllerBase {
 
 	onMouseEnter(e) {
 		this.model.isMouseOver.set(true);
+		this.updateMouseButtons(e);
 	}
 
 	onMouseLeave(e) {
