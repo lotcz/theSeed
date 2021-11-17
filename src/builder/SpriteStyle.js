@@ -30,6 +30,7 @@ export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
+export const IMAGE_BEE_CRAWL_1 = 'img/bee-walk-1.svg';
 export const IMAGE_BEE_WING = 'img/wing.svg';
 
 export const IMAGE_STARS_1 = 'img/stars-1.svg';

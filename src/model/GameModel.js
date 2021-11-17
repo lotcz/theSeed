@@ -8,7 +8,7 @@ import ResourceModel, {RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_SOUND} from "./Resourc
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {
 	IMAGE_BEE,
-	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING, IMAGE_HINT_BACKGROUND,
 	IMAGE_STARS_1,
@@ -20,6 +20,7 @@ import {
 import BeeImage from "../../res/img/bee.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
+import BeeCrawl1Image from "../../res/img/bee-walk-1.svg";
 import BeeWingImage from "../../res/img/wing.svg";
 import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
@@ -95,6 +96,7 @@ export default class GameModel extends ModelBase {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL_1, BeeCrawl1Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);

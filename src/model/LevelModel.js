@@ -15,7 +15,7 @@ import ParallaxLayerModel from "./ParallaxLayerModel";
 import HashTableModel from "./HashTableModel";
 import {
 	IMAGE_BEE,
-	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING,
 	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
@@ -145,7 +145,8 @@ export default class LevelModel extends ModelBase {
 					rotation: 0,
 					path: IMAGE_BEE_CRAWL
 				},
-				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
+				frameRate: 4,
+				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1]
 			},
 			starsAnimation: {
 				image: {
@@ -179,6 +180,7 @@ export default class LevelModel extends ModelBase {
 		this.addResource(IMAGE_BEE);
 		this.addResource(IMAGE_BEE_DEAD);
 		this.addResource(IMAGE_BEE_CRAWL);
+		this.addResource(IMAGE_BEE_CRAWL_1);
 		this.addResource(IMAGE_BEE_WING);
 		this.addResource(IMAGE_STARS_1);
 		this.addResource(IMAGE_STARS_2);

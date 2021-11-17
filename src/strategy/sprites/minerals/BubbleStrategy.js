@@ -25,7 +25,7 @@ export default class BubbleStrategy extends MovementStrategy {
 		if (this.level.isWater(this.model.position)) {
 			const up = this.grid.getNeighborUp(this.model.position);
 			this.setTargetPosition(up);
-			this.model.data.amount -= WATER_UNIT_SIZE;
+			this.model.data.amount -= 0.1;
 			if (this.model.data.amount <= 0) {
 				this.level.sprites.remove(this.model);
 			}
