@@ -120,8 +120,8 @@ export default class GroundRenderer extends SvgRenderer {
 			const startCorner = currentCorner;
 
 			if (DEBUG_GROUND_RENDERER) {
-				const corner = this.grid.getCorner(startTile.position, startCorner);
-				this.front.circle(10).fill('purple').center(corner.x, corner.y);
+				const corner = this.getCorner(startTile.position, startCorner);
+				this.front.circle(50).fill('rgba(80, 80, 80, 0.5)').center(corner.x, corner.y);
 			}
 
 			const points = [];
@@ -146,7 +146,7 @@ export default class GroundRenderer extends SvgRenderer {
 					nextPosition = this.getCornerNeighbor(currentTile, currentCorner);
 					visitors = this.chessboard.getVisitors(nextPosition, (v) => v._is_ground && v.type === startTile.type);
 					if (style.renderCorners)
-						points.push(this.grid.getCorner(currentTile.position, currentCorner));
+						points.push(this.getCorner(currentTile.position, currentCorner));
 				}
 				if (visitors.length > 0 && ((currentTile !== startTile) || (currentCorner !== startCorner))) {
 					currentTile = visitors[0];
@@ -162,24 +162,13 @@ export default class GroundRenderer extends SvgRenderer {
 				}
 			} while (currentTile !== null && ((currentTile !== startTile) || (currentCorner !== startCorner)));
 
-			// use all corners
-			/*
-			if (currentTile !== null && style.renderCorners) {
-				const lastCorner = (startCorner - 1) % 6;
-				while (lastCorner !== currentCorner && startCorner !== currentCorner && this.canUseCorner(currentTile, currentCorner))
-				{
-					currentCorner = (currentCorner + 1) % 6;
-					points.push(this.grid.getCorner(currentTile.position, currentCorner));
-				}
-			}
-*/
 			// last
-
 			if (style.renderCorners) {
-				points.push(points[0]);
+				if (!points[0].equalsToDiscrete(points[points.length-1])) {
+					points.push(points[0]);
+				}
 				points.push(points[1]);
 			} else {
-				//points.push(this.grid.getCoordinates(this.getCornerNeighbor(startTile, (startCorner + 4) % 6)));
 				points.push(points[0]);
 				points.push(points[1]);
 			}
@@ -187,25 +176,27 @@ export default class GroundRenderer extends SvgRenderer {
 			// render
 			if (points.length > 1) {
 
-				let middle = points[0].add(points[1].subtract(points[0]).multiply(0.5));
+				let middle = points[0].add(points[1]).multiply(0.5);
 
 				let path = '';
 				path = `M${middle.x} ${middle.y} `;
 
 				if (DEBUG_GROUND_RENDERER) {
-					this.front.circle(25).fill('green').center(points[0].x, points[0].y);
-					this.front.circle(22).fill('green').center(points[1].x, points[1].y);
-					this.front.circle(20).fill('yellow').center(middle.x, middle.y);
+					//this.front.circle(25).fill('rgba(100, 100, 255, 0.5)').center(points[0].x, points[0].y);
+					this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
 				}
 
 				for (let i = 1, max = points.length - 1; i < max; i++) {
-					middle = points[i].add(points[i + 1].subtract(points[i]).multiply(0.5));
+					middle = points[i].add(points[i + 1]).multiply(0.5);
 					path += `S ${points[i].x} ${points[i].y}, ${middle.x} ${middle.y}`;
 					if (DEBUG_GROUND_RENDERER) {
-						this.front.circle(15).fill('lightgreen').center(points[i].x, points[i].y);
-						this.front.circle(10).fill('blue').center(middle.x, middle.y);
+						this.front.circle(25).fill('rgba(100, 100, 255, 0.5)').center(points[i].x, points[i].y);
+						this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
 					}
 				}
+
+				//if ()
+				//path += ` Z`;
 
 				let group = (style.background === true) ? this.back : this.front;
 				const pathDraw = group.path(path).stroke(style.stroke).fill(style.fill);
@@ -218,6 +209,10 @@ export default class GroundRenderer extends SvgRenderer {
 
 		}
 
+	}
+
+	getCorner(position, corner) {
+		return this.grid.getCorner(position, corner);
 	}
 
 }

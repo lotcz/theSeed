@@ -19,3 +19,15 @@ export const BROWN_LIGHTEST = '#eac2a4';
 export const GREEN_DARK = '#0b490a';
 export const GREEN_LIGHT = '#326522';
 export const GREEN_LIGHTEST = '#82a572';
+
+export const YELLOW_DARKEST = '#6a3400';
+export const YELLOW_DARK = '#904d0c';
+export const YELLOW_MEDIUM = '#c8680c';
+export const YELLOW_LIGHT = '#dcb306';
+export const YELLOW_LIGHTEST = '#fdf273';
+
+export const ORANGE_DARKEST = '#943c00';
+export const ORANGE_DARK = 'darkOrange';
+export const ORANGE_MEDIUM = 'orange';
+export const ORANGE_LIGHT = '#dcb306';
+export const ORANGE_LIGHTEST = '#fdf273';

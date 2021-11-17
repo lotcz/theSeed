@@ -10,6 +10,7 @@ export default class ButterflyStrategy extends MovementStrategy {
 		super(game, model, controls, BUTTERFLY_TIMEOUT);
 
 		this.lastDirection = null;
+		this.model._is_penetrable = false;
 	}
 
 	updateStrategy() {

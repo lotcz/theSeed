@@ -22,7 +22,7 @@ import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
 import HintController from "./HintController";
 
-export const BEE_CENTER = new Vector2(750, 750);
+export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.1; // health per second
 const MAX_INVENTORY_AMOUNT = 3;
 const DROP_ITEM_TIMEOUT = 1000;

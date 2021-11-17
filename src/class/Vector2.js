@@ -27,6 +27,10 @@ export default class Vector2 extends ModelBase {
 		return (v) ? this.x === v.x && this.y === v.y : false;
 	}
 
+	equalsToDiscrete(v) {
+		return this.toDiscreteSpace().equalsTo(v.toDiscreteSpace());
+	}
+
 	set(x, y) {
 		if (y === undefined && typeof x === 'object') {
 			this.set(x.x, x.y);

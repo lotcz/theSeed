@@ -11,6 +11,9 @@ export default class JellymakerStrategy extends MovementStrategy {
 
 	constructor(game, model, controls) {
 		super(game, model, controls, HINT_TIMEOUT);
+
+		this.model._is_penetrable = false;
+		this.model._is_crawlable = true;
 	}
 
 	updateStrategy() {
