@@ -21,6 +21,7 @@ import {STRATEGY_STATIC} from "../builder/SpriteStyle";
 import HashTableModel from "../model/HashTableModel";
 import {DEBUG_MODE} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
+import ControlsController from "./ControlsController";
 
 const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
@@ -29,8 +30,8 @@ const SAVE_LEVEL_NAME_PREFIX = 'beehive-save-game';
 export default class GameController extends ControllerBase {
 	levels;
 
-	constructor(model, controls) {
-		super(model, model, controls);
+	constructor(model, dom) {
+		super(model, model);
 
 		this.onResizeEvent = () => this.onResize();
 
@@ -38,6 +39,9 @@ export default class GameController extends ControllerBase {
 		if (this.model.editor) {
 			this.model.editor.levelLoadRequest.addOnChangeListener(async (value) => await this.onEditorLoadLevelRequestAsync(value));
 		}
+
+		this.controlsController = new ControlsController(this.game, this.model.controls, dom);
+		this.addChild(this.controlsController);
 
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 
@@ -333,7 +337,7 @@ export default class GameController extends ControllerBase {
 
 	activateEditor() {
 		this.deactivateEditor();
-		this.editorController = new LevelEditorController(this.game, this.model.editor, this.controls);
+		this.editorController = new LevelEditorController(this.game, this.model.editor);
 		this.addChild(this.editorController);
 		this.editorController.activate();
 	}

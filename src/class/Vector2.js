@@ -129,12 +129,16 @@ export default class Vector2 extends ModelBase {
 		return down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
 	}
 
+	toDiscreteSpace() {
+		return new Vector2(Math.round(this.x), Math.round(this.y));
+	}
+
 	addOnChangeListener(eventHandler) {
 		this.addEventListener('change', eventHandler);
 	}
 
-	toDiscreteSpace() {
-		return new Vector2(Math.round(this.x), Math.round(this.y));
+	removeOnChangeListener(eventHandler) {
+		this.removeEventListener('change', eventHandler);
 	}
 
 }

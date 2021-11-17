@@ -176,7 +176,6 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- bee thoughts (hints)
 - add diagonal directions
 - slow when in cloud or on water (by adding visible burden)
 - make edges of level work as an exit

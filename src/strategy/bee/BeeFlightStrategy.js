@@ -73,15 +73,15 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (this.controls.anyMovement() && !this.dead) {
 			const carriedAmount = this.model.inventory.children.reduce((prev, current) => prev + current.data.amount, 0);
 			const speedup = SPEEDUP_SPEED * (1 - Pixies.between(0, 0.5, 0.5 * carriedAmount / MINERAL_MAX_AMOUNT));
-			if (this.controls.moveUp) {
+			if (this.controls.movingUp.get()) {
 				direction = direction.addY(-speedup * secsDelta);
-			} else if (this.controls.moveDown) {
+			} else if (this.controls.movingDown.get()) {
 				direction = direction.addY(speedup * secsDelta);
 			}
-			if (this.controls.moveLeft) {
+			if (this.controls.movingLeft.get()) {
 				direction = direction.addX(-speedup * secsDelta);
 				this.model.headingLeft.set(true);
-			} else if (this.controls.moveRight) {
+			} else if (this.controls.movingRight.get()) {
 				direction = direction.addX(speedup * secsDelta);
 				this.model.headingLeft.set(false);
 			}

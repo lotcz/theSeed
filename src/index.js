@@ -1,7 +1,7 @@
 import "./style.css";
 import {SVG} from "@svgdotjs/svg.js";
 import {} from "@svgdotjs/svg.filter.js";
-import Controls from "./class/Controls";
+import ControlsModel from "./model/ControlsModel";
 import GameController from "./controller/GameController";
 import GameModel from "./model/GameModel";
 import GameRenderer from "./renderer/GameRenderer";
@@ -11,9 +11,8 @@ const MAX_DELTA = 500;
 const game = new GameModel();
 
 const draw = SVG().addTo(window.document.body);
-const controls = new Controls(draw.node);
 
-const controller = new GameController(game, controls);
+const controller = new GameController(game, draw.node);
 controller.activate();
 
 const renderer = new GameRenderer(game, draw);

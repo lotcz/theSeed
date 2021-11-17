@@ -26,11 +26,13 @@ import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import {MUSIC_STYLES} from "../builder/MusicStyle";
+import ControlsModel from "./ControlsModel";
 
 export const DEBUG_MODE = true;
 
 export default class GameModel extends ModelBase {
 	id;
+	controls;
 	level;
 	levelName;
 	lastLevelName;
@@ -44,6 +46,9 @@ export default class GameModel extends ModelBase {
 		super();
 
 		this.id = Date.now();
+
+		this.controls = new ControlsModel();
+		this.addChild(this.controls);
 
 		this.history = new HashTableModel();
 		this.addChild(this.history);

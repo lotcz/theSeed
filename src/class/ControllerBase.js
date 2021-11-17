@@ -8,11 +8,11 @@ export default class ControllerBase extends ActivatedTree {
 	grid;
 	chessboard;
 
-	constructor(game, model, controls) {
+	constructor(game, model, controls = null) {
 		super();
 		this.game = game;
 		this.model = model;
-		this.controls = controls;
+		this.controls = controls || game.controls;
 
 		this.level = game.level.get();
 		if (this.level) {
