@@ -39,6 +39,10 @@ export default class LevelModel extends ModelBase {
 	viewBoxCoordinates;
 	clipAmount; // 0 - no clipping, 1 - whole image clipped
 	isPlayable;
+	exitLeft;
+	exitRight;
+	exitTop;
+	exitBottom;
 
 	constructor(state) {
 		super();
@@ -72,6 +76,11 @@ export default class LevelModel extends ModelBase {
 		this.clipCenter = new Vector2();
 		this.addChild(this.clipCenter);
 
+		this.exitLeft = '';
+		this.exitRight = '';
+		this.exitTop = '';
+		this.exitBottom = '';
+
 		this.parallaxType = new DirtyValue();
 		this.addChild(this.parallaxType);
 		this.parallaxType.addOnChangeListener((value) => this.setParallaxFromStyle(value));
@@ -104,7 +113,11 @@ export default class LevelModel extends ModelBase {
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
-			bee: this.bee ? this.bee.getState() : null
+			bee: this.bee ? this.bee.getState() : null,
+			exitLeft: this.exitLeft,
+			exitRight: this.exitRight,
+			exitTop: this.exitTop,
+			exitBottom: this.exitBottom,
 		}
 	}
 
@@ -122,6 +135,12 @@ export default class LevelModel extends ModelBase {
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
 		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
+
+		if (state.exitLeft) this.exitLeft = state.exitLeft;
+		if (state.exitRight) this.exitRight = state.exitRight;
+		if (state.exitTop) this.exitTop = state.exitTop;
+		if (state.exitBottom) this.exitLeft = state.exitBottom;
+
 	}
 
 	createBee(position) {
@@ -233,6 +252,25 @@ export default class LevelModel extends ModelBase {
 
 	isValidPosition(position) {
 		return this.grid.isValidPosition(position);
+	}
+
+	isPossibleExit(position) {
+		if (this.grid.isValidPosition(position)) {
+			return false;
+		}
+		if (position.x < 0 && this.exitLeft.length > 0) {
+			return this.exitLeft;
+		}
+		if (position.x >= this.grid.size.x && this.exitRight.length > 0) {
+			return this.exitRight;
+		}
+		if (position.y < 0 && this.exitTop.length > 0) {
+			return this.exitTop;
+		}
+		if (position.y >= this.grid.size.y && this.exitBottom.length > 0) {
+			return this.exitBottom;
+		}
+		return false;
 	}
 
 	isGround(position) {

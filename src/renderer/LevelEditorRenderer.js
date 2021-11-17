@@ -92,6 +92,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		parallaxFolder.add(level.parallax.cameraOffset, 'x').name('offset.x').listen();
 		parallaxFolder.add(level.parallax.cameraOffset, 'y').name('offset.y').listen();
 		parallaxFolder.open();
+		const exitFolder = levelFolder.addFolder('Exits');
+		exitFolder.add(level, 'exitLeft');
+		exitFolder.add(level, 'exitRight');
+		exitFolder.add(level, 'exitTop');
+		exitFolder.add(level, 'exitBottom');
+		exitFolder.open();
 
 		const highlightFolder = this.gui.addFolder('Highlighted Position');
 		highlightFolder.add(this.model.highlightedTilePosition, 'x').listen();

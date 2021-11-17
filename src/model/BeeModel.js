@@ -99,7 +99,7 @@ export default class BeeModel extends ModelBase {
 		if (state.crawling) this.crawling.restoreState(state.crawling);
 		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
 		if (state.inventory) this.inventory.set(new SpriteModel(state.inventory));
-		if (state.sprites) this.inventory.restoreState(state.sprites, (s) => new SpriteModel(s));
+		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		if (state.health) this.health.restoreState(state.health);
 		if (state.lives) this.lives.restoreState(state.lives);
 		if (state.image) this.image.restoreState(state.image);

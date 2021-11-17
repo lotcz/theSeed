@@ -132,6 +132,12 @@ export default class BeeFlightStrategy extends ControllerBase {
 				}
 			}
 
+			const possibleExit = this.level.isPossibleExit(crashPosition);
+			if (possibleExit) {
+				this.model.triggerOnTravelEvent(possibleExit);
+				return;
+			}
+
 			BeeFlightStrategy.hitSound.replay();
 			this.parent.emptyInventory();
 
