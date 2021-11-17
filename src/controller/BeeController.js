@@ -147,9 +147,11 @@ export default class BeeController extends ControllerBase {
 	}
 
 	leave() {
-		this.leaving = true;
-		if (!this.model.isFlying()) this.fly();
-		this.strategy.leave();
+		if (!this.leaving) {
+			this.leaving = true;
+			if (!this.model.isFlying()) this.fly();
+			this.strategy.leave();
+		}
 	}
 
 	updateInventory() {
