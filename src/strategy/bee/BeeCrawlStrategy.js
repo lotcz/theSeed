@@ -56,15 +56,14 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 	updateInternal(delta) {
 		if (this.model.crawling.get() === null) {
-			this.parent.fly();
+			this.fly();
 			return;
 		} else {
 			const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
 			if (!this.level.isCrawlable(crawlingPosition)) {
-				this.parent.fly();
+				this.fly();
 				return;
 			}
-			this.parent.inspectForMinerals(crawlingPosition);
 		}
 
 		if ((this.targetCoordinates !== null) || (this.targetRotation !== null)) {
@@ -144,7 +143,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			if (options === false || options === undefined) {
 				return;
 			} else if (options === true) {
-				this.parent.fly();
+				this.fly();
 				return;
 			} else {
 				let fallBack = true;
@@ -174,7 +173,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 							this.targetRotation = new RotationValue(this.getRotation(options.nextPosition));
 						}
 					} else if (options.fallback === FALLBACK_FLY) {
-						this.parent.fly();
+						this.fly();
 						return;
 					}
 				}
@@ -193,6 +192,14 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 	getRotation(direction) {
 		return (60 * (direction - 3));
+	}
+
+	fly() {
+		if (this.model.crawling.isSet()) {
+			const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
+			this.parent.inspectForMinerals(crawlingPosition);
+		}
+		this.parent.fly();
 	}
 
 }

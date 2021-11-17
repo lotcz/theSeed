@@ -114,9 +114,8 @@ export default class BeeController extends ControllerBase {
 			this.inspectForMinerals(this.model.position);
 		}
 
-		if (this.controls.fire || this.controls.interact) {
+		if (this.controls.interacting.get()) {
 			this.dropItem();
-			this.controls.fire = false;
 		}
 
 		if (this.showingControlsHint && this.controls.anyMovement()) {
