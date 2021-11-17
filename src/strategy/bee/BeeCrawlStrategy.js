@@ -52,6 +52,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.targetCoordinates = this.grid.getCoordinates(this.model.position);
 		this.updateBee();
+		console.log('crawling');
 	}
 
 	updateInternal(delta) {

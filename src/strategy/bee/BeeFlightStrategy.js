@@ -46,7 +46,13 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.model.starsAnimation.image.rotation.set(0);
 		this.model.direction.set(0,0);
 		this.speed = 0;
+		if (this.controls.movingLeft.get()) {
+			this.model.headingLeft.set(true);
+		} else if (this.controls.movingRight.get()) {
+			this.model.headingLeft.set(false);
+		}
 		this.updateBee();
+		console.log('flying');
 	}
 
 	updateInternal(delta) {

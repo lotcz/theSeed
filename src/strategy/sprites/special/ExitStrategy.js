@@ -19,11 +19,16 @@ export default class ExitStrategy extends UpdatedStrategy {
 	}
 
 	updateStrategy() {
+		if (!this.level.bee) {
+			return;
+		}
 		if (!this.triggered) {
-			if (this.model.position.distanceTo(this.level.bee.position) < 3) {
-				this.level.bee.position.set(this.model.position);
-				this.level.bee.triggerOnTravelEvent(this.model.data.level);
-				this.triggered = true;
+			if (this.level.bee.health.get() > 0) {
+				if (this.model.position.distanceTo(this.level.bee.position) < 3) {
+					this.level.bee.position.set(this.model.position);
+					this.level.bee.triggerOnTravelEvent(this.model.data.level);
+					this.triggered = true;
+				}
 			}
 		}
 	}

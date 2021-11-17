@@ -10,6 +10,7 @@ import NitrogenImage from "../../res/img/nitrogen.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
 import HintWasdImage from "../../res/img/hint-wasd.svg";
 import HintArrowsImage from "../../res/img/hint-arrows.svg";
+import BeeLifeImage from "../../res/img/bee-walk.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
@@ -27,6 +28,7 @@ import WormButtImage from "../../res/img/worm-butt.svg";
 export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
 export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
 
+export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
@@ -57,6 +59,7 @@ export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
+export const SPRITE_TYPE_LIFE = 'life';
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
 export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
@@ -93,6 +96,14 @@ export const STRATEGY_DOOR_SLOT = 'door-slot';
 export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT];
 
 export const SPRITE_STYLES = [];
+
+SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_BEE_LIFE,
+		resource: BeeLifeImage
+	}
+};
 
 SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
 	strategy: STRATEGY_EXIT,

@@ -119,14 +119,18 @@ export default class LevelController extends ControllerBase {
 					this.travelling = false;
 				} else {
 					if (this.level.name === 'beehive') {
+						if (this.game.lives.get() > 0) {
+							this.game.lives.set(this.game.lives.get() - 1);
+						}
 						this.model.spawn(this.model.bee, 'start');
 						this.beeChanged();
 						this.fadeIn();
 					} else {
-						if (this.model.bee.lives.get() <= 0) {
+						if (this.game.lives.get() <= 0) {
+							this.game.lives.set(0);
 							this.game.levelName.set('beehive');
 						} else {
-							this.model.bee.lives.set(this.model.bee.lives.get() - 1);
+							this.game.lives.set(this.game.lives.get() - 1);
 							this.model.spawn(this.model.bee, this.game.lastLevelName);
 							this.beeChanged();
 							this.fadeIn();

@@ -2,7 +2,7 @@ import ControllerBase from "../class/ControllerBase";
 import {
 	IMAGE_HINT_ARROWS,
 	IMAGE_HINT_WASD,
-	IMAGE_POTASSIUM,
+	IMAGE_POTASSIUM, SPRITE_TYPE_LIFE,
 	STRATEGY_MINERAL,
 	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
@@ -58,8 +58,8 @@ export default class BeeController extends ControllerBase {
 			this.fly();
 		}
 
-		this.model.addOnTravelListener(() => this.leave());
-		this.model.addOnHurtListener((amount) => this.onHurt(amount));
+		this.onTravelHandler = () => this.leave();
+		this.onHurtHandler = (amount) => this.onHurt(amount);
 	}
 
 	activateInternal() {
@@ -70,8 +70,16 @@ export default class BeeController extends ControllerBase {
 		this.updateMovement();
 
 		if (!this.game.historyExists('hint-controls-displayed')) {
-			setTimeout(() => this.showControlsHint(), 3000);
+			setTimeout(() => this.showControlsHint(), 2000);
 		}
+
+		this.model.addOnTravelListener(this.onTravelHandler);
+		this.model.addOnHurtListener(this.onHurtHandler);
+	}
+
+	deactivateInternal() {
+		this.model.removeOnTravelListener(this.onTravelHandler);
+		this.model.removeOnHurtListener(this.onHurtHandler);
 	}
 
 	updateInternal(delta) {
@@ -149,7 +157,10 @@ export default class BeeController extends ControllerBase {
 	leave() {
 		if (!this.leaving) {
 			this.leaving = true;
-			if (!this.model.isFlying()) this.fly();
+			if (!this.model.isFlying()) {
+				this.fly();
+			}
+			console.log(this.strategy);
 			this.strategy.leave();
 		}
 	}
@@ -177,6 +188,12 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 		const visitors = this.chessboard.getVisitors(position);
+		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_LIFE);
+		lives.forEach((l) => {
+			this.game.lives.set(this.game.lives.get() + 1);
+			this.level.sprites.remove(l);
+		});
+
 		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
 		minerals.forEach((m) =>	this.takeItem(m));
 	}

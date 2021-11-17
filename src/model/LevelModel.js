@@ -145,6 +145,7 @@ export default class LevelModel extends ModelBase {
 
 	createBee(position) {
 		return new BeeModel({
+			lives: 0,
 			direction: [0,0],
 			speed: 0,
 			position: position.toArray(),

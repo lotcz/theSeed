@@ -45,11 +45,13 @@ export default class Pixies {
 		}
 	}
 
+	static removeClass(element, css) {
+		element.classList.remove(css);
+	}
+
 	static createElement(parent, tag, css = null) {
 		const el = document.createElement(tag);
-		if (css !== null) {
-			this.addClass(el, css);
-		}
+		this.addClass(el, css);
 		if (parent) {
 			parent.appendChild(el);
 		}

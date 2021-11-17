@@ -37,6 +37,7 @@ export default class GameModel extends ModelBase {
 	level;
 	levelName;
 	lastLevelName;
+	lives;
 	menu;
 	editor;
 	isInEditMode;
@@ -60,6 +61,9 @@ export default class GameModel extends ModelBase {
 		this.addChild(this.levelName);
 		this.lastLevelName = null;
 
+		this.lives = new DirtyValue(0);
+		this.addChild(this.lives);
+
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
 
@@ -81,7 +85,8 @@ export default class GameModel extends ModelBase {
 			id: this.id,
 			lastLevelName: this.lastLevelName,
 			levelName: this.levelName.get(),
-			history: this.history.getState()
+			history: this.history.getState(),
+			lives: this.lives.getState(),
 		}
 	}
 
@@ -90,6 +95,7 @@ export default class GameModel extends ModelBase {
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
 		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
+		if (state.lives) this.lives.restoreState(state.lives);
 	}
 
 	initResources() {
