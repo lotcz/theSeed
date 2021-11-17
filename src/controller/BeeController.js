@@ -160,7 +160,6 @@ export default class BeeController extends ControllerBase {
 			if (!this.model.isFlying()) {
 				this.fly();
 			}
-			console.log(this.strategy);
 			this.strategy.leave();
 		}
 	}
