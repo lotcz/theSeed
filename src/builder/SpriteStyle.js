@@ -4,7 +4,6 @@ import JellymakerImage from "../../res/img/jellymaker.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
-import LadybugImage from "../../res/img/ladybug.svg";
 import BugImage from "../../res/img/bug.svg";
 import ExitImage from "../../res/img/exit.svg";
 import NitrogenImage from "../../res/img/nitrogen.svg";

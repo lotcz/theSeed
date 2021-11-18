@@ -4,7 +4,6 @@ import GrassImage from "../../res/img/grass.svg";
 import TreesImage from "../../res/img/trees.svg";
 import EggHillsImage from "../../res/img/egghills.svg";
 import BulbsImage from "../../res/img/bulbs.svg";
-import PlantImage from '../../res/img/plant.svg';
 import RockImage from '../../res/img/rock.svg';
 import {BLUE_DARK, BLUE_LIGHT, BROWN_LIGHT, BROWN_MEDIUM} from "./Palette";
 
