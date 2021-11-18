@@ -54,6 +54,10 @@ export default class BugStrategy extends MovementStrategy {
 				const food = this.chessboard.getVisitors(neighbors[i], (v) => v._is_sprite === true && v.type === SPRITE_TYPE_POTASSIUM);
 				if (food.length > 0) {
 					const meal = food[0];
+
+					const angle = this.model.image.coordinates.getAngleToY(meal.image.coordinates);
+					this.setTargetRotation(angle, 500);
+
 					const amount = 1; //Pixies.between(1, BUG_MAX_AMOUNT - this.model.data.amount, meal.data.amount);
 					this.model.data.amount += amount;
 					this.updateScale();
@@ -67,6 +71,7 @@ export default class BugStrategy extends MovementStrategy {
 							BugStrategy.biteSound.play();
 						}
 					}
+
 					eaten = true;
 				}
 				i++;
@@ -84,7 +89,10 @@ export default class BugStrategy extends MovementStrategy {
 			const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
 			if (beePresent) {
 				BugStrategy.biteSound.replay();
-				this.level.bee.hurt(0.5);
+				this.level.bee.hurt(this.model.data.amount * 0.1);
+				const angle = this.model.image.coordinates.getAngleToY(this.level.bee.coordinates);
+				this.setTargetRotation(angle, 500);
+				return;
 			}
 		}
 

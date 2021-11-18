@@ -130,7 +130,8 @@ export default class Vector2 extends ModelBase {
 		const sinX = diff.x / diff.size();
 		const x = Math.asin(sinX);
 		const angle = -x * 180 / Math.PI;
-		return down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+		const result = down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+		return result || 0;
 	}
 
 	toDiscreteSpace() {

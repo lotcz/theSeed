@@ -15,6 +15,9 @@ How to open blocked access?
 - bring certain item for guarding NPC
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
+- save bugs from pit by throwing crawlable stuff inside
+- block road with uncrawlable stuff
+- 
 
 Puzzles
 
@@ -179,7 +182,7 @@ TODO:
 - dying animals
 - allow animals to carry things
 
-- build experimental levels
+- build demo levels
 - mobile widgets
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
