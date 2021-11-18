@@ -12,6 +12,7 @@ import PhosphorusImage from "../../res/img/phosphorus.svg";
 import HintWasdImage from "../../res/img/hint-wasd.svg";
 import HintArrowsImage from "../../res/img/hint-arrows.svg";
 import BeeLifeImage from "../../res/img/bee-walk.svg";
+import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BugEggImage from "../../res/img/bug-egg.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
@@ -64,6 +65,7 @@ export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export const SPRITE_TYPE_LIFE = 'life';
+export const SPRITE_TYPE_DEAD_BEE = 'dead-bee';
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
 export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
@@ -108,6 +110,15 @@ SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
 		uri: IMAGE_BEE_LIFE,
 		resource: BeeLifeImage
 	}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_DEAD_BEE] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_BEE_DEAD,
+		resource: BeeDeadImage
+	},
+	data: {amount: MINERAL_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_EXIT] = {

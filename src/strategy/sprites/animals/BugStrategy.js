@@ -89,7 +89,7 @@ export default class BugStrategy extends MovementStrategy {
 		}
 
 		const freeNeighbors = neighbors.filter((n) => this.level.isPenetrable(n));
-		const surfaceNeighbors = freeNeighbors.filter((n) => this.level.isGround(this.grid.getNeighborDown(n)));
+		const surfaceNeighbors = freeNeighbors.filter((n) => this.level.isCrawlable(this.grid.getNeighborDown(n)));
 
 		if (surfaceNeighbors.length > 0) {
 			this.setTargetPosition(Pixies.randomElement(surfaceNeighbors));
