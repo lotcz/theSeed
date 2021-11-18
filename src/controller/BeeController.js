@@ -264,8 +264,8 @@ export default class BeeController extends ControllerBase {
 			hintModel.imagePaths = images;
 			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
 			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
-			//this.addChild(this.hintController);
-			//this.hintController.deactivate();
+			this.addChild(this.hintController);
+			this.hintController.activate();
 		}
 		this.hintController.show();
 	}

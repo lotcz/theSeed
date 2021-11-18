@@ -26,7 +26,7 @@ export default class JellymakerStrategy extends StaticStrategy {
 			}
 			this.hintController = new HintController(this.game, hintModel, this.controls);
 			this.addChild(this.hintController);
-			this.hintController.deactivate();
+			this.hintController.activate();
 		}
 
 		const beeDistance = this.model.position.distanceTo(this.level.bee.position);
@@ -38,7 +38,7 @@ export default class JellymakerStrategy extends StaticStrategy {
 			}
 		} else {
 			if (beeDistance < HINT_DISTANCE) {
-				this.hintController.activate();
+				this.hintController.show();
 			}
 		}
 	}

@@ -26,11 +26,32 @@ export default class HintController extends ControllerBase {
 		this.hint = null;
 		this.sprites = sprites || this.level.sprites;
 		this.ahaTimer = null;
-		this.timerHandler = () => HintController.ahaSound.play();
+		this.playSoundHandler = () => HintController.ahaSound.play();
+		this.hiddenHandler = () => this.destroy();
 	}
 
-	activateInternal() {
-		this.deactivateInternal();
+	show() {
+		if (!this.isInitialized()) {
+			this.initialize();
+		} else {
+			this.background.forEach((b) => b.data.isHiding = false);
+			this.hint.data.isHiding = false;
+		}
+	}
+
+	hide() {
+		if (this.isInitialized()) {
+			this.background.forEach((b) => b.data.isHiding = true);
+			this.hint.data.isHiding = true;
+		}
+	}
+
+	isInitialized() {
+		return this.hint !== null;
+	}
+
+	initialize() {
+		this.destroy();
 		let position = this.model.position.clone();
 		for (let i = 0; i < BUBBLES_COUNT; i++) {
 			position = this.grid.getNeighbor(position, this.model.direction);
@@ -55,36 +76,22 @@ export default class HintController extends ControllerBase {
 			animationController.activate();
 		}
 
-		this.hint.addEventListener('hidden', () => this.deactivate());
-		this.ahaTimer = setTimeout(this.timerHandler, 1000);
+		this.hint.addEventListener('hidden', this.hiddenHandler);
+		this.ahaTimer = setTimeout(this.playSoundHandler, 1000);
 	}
 
-	deactivateInternal() {
+	destroy() {
+		this.resetChildren();
 		this.background.forEach((b) => this.sprites.remove(b));
 		this.background = [];
 		if (this.hint) {
 			this.sprites.remove(this.hint);
+			this.hint.removeEventListener('hidden', this.hiddenHandler);
 			this.hint = null;
 		}
 		if (this.ahaTimer) {
 			clearTimeout(this.ahaTimer);
 			this.ahaTimer = null;
-		}
-	}
-
-	show() {
-		if (!this.isActivated()) {
-			this.activate();
-		} else {
-			this.background.forEach((b) => b.data.isHiding = false);
-			this.hint.data.isHiding = false;
-		}
-	}
-
-	hide() {
-		if (this.isActivated()) {
-			this.background.forEach((b) => b.data.isHiding = true);
-			this.hint.data.isHiding = true;
 		}
 	}
 
