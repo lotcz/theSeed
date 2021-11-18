@@ -6,6 +6,7 @@ import Vector2 from "../class/Vector2";
 export default class SpriteModel extends ModelBase {
 	position;
 	image;
+	attachedSprite;
 	strategy;
 	data;
 	type;
@@ -21,6 +22,11 @@ export default class SpriteModel extends ModelBase {
 		this._is_sprite = true;
 		this._is_penetrable = true;
 		this._is_crawlable = false;
+
+		this.image = null;
+
+		this.attachedSprite = new DirtyValue(null);
+		this.addChild(this.attachedSprite);
 
 		this.position = new Vector2();
 		this.addChild(this.position);
@@ -40,6 +46,7 @@ export default class SpriteModel extends ModelBase {
 		return {
 			position: this.position.toArray(),
 			image: (this.image) ? this.image.getState() : null,
+			attachedSprite: (this.attachedSprite) ? this.attachedSprite.getState() : null,
 			strategy: this.strategy.get(),
 			data: this.data,
 			type: this.type
@@ -52,6 +59,9 @@ export default class SpriteModel extends ModelBase {
 			if (this.image) this.removeChild(this.image);
 			this.image = new ImageModel(state.image);
 			this.addChild(this.image);
+		}
+		if (state.attachedSprite) {
+			this.attachedSprite.set(new SpriteModel(state.attachedSprite));
 		}
 		if (state.strategy) this.strategy.restoreState(state.strategy);
 		if (state.data) this.data = state.data;

@@ -23,6 +23,15 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	updateStrategy() {
+		const down = this.grid.getNeighborDown(this.model.position);
+		if (this.level.isPenetrable(down)) {
+			this.defaultTimeout = this.defaultFallTimeout;
+			this.turnWhenMoving = false;
+			this.setTargetRotation(180, 500);
+			this.setTargetPosition(down);
+			return;
+		}
+
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 		neighbors.push(this.model.position);
 
@@ -57,9 +66,8 @@ export default class BugStrategy extends ObjectStrategy {
 
 			if (eaten) return;
 		} else {
-			this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_BUG_DEAD);
-			this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
-			this.level.sprites.remove(this.model);
+			this.spawnEgg();
+			//this.die();
 			return;
 		}
 
@@ -74,13 +82,20 @@ export default class BugStrategy extends ObjectStrategy {
 			}
 		}
 
-		const down = this.grid.getNeighborDown(this.model.position);
-		if (this.level.isPenetrable(down)) {
-			this.defaultTimeout = this.defaultFallTimeout;
-			this.turnWhenMoving = false;
-			this.setTargetRotation(180, 500);
-			this.setTargetPosition(down);
+		/*
+		if (this.dropEgg()) {
 			return;
+		}
+*/
+		if (!this.hasEgg()) {
+			const eggs = this.chessboard.getVisitorsMultiple(neighbors, (v) => v._is_sprite && v.type === SPRITE_TYPE_BUG_EGG);
+			if (eggs.length > 0) {
+				const egg = eggs[0];
+				this.level.sprites.remove(egg);
+				egg.setDeleted(false);
+				this.model.attachedSprite.set(egg);
+				return;
+			}
 		}
 
 		const validNeighbors = [this.grid.getNeighborUpperLeft(this.model.position), this.grid.getNeighborUpperRight(this.model.position), this.grid.getNeighborLowerLeft(this.model.position), this.grid.getNeighborLowerRight(this.model.position)];
@@ -92,6 +107,31 @@ export default class BugStrategy extends ObjectStrategy {
 			this.turnWhenMoving = true;
 			this.setTargetPosition(Pixies.randomElement(surfaceNeighbors));
 		}
+	}
+
+	die() {
+		this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_BUG_DEAD);
+		this.level.sprites.remove(this.model);
+	}
+
+	hasEgg() {
+		return this.model.attachedSprite.isSet();
+	}
+
+	spawnEgg() {
+		this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
+		this.model.data.amount -= 1;
+	}
+
+	dropEgg() {
+		if (this.hasEgg()) {
+			const egg = this.model.attachedSprite.get();
+			egg.position.set(this.grid.getNeighborUp(this.model.position));
+			this.model.attachedSprite.set(null);
+			this.level.sprites.add(egg);
+			return egg;
+		}
+		return false;
 	}
 
 }

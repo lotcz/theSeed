@@ -26,6 +26,10 @@ export default class Chessboard {
 		}
 	}
 
+	getVisitorsMultiple(positions, filter) {
+		return positions.reduce((visitors, position) => visitors.concat(this.getVisitors(position, filter)), []);
+	}
+
 	addVisitor(position, visitor) {
 		position = position.toDiscreteSpace();
 		let tile = this.getTile(position);

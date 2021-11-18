@@ -10,18 +10,20 @@ Basics
 - when Bee dies and has no followers, she respawns in a hive
 - motivation to travel to advanced levels is also quantity of resources
 
+
+Puzzles
+
+- bees presence can trigger opening/closing of gate
+- save bugs from pit by throwing crawlable stuff inside
+- block road with uncrawlable stuff
+
 How to open blocked access?
 
 - bring certain item for guarding NPC
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
-- save bugs from pit by throwing crawlable stuff inside
-- block road with uncrawlable stuff
--
+- feed bugs until they pop/poison bugs
 
-Puzzles
-
-- bees presence can trigger opening/closing of gate
 
 Items
 -----
@@ -178,9 +180,6 @@ gather nectar from inside a giant flower
 
 TODO:
 =====
-
-- dying animals
-- allow animals to carry things
 
 - build demo levels
 - mobile widgets

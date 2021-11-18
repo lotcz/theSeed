@@ -30,6 +30,9 @@ export default class SpriteStrategy extends ControllerBase {
 
 	setPosition(position) {
 		this.model.position.set(position);
+		if (this.model.attachedSprite.isSet()) {
+			this.model.attachedSprite.get().position.set(position);
+		}
 		this.visit(position);
 	}
 

@@ -1,16 +1,19 @@
-import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
+import AnimatedStrategy from "../AnimatedStrategy";
 
 const BUTTERFLY_TIMEOUT = 300;
 
-export default class ButterflyStrategy extends ObjectStrategy {
+export default class ButterflyStrategy extends AnimatedStrategy {
 	lastDirection;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, BUTTERFLY_TIMEOUT);
 
+		this.turnWhenMoving = true;
+
 		this.lastDirection = null;
 		this.model._is_penetrable = false;
+		this.turningDuration = 200;
 	}
 
 	updateStrategy() {

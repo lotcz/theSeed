@@ -3,6 +3,8 @@ import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
 import AnimatedRotation from "../../class/AnimatedRotation";
 
+const DEFAULT_TURNING_DURATION = 500;
+
 export default class AnimatedStrategy extends UpdatedStrategy {
 	animatedCoordinates;
 	animatedRotation;
@@ -20,6 +22,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.offset = null;
 		this.turnWhenMoving = false;
 		this.oriented = false;
+		this.turningDuration = DEFAULT_TURNING_DURATION;
 	}
 
 	activateInternal() {
@@ -38,7 +41,11 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	setTargetRotation(rotation, timeout = null) {
 		if (!this.model.image.rotation.equalsTo(rotation)) {
 			if (timeout === null) timeout = this.defaultTimeout;
-			this.animatedRotation = new AnimatedRotation(this.model.image.rotation.get(), rotation, timeout);
+			if (this.oriented) {
+				this.animatedRotation = new AnimatedValue(this.model.image.rotation.get(), rotation, timeout);
+			} else {
+				this.animatedRotation = new AnimatedRotation(this.model.image.rotation.get(), rotation, timeout);
+			}
 		}
 	}
 
@@ -57,7 +64,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	setTargetCoordinates(coordinates) {
 		if (!this.model.image.coordinates.equalsTo(coordinates)) {
 			this.animatedCoordinates = new AnimatedVector2(this.model.image.coordinates, coordinates, this.defaultTimeout);
-			if (this.turnWhenMoving) this.setTargetRotation(this.model.image.coordinates.getAngleToY(coordinates), 500);
+			if (this.turnWhenMoving) this.setTargetRotation(this.model.image.coordinates.getAngleToY(coordinates), this.turningDuration);
 		}
 	}
 
@@ -67,24 +74,40 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 
 	updateInternal(delta) {
 		if (this.animatedRotation) {
-			this.model.image.rotation.set(this.animatedRotation.get(delta));
+			const rotation = this.animatedRotation.get(delta);
+			this.model.image.rotation.set(rotation);
+			if (this.model.attachedSprite.isSet()) {
+				this.model.attachedSprite.get().image.rotation.set(rotation);
+			}
 			if (this.animatedRotation.isFinished()) {
 				this.animatedRotation = null;
 			}
 			if (this.oriented) {
-				this.model.image.flipped.set(this.model.image.rotation.get() < 0);
+				const flipped = this.model.image.rotation.get() < 0;
+				this.model.image.flipped.set(flipped);
+				if (this.model.attachedSprite.isSet()) {
+					this.model.attachedSprite.get().image.flipped.set(flipped);
+				}
 			}
 		}
 
 		if (this.animatedScale) {
-			this.model.image.scale.set(this.animatedScale.get(delta));
+			const scale = this.animatedScale.get(delta);
+			this.model.image.scale.set(scale);
+			if (this.model.attachedSprite.isSet()) {
+				this.model.attachedSprite.get().image.scale.set(scale);
+			}
 			if (this.animatedScale.isFinished()) {
 				this.animatedScale = null;
 			}
 		}
 
 		if (this.animatedCoordinates) {
-			this.model.image.coordinates.set(this.animatedCoordinates.get(delta));
+			const coords = this.animatedCoordinates.get(delta);
+			this.model.image.coordinates.set(coords);
+			if (this.model.attachedSprite.isSet()) {
+				this.model.attachedSprite.get().image.coordinates.set(coords);
+			}
 			if (this.animatedCoordinates.isFinished()) {
 				this.animatedCoordinates = null;
 			}

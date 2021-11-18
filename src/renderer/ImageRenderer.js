@@ -16,7 +16,6 @@ export default class ImageRenderer extends SvgRenderer {
 	}
 
 	activateInternal() {
-		if (this.isActivated())	this.deactivateInternal();
 		this.group = this.draw.group();
 		this.createImage();
 	}
@@ -26,8 +25,6 @@ export default class ImageRenderer extends SvgRenderer {
 			this.group.remove();
 			this.group = null;
 		}
-		this.flipped = false;
-		this.lastRotation = 0;
 	}
 
 	createImage() {
@@ -55,7 +52,6 @@ export default class ImageRenderer extends SvgRenderer {
 		this.lastScale = this.model.scale.get();
 		this.model.scale.clean();
 		this.image.scale(scale);
-		this.model.coordinates.makeDirty();
 		this.updateCoordinates();
 	}
 
