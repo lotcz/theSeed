@@ -1,21 +1,14 @@
-import UpdatedStrategy from "../UpdatedStrategy";
+import AnimatedStrategy from "../AnimatedStrategy";
 
 const RESPAWN_TIMEOUT = 1000;
 
-export default class ExitStrategy extends UpdatedStrategy {
+export default class ExitStrategy extends AnimatedStrategy {
 	triggered;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, RESPAWN_TIMEOUT);
 
 		this.triggered = false;
-	}
-
-	activateInternal() {
-		super.activateInternal();
-		if (this.model.image) {
-			this.model.image.coordinates.set(this.grid.getCoordinates(this.model.position));
-		}
 	}
 
 	updateStrategy() {

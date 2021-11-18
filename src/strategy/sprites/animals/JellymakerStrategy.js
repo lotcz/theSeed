@@ -1,12 +1,12 @@
-import MovementStrategy from "../MovementStrategy";
 import HintController from "../../../controller/HintController";
 import HintModel from "../../../model/HintModel";
 import {IMAGE_POTASSIUM} from "../../../builder/SpriteStyle";
+import StaticStrategy from "../StaticStrategy";
 
 const HINT_TIMEOUT = 1000;
 const HINT_DISTANCE = 4;
 
-export default class JellymakerStrategy extends MovementStrategy {
+export default class JellymakerStrategy extends StaticStrategy {
 	hintController;
 
 	constructor(game, model, controls) {

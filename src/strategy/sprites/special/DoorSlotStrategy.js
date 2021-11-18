@@ -1,4 +1,3 @@
-import MovementStrategy from "../MovementStrategy";
 import UpdatedStrategy from "../UpdatedStrategy";
 
 const DOOR_TIMEOUT = 2000;

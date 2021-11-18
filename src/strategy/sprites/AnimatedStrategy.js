@@ -1,17 +1,15 @@
-import Pixies from "../../class/Pixies";
-import RotationValue from "../../class/RotationValue";
 import UpdatedStrategy from "./UpdatedStrategy";
 import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
-import Vector2 from "../../class/Vector2";
 import AnimatedRotation from "../../class/AnimatedRotation";
 
-export default class MovementStrategy extends UpdatedStrategy {
+export default class AnimatedStrategy extends UpdatedStrategy {
 	animatedCoordinates;
 	animatedRotation;
 	animatedScale;
 	offset;
 	turnWhenMoving;
+	oriented;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
@@ -20,7 +18,8 @@ export default class MovementStrategy extends UpdatedStrategy {
 		this.animatedRotation = null;
 		this.animatedScale = null;
 		this.offset = null;
-		this.turnWhenMoving = true;
+		this.turnWhenMoving = false;
+		this.oriented = false;
 	}
 
 	activateInternal() {
@@ -72,7 +71,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 			if (this.animatedRotation.isFinished()) {
 				this.animatedRotation = null;
 			}
-			if (this.model.oriented.get()) {
+			if (this.oriented) {
 				this.model.image.flipped.set(this.model.image.rotation.get() < 0);
 			}
 		}

@@ -11,7 +11,7 @@ import {
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY,
 	STRATEGY_DOOR_SLOT,
-	STRATEGY_EMITTER,
+	STRATEGY_EMITTER, STRATEGY_EMPTY,
 	STRATEGY_EXIT,
 	STRATEGY_HINT,
 	STRATEGY_JELLYMAKER,
@@ -25,6 +25,7 @@ import BubbleStrategy from "../strategy/sprites/minerals/BubbleStrategy";
 import JellymakerStrategy from "../strategy/sprites/animals/JellymakerStrategy";
 import HintStrategy from "../strategy/sprites/special/HintStrategy";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
+import EmptyStrategy from "../strategy/sprites/EmptyStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -43,8 +44,9 @@ export default class SpriteController extends ControllerBase {
 	createStrategy(model) {
 		const id = model.strategy.get();
 		switch (id) {
+			case STRATEGY_EMPTY:
+				return new EmptyStrategy(this.game, model, this.controls);
 			case STRATEGY_STATIC:
-			case 'respawn':
 				return new StaticStrategy(this.game, model, this.controls);
 			case STRATEGY_BUG:
 				return new BugStrategy(this.game, model, this.controls);
@@ -58,7 +60,6 @@ export default class SpriteController extends ControllerBase {
 				return new BubbleStrategy(this.game, model, this.controls);
 			case STRATEGY_MINERAL:
 				return new MineralStrategy(this.game, model, this.controls);
-
 			case STRATEGY_EXIT:
 				return new ExitStrategy(this.game, model, this.controls);
 			case STRATEGY_EMITTER:

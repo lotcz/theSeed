@@ -1,5 +1,5 @@
-import SpriteStrategy from "./SpriteStrategy";
+import AnimatedStrategy from "./AnimatedStrategy";
 
-export default class StaticStrategy extends SpriteStrategy {
+export default class StaticStrategy extends AnimatedStrategy {
 
 }

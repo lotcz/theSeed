@@ -27,4 +27,5 @@ export default class SpriteStrategy extends ControllerBase {
 		this.model.position.set(position);
 		this.visit(position);
 	}
+
 }

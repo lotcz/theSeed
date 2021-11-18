@@ -352,7 +352,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('strategy').onChange(() => sprite.strategy.makeDirty());
-		gui.add(sprite.oriented, 'value').name('oriented').onChange(() => sprite.oriented.makeDirty());
 
 		const obj = {str: JSON.stringify(sprite.data)};
 		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));

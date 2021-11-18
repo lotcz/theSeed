@@ -1,22 +1,20 @@
-import MovementStrategy from "../MovementStrategy";
+import AnimatedStrategy from "../AnimatedStrategy";
 
 const HINT_TIMEOUT = 1000;
 
-export default class HintStrategy extends MovementStrategy {
+export default class HintStrategy extends AnimatedStrategy {
 	start;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, HINT_TIMEOUT);
 
 		this.turnWhenMoving = false;
+		this.timeout = 0;
 	}
 
 	activateInternal() {
 		super.activateInternal();
-
 		this.start = this.model.position.clone();
-		this.timeout = 0;
-
 	}
 
 	updateStrategy() {

@@ -1,4 +1,4 @@
-import MovementStrategy from "../MovementStrategy";
+import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.wav";
 import Sound from "../../../class/Sound";
@@ -9,44 +9,24 @@ import MineralStrategy, {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy
 const BUG_TIMEOUT = 1000;
 export const BUG_MAX_AMOUNT = 5;
 
-export default class BugStrategy extends MovementStrategy {
+export default class BugStrategy extends ObjectStrategy {
 	static biteSound = new Sound(BiteSound);
 
 	constructor(game, model, controls) {
 		super(game, model, controls, BUG_TIMEOUT);
 
-		if (!this.model.data.amount) {
-			this.model.data.amount = this.model.image.scale.get();
-		}
-	}
+		this.oriented = true;
+		this.turnWhenMoving = true;
+		this.maxAmount = BUG_MAX_AMOUNT;
 
-	activateInternal() {
-		this.updateOffset();
-		this.updateScale();
 		this.model._is_penetrable = false;
-		super.activateInternal();
 	}
 
 	updateStrategy() {
-		if (!this.level.isValidPosition(this.model.position)) {
-			this.level.sprites.remove(this.model);
-			console.log('Bug over board');
-			return;
-		}
-
-		const lowerNeighbor = this.grid.getNeighborDown(this.model.position);
-		if (this.level.isPenetrable(lowerNeighbor)) {
-			this.defaultTimeout = MINERAL_FALL_TIMEOUT;
-			this.setTargetPosition(lowerNeighbor);
-			return;
-		}
-
-		this.defaultTimeout = BUG_TIMEOUT;
-
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 		neighbors.push(this.model.position);
 
-		if (this.model.data.amount < BUG_MAX_AMOUNT) {
+		if (this.model.data.amount < this.maxAmount) {
 			let eaten = false;
 			let i = 0;
 
@@ -60,8 +40,6 @@ export default class BugStrategy extends MovementStrategy {
 
 					const amount = 1; //Pixies.between(1, BUG_MAX_AMOUNT - this.model.data.amount, meal.data.amount);
 					this.model.data.amount += amount;
-					this.updateScale();
-					this.updateOffset();
 					meal.data.amount -= amount;
 					if (meal.data.amount <= 0) {
 						this.level.sprites.remove(meal);
@@ -71,7 +49,7 @@ export default class BugStrategy extends MovementStrategy {
 							BugStrategy.biteSound.play();
 						}
 					}
-
+					this.turnWhenMoving = false;
 					eaten = true;
 				}
 				i++;
@@ -79,10 +57,9 @@ export default class BugStrategy extends MovementStrategy {
 
 			if (eaten) return;
 		} else {
-			this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_BUG_EGG);
+			this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
 			this.model.data.amount = 1;
-			this.updateScale();
-			this.updateOffset();
+			return;
 		}
 
 		if (this.level.isPlayable && this.level.bee) {
@@ -96,27 +73,24 @@ export default class BugStrategy extends MovementStrategy {
 			}
 		}
 
-		const freeNeighbors = neighbors.filter((n) => this.level.isPenetrable(n));
+		const down = this.grid.getNeighborDown(this.model.position);
+		if (this.level.isPenetrable(down)) {
+			this.defaultTimeout = this.defaultFallTimeout;
+			this.turnWhenMoving = false;
+			this.setTargetRotation(180, 500);
+			this.setTargetPosition(down);
+			return;
+		}
+
+		const validNeighbors = [this.grid.getNeighborUpperLeft(this.model.position), this.grid.getNeighborUpperRight(this.model.position), this.grid.getNeighborLowerLeft(this.model.position), this.grid.getNeighborLowerRight(this.model.position)];
+		const freeNeighbors = validNeighbors.filter((n) => this.level.isPenetrable(n));
 		const surfaceNeighbors = freeNeighbors.filter((n) => this.level.isCrawlable(this.grid.getNeighborDown(n)));
 
 		if (surfaceNeighbors.length > 0) {
+			this.defaultTimeout = this.defaultMoveTimeout;
+			this.turnWhenMoving = true;
 			this.setTargetPosition(Pixies.randomElement(surfaceNeighbors));
-		} else if (freeNeighbors.length > 0) {
-			this.setTargetPosition(Pixies.randomElement(freeNeighbors));
 		}
-	}
-
-	updateOffset() {
-		if (this.model.data.amount < BUG_MAX_AMOUNT) {
-			this.offset = new Vector2(0, this.grid.tileSize.y * 0.4 * (1 - (this.model.data.amount / BUG_MAX_AMOUNT)));
-		} else {
-			this.offset = null;
-		}
-	}
-
-	updateScale() {
-		const scale = MineralStrategy.getScale(this.model.data.amount);
-		this.setTargetScale(scale);
 	}
 
 }

@@ -1,9 +1,9 @@
-import MovementStrategy from "../MovementStrategy";
+import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
 
 const BUTTERFLY_TIMEOUT = 300;
 
-export default class ButterflyStrategy extends MovementStrategy {
+export default class ButterflyStrategy extends ObjectStrategy {
 	lastDirection;
 
 	constructor(game, model, controls) {

@@ -13,7 +13,7 @@ import BeeFlightStrategy from "../strategy/bee/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
-import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
+import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
 
 import OuchSound from "../../res/sound/ouch.mp3";
@@ -21,10 +21,11 @@ import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
 import HintController from "./HintController";
+import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.1; // health per second
-const MAX_INVENTORY_AMOUNT = 3;
+const MAX_INVENTORY_AMOUNT = MINERAL_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 1000;
 
 export default class BeeController extends ControllerBase {
@@ -171,7 +172,7 @@ export default class BeeController extends ControllerBase {
 			} else {
 				this.model.inventory.get().image.coordinates.set(BEE_CENTER);
 			}
-			this.model.inventory.get().image.scale.set(MineralStrategy.getScale(this.model.inventory.get().data.amount));
+			this.model.inventory.get().image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
 		}
 	}
 

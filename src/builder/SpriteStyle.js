@@ -83,6 +83,7 @@ export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
 export const SPRITE_TYPE_DOOR_SLOT = 'door-slot';
 
+export const STRATEGY_EMPTY = 'empty';
 export const STRATEGY_STATIC = 'static';
 
 export const STRATEGY_JELLYMAKER = 'jellymaker';
@@ -100,12 +101,12 @@ export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 export const STRATEGY_DOOR_SLOT = 'door-slot';
 
-export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT];
+export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT];
 
 export const SPRITE_STYLES = [];
 
 SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_LIFE,
 		resource: BeeLifeImage
@@ -122,15 +123,6 @@ SPRITE_STYLES[SPRITE_TYPE_DEAD_BEE] = {
 	data: {amount: MINERAL_MAX_AMOUNT}
 };
 
-SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
-	strategy: STRATEGY_EXIT,
-	image: {
-		uri: IMAGE_EXIT,
-		resource: ExitImage
-	},
-	data: {level: 'level-0'}
-};
-
 SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
 	strategy: STRATEGY_JELLYMAKER,
 	image: {
@@ -139,8 +131,7 @@ SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
 	},
 	data: {
 		hintDirection: NEIGHBOR_TYPE_UP
-	},
-	oriented: true
+	}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_HINT] = {
@@ -175,8 +166,7 @@ SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 	image: {
 		uri: IMAGE_BUG,
 		resource: BugImage
-	},
-	oriented: true
+	}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUG_EGG] = {
@@ -185,8 +175,7 @@ SPRITE_STYLES[SPRITE_TYPE_BUG_EGG] = {
 		uri: IMAGE_BUG_EGG,
 		resource: BugEggImage
 	},
-	data: {amount: MINERAL_MAX_AMOUNT},
-	oriented: true
+	data: {amount: MINERAL_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUTTERFLY] = {
@@ -248,7 +237,7 @@ SPRITE_STYLES[SPRITE_TYPE_NECTAR] = {
 };
 
 SPRITE_STYLES[SPRITE_TYPE_RESPAWN] = {
-	strategy: STRATEGY_STATIC,
+	strategy: STRATEGY_EMPTY,
 	data: {name: 'start'}
 };
 

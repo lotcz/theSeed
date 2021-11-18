@@ -18,7 +18,7 @@ import {
 	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING,
-	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
+	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES, SPRITE_TYPE_RESPAWN,
 	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
 import LevelBuilder from "../builder/LevelBuilder";
@@ -217,7 +217,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	spawn(bee, name) {
-		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_STATIC && s.data.name === name);
+		const respawn = this.sprites.children.find((s) => s.type === SPRITE_TYPE_RESPAWN && s.data.name === name);
 		if (!respawn) {
 			console.log(`Respawn spot '${name}' not found!`);
 			return;
@@ -378,7 +378,7 @@ export default class LevelModel extends ModelBase {
 		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
-	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented, type) {
+	addSprite(position, strategy, data, path, scale, rotation, flipped, type) {
 		if (path) {
 			this.addResource(path);
 		}
@@ -391,7 +391,6 @@ export default class LevelModel extends ModelBase {
 				path: path
 			} : null,
 			strategy: strategy,
-			oriented: oriented,
 			data: data,
 			type: type
 		};
@@ -414,7 +413,6 @@ export default class LevelModel extends ModelBase {
 			scale,
 			0,
 			false,
-			style.oriented,
 			spriteType
 		);
 	}

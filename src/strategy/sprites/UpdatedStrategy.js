@@ -18,6 +18,11 @@ export default class UpdatedStrategy extends SpriteStrategy {
 	update(delta) {
 		this.timeout -= delta;
 		if (this.timeout <= 0) {
+			if (!this.level.isValidPosition(this.model.position)) {
+				this.level.sprites.remove(this.model);
+				console.log('Sprite over board!', this.model);
+				return;
+			}
 			if (!this.game.isInEditMode.get()) {
 				this.updateStrategy();
 			}
