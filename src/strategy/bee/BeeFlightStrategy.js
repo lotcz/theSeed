@@ -52,7 +52,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 			this.model.headingLeft.set(false);
 		}
 		this.updateBee();
-		console.log('flying');
+		//console.log('flying');
 	}
 
 	updateInternal(delta) {

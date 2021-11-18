@@ -109,7 +109,8 @@ SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
 	image: {
 		uri: IMAGE_BEE_LIFE,
 		resource: BeeLifeImage
-	}
+	},
+	data:{amount: MINERAL_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_DEAD_BEE] = {

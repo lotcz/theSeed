@@ -17,7 +17,7 @@ How to open blocked access?
 - bring pollen to blossom to get to nectar
 - save bugs from pit by throwing crawlable stuff inside
 - block road with uncrawlable stuff
-- 
+-
 
 Puzzles
 

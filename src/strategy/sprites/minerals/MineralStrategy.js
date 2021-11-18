@@ -87,13 +87,15 @@ export default class MineralStrategy extends MovementStrategy {
 	}
 
 	static getScale(amount) {
-		const scale = Math.sqrt(amount / (4 * Math.PI));
-		return (scale * 2);
+		const surface = amount / MINERAL_MAX_AMOUNT;
+		const scale = Math.sqrt(surface);
+		return scale;
 	}
 
 	updateAmount() {
 		const scale = MineralStrategy.getScale(this.model.data.amount);
-		this.setTargetScale(scale);if (this.model.data.amount < MINERAL_MAX_AMOUNT) {
+		this.setTargetScale(scale);
+		if (this.model.data.amount < MINERAL_MAX_AMOUNT) {
 			this.offset = new Vector2(0, this.grid.tileSize.y * 0.4 * (1 - (this.model.data.amount / MINERAL_MAX_AMOUNT)));
 		} else {
 			this.offset = null;

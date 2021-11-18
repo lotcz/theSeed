@@ -94,7 +94,6 @@ export default class WaterStrategy extends MovementStrategy {
 			this.model.data.amount += node.data.amount;
 			this.model.makeDirty();
 			this.level.sprites.remove(node);
-			this.chessboard.removeVisitor(this.model.position, node);
 		}
 	}
 

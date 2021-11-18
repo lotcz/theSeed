@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="119.08842"
-   height="119.85463"
-   viewBox="0 0 31.50881 31.711539"
+   width="130"
+   height="130"
+   viewBox="0 0 34.395833 34.395835"
    version="1.1"
    id="svg42079"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
@@ -28,7 +28,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="3.1999439"
-     inkscape:cx="51.407152"
+     inkscape:cx="51.407151"
      inkscape:cy="34.21935"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -51,7 +51,7 @@
       <g
          id="g214344"
          style="fill:#4edcef;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:9.93237;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:9.93237, 19.8647;stroke-dashoffset:0;stroke-opacity:1"
-         transform="matrix(0.792551,0,0,0.87061203,9.2152109,39.266983)">
+         transform="matrix(1.1807886,0,0,1.1326582,-6.9016803,-40.770744)">
         <path
            d="m 43.287249,296.63869 11.085499,2.60316 v 13.95597 l -11.085499,-5.64218 z"
            style="fill:#4edcef;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:9.93237;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:9.93237, 19.8647;stroke-dashoffset:0"
@@ -78,40 +78,40 @@
            id="path218785" />
       </g>
       <ellipse
-         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.12561;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.5671;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="path224405"
-         cx="50.398582"
-         cy="310.4248"
-         rx="1.2770418"
-         ry="2.04053" />
+         cx="54.4557"
+         cy="312.00308"
+         rx="1.902611"
+         ry="2.6547108" />
       <ellipse
-         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.12561;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.5671;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="path224825"
-         cx="46.109035"
-         cy="313.14551"
-         rx="0.85136116"
-         ry="1.5870788" />
+         cx="48.064884"
+         cy="315.54269"
+         rx="1.2684072"
+         ry="2.064775" />
       <ellipse
-         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.07765;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:#82528c;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.50033;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="path224827"
-         cx="48.499393"
-         cy="305.24789"
-         rx="1.7354671"
-         ry="2.7584944" />
+         cx="51.626179"
+         cy="305.26794"
+         rx="2.5855999"
+         ry="3.5887759" />
       <ellipse
-         style="fill:#9a61a6;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.02754;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:#9a61a6;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.43057;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="path224934"
-         cx="41.688507"
-         cy="313.37225"
-         rx="1.1460631"
-         ry="1.9649547" />
+         cx="41.478924"
+         cy="315.83768"
+         rx="1.7074714"
+         ry="2.5563881" />
       <ellipse
-         style="fill:#9a61a6;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.12561;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="fill:#9a61a6;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.5671;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="path226011"
-         cx="38.315804"
-         cy="311.59625"
-         rx="0.85136116"
-         ry="1.4737161" />
+         cx="36.454071"
+         cy="313.5271"
+         rx="1.2684072"
+         ry="1.917291" />
     </g>
   </g>
 </svg>
