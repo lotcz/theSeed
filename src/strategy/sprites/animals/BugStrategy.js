@@ -1,9 +1,10 @@
 import MovementStrategy from "../MovementStrategy";
 import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.wav";
-import {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy";
+import {MINERAL_FALL_TIMEOUT, MINERAL_MAX_AMOUNT} from "../minerals/MineralStrategy";
 import Sound from "../../../class/Sound";
 import {SPRITE_TYPE_POTASSIUM} from "../../../builder/SpriteStyle";
+import Vector2 from "../../../class/Vector2";
 
 const BUG_TIMEOUT = 1000;
 
@@ -15,6 +16,7 @@ export default class BugStrategy extends MovementStrategy {
 	}
 
 	activateInternal() {
+		this.updateOffset();
 		this.model._is_penetrable = false;
 		super.activateInternal();
 	}
@@ -59,7 +61,10 @@ export default class BugStrategy extends MovementStrategy {
 		} else {
 			this.setTargetPosition(Pixies.randomElement(freeNeighbors));
 		}
+	}
 
+	updateOffset() {
+		this.offset = new Vector2(0, this.grid.tileSize.y * 0.4);
 	}
 
 }

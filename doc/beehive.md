@@ -176,7 +176,6 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- show lives
 - dying animals
 - allow animals to carry things
 
