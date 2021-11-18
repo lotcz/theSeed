@@ -21,8 +21,15 @@ export default class MineralStrategy extends MovementStrategy {
 	}
 
 	activateInternal() {
-		this.updateOffset();
+		this.updateAmount();
 		super.activateInternal();
+	}
+
+	updateInternal(delta) {
+		if (this.lastAmount !== this.model.data.amount) {
+			this.amountChanged();
+		}
+		super.updateInternal(delta);
 	}
 
 	updateStrategy() {
@@ -84,22 +91,18 @@ export default class MineralStrategy extends MovementStrategy {
 		return (scale * 2);
 	}
 
-	updateInternal(delta) {
+	updateAmount() {
 		const scale = MineralStrategy.getScale(this.model.data.amount);
-		this.setTargetScale(scale);
-		super.updateInternal(delta);
-	}
-
-	updateOffset() {
-		if (this.model.data.amount < MINERAL_MAX_AMOUNT) {
+		this.setTargetScale(scale);if (this.model.data.amount < MINERAL_MAX_AMOUNT) {
 			this.offset = new Vector2(0, this.grid.tileSize.y * 0.4 * (1 - (this.model.data.amount / MINERAL_MAX_AMOUNT)));
 		} else {
 			this.offset = null;
 		}
+		this.lastAmount = this.model.data.amount;
 	}
 
 	amountChanged() {
-		this.updateOffset();
+		this.updateAmount();
 		if (!this.isMoving()) {
 			this.setTargetCoordinates(this.getCoords(this.model.position));
 		}

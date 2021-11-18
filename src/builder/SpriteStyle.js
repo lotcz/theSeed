@@ -12,9 +12,11 @@ import PhosphorusImage from "../../res/img/phosphorus.svg";
 import HintWasdImage from "../../res/img/hint-wasd.svg";
 import HintArrowsImage from "../../res/img/hint-arrows.svg";
 import BeeLifeImage from "../../res/img/bee-walk.svg";
+import BugEggImage from "../../res/img/bug-egg.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
+import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 
 /*
 
@@ -54,6 +56,7 @@ export const IMAGE_PHOSPHORUS = 'img/phosphorus.svg';
 
 export const IMAGE_JELLYMAKER = 'img/jellymaker.svg';
 export const IMAGE_BUG = 'img/ladybug.svg';
+export const IMAGE_BUG_EGG = 'img/bug-egg.svg';
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 export const IMAGE_GRASSHOPPER = 'img/grasshopper.svg';
 export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
@@ -66,6 +69,7 @@ export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
 export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
 export const SPRITE_TYPE_BUG = 'bug';
+export const SPRITE_TYPE_BUG_EGG = 'bug-egg';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 export const SPRITE_TYPE_WATER = 'water';
 export const SPRITE_TYPE_BUBBLE = 'bubble';
@@ -160,6 +164,16 @@ SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 		uri: IMAGE_BUG,
 		resource: BugImage
 	},
+	oriented: true
+};
+
+SPRITE_STYLES[SPRITE_TYPE_BUG_EGG] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_BUG_EGG,
+		resource: BugEggImage
+	},
+	data: {amount: MINERAL_MAX_AMOUNT},
 	oriented: true
 };
 
