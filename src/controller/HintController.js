@@ -18,6 +18,7 @@ export default class HintController extends ControllerBase {
 	hint;
 	ahaTimer;
 	sprites;
+	soundPlayed;
 
 	constructor(game, model, controls, sprites = null) {
 		super(game, model, controls);
@@ -26,16 +27,18 @@ export default class HintController extends ControllerBase {
 		this.hint = null;
 		this.sprites = sprites || this.level.sprites;
 		this.ahaTimer = null;
-		this.playSoundHandler = () => HintController.ahaSound.play();
+		this.soundPlayed = false;
+		this.playSoundHandler = () => this.playAhaSound();
 		this.hiddenHandler = () => this.destroy();
 	}
 
 	show() {
 		if (!this.isInitialized()) {
 			this.initialize();
-		} else {
+		} else if (this.hint.data.isHiding) {
 			this.background.forEach((b) => b.data.isHiding = false);
 			this.hint.data.isHiding = false;
+			this.setSoundTimer();
 		}
 	}
 
@@ -44,6 +47,7 @@ export default class HintController extends ControllerBase {
 			this.background.forEach((b) => b.data.isHiding = true);
 			this.hint.data.isHiding = true;
 		}
+		this.clearSoundTimer();
 	}
 
 	isInitialized() {
@@ -77,7 +81,7 @@ export default class HintController extends ControllerBase {
 		}
 
 		this.hint.addEventListener('hidden', this.hiddenHandler);
-		this.ahaTimer = setTimeout(this.playSoundHandler, 1000);
+		this.setSoundTimer();
 	}
 
 	destroy() {
@@ -89,9 +93,28 @@ export default class HintController extends ControllerBase {
 			this.hint.removeEventListener('hidden', this.hiddenHandler);
 			this.hint = null;
 		}
+		this.clearSoundTimer();
+		this.soundPlayed = false;
+	}
+
+	setSoundTimer() {
+		this.clearSoundTimer();
+		if (!this.soundPlayed) {
+			this.ahaTimer = setTimeout(this.playSoundHandler, 1000);
+		}
+	}
+
+	clearSoundTimer() {
 		if (this.ahaTimer) {
 			clearTimeout(this.ahaTimer);
 			this.ahaTimer = null;
+		}
+	}
+
+	playAhaSound() {
+		if (!this.soundPlayed) {
+			HintController.ahaSound.play();
+			this.soundPlayed = true;
 		}
 	}
 

@@ -2,7 +2,7 @@ import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.wav";
 import Sound from "../../../class/Sound";
-import {SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_POTASSIUM} from "../../../builder/SpriteStyle";
+import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_POTASSIUM} from "../../../builder/SpriteStyle";
 import Vector2 from "../../../class/Vector2";
 import MineralStrategy, {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy";
 
@@ -57,8 +57,9 @@ export default class BugStrategy extends ObjectStrategy {
 
 			if (eaten) return;
 		} else {
+			this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_BUG_DEAD);
 			this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
-			this.model.data.amount = 1;
+			this.level.sprites.remove(this.model);
 			return;
 		}
 
