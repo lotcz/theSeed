@@ -1,5 +1,5 @@
 import DomRenderer from "./DomRenderer";
-import BeeImage from "../../res/img/bee-walk.svg";
+import BeeLifeImage from "../../res/img/bee-life.svg";
 
 export default class LivesRenderer extends DomRenderer {
 	element;
@@ -14,7 +14,7 @@ export default class LivesRenderer extends DomRenderer {
 		this.element = this.createElement(this.dom, 'div', ['menu', 'lives']);
 
 		const img = this.createElement(this.element, 'img');
-		img.src = BeeImage;
+		img.src = BeeLifeImage;
 
 		this.text = this.createElement(this.element, 'span');
 	}

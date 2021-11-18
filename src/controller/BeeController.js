@@ -70,7 +70,7 @@ export default class BeeController extends ControllerBase {
 		}
 		this.updateMovement();
 
-		if (!this.game.historyExists('hint-controls-displayed')) {
+		if (!(this.showingControlsHint || this.game.historyExists('hint-controls-displayed'))) {
 			setTimeout(() => this.showControlsHint(), 2000);
 		}
 
@@ -264,8 +264,8 @@ export default class BeeController extends ControllerBase {
 			hintModel.imagePaths = images;
 			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
 			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
-			this.addChild(this.hintController);
-			this.hintController.deactivate();
+			//this.addChild(this.hintController);
+			//this.hintController.deactivate();
 		}
 		this.hintController.show();
 	}

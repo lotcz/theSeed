@@ -14,13 +14,18 @@ export default class SpriteStrategy extends ControllerBase {
 	}
 
 	deactivateInternal() {
-		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
+		this.unvisit();
 	}
 
 	visit(position) {
-		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
+		this.unvisit();
 		this.lastVisited = position.clone();
 		this.chessboard.addVisitor(this.lastVisited, this.model);
+	}
+
+	unvisit() {
+		if (this.lastVisited) this.chessboard.removeVisitor(this.lastVisited, this.model);
+		this.lastVisited = null;
 	}
 
 	setPosition(position) {

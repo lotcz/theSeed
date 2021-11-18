@@ -11,7 +11,7 @@ import NitrogenImage from "../../res/img/nitrogen.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
 import HintWasdImage from "../../res/img/hint-wasd.svg";
 import HintArrowsImage from "../../res/img/hint-arrows.svg";
-import BeeLifeImage from "../../res/img/bee-walk.svg";
+import BeeLifeImage from "../../res/img/bee-life.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BugEggImage from "../../res/img/bug-egg.svg";
 
