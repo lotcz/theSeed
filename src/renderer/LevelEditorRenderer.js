@@ -1,6 +1,7 @@
 import SvgRenderer from "./SvgRenderer";
 import Vector2 from "../class/Vector2";
 import * as dat from "dat.gui";
+import * as localForage from "localforage";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
 import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
 
@@ -44,7 +45,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			reload: () => this.reload(),
 			saveAndReload: () => this.saveAndReload(),
 			fitGrid: () => this.fitGrid(),
-			download: () => this.downloadSavedGame()
+			download: () => this.download()
 		};
 
 		if (DEBUG_EDITOR_RENDERER) console.log('Creating editor renderer');
@@ -91,6 +92,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		parallaxFolder.add(level.parallax.cameraOffset, 'x').name('offset.x').listen();
 		parallaxFolder.add(level.parallax.cameraOffset, 'y').name('offset.y').listen();
 		parallaxFolder.open();
+		const exitFolder = levelFolder.addFolder('Exits');
+		exitFolder.add(level, 'exitLeft');
+		exitFolder.add(level, 'exitRight');
+		exitFolder.add(level, 'exitTop');
+		exitFolder.add(level, 'exitBottom');
+		exitFolder.open();
 
 		const highlightFolder = this.gui.addFolder('Highlighted Position');
 		highlightFolder.add(this.model.highlightedTilePosition, 'x').listen();
@@ -164,8 +171,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	}
 
 	getLevelState() {
-		const state = this.game.level.get().getState();
-		return JSON.stringify(state);
+		return this.game.level.get().getState();
 	}
 
 	reload() {
@@ -173,25 +179,27 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.model.levelLoadRequest.set(level.name);
 	}
 
-	saveLevel() {
+	async saveLevelAsync() {
 		const level = this.game.level.get();
-		localStorage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState());
-		console.log('Level saved.');
+		localForage.setItem(`${EDITOR_LEVEL_NAME_PREFIX}-${level.name}`, this.getLevelState())
+			.then(() => console.log('Level saved.'));
 	}
 
 	saveAndReload() {
-		this.saveLevel();
-		this.reload();
+		this.saveLevelAsync().then(() => this.reload());
 	}
 
-	downloadSavedGame() {
-		const element = document.createElement('a');
-		element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(this.getLevelState()));
-		element.setAttribute('download', this.game.level.get().name + '.json');
-		element.style.display = 'none';
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
+	download() {
+		this.saveLevelAsync().then(() => {
+			const element = document.createElement('a');
+			const str = JSON.stringify(this.getLevelState());
+			element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(str));
+			element.setAttribute('download', this.game.level.get().name + '.json');
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		});
 	}
 
 	//<editor-fold desc="HIGHLIGHTS">
@@ -273,7 +281,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	//</editor-fold>
 
-	//<editor-fold desc="TILES">
+	//<editor-fold desc="GROUND TILES">
 
 	renderGroundTile(tile) {
 		const level = this.game.level.get();
@@ -344,7 +352,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('strategy').onChange(() => sprite.strategy.makeDirty());
-		gui.add(sprite.oriented, 'value').name('oriented').onChange(() => sprite.oriented.makeDirty());
 
 		const obj = {str: JSON.stringify(sprite.data)};
 		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));
@@ -358,6 +365,15 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation');
 			imgFolder.open();
 		}
+
+		const actions = {
+			deleteSprite: () => {
+				this.model.selectedSprites.remove(sprite);
+				this.level.sprites.remove(sprite);
+				gui.hide();
+			}
+		}
+		gui.add(actions, 'deleteSprite').name('Delete');
 	}
 
 	//</editor-fold>
@@ -382,8 +398,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			max.x = Math.max(max.x, position.x);
 			max.y = Math.max(max.y, position.y);
 		});
-
-		console.log(min, max);
 
 		if (min.x % 2 !== 0 ) {
 			min.x = min.x - 1;
@@ -439,7 +453,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		if (this.model.selectedSprites.isDirty()) {
 			this.hideAdditionalGUI();
-			this.model.selectedSprites.forEach((sprite) => this.addSpriteGUI(sprite));
+			const selected = this.model.selectedSprites.get();
+			selected.forEach((sprite) => this.addSpriteGUI(sprite));
 			this.model.selectedSprites.clean();
 		}
 

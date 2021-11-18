@@ -8,6 +8,7 @@ import AnimationModel from "./AnimationModel";
 import SpriteModel from "./SpriteModel";
 
 export default class BeeModel extends ModelBase {
+	scale;
 	position;
 	coordinates;
 	direction; // vector of movement
@@ -15,8 +16,8 @@ export default class BeeModel extends ModelBase {
 	crawling; // null or neighbor type
 	headingLeft; // if false, then bee is heading right
 	inventory;
+	sprites;
 	health;
-	lives;
 	image;
 	deadImagePath;
 	crawlingAnimation;
@@ -27,6 +28,8 @@ export default class BeeModel extends ModelBase {
 	constructor(state) {
 		super();
 
+		this.scale = new DirtyValue(1);
+		this.addChild(this.scale);
 		this.position = new Vector2();
 		this.addChild(this.position);
 		this.coordinates = new Vector2();
@@ -39,12 +42,12 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.crawling);
 		this.headingLeft = new DirtyValue(false);
 		this.addChild(this.headingLeft);
-		this.inventory = new CollectionModel();
+		this.inventory = new DirtyValue();
 		this.addChild(this.inventory);
+		this.sprites = new CollectionModel();
+		this.addChild(this.sprites);
 		this.health = new DirtyValue(1);
 		this.addChild(this.health);
-		this.lives = new DirtyValue(1);
-		this.addChild(this.lives);
 
 		this.image = new ImageModel();
 		this.addChild(this.image);
@@ -66,14 +69,15 @@ export default class BeeModel extends ModelBase {
 
 	getState() {
 		return {
+			scale: this.scale.getState(),
 			position: this.position.getState(),
 			direction: this.direction.getState(),
 			rotation: this.rotation.getState(),
 			crawling: this.crawling.getState(),
 			headingLeft: this.headingLeft.getState(),
-			inventory: this.inventory.getState(),
+			inventory: this.inventory.isEmpty() ? null : this.inventory.get().getState(),
+			sprites: this.sprites.getState(),
 			health: this.health.getState(),
-			lives: this.lives.getState(),
 			image: this.image.getState(),
 			deadImagePath: this.deadImagePath.getState(),
 			crawlingAnimation: this.crawlingAnimation.getState(),
@@ -84,14 +88,15 @@ export default class BeeModel extends ModelBase {
 	}
 
 	restoreState(state) {
+		if (state.scale) this.scale.restoreState(state.scale);
 		if (state.position) this.position.restoreState(state.position);
 		if (state.direction) this.direction.restoreState(state.direction);
 		if (state.rotation) this.rotation.restoreState(state.rotation);
 		if (state.crawling) this.crawling.restoreState(state.crawling);
 		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
-		if (state.inventory) this.inventory.restoreState(state.inventory, (s) => new SpriteModel(s));
+		if (state.inventory) this.inventory.set(new SpriteModel(state.inventory));
+		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
 		if (state.health) this.health.restoreState(state.health);
-		if (state.lives) this.lives.restoreState(state.lives);
 		if (state.image) this.image.restoreState(state.image);
 		if (state.deadImagePath) this.deadImagePath.restoreState(state.deadImagePath);
 		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
@@ -106,6 +111,23 @@ export default class BeeModel extends ModelBase {
 
 	isCrawling() {
 		return !this.isFlying();
+	}
+
+	hurt(amount) {
+		this.heal(-amount);
+	}
+
+	heal(amount) {
+		this.health.set(this.health.get() + amount);
+		this.triggerEvent(amount < 0 ? 'hurt' : 'heal', Math.abs(amount));
+	}
+
+	addOnHurtListener(listener) {
+		this.addEventListener('hurt', listener);
+	}
+
+	removeOnHurtListener(listener) {
+		this.removeEventListener('hurt', listener);
 	}
 
 	addOnDeathListener(listener) {

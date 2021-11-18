@@ -10,7 +10,7 @@ import {
 	GRAY_MEDIUM,
 	GREEN_DARK,
 	GREEN_LIGHT,
-	GREEN_LIGHTEST
+	GREEN_LIGHTEST, ORANGE_DARK, ORANGE_DARKEST, ORANGE_MEDIUM, YELLOW_DARK, YELLOW_DARKEST, YELLOW_MEDIUM
 } from "./Palette";
 
 export const GROUND_TYPE_BASIC = 'basic';
@@ -61,13 +61,13 @@ GROUND_STYLES[GROUND_TYPE_GRASS] = {
 
 GROUND_STYLES[GROUND_TYPE_HONEY] = {
 	fill: 'orange',
-	stroke: { width: 140, color: 'darkOrange'},
-	background: true,
+	stroke: { width: 140, color: 'darkOrange', linejoin: 'round'},
+	background: true
 };
 
 GROUND_STYLES[GROUND_TYPE_WAX] = {
-	fill: 'darkOrange',
-	stroke: { width: 4, color: 'brown'},
+	fill: ORANGE_DARK,
+	stroke: { width: 10, color: ORANGE_DARKEST},
 	renderCorners: true
 };
 

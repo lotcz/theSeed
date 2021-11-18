@@ -10,6 +10,7 @@ import DomRenderer from "./DomRenderer";
 import ModelBase from "../class/ModelBase";
 import TextModel from "../model/TextModel";
 import Pixies from "../class/Pixies";
+import LivesRenderer from "./LivesRenderer";
 
 const DEBUG_FPS = true;
 
@@ -34,8 +35,8 @@ export default class GameRenderer extends SvgRenderer {
 		this.loadingScreenRenderer = null;
 		this.levelRenderer = null;
 		this.menuRenderer = null;
-		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
-		this.addChild(this.editorRenderer);
+		this.editorRenderer = null;
+		this.livesRenderer = null;
 
 		this.draw.fill('black');
 
@@ -65,17 +66,18 @@ export default class GameRenderer extends SvgRenderer {
 		if (this.model.menu.isDirty()) {
 			if (this.model.menu.isEmpty()) {
 				this.hideMenu();
-			} else {
+			} else if (this.loadingScreenRenderer === null) {
 				this.showMenu();
 			}
 			this.model.menu.clean();
 		}
 
 		if (this.model.isInEditMode.isDirty()) {
-			if (this.model.isInEditMode.get())
+			if (this.model.isInEditMode.get() && !this.model.level.isEmpty()) {
 				this.showEditor();
-			else
+			} else {
 				this.hideEditor();
+			}
 			this.model.isInEditMode.clean();
 		}
 
@@ -85,6 +87,7 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	showLoading() {
+		this.hideMenu();
 		if (!this.loadingScreenRenderer) {
 			this.loadingScreenDom = Pixies.createElement(this.dom, 'div', 'loading');
 			this.loadingScreenRenderer = new DomRenderer(this.game, this.model, this.loadingScreenDom);
@@ -95,6 +98,7 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	hideLoading() {
+		this.showMenu();
 		if (this.loadingScreenRenderer) {
 			Pixies.destroyElement(this.loadingScreenDom);
 			this.removeChild(this.loadingScreenRenderer);
@@ -120,6 +124,7 @@ export default class GameRenderer extends SvgRenderer {
 	}
 
 	showLevel() {
+		this.hideLives();
 		this.hideLevel();
 		this.hideEditor();
 		this.hideMenu();
@@ -134,6 +139,9 @@ export default class GameRenderer extends SvgRenderer {
 				console.log('activated Level renderer');
 				this.hideLoading();
 				this.showMenu();
+				if (this.game.level.get().isPlayable) {
+					this.showLives();
+				}
 				if (this.model.isInEditMode.get()) {
 					this.showEditor();
 				}
@@ -144,16 +152,32 @@ export default class GameRenderer extends SvgRenderer {
 	hideLevel() {
 		if (this.levelRenderer) this.removeChild(this.levelRenderer);
 		this.levelRenderer = null;
+		this.hideEditor();
+		this.hideLives();
+	}
+
+	showLives() {
+		this.hideLives();
+		this.livesRenderer = new LivesRenderer(this.game, this.game.lives, this.dom);
+		this.addChild(this.livesRenderer);
+		this.livesRenderer.activate();
+	}
+
+	hideLives() {
+		if (this.livesRenderer) this.removeChild(this.livesRenderer);
+		this.livesRenderer = null;
 	}
 
 	showEditor() {
 		this.hideEditor();
+		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
 		this.addChild(this.editorRenderer);
 		this.editorRenderer.activate();
 	}
 
 	hideEditor() {
-		this.removeChild(this.editorRenderer);
+		if (this.editorRenderer) this.removeChild(this.editorRenderer);
+		this.editorRenderer = null;
 	}
 
 }

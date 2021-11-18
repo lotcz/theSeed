@@ -10,18 +10,20 @@ Basics
 - when Bee dies and has no followers, she respawns in a hive
 - motivation to travel to advanced levels is also quantity of resources
 
+
+Puzzles
+
+- bees presence can trigger opening/closing of gate
+- save bugs from pit by throwing crawlable stuff inside
+- block road with uncrawlable stuff
+
 How to open blocked access?
 
 - bring certain item for guarding NPC
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
+- feed bugs until they pop/poison bugs
 
-Bee Personality
----------------
-
-- curious (likes to explore new things)
-- rebelling (doesn't like authorities)
-- helpful (sympathises with other animals)
 
 Items
 -----
@@ -77,6 +79,7 @@ Animals
 
 - Hornet - killer wasp
 - Earthworm - eats through green material
+- Frog
 
 Plants
 ------
@@ -151,7 +154,7 @@ Fly over large distance, avoid clouds and hornets
 Pond
 ----
 
-gather nectar from water lilies, avoid carnivorous plant
+gather nectar from water lilies, avoid carnivorous plants and frog
 
 Ant Nest
 --------
@@ -178,17 +181,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- bee thoughts (hints)
-- slow down when carrying too much - concept of burden
-- slow when in cloud or on water (by adding visible burden)
-- add exit image and shrink bee when exiting
-- make edges of level work as an exit
-- show lives
-- add diagonal directions?
-- allow animals to carry things
-- moving animals must have better collisions
-
-- build experimental levels
+- build demo levels
 - mobile widgets
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
@@ -196,30 +189,6 @@ TODO:
 - BETA for friends
 - RELEASE
 
-Ground
-------
-
-- dynamic ground (make pieces disappear or be replaced)
-- ground rendering order (to fix water underground)
-- different properties of ground in terms of bouncing, hurting and crawling
-
-
-Animals
--------
-
-- penetrable
-- takeable
-- striking/hurting
-- sprite placement (drop to ground gravity-like)
-- dying animals
-- collisions
-
-Minerals
---------
-
-- impenetrable sprites (e.g. water drops), make minerals stack
-- some minerals flow on water
-- bubbles turn to water on surface and can be collected
 
 Ads and monetization
 --------------------

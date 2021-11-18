@@ -61,7 +61,7 @@ export default class LevelEditorModel extends ModelBase {
 
 		this.selectedSpriteType = this.spriteTypes[0];
 
-		this.selectedSprites = new CollectionModel();
+		this.selectedSprites = new DirtyValue([]);
 		this.addChild(this.selectedSprites);
 
 		this.parallaxTypes = Object.keys(PARALLAX_STYLES);

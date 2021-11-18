@@ -15,14 +15,15 @@ import ParallaxLayerModel from "./ParallaxLayerModel";
 import HashTableModel from "./HashTableModel";
 import {
 	IMAGE_BEE,
-	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING,
-	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES,
-	STRATEGY_RESPAWN
+	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES, SPRITE_TYPE_RESPAWN,
+	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
 import LevelBuilder from "../builder/LevelBuilder";
 import {BEE_CENTER} from "../controller/BeeController";
+import Pixies from "../class/Pixies";
 
 export default class LevelModel extends ModelBase {
 	name;
@@ -38,6 +39,10 @@ export default class LevelModel extends ModelBase {
 	viewBoxCoordinates;
 	clipAmount; // 0 - no clipping, 1 - whole image clipped
 	isPlayable;
+	exitLeft;
+	exitRight;
+	exitTop;
+	exitBottom;
 
 	constructor(state) {
 		super();
@@ -71,6 +76,11 @@ export default class LevelModel extends ModelBase {
 		this.clipCenter = new Vector2();
 		this.addChild(this.clipCenter);
 
+		this.exitLeft = '';
+		this.exitRight = '';
+		this.exitTop = '';
+		this.exitBottom = '';
+
 		this.parallaxType = new DirtyValue();
 		this.addChild(this.parallaxType);
 		this.parallaxType.addOnChangeListener((value) => this.setParallaxFromStyle(value));
@@ -103,7 +113,11 @@ export default class LevelModel extends ModelBase {
 			viewBoxScale: this.viewBoxScale.get(),
 			viewBoxSize: this.viewBoxSize.toArray(),
 			viewBoxCoordinates: this.viewBoxCoordinates.toArray(),
-			bee: this.bee ? this.bee.getState() : null
+			bee: this.bee ? this.bee.getState() : null,
+			exitLeft: this.exitLeft,
+			exitRight: this.exitRight,
+			exitTop: this.exitTop,
+			exitBottom: this.exitBottom,
 		}
 	}
 
@@ -121,10 +135,17 @@ export default class LevelModel extends ModelBase {
 		if (state.viewBoxScale) this.viewBoxScale.set(state.viewBoxScale);
 		if (state.viewBoxSize) this.viewBoxSize.restoreState(state.viewBoxSize);
 		if (state.viewBoxCoordinates) this.viewBoxCoordinates.restoreState(state.viewBoxCoordinates);
+
+		if (state.exitLeft) this.exitLeft = state.exitLeft;
+		if (state.exitRight) this.exitRight = state.exitRight;
+		if (state.exitTop) this.exitTop = state.exitTop;
+		if (state.exitBottom) this.exitLeft = state.exitBottom;
+
 	}
 
 	createBee(position) {
 		return new BeeModel({
+			lives: 0,
 			direction: [0,0],
 			speed: 0,
 			position: position.toArray(),
@@ -144,7 +165,8 @@ export default class LevelModel extends ModelBase {
 					rotation: 0,
 					path: IMAGE_BEE_CRAWL
 				},
-				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE]
+				frameRate: 4,
+				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1]
 			},
 			starsAnimation: {
 				image: {
@@ -178,18 +200,24 @@ export default class LevelModel extends ModelBase {
 		this.addResource(IMAGE_BEE);
 		this.addResource(IMAGE_BEE_DEAD);
 		this.addResource(IMAGE_BEE_CRAWL);
+		this.addResource(IMAGE_BEE_CRAWL_1);
 		this.addResource(IMAGE_BEE_WING);
 		this.addResource(IMAGE_STARS_1);
 		this.addResource(IMAGE_STARS_2);
 		this.addResource(IMAGE_STARS_3);
 
-		if (this.bee) this.removeChild(this.bee);
+		this.removeBee();
 		this.bee = bee;
 		return this.addChild(this.bee);
 	}
 
+	removeBee() {
+		if (this.bee) this.removeChild(this.bee);
+		this.bee = null;
+	}
+
 	spawn(bee, name) {
-		const respawn = this.sprites.children.find((s) => s.strategy.get() === STRATEGY_RESPAWN && s.data.name === name);
+		const respawn = this.sprites.children.find((s) => s.type === SPRITE_TYPE_RESPAWN && s.data.name === name);
 		if (!respawn) {
 			console.log(`Respawn spot '${name}' not found!`);
 			return;
@@ -225,6 +253,25 @@ export default class LevelModel extends ModelBase {
 
 	isValidPosition(position) {
 		return this.grid.isValidPosition(position);
+	}
+
+	isPossibleExit(position) {
+		if (this.grid.isValidPosition(position)) {
+			return false;
+		}
+		if (position.x < 0 && this.exitLeft.length > 0) {
+			return this.exitLeft;
+		}
+		if (position.x >= this.grid.size.x && this.exitRight.length > 0) {
+			return this.exitRight;
+		}
+		if (position.y < 0 && this.exitTop.length > 0) {
+			return this.exitTop;
+		}
+		if (position.y >= this.grid.size.y && this.exitBottom.length > 0) {
+			return this.exitBottom;
+		}
+		return false;
 	}
 
 	isGround(position) {
@@ -271,7 +318,8 @@ export default class LevelModel extends ModelBase {
 		if (!this.isValidPosition(position)) {
 			return false;
 		}
-		return (!this.isPenetrable(position));
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false && v._is_crawlable !== false);
+		return visitors.length > 0;
 	}
 
 	getAbsoluteCoordinates(offset) {
@@ -330,7 +378,7 @@ export default class LevelModel extends ModelBase {
 		this.parallax.cameraOffset.set(cameraOffset);
 	}
 
-	addSprite(position, strategy, data, path, scale, rotation, flipped, oriented, type) {
+	addSprite(position, strategy, data, path, scale, rotation, flipped, type) {
 		if (path) {
 			this.addResource(path);
 		}
@@ -343,7 +391,6 @@ export default class LevelModel extends ModelBase {
 				path: path
 			} : null,
 			strategy: strategy,
-			oriented: oriented,
 			data: data,
 			type: type
 		};
@@ -356,17 +403,16 @@ export default class LevelModel extends ModelBase {
 		let scale = 1;
 		if (style.image) {
 			uri = style.image.uri;
-			scale = style.image.scale;
+			scale = style.image.scale || 1;
 		}
 		return this.addSprite(
 			position,
 			style.strategy,
-			style.data,
+			Pixies.clone(style.data),
 			uri,
 			scale,
 			0,
 			false,
-			style.oriented,
 			spriteType
 		);
 	}

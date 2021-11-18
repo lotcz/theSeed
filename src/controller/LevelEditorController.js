@@ -9,46 +9,35 @@ import LevelBuilder from "../builder/LevelBuilder";
 const DEBUG_EDITOR_CONTROLLER = false;
 
 export default class LevelEditorController extends ControllerBase {
-	constructor(game, model, controls) {
-		super(game, model, controls);
+	constructor(game, model) {
+		super(game, model);
 
 		this.lastMouseCoords = null;
 		this.lastHighlight = null;
+		this.mouseMoveHandler = (coordinates) => this.onMouseMove(coordinates);
+		this.mouseLeftHandler = (coordinates) => this.onMouseLeft(coordinates);
+		this.mouseRightHandler = (coordinates) => this.onMouseRight(coordinates);
+		this.zoomHandler = (zoom) => this.onZoom(zoom);
 	}
 
 	activateInternal() {
 		this.model.showGroundTiles.makeDirty();
 		this.model.showSpriteHelpers.makeDirty();
-		this.controls.mouseClick = null;
+		this.controls.mouseCoordinates.addOnChangeListener(this.mouseMoveHandler);
+		this.controls.addOnLeftClickListener(this.mouseLeftHandler);
+		this.controls.addOnRightClickListener(this.mouseRightHandler);
+		this.controls.zoom.addOnChangeListener(this.zoomHandler);
 	}
 
-	updateInternal(delta) {
-		if (this.controls.isDirty()) {
-
-			if (this.controls.mouseCoords.isDirty()) {
-				this.onMouseMove();
-				this.controls.mouseCoords.clean();
-			}
-			if (this.controls.mouseClick && this.controls.mouseClick.isDirty()) {
-				const position = this.getCursorGridPosition(this.controls.mouseClick);
-				if (this.controls.mouseClickLeft) {
-					this.processClick(position);
-				}
-				this.controls.mouseClick.clean();
-			}
-
-			if (this.controls.zoom.isDirty()) {
-				this.onZoom();
-				this.controls.resetZoom();
-			}
-			this.controls.clean();
-		}
-
-		this.scroll(delta);
+	deactivateInternal() {
+		this.controls.mouseCoordinates.removeOnChangeListener(this.mouseMoveHandler);
+		this.controls.removeOnLeftClickListener(this.mouseLeftHandler);
+		this.controls.removeOnRightClickListener(this.mouseRightHandler);
+		this.controls.zoom.removeOnChangeListener(this.zoomHandler);
 	}
 
-	getAffectedPositions(position, steps = 1) {
-		return this.level.grid.getAffectedPositions(position, steps);
+	getAffectedPositions(position) {
+		return this.level.grid.getAffectedPositions(position, Math.round(this.model.brushSize));
 	}
 
 	addGroundTile(position) {
@@ -87,22 +76,23 @@ export default class LevelEditorController extends ControllerBase {
 	}
 
 	processGroundClick(position) {
-		const positions = this.getAffectedPositions(position, Math.round(this.model.brushSize));
+		const positions = this.getAffectedPositions(position);
 		positions.forEach((p) => this.addGroundTile(p));
 	}
 
 	processSpriteClick(position) {
 		switch (this.model.selectedSpriteType) {
 			case EDITOR_TOOL_DELETE:
-				const visitors = this.chessboard.getTile(position);
-				const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
-
-				spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
+				const positions = this.getAffectedPositions(position);
+				positions.forEach((pos) => {
+					const visitors = this.chessboard.getTile(pos);
+					const spriteVisitors = visitors.filter((v) => v._is_sprite === true);
+					spriteVisitors.forEach((sprite) => this.level.sprites.remove(sprite));
+				});
 				break;
 			case EDITOR_TOOL_SELECT:
 				const visitors2 = this.chessboard.getVisitors(position, (v) => v._is_sprite === true);
-				this.model.selectedSprites.reset();
-				visitors2.forEach((sprite) => this.model.selectedSprites.add(sprite));
+				this.model.selectedSprites.set(visitors2);
 				break;
 			default:
 				const builder = new LevelBuilder(this.level);
@@ -120,57 +110,63 @@ export default class LevelEditorController extends ControllerBase {
 		return (this.model.selectedMode.get() === EDITOR_MODE_GROUND);
 	}
 
-	onMouseMove() {
-		const mousePosition = this.getCursorGridPosition(this.controls.mouseCoords);
+	onMouseMove(coordinates) {
+		const mousePosition = this.getCursorGridPosition(coordinates);
 
-		if (this.controls.mouseDownLeft && this.activateClickWhenDragging()) {
-			const position = this.getCursorGridPosition(this.controls.mouseCoords);
-			this.processClick(position);
-		} else {
-			let moved = true;
-			if (this.lastHighlight !== null) {
-				moved = (this.lastHighlight.distanceTo(mousePosition) > 0);
-			}
-			if (moved) {
-				this.model.highlightedTilePosition.set(mousePosition);
-				this.model.highlights.resetChildren();
-				const level = Math.round(this.model.brushSize);
-				//const session = Pixies.startDebugSession('affected positions');
-				const positions = this.getAffectedPositions(mousePosition, level);
-				//Pixies.finishDebugSession(session);
-				positions.forEach((p) => this.model.highlights.add(p));
-				this.lastHighlight = mousePosition;
-			}
+		if (this.controls.mouseDownLeft.get() && this.activateClickWhenDragging()) {
+			this.processClick(mousePosition);
 		}
-	}
 
-	scroll(delta) {
-		const speed = this.level.viewBoxScale.get(); //delta / 100;
-
-		if (this.controls.mouseDownRight) {
-			if (this.lastMouseCoords !== null) {
-				const diff = this.lastMouseCoords.subtract(this.controls.mouseCoords);
-				this.level.viewBoxCoordinates.set(this.level.viewBoxCoordinates.x + (diff.x * speed), this.level.viewBoxCoordinates.y + (diff.y * speed));
-				this.level.sanitizeViewBox();
-			}
-			this.lastMouseCoords = this.controls.mouseCoords;
+		if (this.controls.mouseDownRight.get()) {
+			this.scroll();
 		} else {
 			this.lastMouseCoords = null;
 		}
 
+		if ((this.lastHighlight === null) || (this.lastHighlight !== null && this.lastHighlight.distanceTo(mousePosition) > 0)) {
+			this.model.highlightedTilePosition.set(mousePosition);
+			this.model.highlights.resetChildren();
+			const positions = this.getAffectedPositions(mousePosition);
+			positions.forEach((p) => this.model.highlights.add(p));
+			this.lastHighlight = mousePosition;
+		}
 	}
 
-	onZoom() {
-		const zoomIn = this.controls.zoom.get() < 0;
+	onMouseLeft(coordinates) {
+		const position = this.getCursorGridPosition(coordinates);
+		this.processClick(position);
+	}
+
+	onMouseRight(coordinates) {
+		console.log('right click');
+	}
+
+	scroll() {
+		const speed = this.level.viewBoxScale.get(); //delta / 100;
+		if (this.lastMouseCoords !== null) {
+			const diff = this.lastMouseCoords.subtract(this.controls.mouseCoordinates);
+			this.level.viewBoxCoordinates.set(this.level.viewBoxCoordinates.x + (diff.x * speed), this.level.viewBoxCoordinates.y + (diff.y * speed));
+			this.level.sanitizeViewBox();
+		}
+		this.lastMouseCoords = this.controls.mouseCoordinates.clone();
+	}
+
+	onZoom(zoom) {
+		if (zoom === 0) {
+			return;
+		}
+		const zoomIn = zoom < 0;
 		const delta = (this.level.viewBoxScale.get() / 10) * this.controls.zoom.get();
-		const before = this.level.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.level.viewBoxSize.multiply(0.5));
+		const before = this.level.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoordinates : this.level.viewBoxSize.multiply(0.5));
 
 		this.level.viewBoxScale.set(Math.max( 0.1, Math.min(100, this.level.viewBoxScale.get() + delta)));
 
-		const after = this.level.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoords : this.level.viewBoxSize.multiply(0.5));
+		const after = this.level.getAbsoluteCoordinates(zoomIn ? this.controls.mouseCoordinates : this.level.viewBoxSize.multiply(0.5));
 		const diff = after.subtract(before);
 		this.level.viewBoxCoordinates.set(this.level.viewBoxCoordinates.x - diff.x, this.level.viewBoxCoordinates.y - diff.y);
 		this.level.sanitizeViewBox();
+		this.controls.zoom.set(0);
+		this.controls.zoom.clean();
 	}
 
 }

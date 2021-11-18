@@ -27,6 +27,10 @@ export default class Vector2 extends ModelBase {
 		return (v) ? this.x === v.x && this.y === v.y : false;
 	}
 
+	equalsToDiscrete(v) {
+		return this.toDiscreteSpace().equalsTo(v.toDiscreteSpace());
+	}
+
 	set(x, y) {
 		if (y === undefined && typeof x === 'object') {
 			this.set(x.x, x.y);
@@ -126,11 +130,20 @@ export default class Vector2 extends ModelBase {
 		const sinX = diff.x / diff.size();
 		const x = Math.asin(sinX);
 		const angle = -x * 180 / Math.PI;
-		return down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+		const result = down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
+		return result || 0;
+	}
+
+	toDiscreteSpace() {
+		return new Vector2(Math.round(this.x), Math.round(this.y));
 	}
 
 	addOnChangeListener(eventHandler) {
 		this.addEventListener('change', eventHandler);
+	}
+
+	removeOnChangeListener(eventHandler) {
+		this.removeEventListener('change', eventHandler);
 	}
 
 }

@@ -5,15 +5,39 @@ export default class SpriteRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
 		super(game, model, draw);
 
+		this.attachedSpriteChangedHandler = () => this.updateAttachedSprite();
+		this.attachedSpriteRenderer = null;
+	}
+
+	activateInternal() {
+		this.group = this.draw.group();
 		this.imageRenderer = null;
-
-		if (model.image) {
-			this.imageRenderer = new ImageRenderer(game, model.image, draw);
+		if (this.model.image) {
+			this.imageRenderer = new ImageRenderer(this.game, this.model.image, this.group);
 			this.addChild(this.imageRenderer);
-
-			if (model.onClick) {
-				this.imageRenderer.setOnClick(model.onClick);
+			this.imageRenderer.activate();
+			if (this.model.onClick) {
+				this.imageRenderer.setOnClick(this.model.onClick);
 			}
+		}
+		this.updateAttachedSprite();
+		this.model.attachedSprite.addOnChangeListener(this.attachedSpriteChangedHandler);
+	}
+
+	deactivateInternal() {
+		this.model.attachedSprite.removeOnChangeListener(this.attachedSpriteChangedHandler);
+		if (this.group) {
+			this.group.remove();
+			this.group = null;
+		}
+	}
+
+	updateAttachedSprite() {
+		if (this.attachedSpriteRenderer) this.removeChild(this.attachedSpriteRenderer);
+		if (this.model.attachedSprite.isSet()) {
+			this.attachedSpriteRenderer = new SpriteRenderer(this.game, this.model.attachedSprite.get(), this.group);
+			this.addChild(this.attachedSpriteRenderer);
+			this.attachedSpriteRenderer.activate();
 		}
 	}
 

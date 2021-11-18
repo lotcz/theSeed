@@ -4,14 +4,14 @@ import {NEIGHBOR_TYPE_UP} from "./GridModel";
 
 export default class HintModel extends ModelBase {
 	position;
-	imagePath;
+	imagePaths;
 	direction;
 
 	constructor() {
 		super();
 
 		this.position = new Vector2();
-		this.imagePath = '';
+		this.imagePaths = [];
 		this.direction = NEIGHBOR_TYPE_UP;
 	}
 

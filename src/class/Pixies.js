@@ -45,11 +45,13 @@ export default class Pixies {
 		}
 	}
 
+	static removeClass(element, css) {
+		element.classList.remove(css);
+	}
+
 	static createElement(parent, tag, css = null) {
 		const el = document.createElement(tag);
-		if (css !== null) {
-			this.addClass(el, css);
-		}
+		this.addClass(el, css);
 		if (parent) {
 			parent.appendChild(el);
 		}
@@ -72,5 +74,12 @@ export default class Pixies {
 
 	static finishDebugSession(session) {
 		console.log(`Finished debug session '${session.name}'. Took ${performance.now() - session.start} ms.`);
+	}
+
+	static clone(obj) {
+		if (obj === null || obj === undefined) {
+			return obj;
+		}
+		return JSON.parse(JSON.stringify(obj));
 	}
 }

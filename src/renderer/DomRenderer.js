@@ -1,8 +1,6 @@
 import RendererBase from "../class/RendererBase";
 import Pixies from "../class/Pixies";
 
-const DEBUG_DOM = true;
-
 export default class DomRenderer extends RendererBase {
 	dom;
 
@@ -14,6 +12,10 @@ export default class DomRenderer extends RendererBase {
 
 	addClass(element, css) {
 		Pixies.addClass(element, css);
+	}
+
+	removeClass(element, css) {
+		Pixies.removeClass(element, css);
 	}
 
 	createElement(parent, tag, css = null) {

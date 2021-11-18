@@ -8,7 +8,7 @@ import ResourceModel, {RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_SOUND} from "./Resourc
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {
 	IMAGE_BEE,
-	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
 	IMAGE_BEE_DEAD,
 	IMAGE_BEE_WING, IMAGE_HINT_BACKGROUND,
 	IMAGE_STARS_1,
@@ -20,20 +20,24 @@ import {
 import BeeImage from "../../res/img/bee.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
+import BeeCrawl1Image from "../../res/img/bee-walk-1.svg";
 import BeeWingImage from "../../res/img/wing.svg";
 import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import {MUSIC_STYLES} from "../builder/MusicStyle";
+import ControlsModel from "./ControlsModel";
 
 export const DEBUG_MODE = true;
 
 export default class GameModel extends ModelBase {
 	id;
+	controls;
 	level;
 	levelName;
 	lastLevelName;
+	lives;
 	menu;
 	editor;
 	isInEditMode;
@@ -45,11 +49,20 @@ export default class GameModel extends ModelBase {
 
 		this.id = Date.now();
 
+		this.controls = new ControlsModel();
+		this.addChild(this.controls);
+
+		this.history = new HashTableModel();
+		this.addChild(this.history);
+
 		this.level = new DirtyValue();
 		this.addChild(this.level);
 		this.levelName = new DirtyValue();
 		this.addChild(this.levelName);
 		this.lastLevelName = null;
+
+		this.lives = new DirtyValue(0);
+		this.addChild(this.lives);
 
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
@@ -72,6 +85,8 @@ export default class GameModel extends ModelBase {
 			id: this.id,
 			lastLevelName: this.lastLevelName,
 			levelName: this.levelName.get(),
+			history: this.history.getState(),
+			lives: this.lives.getState(),
 		}
 	}
 
@@ -79,12 +94,15 @@ export default class GameModel extends ModelBase {
 		if (state.id) this.id = state.id;
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
+		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
+		if (state.lives) this.lives.restoreState(state.lives);
 	}
 
 	initResources() {
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE, BeeImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_DEAD, BeeDeadImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL, BeeCrawlImage);
+		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_CRAWL_1, BeeCrawl1Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_BEE_WING, BeeWingImage);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_1, Stars1Image);
 		this.addResource(RESOURCE_TYPE_IMAGE, IMAGE_STARS_2, Stars2Image);
@@ -123,6 +141,22 @@ export default class GameModel extends ModelBase {
 		} else {
 			this.resources.add(uri, new ResourceModel({type: resType, uri: uri, data: data}));
 		}
+	}
+
+	historyExists(eventName) {
+		return this.history.exists(eventName);
+	}
+
+	setHistory(eventName, value = true) {
+		return this.history.set(eventName, new DirtyValue(value));
+	}
+
+	getHistory(eventName) {
+		return this.history.get(eventName);
+	}
+
+	removeHistory(eventName) {
+		return this.history.remove(eventName);
 	}
 
 }

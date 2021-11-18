@@ -93,13 +93,14 @@ export default class GridModel extends ModelBase {
 		return corners;
 	}
 
-	getCornerFromCoordinates(coordinates, i) {
+	getCornerFromCoordinates(coordinates, i, radius = null) {
 		const angle_rad = (Math.PI/3 * i);
-		return new Vector2(coordinates.x + this.tileRadius.get() * Math.cos(angle_rad), coordinates.y + this.tileRadius.get() * Math.sin(angle_rad));
+		radius = radius || this.tileRadius.get();
+		return new Vector2(coordinates.x + radius * Math.cos(angle_rad), coordinates.y + radius * Math.sin(angle_rad));
 	}
 
-	getCorner(position, i) {
-		return this.getCornerFromCoordinates(this.getCoordinates(position), i);
+	getCorner(position, i, radius = null) {
+		return this.getCornerFromCoordinates(this.getCoordinates(position), i, radius);
 	}
 
 	getNeighbor(position, direction, steps = 1) {

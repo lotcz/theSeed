@@ -97,8 +97,9 @@ export default class LevelRenderer extends SvgRenderer {
 					this.clipPath = this.draw.clip().add(this.clipCircle);
 					this.group.clipWith(this.clipPath);
 				}
+				const center = this.model.viewBoxSize.multiply(0.5);
 				const diameter = this.model.viewBoxSize.size();
-				const radius = (diameter * 0.5 * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
+				const radius = (diameter * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
 				this.clipCircle.radius(Math.max(radius, 0));
 				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
@@ -117,7 +118,7 @@ export default class LevelRenderer extends SvgRenderer {
 	openTween(value) {
 		const boundary1 = 0.3;
 		const boundary2 = 0.7;
-		const staticValue = 0.8;
+		const staticValue = 0.9;
 		if (value < boundary1) {
 			return staticValue * (value / boundary1);
 		} else if (value < boundary2) {

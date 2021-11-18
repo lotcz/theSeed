@@ -8,10 +8,6 @@ export default class DirtyValue extends ModelBase {
 		this.value = value;
 	}
 
-	addOnChangeListener(eventHandler) {
-		this.addEventListener('change', eventHandler);
-	}
-
 	set(value) {
 		if (this.value !== value) {
 			this.value = value;
@@ -28,6 +24,10 @@ export default class DirtyValue extends ModelBase {
 		return this.value === null || this.value === undefined;
 	}
 
+	isSet() {
+		return !this.isEmpty();
+	}
+
 	getState() {
 		return this.get();
 	}
@@ -38,6 +38,14 @@ export default class DirtyValue extends ModelBase {
 
 	restoreState(state) {
 		this.set(state);
+	}
+
+	addOnChangeListener(eventHandler) {
+		this.addEventListener('change', eventHandler);
+	}
+
+	removeOnChangeListener(eventHandler) {
+		this.removeEventListener('change', eventHandler);
 	}
 
 }

@@ -9,7 +9,8 @@
   "dependencies": {
     "@svgdotjs/svg.filter.js": "^3.0.7",
     "@svgdotjs/svg.js": "^3.1.1",
-    "dat.gui": "^0.7.7"
+    "dat.gui": "^0.7.7",
+    "localforage": "^1.10.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^9.0.1",
