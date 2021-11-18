@@ -4,6 +4,7 @@ import UpdatedStrategy from "./UpdatedStrategy";
 import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
 import Vector2 from "../../class/Vector2";
+import AnimatedRotation from "../../class/AnimatedRotation";
 
 export default class MovementStrategy extends UpdatedStrategy {
 	animatedCoordinates;
@@ -38,7 +39,7 @@ export default class MovementStrategy extends UpdatedStrategy {
 	setTargetRotation(rotation, timeout = null) {
 		if (!this.model.image.rotation.equalsTo(rotation)) {
 			if (timeout === null) timeout = this.defaultTimeout;
-			this.animatedRotation = new AnimatedValue(this.model.image.rotation.get(), RotationValue.normalizeValue(rotation), timeout);
+			this.animatedRotation = new AnimatedRotation(this.model.image.rotation.get(), rotation, timeout);
 		}
 	}
 

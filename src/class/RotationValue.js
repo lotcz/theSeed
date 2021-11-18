@@ -31,6 +31,17 @@ export default class RotationValue extends DirtyValue {
 		this.set(this.get() + value);
 	}
 
+	static subtractValues(a, b) {
+		let diff = a - b;
+		if (diff > 180) {
+			diff = 360 - diff;
+		}
+		if (diff < -180) {
+			diff = 360 + diff;
+		}
+		return diff;
+	}
+
 	equalsTo(value) {
 		return (this.value === RotationValue.normalizeValue(value));
 	}
