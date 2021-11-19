@@ -187,7 +187,13 @@ TODO:
 - production mode (exception handling and logging, hide all dev UI)
 
 - BETA for friends
+
+Improvements
+
+- better death (place sprite immediately and then follow it with camera so it behaves the same)
+
 - RELEASE
+
 
 
 Ads and monetization

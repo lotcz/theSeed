@@ -1,5 +1,5 @@
 import ControllerBase from "../../class/ControllerBase";
-import {IMAGE_BEE_DEAD, SPRITE_TYPE_DEAD_BEE} from "../../builder/SpriteStyle";
+import {IMAGE_BEE_DEAD, SPRITE_TYPE_BEE_DEAD} from "../../builder/SpriteStyle";
 import DeathSound from "../../../res/sound/death.wav";
 import Sound from "../../class/Sound";
 
@@ -29,7 +29,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 	}
 
 	deactivateInternal() {
-		const carcass = this.level.addSpriteFromStyle(this.initialPosition, SPRITE_TYPE_DEAD_BEE);
+		const carcass = this.level.addSpriteFromStyle(this.initialPosition, SPRITE_TYPE_BEE_DEAD);
 		carcass.isPersistent = false;
 	}
 

@@ -18,6 +18,7 @@ export default class LevelEditorController extends ControllerBase {
 		this.mouseLeftHandler = (coordinates) => this.onMouseLeft(coordinates);
 		this.mouseRightHandler = (coordinates) => this.onMouseRight(coordinates);
 		this.zoomHandler = (zoom) => this.onZoom(zoom);
+		this.controls.zoom.set(0);
 	}
 
 	activateInternal() {
@@ -123,7 +124,7 @@ export default class LevelEditorController extends ControllerBase {
 			this.lastMouseCoords = null;
 		}
 
-		if ((this.lastHighlight === null) || (this.lastHighlight !== null && this.lastHighlight.distanceTo(mousePosition) > 0)) {
+		if ((this.lastHighlight === null) || this.lastHighlight.distanceTo(mousePosition) > 0) {
 			this.model.highlightedTilePosition.set(mousePosition);
 			this.model.highlights.resetChildren();
 			const positions = this.getAffectedPositions(mousePosition);

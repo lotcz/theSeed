@@ -32,8 +32,7 @@ export default class CollectionModel extends ModelBase {
 	}
 
 	reset() {
-		while (this.children.length > 0) {
-			this.remove(this.children[0]);
+		while (this.removeFirst()) {
 		}
 	}
 
@@ -45,6 +44,7 @@ export default class CollectionModel extends ModelBase {
 		if (this.count() > 0) {
 			return this.remove(this.children[0]);
 		}
+		return false;
 	}
 
 	addOnRemoveListener(listener) {
@@ -65,6 +65,10 @@ export default class CollectionModel extends ModelBase {
 
 	forEach(func) {
 		this.children.forEach(func);
+	}
+
+	filter(func) {
+		return this.children.filter(func);
 	}
 
 }

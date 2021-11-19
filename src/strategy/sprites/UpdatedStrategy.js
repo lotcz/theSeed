@@ -1,14 +1,19 @@
 import SpriteStrategy from "./SpriteStrategy";
+import Pixies from "../../class/Pixies";
 
 export default class UpdatedStrategy extends SpriteStrategy {
 	defaultTimeout;
 	timeout;
+	randomizeInitialTimeout;
+	initialTimeoutRandomized;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
 		this.defaultTimeout = timeout;
 		this.timeout = Math.random() * this.defaultTimeout;
+		this.randomizeInitialTimeout = true;
+		this.initialTimeoutRandomized = false;
 	}
 
 	updateStrategy() {
@@ -26,7 +31,12 @@ export default class UpdatedStrategy extends SpriteStrategy {
 			if (!this.game.isInEditMode.get()) {
 				this.updateStrategy();
 			}
-			this.timeout = this.defaultTimeout;
+			if (this.randomizeInitialTimeout && !this.initialTimeoutRandomized) {
+				this.timeout = Pixies.random(this.defaultTimeout * 0.5, this.defaultTimeout * 1.5);
+				this.initialTimeoutRandomized = true;
+			} else {
+				this.timeout = this.defaultTimeout;
+			}
 		}
 		this.updateInternal(delta);
 	}

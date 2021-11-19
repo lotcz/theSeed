@@ -1,4 +1,5 @@
 import ModelBase from "./ModelBase";
+import RotationValue from "./RotationValue";
 
 export default class Vector2 extends ModelBase {
 	x;
@@ -132,6 +133,10 @@ export default class Vector2 extends ModelBase {
 		const angle = -x * 180 / Math.PI;
 		const result = down ? left ? (-90 - (90 + angle)) : (90 + (90 - angle)) : angle;
 		return result || 0;
+	}
+
+	getRotation(target) {
+		return RotationValue.normalizeValue(this.getAngleToY(target) + 180);
 	}
 
 	toDiscreteSpace() {

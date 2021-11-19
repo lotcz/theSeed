@@ -44,7 +44,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.actions = {
 			reload: () => this.reload(),
 			saveAndReload: () => this.saveAndReload(),
-			fitGrid: () => this.fitGrid(),
+			fitGrid: () => this.fitToGround(),
 			download: () => this.download()
 		};
 
@@ -378,7 +378,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	//</editor-fold>
 
-	fitGrid() {
+	fitToGround() {
 		console.log('Fitting...');
 		const level = this.game.level.get();
 		const tiles = level.ground.tiles.children;
@@ -406,6 +406,14 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		tiles.forEach((tile) => {
 			tile.position.set(tile.position.subtract(min));
 		});
+
+		level.sprites.forEach((sprite) => {
+			sprite.position.set(sprite.position.subtract(min));
+		});
+
+		if (level.bee) {
+			level.bee.position.set(level.bee.position.subtract(min));
+		}
 
 		level.grid.size.set(max.subtract(min));
 	}

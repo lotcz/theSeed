@@ -23,12 +23,22 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	updateStrategy() {
+
+		if (this.level.isWater(this.model.position)) {
+			this.defaultTimeout = this.defaultFallTimeout;
+			this.turnWhenMoving = false;
+			const up = this.grid.getNeighborUp(this.model.position);
+			this.setTargetPosition(up);
+			this.setTargetRotation(0);
+			return;
+		}
+
 		const down = this.grid.getNeighborDown(this.model.position);
 		if (this.level.isPenetrable(down)) {
 			this.defaultTimeout = this.defaultFallTimeout;
 			this.turnWhenMoving = false;
-			this.setTargetRotation(180, 500);
 			this.setTargetPosition(down);
+			this.setTargetRotation(0);
 			return;
 		}
 
@@ -44,7 +54,7 @@ export default class BugStrategy extends ObjectStrategy {
 				if (food.length > 0) {
 					const meal = food[0];
 
-					const angle = this.model.image.coordinates.getAngleToY(meal.image.coordinates);
+					const angle = this.model.image.coordinates.getRotation(meal.image.coordinates);
 					this.setTargetRotation(angle, 500);
 
 					const amount = 1; //Pixies.between(1, BUG_MAX_AMOUNT - this.model.data.amount, meal.data.amount);
@@ -76,7 +86,7 @@ export default class BugStrategy extends ObjectStrategy {
 			if (beePresent) {
 				BugStrategy.biteSound.replay();
 				this.level.bee.hurt(this.model.data.amount * 0.1);
-				const angle = this.model.image.coordinates.getAngleToY(this.level.bee.coordinates);
+				const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
 				this.setTargetRotation(angle, 500);
 				return;
 			}

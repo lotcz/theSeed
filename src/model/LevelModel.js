@@ -101,6 +101,7 @@ export default class LevelModel extends ModelBase {
 	}
 
 	getState() {
+		this.sanitizeGround();
 		return {
 			name: this.name,
 			grid: this.grid.getState(),
@@ -442,6 +443,11 @@ export default class LevelModel extends ModelBase {
 		this.parallax = parallax;
 		this.updateCameraOffset();
 		this.makeDirty();
+	}
+
+	sanitizeGround() {
+		const outliers = this.ground.tiles.filter((t) => !this.isValidPosition(t.position));
+		outliers.forEach((o) => this.ground.removeTile(o));
 	}
 
 }

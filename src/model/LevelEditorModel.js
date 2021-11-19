@@ -49,7 +49,7 @@ export default class LevelEditorModel extends ModelBase {
 		this.levelLoadRequest = new DirtyValue(false);
 		this.addChild(this.levelLoadRequest);
 
-		this.brushSize = 2;
+		this.brushSize = 1;
 
 		this.groundTypes = Object.keys(GROUND_STYLES);
 		this.groundTypes.unshift(EDITOR_TOOL_DELETE);

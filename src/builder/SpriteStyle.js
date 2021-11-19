@@ -4,16 +4,20 @@ import JellymakerImage from "../../res/img/jellymaker.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
-import BugImage from "../../res/img/bug.svg";
-import BugDeadImage from "../../res/img/bug-dead.svg";
 import ExitImage from "../../res/img/exit.svg";
 import NitrogenImage from "../../res/img/nitrogen.svg";
 import PhosphorusImage from "../../res/img/phosphorus.svg";
 import HintWasdImage from "../../res/img/hint-wasd.svg";
 import HintArrowsImage from "../../res/img/hint-arrows.svg";
-import BeeLifeImage from "../../res/img/bee-life.svg";
-import BeeDeadImage from "../../res/img/bee-dead.svg";
+
+import BugImage from "../../res/img/bug.svg";
 import BugEggImage from "../../res/img/bug-egg.svg";
+import BugDeadImage from "../../res/img/bug-dead.svg";
+
+import BeeLifeImage from "../../res/img/bee-life.svg";
+import BeeEggImage from "../../res/img/bee-egg.svg";
+import BeeBrokenEggImage from "../../res/img/bee-egg-broken.svg";
+import BeeDeadImage from "../../res/img/bee-dead.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
@@ -35,6 +39,8 @@ export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
 export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
+export const IMAGE_BEE_EGG = 'img/bee-egg.svg';
+export const IMAGE_BEE_BROKEN_EGG = 'img/bee-egg-broken.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
 export const IMAGE_BEE_CRAWL_1 = 'img/bee-walk-1.svg';
 export const IMAGE_BEE_WING = 'img/wing.svg';
@@ -66,7 +72,9 @@ export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export const SPRITE_TYPE_LIFE = 'life';
-export const SPRITE_TYPE_DEAD_BEE = 'dead-bee';
+export const SPRITE_TYPE_BEE_DEAD = 'dead-bee';
+export const SPRITE_TYPE_BEE_EGG = 'bee-egg';
+export const SPRITE_TYPE_BEE_BROKEN_EGG = 'bee-egg-broken';
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
 export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
@@ -116,11 +124,29 @@ SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
 	data:{amount: MINERAL_MAX_AMOUNT}
 };
 
-SPRITE_STYLES[SPRITE_TYPE_DEAD_BEE] = {
+SPRITE_STYLES[SPRITE_TYPE_BEE_DEAD] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_BEE_DEAD,
 		resource: BeeDeadImage
+	},
+	data: {amount: MINERAL_MAX_AMOUNT}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_EGG] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_BEE_EGG,
+		resource: BeeEggImage
+	},
+	data: {amount: MINERAL_MAX_AMOUNT}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_BROKEN_EGG] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_BEE_BROKEN_EGG,
+		resource: BeeBrokenEggImage
 	},
 	data: {amount: MINERAL_MAX_AMOUNT}
 };

@@ -1,5 +1,10 @@
 export default class Pixies {
 
+	static random(min, max) {
+		const diff = max - min;
+		return min + (diff * Math.random());
+	}
+
 	static randomElement(arr) {
 		return arr[Pixies.randomIndex(arr.length)];
 	}

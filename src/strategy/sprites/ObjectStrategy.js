@@ -44,12 +44,14 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			const up = this.grid.getNeighborUp(this.model.position);
 			this.defaultTimeout = this.defaultFloatTimeout;
 			this.setTargetPosition(up);
+			this.setTargetRotation(0);
 			return;
 		}
 
 		if (this.level.isPenetrable(down)) {
-			this.defaultTimeout = this.defaultFallTimeout;
+			this.defaultTimeout = this.level.isWater(down) ? this.defaultFloatTimeout * 2: this.defaultFallTimeout;
 			this.setTargetPosition(down);
+			this.setTargetRotation(0);
 			return;
 		}
 
