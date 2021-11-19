@@ -166,7 +166,6 @@ export default class LevelEditorController extends ControllerBase {
 		this.level.viewBoxCoordinates.set(this.level.viewBoxCoordinates.x - diff.x, this.level.viewBoxCoordinates.y - diff.y);
 		this.level.sanitizeViewBox();
 		this.controls.zoom.set(0);
-		this.controls.zoom.clean();
 	}
 
 }

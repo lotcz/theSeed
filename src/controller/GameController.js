@@ -9,15 +9,8 @@ import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
 
-import {
-	GROUND_PRESET_HILL,
-	GROUND_PRESET_SLOPE_LEFT,
-	GROUND_PRESET_SLOPE_RIGHT,
-	GROUND_PRESET_VALLEY
-} from "../builder/GroundBuilder";
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
-import {STRATEGY_STATIC} from "../builder/SpriteStyle";
 import HashTableModel from "../model/HashTableModel";
 import {DEBUG_MODE} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
@@ -147,6 +140,14 @@ export default class GameController extends ControllerBase {
 
 	}
 
+	getSavedLevelName(gameId, levelName) {
+		return `${SAVE_LEVEL_NAME_PREFIX}-${levelName}-${gameId}`;
+	}
+
+	getEditorLevelName(levelName) {
+		return `${EDITOR_LEVEL_NAME_PREFIX}-${levelName}`;
+	}
+
 	setActiveLevel(level) {
 		if (this.levelController) this.removeChild(this.levelController);
 		this.model.level.set(level);
@@ -165,14 +166,6 @@ export default class GameController extends ControllerBase {
 		if (level.isPlayable) {
 			this.saveGame();
 		}
-	}
-
-	getSavedLevelName(gameId, levelName) {
-		return `${SAVE_LEVEL_NAME_PREFIX}-${levelName}-${gameId}`;
-	}
-
-	getEditorLevelName(levelName) {
-		return `${EDITOR_LEVEL_NAME_PREFIX}-${levelName}`;
 	}
 
 	async loadLevelFromStorageAsync(name) {
@@ -260,7 +253,6 @@ export default class GameController extends ControllerBase {
 		if (level && level.isPlayable) {
 			this.levelController.deactivate();
 		}
-
 	}
 
 	showEditorMenu() {

@@ -263,6 +263,7 @@ export default class BeeController extends ControllerBase {
 			hintModel.position.set(this.grid.getPosition(BEE_CENTER));
 			hintModel.imagePaths = images;
 			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
+			hintModel.size = 3;
 			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
 			this.addChild(this.hintController);
 			this.hintController.activate();

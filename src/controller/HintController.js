@@ -10,8 +10,6 @@ import AhaSound from "../../res/sound/a-ha.mp3";
 import AnimationController from "./AnimationController";
 import AnimationModel from "../model/AnimationModel";
 
-const BUBBLES_COUNT = 3;
-
 export default class HintController extends ControllerBase {
 	static ahaSound = new Sound(AhaSound);
 	background;
@@ -57,14 +55,14 @@ export default class HintController extends ControllerBase {
 	initialize() {
 		this.destroy();
 		let position = this.model.position.clone();
-		for (let i = 0; i < BUBBLES_COUNT; i++) {
+		for (let i = 1; i <= this.model.size; i++) {
 			position = this.grid.getNeighbor(position, this.model.direction);
-			const sprite = this.addSprite(this.model.position, {targetScale: ((i + 1) / BUBBLES_COUNT), targetPosition: position, isHiding: false, }, IMAGE_HINT_BACKGROUND, 0.01);
+			const sprite = this.addSprite(this.model.position, {targetScale: (i / this.model.size), targetPosition: position, isHiding: false, }, IMAGE_HINT_BACKGROUND, 0.01);
 			sprite.isPersistent = false;
 			this.background.push(sprite);
 		}
-		position = this.grid.getNeighbor(position, this.model.direction, 2);
-		const positions = this.grid.getAffectedPositions(position, 2);
+		position = this.grid.getNeighbor(position, this.model.direction, this.model.size + 1);
+		const positions = this.grid.getAffectedPositions(position, this.model.size);
 		for (let i = 0, max = positions.length; i < max; i++) {
 			const sprite = this.addSprite(this.model.position, {targetScale: 2, targetPosition: positions[i], isHiding: false}, IMAGE_HINT_BACKGROUND, 0.5);
 			this.background.push(sprite);
