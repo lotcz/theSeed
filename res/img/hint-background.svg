@@ -11,7 +11,6 @@
    sodipodi:docname="hint-background.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -29,7 +28,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="2.7709666"
-     inkscape:cx="13.172299"
+     inkscape:cx="13.533184"
      inkscape:cy="71.274767"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -47,7 +46,7 @@
      transform="translate(-70.446548,-80.699328)">
     <a
        id="a8343"
-       transform="matrix(0.624584,0,0,0.55826503,54.953667,50.234098)"
+       transform="matrix(0.62152894,0,0,0.55826503,55.220417,50.234098)"
        style="fill:#ffffff;fill-opacity:0.538462">
       <ellipse
          style="fill:#ffffff;fill-opacity:0.538462;stroke-width:0.264999;stroke-linejoin:bevel"
@@ -57,23 +56,29 @@
          rx="31.254457"
          ry="35.223274" />
     </a>
-    <use
-       x="0"
-       y="0"
-       xlink:href="#a8343"
-       id="use9053"
-       transform="matrix(0.89657652,0,0,0.92184929,9.5022112,7.8588335)"
-       width="100%"
-       height="100%"
-       style="fill:#ffffff;fill-opacity:0.405594" />
-    <use
-       x="0"
-       y="0"
-       xlink:href="#a8343"
-       id="use10963"
-       transform="matrix(0.77876478,0,0,0.80384139,20.396149,19.475268)"
-       width="100%"
-       height="100%"
-       style="fill:#ffffff;fill-opacity:0.405594" />
+    <a
+       id="a112530"
+       transform="matrix(0.58945085,0,0,0.52844595,56.970959,53.007173)"
+       style="fill:#ffffff;fill-opacity:0.538462">
+      <ellipse
+         style="fill:#ffffff;fill-opacity:0.538462;stroke-width:0.264999;stroke-linejoin:bevel"
+         id="ellipse112528"
+         cx="56.059578"
+         cy="89.79454"
+         rx="31.254457"
+         ry="35.223274" />
+    </a>
+    <a
+       id="a112518"
+       transform="matrix(0.54973511,0,0,0.49184982,59.197406,56.150079)"
+       style="fill:#ffffff;fill-opacity:1">
+      <ellipse
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.264999;stroke-linejoin:bevel"
+         id="ellipse112516"
+         cx="56.059578"
+         cy="89.79454"
+         rx="31.254457"
+         ry="35.223274" />
+    </a>
   </g>
 </svg>

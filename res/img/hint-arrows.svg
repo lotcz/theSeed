@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="true"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.74386223"
-     inkscape:cx="-246.68546"
-     inkscape:cy="-73.266255"
+     inkscape:zoom="2.9754489"
+     inkscape:cx="114.10043"
+     inkscape:cy="88.558065"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -131,53 +131,41 @@
        transform="scale(0.26458333)"
        id="text34777"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect34779);fill:#000000;fill-opacity:1;stroke:none" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="65.096985"
-       y="-157.24924"
+    <g
+       aria-label="ß"
+       transform="rotate(89.293841)"
        id="text39525-6"
-       transform="rotate(89.293841)"><tspan
-         sodipodi:role="line"
-         id="tspan39523-7"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-         x="65.096985"
-         y="-157.24924">ß</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-195.45578"
-       y="-94.889221"
+       style="font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';stroke-width:0.264583">
+      <path
+         d="m 65.990984,-161.07328 3.824044,-3.82404 h 1.441768 l -3.312449,3.31244 h 6.630065 v 1.02319 h -6.630065 l 3.312449,3.31245 h -1.441768 z"
+         id="path111420" />
+    </g>
+    <g
+       aria-label="ß"
+       transform="rotate(-179.65427)"
        id="text39525-6-8"
-       transform="rotate(-179.65427)"><tspan
-         sodipodi:role="line"
-         id="tspan39523-7-2"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-         x="-195.45578"
-         y="-94.889221">ß</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-100.89128"
-       y="164.85556"
+       style="font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';stroke-width:0.264583">
+      <path
+         d="m -194.56178,-98.713265 3.82404,-3.824045 h 1.44177 l -3.31245,3.31245 h 6.63007 v 1.02319 h -6.63007 l 3.31245,3.312449 h -1.44177 z"
+         id="path111464" />
+    </g>
+    <g
+       aria-label="ß"
+       transform="rotate(-90.324857)"
        id="text39525-6-5"
-       transform="rotate(-90.324857)"><tspan
-         sodipodi:role="line"
-         id="tspan39523-7-7"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-         x="-100.89128"
-         y="164.85556">ß</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="128.9828"
-       y="95.622429"
+       style="font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';stroke-width:0.264583">
+      <path
+         d="m -99.997282,161.03152 3.824044,-3.82405 h 1.441768 l -3.312449,3.31245 h 6.630065 v 1.02319 h -6.630065 l 3.312449,3.31245 h -1.441768 z"
+         id="path111442" />
+    </g>
+    <g
+       aria-label="ß"
+       transform="rotate(-0.80059011)"
        id="text39525-6-5-8"
-       transform="rotate(-0.80059011)"><tspan
-         sodipodi:role="line"
-         id="tspan39523-7-7-9"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
-         x="128.9828"
-         y="95.622429">ß</tspan></text>
+       style="font-size:10.5833px;line-height:1.25;font-family:Wingdings;-inkscape-font-specification:'Wingdings, Normal';stroke-width:0.264583">
+      <path
+         d="m 129.8768,91.798385 3.82405,-3.824044 h 1.44176 l -3.31244,3.312449 h 6.63006 v 1.02319 h -6.63006 l 3.31244,3.312449 h -1.44176 z"
+         id="path111398" />
+    </g>
   </g>
 </svg>

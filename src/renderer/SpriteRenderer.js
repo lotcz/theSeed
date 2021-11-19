@@ -7,6 +7,7 @@ export default class SpriteRenderer extends SvgRenderer {
 
 		this.attachedSpriteChangedHandler = () => this.updateAttachedSprite();
 		this.attachedSpriteRenderer = null;
+		this.imageRenderer = null;
 	}
 
 	activateInternal() {

@@ -8,6 +8,9 @@ export default class SpriteCollectionRenderer extends SvgRenderer {
 		this.model.children.forEach((m) => this.addRenderer(m));
 		this.model.addOnAddListener((param) => this.addRenderer(param));
 		this.model.addOnRemoveListener((param) => this.removeRenderer(param));
+
+		this.cycles = 0;
+		this.session = null;
 	}
 
 	addRenderer(model) {

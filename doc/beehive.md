@@ -182,7 +182,7 @@ TODO:
 =====
 
 - build demo levels
-- mobile widgets
+- mobile widgets (performance?, improve image rendering?, replace SVG.js?)
 - improve graphics
 - production mode (exception handling and logging, hide all dev UI)
 

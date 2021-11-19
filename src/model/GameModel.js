@@ -29,7 +29,7 @@ import HintBackgroundImage from "../../res/img/hint-background.svg";
 import {MUSIC_STYLES} from "../builder/MusicStyle";
 import ControlsModel from "./ControlsModel";
 
-export const DEBUG_MODE = true;
+export const DEBUG_MODE = false;
 
 export default class GameModel extends ModelBase {
 	id;

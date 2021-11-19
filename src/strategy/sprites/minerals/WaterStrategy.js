@@ -14,9 +14,11 @@ export default class WaterStrategy extends MineralStrategy {
 	}
 
 	updateStrategy() {
-		if (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < 2) {
-			WaterStrategy.splashSound.replay();
-			this.level.bee.hurt(0.5);
+		if (this.level.bee) {
+			if (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < 2) {
+				WaterStrategy.splashSound.replay();
+				this.level.bee.hurt(0.5);
+			}
 		}
 
 		const visitors = this.chessboard.getTile(this.model.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_WATER);
