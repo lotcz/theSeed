@@ -368,7 +368,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		const actions = {
 			deleteSprite: () => {
-				this.model.selectedSprites.remove(sprite);
+				const selected = this.model.selectedSprites.get();
+				if (selected && selected.length > 0) {
+					selected.splice(selected.indexOf(sprite), 1);
+					this.model.selectedSprites.set(selected);
+				}
 				this.level.sprites.remove(sprite);
 				gui.hide();
 			}

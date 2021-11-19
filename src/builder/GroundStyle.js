@@ -20,6 +20,7 @@ export const GROUND_TYPE_ROCK = 'rock';
 export const GROUND_TYPE_GRASS = 'grass';
 export const GROUND_TYPE_HONEY = 'honey';
 export const GROUND_TYPE_WAX = 'wax';
+export const GROUND_TYPE_WAX_DOOR = 'wax-door';
 export const GROUND_TYPE_WATER = 'water';
 export const GROUND_TYPE_CLOUD = 'cloud';
 export const GROUND_TYPE_SOIL_BACKGROUND = 'background-soil';
@@ -68,6 +69,12 @@ GROUND_STYLES[GROUND_TYPE_HONEY] = {
 GROUND_STYLES[GROUND_TYPE_WAX] = {
 	fill: ORANGE_DARK,
 	stroke: { width: 10, color: ORANGE_DARKEST},
+	renderCorners: true
+};
+
+GROUND_STYLES[GROUND_TYPE_WAX_DOOR] = {
+	fill: YELLOW_DARK,
+	stroke: { width: 10, color: YELLOW_DARKEST},
 	renderCorners: true
 };
 
