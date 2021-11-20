@@ -29,16 +29,18 @@ export default class JellymakerStrategy extends StaticStrategy {
 			this.hintController.activate();
 		}
 
-		const beeDistance = this.model.position.distanceTo(this.level.bee.position);
-		if (this.hintController.isActivated()) {
-			if (beeDistance > (3 * HINT_DISTANCE)) {
-				this.hintController.hide();
+		if (this.level.isPlayable && this.level.bee) {
+			const beeDistance = this.model.position.distanceTo(this.level.bee.position);
+			if (this.hintController.isActivated()) {
+				if (beeDistance > (3 * HINT_DISTANCE)) {
+					this.hintController.hide();
+				} else {
+					this.hintController.show();
+				}
 			} else {
-				this.hintController.show();
-			}
-		} else {
-			if (beeDistance < HINT_DISTANCE) {
-				this.hintController.show();
+				if (beeDistance < HINT_DISTANCE) {
+					this.hintController.show();
+				}
 			}
 		}
 	}

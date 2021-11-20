@@ -18,6 +18,7 @@ import BeeLifeImage from "../../res/img/bee-life.svg";
 import BeeEggImage from "../../res/img/bee-egg.svg";
 import BeeBrokenEggImage from "../../res/img/bee-egg-broken.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
+import BeeQueenImage from "../../res/img/bee-queen.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
@@ -37,14 +38,17 @@ import WormButtImage from "../../res/img/worm-butt.svg";
 export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
 export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
 
-export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
+
 export const IMAGE_BEE = 'img/bee.svg';
-export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
-export const IMAGE_BEE_EGG = 'img/bee-egg.svg';
-export const IMAGE_BEE_BROKEN_EGG = 'img/bee-egg-broken.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
 export const IMAGE_BEE_CRAWL_1 = 'img/bee-walk-1.svg';
 export const IMAGE_BEE_WING = 'img/wing.svg';
+
+export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
+export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
+export const IMAGE_BEE_EGG = 'img/bee-egg.svg';
+export const IMAGE_BEE_BROKEN_EGG = 'img/bee-egg-broken.svg';
+export const IMAGE_BEE_QUEEN = 'img/bee-queen.svg';
 
 export const IMAGE_STARS_1 = 'img/stars-1.svg';
 export const IMAGE_STARS_2 = 'img/stars-2.svg';
@@ -72,11 +76,12 @@ export const IMAGE_WORM_HEAD = 'img/worm-head.svg';
 export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
-export const SPRITE_TYPE_LIFE = 'life';
+export const SPRITE_TYPE_BEE_LIFE = 'bee-life';
 export const SPRITE_TYPE_BEE_DEAD = 'bee-dead';
 export const SPRITE_TYPE_BEE_EGG = 'bee-egg';
 export const SPRITE_TYPE_BEE_BROKEN_EGG = 'bee-egg-broken';
-export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
+export const SPRITE_TYPE_BEE_QUEEN = 'bee-queen';
+export const SPRITE_TYPE_BEE_PINK_JELLY_MAKER = 'bee-pink-jelly-maker';
 export const SPRITE_TYPE_HINT = 'hint';
 export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
 export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
@@ -99,7 +104,8 @@ export const STRATEGY_STATIC = 'static';
 export const STRATEGY_OBJECT = 'object';
 export const STRATEGY_HINT = 'hint';
 export const STRATEGY_MINERAL = 'mineral';
-export const STRATEGY_JELLYMAKER = 'jellymaker';
+export const STRATEGY_JELLY_MAKER = 'jellymaker';
+export const STRATEGY_QUEEN = 'queen';
 export const STRATEGY_BUG = 'bug';
 export const STRATEGY_BUTTERFLY = 'butterfly';
 export const STRATEGY_WORM = 'worm';
@@ -111,11 +117,11 @@ export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 export const STRATEGY_DOOR_SLOT = 'door-slot';
 
-export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_OBJECT, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT].sort();
+export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_OBJECT, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLY_MAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT, STRATEGY_QUEEN].sort();
 
 export const SPRITE_STYLES = [];
 
-SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
+SPRITE_STYLES[SPRITE_TYPE_BEE_LIFE] = {
 	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_LIFE,
@@ -137,7 +143,8 @@ SPRITE_STYLES[SPRITE_TYPE_BEE_EGG] = {
 	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_BEE_EGG,
-		resource: BeeEggImage
+		resource: BeeEggImage,
+		scale: 0.5
 	},
 	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
@@ -151,14 +158,22 @@ SPRITE_STYLES[SPRITE_TYPE_BEE_BROKEN_EGG] = {
 	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
 
-SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
-	strategy: STRATEGY_JELLYMAKER,
+SPRITE_STYLES[SPRITE_TYPE_BEE_PINK_JELLY_MAKER] = {
+	strategy: STRATEGY_JELLY_MAKER,
 	image: {
 		uri: IMAGE_JELLYMAKER,
 		resource: JellymakerImage
 	},
 	data: {
 		hintDirection: NEIGHBOR_TYPE_UP
+	}
+};
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_QUEEN] = {
+	strategy: STRATEGY_QUEEN,
+	image: {
+		uri: IMAGE_BEE_QUEEN,
+		resource: BeeQueenImage
 	}
 };
 

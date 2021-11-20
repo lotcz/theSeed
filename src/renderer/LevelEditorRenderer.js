@@ -81,7 +81,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		sizeFolder.add(level.viewBoxSize, 'x').listen();
 		sizeFolder.add(level.viewBoxSize, 'y').listen();
 		sizeFolder.open();
-		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen();
+		levelFolder.add(level.viewBoxScale, 'value', 0, 100).name('viewBoxScale').listen().onChange(() => level.viewBoxScale.makeDirty());
 		const positionFolder = levelFolder.addFolder('viewBoxCoordinates')
 		positionFolder.add(level.viewBoxCoordinates, 'x').listen();
 		positionFolder.add(level.viewBoxCoordinates, 'y').listen();
@@ -362,7 +362,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.path, 'value').name('path');
 			imgFolder.add(sprite.image.coordinates, 'x');
 			imgFolder.add(sprite.image.coordinates, 'y');
-			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation');
+			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation').listen().onChange(() => sprite.image.rotation.makeDirty());
+			imgFolder.add(sprite.image.scale, 'value').name('scale').listen().onChange(() => sprite.image.scale.makeDirty());
 			imgFolder.open();
 		}
 

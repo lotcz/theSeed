@@ -14,8 +14,8 @@ import {
 	STRATEGY_EMITTER, STRATEGY_EMPTY,
 	STRATEGY_EXIT,
 	STRATEGY_HINT,
-	STRATEGY_JELLYMAKER,
-	STRATEGY_MINERAL, STRATEGY_OBJECT,
+	STRATEGY_JELLY_MAKER,
+	STRATEGY_MINERAL, STRATEGY_OBJECT, STRATEGY_QUEEN,
 	STRATEGY_STATIC,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
@@ -27,6 +27,7 @@ import HintStrategy from "../strategy/sprites/special/HintStrategy";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 import EmptyStrategy from "../strategy/sprites/EmptyStrategy";
 import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
+import BeeQueenStrategy from "../strategy/sprites/animals/BeeQueenStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -67,8 +68,10 @@ export default class SpriteController extends ControllerBase {
 				return new ExitStrategy(this.game, model, this.controls);
 			case STRATEGY_EMITTER:
 				return new EmitterStrategy(this.game, model, this.controls);
-			case STRATEGY_JELLYMAKER:
+			case STRATEGY_JELLY_MAKER:
 				return new JellymakerStrategy(this.game, model, this.controls);
+			case STRATEGY_QUEEN:
+				return new BeeQueenStrategy(this.game, model, this.controls);
 			case STRATEGY_HINT:
 				return new HintStrategy(this.game, model, this.controls);
 			case STRATEGY_DOOR_SLOT:

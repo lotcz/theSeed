@@ -100,9 +100,11 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		if (this.animatedScale) {
 			const scale = this.animatedScale.get(delta);
 			this.model.image.scale.set(scale);
+			/*
 			if (this.model.attachedSprite.isSet()) {
 				this.model.attachedSprite.get().image.scale.set(scale);
 			}
+			*/
 			if (this.animatedScale.isFinished()) {
 				this.animatedScale = null;
 			}

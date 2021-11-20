@@ -9,12 +9,12 @@ const DEFAULT_FLOAT_TIMEOUT = 500;
 export default class ObjectStrategy extends AnimatedStrategy {
 	maxAmount;
 
-	constructor(game, model, controls, timeout = DEFAULT_OBJECT_MAX_AMOUNT) {
+	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
 
 		this.turnWhenMoving = true;
 		this.maxAmount = DEFAULT_OBJECT_MAX_AMOUNT;
-		this.defaultMoveTimeout = timeout;
+		this.defaultMoveTimeout = this.defaultTimeout;
 		this.defaultFallTimeout = DEFAULT_FALL_TIMEOUT;
 		this.defaultFloatTimeout = DEFAULT_FLOAT_TIMEOUT;
 		this.lastAmount = null;
@@ -28,12 +28,8 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		this.model._is_crawlable = true;
 	}
 
-	activateInternal() {
-		this.updateAmount();
-		super.activateInternal();
-	}
-
 	updateStrategy() {
+		this.updateAmount();
 		this.defaultTimeout = this.defaultMoveTimeout;
 
 		const down = this.grid.getNeighborDown(this.model.position);
@@ -74,11 +70,6 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			this.defaultTimeout = this.defaultMoveTimeout;
 		}
 
-	}
-
-	updateInternal(delta) {
-		this.updateAmount();
-		super.updateInternal(delta);
 	}
 
 	static getObjectScale(amount, maxAmount) {

@@ -2,18 +2,16 @@ import ControllerBase from "../class/ControllerBase";
 import {
 	IMAGE_HINT_ARROWS,
 	IMAGE_HINT_WASD,
-	IMAGE_POTASSIUM, SPRITE_TYPE_LIFE,
-	STRATEGY_MINERAL,
+	IMAGE_POTASSIUM, SPRITE_STYLES, SPRITE_TYPE_BEE_LIFE, STRATEGY_DOOR_SLOT,
+	STRATEGY_MINERAL, STRATEGY_OBJECT,
 	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
-import {GROUND_TYPE_WAX} from "../builder/GroundStyle";
 
 import Vector2 from "../class/Vector2";
 import BeeFlightStrategy from "../strategy/bee/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
-import MineralStrategy, {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
 
 import OuchSound from "../../res/sound/ouch.mp3";
@@ -21,11 +19,11 @@ import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
 import HintController from "./HintController";
-import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
+import ObjectStrategy, {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.1; // health per second
-const MAX_INVENTORY_AMOUNT = MINERAL_MAX_AMOUNT;
+const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 1000;
 
 export default class BeeController extends ControllerBase {
@@ -34,6 +32,7 @@ export default class BeeController extends ControllerBase {
 	leaving;
 	dropItemTimeout;
 	showingControlsHint;
+	showingDoorsHint;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -42,6 +41,7 @@ export default class BeeController extends ControllerBase {
 		this.leaving = null;
 		this.dropItemTimeout = 0;
 		this.showingControlsHint = false;
+		this.showingDoorsHint = false;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
@@ -188,14 +188,32 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 		const visitors = this.chessboard.getVisitors(position);
-		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_LIFE);
+		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
 		lives.forEach((l) => {
 			this.game.lives.set(this.game.lives.get() + 1);
 			this.level.sprites.remove(l);
 		});
 
-		const minerals = visitors.filter((v) => v._is_sprite && v.strategy.get() === STRATEGY_MINERAL);
+		const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT));
 		minerals.forEach((m) =>	this.takeItem(m));
+
+		const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
+		if (doors.length > 0) {
+			const data = doors[0].data;
+			const key = data && data.key;
+			const style = SPRITE_STYLES[key];
+			if (!style) {
+				console.log('Door style not found!', key, doors[0]);
+			} else {
+				this.showingDoorsHint = true;
+				this.showHint([style.image.uri], 2);
+			}
+		} else {
+			if (this.showingDoorsHint) {
+				this.hideHint();
+				this.showingDoorsHint = false;
+			}
+		}
 	}
 
 	carriedAmount() {
@@ -257,13 +275,13 @@ export default class BeeController extends ControllerBase {
 		this.showingControlsHint = true;
 	}
 
-	showHint(images) {
+	showHint(images, size = 3) {
 		if (!this.hintController) {
 			const hintModel = new HintModel();
 			hintModel.position.set(this.grid.getPosition(BEE_CENTER));
 			hintModel.imagePaths = images;
 			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
-			hintModel.size = 3;
+			hintModel.size = size;
 			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
 			this.addChild(this.hintController);
 			this.hintController.activate();

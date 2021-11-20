@@ -140,7 +140,7 @@ export default class LevelModel extends ModelBase {
 		if (state.exitLeft) this.exitLeft = state.exitLeft;
 		if (state.exitRight) this.exitRight = state.exitRight;
 		if (state.exitTop) this.exitTop = state.exitTop;
-		if (state.exitBottom) this.exitLeft = state.exitBottom;
+		if (state.exitBottom) this.exitBottom = state.exitBottom;
 
 	}
 
@@ -400,6 +400,10 @@ export default class LevelModel extends ModelBase {
 
 	addSpriteFromStyle(position, spriteType) {
 		const style = SPRITE_STYLES[spriteType];
+		if (!style) {
+			console.error(`Style for spriteType '${spriteType}' not found!`);
+			return;
+		}
 		let uri = null;
 		let scale = 1;
 		if (style.image) {
