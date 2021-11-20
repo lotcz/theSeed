@@ -276,7 +276,7 @@ export default class BeeController extends ControllerBase {
 	}
 
 	showHint(images, size = 3) {
-		if (!this.hintController) {
+		if (!this.hintController || !this.hintController.isInitialized()) {
 			const hintModel = new HintModel();
 			hintModel.position.set(this.grid.getPosition(BEE_CENTER));
 			hintModel.imagePaths = images;
