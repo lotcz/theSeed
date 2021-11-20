@@ -4,7 +4,7 @@ import {IMAGE_POTASSIUM} from "../../../builder/SpriteStyle";
 import StaticStrategy from "../StaticStrategy";
 
 const HINT_TIMEOUT = 1000;
-const HINT_DISTANCE = 4;
+const HINT_DISTANCE = 1;
 
 export default class JellymakerStrategy extends StaticStrategy {
 	hintController;
@@ -31,7 +31,7 @@ export default class JellymakerStrategy extends StaticStrategy {
 
 		const beeDistance = this.model.position.distanceTo(this.level.bee.position);
 		if (this.hintController.isActivated()) {
-			if (beeDistance > (2 * HINT_DISTANCE)) {
+			if (beeDistance > (3 * HINT_DISTANCE)) {
 				this.hintController.hide();
 			} else {
 				this.hintController.show();

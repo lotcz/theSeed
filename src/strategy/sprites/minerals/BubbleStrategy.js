@@ -1,4 +1,3 @@
-import ObjectStrategy from "../ObjectStrategy";
 import {WATER_UNIT_SIZE} from "./WaterStrategy";
 import {SPRITE_TYPE_WATER} from "../../../builder/SpriteStyle";
 import MineralStrategy from "./MineralStrategy";

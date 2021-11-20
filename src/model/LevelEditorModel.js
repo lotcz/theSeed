@@ -53,12 +53,13 @@ export default class LevelEditorModel extends ModelBase {
 
 		this.groundTypes = Object.keys(GROUND_STYLES);
 		this.groundTypes.unshift(EDITOR_TOOL_DELETE);
+		this.groundTypes.sort();
 		this.selectedGroundType = this.groundTypes[0];
 
 		this.spriteTypes = Object.keys(SPRITE_STYLES);
 		this.spriteTypes.unshift(EDITOR_TOOL_SELECT);
 		this.spriteTypes.unshift(EDITOR_TOOL_DELETE);
-
+		this.spriteTypes.sort();
 		this.selectedSpriteType = this.spriteTypes[0];
 
 		this.selectedSprites = new DirtyValue([]);

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="232.48041"
-   height="179.3029"
-   viewBox="0 0 61.510441 47.440561"
+   width="219.80544"
+   height="151.49442"
+   viewBox="0 0 58.156855 40.082899"
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
@@ -24,9 +24,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:snap-global="false"
-     inkscape:zoom="0.76435185"
-     inkscape:cx="-84.385221"
-     inkscape:cy="-38.594791"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="72.774077"
+     inkscape:cy="103.84615"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -45,13 +45,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-47.674765,-94.454487)">
-    <ellipse
-       style="fill:#bf8c4a;stroke-width:1.75196;stroke-linecap:round;stroke-linejoin:round"
-       id="path137040"
-       cx="76.578613"
-       cy="132.35834"
-       rx="26.999998"
-       ry="3.9807689" />
     <g
        id="g18128"
        transform="matrix(0.74948216,0.47012281,0.53015831,-0.66461028,-49.402329,170.77878)">
@@ -236,18 +229,6 @@
        style="fill:#050505;fill-opacity:0.461538;stroke-width:0.207112;stroke-linejoin:bevel"
        d="m 95.443972,128.91169 c 0.641699,-2.80753 -17.260165,-1.40982 -25.535258,-3.64938 -8.193792,-2.21756 -11.409293,-1.07816 -12.051017,1.72938 -0.641738,2.80755 6.104463,7.94763 14.191257,7.52067 8.29121,-0.43781 22.753286,-2.79312 23.395018,-5.60067 z"
        sodipodi:nodetypes="sssss" />
-    <g
-       id="g131535"
-       transform="matrix(-0.33103925,-0.0305363,-0.02739256,0.29695844,98.608265,94.91658)">
-      <g
-         id="g131576">
-        <path
-           id="path126595"
-           style="fill:#bf8c4a;stroke-width:10.4389;stroke-linecap:round;stroke-linejoin:round"
-           d="m 43.013776,140.57893 c -11.474208,10.93274 -92.400914,29.40369 -86.320741,-1.99522 6.703513,-34.61793 90.882621,62.14718 97.720958,-68.556985 5.621747,-1.787302 10.273691,-2.312463 16.355013,0.384136 3.117371,37.133469 -4.06158,47.592549 -27.75523,70.168069 z"
-           sodipodi:nodetypes="ssccs" />
-      </g>
-    </g>
     <path
        id="path18002"
        style="fill:#050505;stroke-width:0.159287;stroke-linejoin:bevel"

@@ -20,6 +20,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.maxAmount = BUG_MAX_AMOUNT;
 
 		this.model._is_penetrable = false;
+		this.model._is_crawlable = false;
 	}
 
 	updateStrategy() {

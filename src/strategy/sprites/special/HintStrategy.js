@@ -10,6 +10,7 @@ export default class HintStrategy extends AnimatedStrategy {
 
 		this.turnWhenMoving = false;
 		this.timeout = 0;
+		this.randomizeInitialTimeout = false;
 		this.start = this.model.position.clone();
 	}
 

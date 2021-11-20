@@ -2,18 +2,18 @@ import AnimatedStrategy from "./AnimatedStrategy";
 import Vector2 from "../../class/Vector2";
 import Pixies from "../../class/Pixies";
 
-const DEFAULT_MAX_AMOUNT = 5;
+export const DEFAULT_OBJECT_MAX_AMOUNT = 5;
 const DEFAULT_FALL_TIMEOUT = 200;
 const DEFAULT_FLOAT_TIMEOUT = 500;
 
 export default class ObjectStrategy extends AnimatedStrategy {
 	maxAmount;
 
-	constructor(game, model, controls, timeout) {
+	constructor(game, model, controls, timeout = DEFAULT_OBJECT_MAX_AMOUNT) {
 		super(game, model, controls, timeout);
 
 		this.turnWhenMoving = true;
-		this.maxAmount = DEFAULT_MAX_AMOUNT;
+		this.maxAmount = DEFAULT_OBJECT_MAX_AMOUNT;
 		this.defaultMoveTimeout = timeout;
 		this.defaultFallTimeout = DEFAULT_FALL_TIMEOUT;
 		this.defaultFloatTimeout = DEFAULT_FLOAT_TIMEOUT;
@@ -21,8 +21,11 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		this.timeout = 0;
 
 		if (!this.model.data.amount) {
-			this.model.data.amount = 1;
+			this.model.data.amount = DEFAULT_OBJECT_MAX_AMOUNT;
 		}
+
+		this.model._is_penetrable = false;
+		this.model._is_crawlable = true;
 	}
 
 	activateInternal() {

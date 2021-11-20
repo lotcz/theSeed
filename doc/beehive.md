@@ -191,6 +191,7 @@ TODO:
 Improvements
 
 - better death (place sprite immediately and then follow it with camera so it behaves the same)
+- healing?
 
 - RELEASE
 

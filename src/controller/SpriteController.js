@@ -15,7 +15,7 @@ import {
 	STRATEGY_EXIT,
 	STRATEGY_HINT,
 	STRATEGY_JELLYMAKER,
-	STRATEGY_MINERAL,
+	STRATEGY_MINERAL, STRATEGY_OBJECT,
 	STRATEGY_STATIC,
 	STRATEGY_TURNER,
 	STRATEGY_WATER,
@@ -26,6 +26,7 @@ import JellymakerStrategy from "../strategy/sprites/animals/JellymakerStrategy";
 import HintStrategy from "../strategy/sprites/special/HintStrategy";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 import EmptyStrategy from "../strategy/sprites/EmptyStrategy";
+import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -48,6 +49,8 @@ export default class SpriteController extends ControllerBase {
 				return new EmptyStrategy(this.game, model, this.controls);
 			case STRATEGY_STATIC:
 				return new StaticStrategy(this.game, model, this.controls);
+			case STRATEGY_OBJECT:
+				return new ObjectStrategy(this.game, model, this.controls);
 			case STRATEGY_BUG:
 				return new BugStrategy(this.game, model, this.controls);
 			case STRATEGY_BUTTERFLY:

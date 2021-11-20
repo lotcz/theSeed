@@ -22,6 +22,7 @@ import BeeDeadImage from "../../res/img/bee-dead.svg";
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS} from "./GroundStyle";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
+import {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 
 /*
 
@@ -72,7 +73,7 @@ export const IMAGE_WORM_BODY = 'img/worm-body.svg';
 export const IMAGE_WORM_BUTT = 'img/worm-butt.svg';
 
 export const SPRITE_TYPE_LIFE = 'life';
-export const SPRITE_TYPE_BEE_DEAD = 'dead-bee';
+export const SPRITE_TYPE_BEE_DEAD = 'bee-dead';
 export const SPRITE_TYPE_BEE_EGG = 'bee-egg';
 export const SPRITE_TYPE_BEE_BROKEN_EGG = 'bee-egg-broken';
 export const SPRITE_TYPE_JELLYMAKER = 'jellymaker';
@@ -95,23 +96,22 @@ export const SPRITE_TYPE_DOOR_SLOT = 'door-slot';
 
 export const STRATEGY_EMPTY = 'empty';
 export const STRATEGY_STATIC = 'static';
-
-export const STRATEGY_JELLYMAKER = 'jellymaker';
+export const STRATEGY_OBJECT = 'object';
 export const STRATEGY_HINT = 'hint';
+export const STRATEGY_MINERAL = 'mineral';
+export const STRATEGY_JELLYMAKER = 'jellymaker';
 export const STRATEGY_BUG = 'bug';
 export const STRATEGY_BUTTERFLY = 'butterfly';
 export const STRATEGY_WORM = 'worm';
 export const STRATEGY_BUBBLE = 'bubble';
 export const STRATEGY_WATER = 'water';
-export const STRATEGY_MINERAL = 'mineral';
 
 export const STRATEGY_EMITTER = 'emitter';
-
 export const STRATEGY_EXIT = 'exit';
 export const STRATEGY_TURNER = 'turner';
 export const STRATEGY_DOOR_SLOT = 'door-slot';
 
-export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT];
+export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_OBJECT, STRATEGY_BUG, STRATEGY_WATER, STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_BUTTERFLY, STRATEGY_WORM, STRATEGY_EXIT, STRATEGY_EMITTER, STRATEGY_JELLYMAKER, STRATEGY_HINT, STRATEGY_DOOR_SLOT].sort();
 
 export const SPRITE_STYLES = [];
 
@@ -125,30 +125,30 @@ SPRITE_STYLES[SPRITE_TYPE_LIFE] = {
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BEE_DEAD] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_BEE_DEAD,
 		resource: BeeDeadImage
 	},
-	data: {amount: MINERAL_MAX_AMOUNT}
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BEE_EGG] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_BEE_EGG,
 		resource: BeeEggImage
 	},
-	data: {amount: MINERAL_MAX_AMOUNT}
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BEE_BROKEN_EGG] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_BEE_BROKEN_EGG,
 		resource: BeeBrokenEggImage
 	},
-	data: {amount: MINERAL_MAX_AMOUNT}
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_JELLYMAKER] = {
