@@ -1,8 +1,8 @@
-import UpdatedStrategy from "../UpdatedStrategy";
+import AnimatedStrategy from "../AnimatedStrategy";
 
 const DOOR_TIMEOUT = 2000;
 
-export default class DoorSlotStrategy extends UpdatedStrategy {
+export default class DoorSlotStrategy extends AnimatedStrategy {
 	isOpen;
 
 	constructor(game, model, controls) {

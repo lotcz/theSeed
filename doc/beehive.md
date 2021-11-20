@@ -28,44 +28,39 @@ How to open blocked access?
 Items
 -----
 
-- rocks - can block movement or kill a bug when dropped onto it from above
+- rock - can block movement or kill a bug when dropped onto it from above
 - water - basis of life, make some flowers grow, prevent movement of bugs
-- potassium - building block of green plants, base for wax
+- potassium (green)- building block of green plants
 - nectar (yellow) - basic reward from visiting flowers
 - pollen (red) - another flower product
-- drop of lemonade
 - insecticide (poisonous to all insect)
+- drop of lemonade
 
 - yellow jelly - made from nectar and water
 - pink jelly - made from pollen and water
 - green jelly - made from potassium and water
 - honey - made from yellow and pink jelly
 - propolis - made from green and red jelly, repels or kills some bugs
-- wax - made from green and yellow jelly, can be dropped to form a wall
 - egg - produced by Queen, becomes a larva when placed in a jelly basin
 - larva - becomes a follower when fed with yellow jelly
 
 - rock spike
 
-
 Bees
 ----
 
 - Worker - flies around, cleans and guards a beehive, kills bugs
-- Follower - represents a life, follows bee in beehive, but wait at start of levels
 - Queen - lay an egg when fed with honey
 - Yellow Jellymaker - turns nectar and water into yellow jelly
 - Red Jellymaker - turns pollen and water into pink jelly
 - Green Jellymaker - turns potassium and water into green jelly
-- Waxmaker - turns green and yellow and jelly into wax
 - Propolismaker - turns green and red and jelly into propolis
 - Honeymaker - turns yellow and pink jelly into honey
 
 Animals
 -------
 
-- red bug egg
-- Pink Bug - will grow into red bug, can be taken by bee
+- red bug egg, will grow into red bug, can be taken by bee
 - Red Bug - eats nectar, can hurt bee, spawns reb bug eggs
 
 - ant egg - will draw ant workers attention
@@ -75,7 +70,7 @@ Animals
 - butterfly egg
 - Caterpillar - eats everything, will turn into pupa
 - Pupa/Cocoon - will grow into butterfly
-- Butterfly - eats pollen, can spawn cocoons
+- Butterfly - eats pollen, can spawn eggs
 
 - Hornet - killer wasp
 - Earthworm - eats through green material
@@ -89,7 +84,7 @@ Plants
 - yellow blossoms - produces nectar
 - pumpkin/gourd
 - tree
-- cave moss
+- cave moss, ivy
 - water lilies
 - carnivorous plant
 
@@ -100,13 +95,10 @@ Beehive
 -------
 
 separated into chambers, originally some doors remain waxed until later time
-queen and some other bees "say" what needs to be brought
-
 doors lead to different levels, each with a danger and puzzle mission
 when danger mission is finished, safer way may open for later
 
-when you die and have no followers, you respawn in beehive
-followers follow the bee in the beehive, in levels they stay at safe location
+when you die and have no lives, you respawn in beehive
 
 Cave 1
 ------
@@ -122,7 +114,6 @@ collect some nectar and play with bugs
 Cave 2
 ------
 
-unborn follower is requesting jelly
 you must collect pollen
 little more challenging caves, have worms eat your way through
 
@@ -181,6 +172,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
+- start crawling when carrying crawlable and close to ground
 - build demo levels
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
 - improve graphics

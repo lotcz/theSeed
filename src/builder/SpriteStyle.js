@@ -121,6 +121,12 @@ export const SPRITE_STRATEGIES = [STRATEGY_STATIC, STRATEGY_EMPTY, STRATEGY_OBJE
 
 export const SPRITE_STYLES = [];
 
+/*
+SPECIAL
+ */
+
+
+
 SPRITE_STYLES[SPRITE_TYPE_BEE_LIFE] = {
 	strategy: STRATEGY_STATIC,
 	image: {
@@ -307,7 +313,14 @@ SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	data: {type:'water', timeout:3000, max:-1}
 };
 
+import KeyholeImage from "../../res/img/keyhole.svg";
+export const IMAGE_KEYHOLE = 'img/keyhole.svg';
+
 SPRITE_STYLES[SPRITE_TYPE_DOOR_SLOT] = {
 	strategy: STRATEGY_DOOR_SLOT,
-	data: {key: SPRITE_TYPE_POTASSIUM, door: GROUND_TYPE_GRASS, size:4}
+	data: {key: SPRITE_TYPE_POTASSIUM, door: GROUND_TYPE_GRASS, size:4},
+	image: {
+		uri: IMAGE_KEYHOLE,
+		resource: KeyholeImage
+	},
 };
