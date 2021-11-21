@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="63.640831mm"
-   height="54.235729mm"
-   viewBox="0 0 63.640831 54.235729"
+   width="65.86702mm"
+   height="53.678738mm"
+   viewBox="0 0 65.86702 53.678737"
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
@@ -24,14 +24,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:snap-global="false"
-     inkscape:zoom="1.5287037"
-     inkscape:cx="99.103574"
-     inkscape:cy="89.618413"
-     inkscape:window-width="1284"
-     inkscape:window-height="1040"
-     inkscape:window-x="1891"
-     inkscape:window-y="52"
-     inkscape:window-maximized="0"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="79.642641"
+     inkscape:cy="133.60993"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="3192"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -43,7 +43,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-47.435752,-93.48444)">
+     transform="translate(-47.553992,-93.688608)">
+    <path
+       id="path117403"
+       style="fill:#050505;stroke-width:1.04054;stroke-linecap:round;stroke-linejoin:round"
+       d="m 102.64351,116.7064 1.17823,-0.16663 c 0,0 2.53906,-9.87394 1.74152,-12.69544 -0.18335,-0.64862 -0.80617,-0.56052 -1.17821,0.16663 -1.61851,3.1632 -1.74154,12.69544 -1.74154,12.69544 z"
+       sodipodi:nodetypes="ccaac" />
+    <path
+       id="path22857"
+       style="fill:#050505;stroke-width:1.04054;stroke-linecap:round;stroke-linejoin:round"
+       d="m 104.2265,117.27377 1.09411,0.46792 c 0,0 7.28766,-7.12964 8.06741,-9.9561 0.17937,-0.64974 -0.39908,-0.89713 -1.09407,-0.4679 -3.02326,1.86687 -8.06745,9.95608 -8.06745,9.95608 z"
+       sodipodi:nodetypes="ccaac" />
     <path
        id="path43827"
        style="fill:#050505;fill-opacity:0.461538;stroke-width:0.280248;stroke-linejoin:bevel"
@@ -53,9 +63,9 @@
        inkscape:transform-center-y="-9.062828" />
     <g
        id="g18662"
-       transform="matrix(0.57466133,0.81607256,-1.0128842,0.47164971,170.99622,1.5936738)"
-       inkscape:transform-center-x="8.7515263"
-       inkscape:transform-center-y="5.613146"
+       transform="matrix(0.6954476,-0.71593485,0.65117859,0.90793959,-71.248341,59.471324)"
+       inkscape:transform-center-x="-7.2284789"
+       inkscape:transform-center-y="7.4527504"
        style="fill:#262626;fill-opacity:1">
       <path
          id="path18555"
@@ -75,9 +85,9 @@
     </g>
     <g
        id="g18533"
-       transform="matrix(0.30348821,0.74947522,-0.70687396,0.41507023,157.32249,11.844889)"
-       inkscape:transform-center-x="3.2733609"
-       inkscape:transform-center-y="2.3926151"
+       transform="matrix(-0.50394088,0.63234626,0.55979513,0.59881842,51.176119,-0.74444976)"
+       inkscape:transform-center-x="-2.3288859"
+       inkscape:transform-center-y="3.3020355"
        style="fill:#262626;fill-opacity:0.839216">
       <g
          id="g18112"
@@ -109,10 +119,10 @@
     </g>
     <g
        id="g18138"
-       transform="matrix(0.86246084,-0.23044129,0.21240616,0.88597335,-13.801063,21.118816)"
+       transform="matrix(0.79741529,0.40133619,-0.43044075,0.80298563,83.547717,-22.646796)"
        style="fill:#262626;fill-opacity:1"
-       inkscape:transform-center-x="0.4375281"
-       inkscape:transform-center-y="4.2600125">
+       inkscape:transform-center-x="2.4162207"
+       inkscape:transform-center-y="3.5514452">
       <path
          id="path18130"
          style="fill:#262626;fill-opacity:1;stroke-width:0.0677414;stroke-linejoin:bevel"
@@ -223,7 +233,7 @@
        inkscape:transform-center-y="-5.0898739" />
     <g
        id="g9393"
-       transform="matrix(1.2242951,0.25425238,-0.2480236,1.1943018,0.51186353,-38.078704)">
+       transform="matrix(1.1451292,0.50221701,-0.48991349,1.1170753,36.2208,-55.92267)">
       <ellipse
          style="fill:#000000;fill-opacity:1;stroke-width:0.0622696;stroke-linejoin:bevel"
          id="ellipse8524"
@@ -292,7 +302,9 @@
     </g>
     <g
        id="g18545"
-       transform="rotate(-1.8812285,11.992026,300.49159)">
+       transform="rotate(30.012347,85.695787,121.55237)"
+       inkscape:transform-center-x="3.8129553"
+       inkscape:transform-center-y="8.6499269">
       <g
          id="g18541"
          transform="translate(2.9423077,-12.115385)">
@@ -322,7 +334,7 @@
     </g>
     <g
        id="g18128"
-       transform="matrix(-1.0309229,0.40030445,0.2620463,1.0155783,152.37889,-52.978915)"
+       transform="matrix(1.0329572,-0.39502534,0.48723309,0.92880109,-71.027863,33.653921)"
        style="fill:#050505;fill-opacity:1">
       <path
          id="path18105"

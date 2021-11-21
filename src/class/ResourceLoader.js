@@ -38,6 +38,8 @@ export default class ResourceLoader extends Tree {
 		const resource = this.resources.get(this.uri);
 		if (resource === undefined) {
 			console.error(`Resource '${this.uri}' not found!`);
+			this.loaded = true;
+			this.update();
 			return;
 		}
 

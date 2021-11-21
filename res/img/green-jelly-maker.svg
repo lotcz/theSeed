@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="178.51225"
-   height="247.64822"
-   viewBox="0 0 47.231367 65.523594"
+   width="179.61028"
+   height="225.32814"
+   viewBox="0 0 47.521885 59.618072"
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="jellymaker.svg"
+   sodipodi:docname="green-jelly-maker.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,9 +24,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:snap-global="false"
-     inkscape:zoom="3.0574074"
-     inkscape:cx="102.21078"
-     inkscape:cy="126.4143"
+     inkscape:zoom="2.1619135"
+     inkscape:cx="23.358936"
+     inkscape:cy="107.54362"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -44,16 +44,16 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-54.634925,-82.188518)">
+     transform="translate(-54.634925,-86.969041)">
     <path
        id="path117403"
        style="fill:#050505;stroke-width:1.04054;stroke-linecap:round;stroke-linejoin:round"
-       d="m 83.557816,95.620176 1.164937,-0.242658 c 0,0 1.893704,-10.017775 0.91494,-12.781636 -0.225003,-0.635369 -0.840784,-0.5071 -1.164938,0.242659 C 83.062686,86.1 83.557816,95.620176 83.557816,95.620176 Z"
+       d="m 80.528936,98.059266 0.715838,0.950546 c 0,0 9.869934,-2.554666 11.953432,-4.61766 0.478964,-0.47425 0.100575,-0.976705 -0.715838,-0.950546 -3.551403,0.113793 -11.953432,4.61766 -11.953432,4.61766 z"
        sodipodi:nodetypes="ccaac" />
     <path
        id="rect115545"
        style="fill:#050505;stroke-width:1.01735;stroke-linecap:round;stroke-linejoin:round"
-       d="m 79.534061,95.228485 1.076651,-0.543206 c 0,0 -0.501288,-9.700445 -2.100207,-11.96326 -0.367568,-0.520186 -0.93668,-0.23305 -1.076651,0.543207 -0.608872,3.376718 2.100207,11.963259 2.100207,11.963259 z"
+       d="m 80.025732,95.231143 0.950133,0.74263 c 0,0 8.562496,-4.586239 9.928487,-6.996829 0.314019,-0.554158 -0.188216,-0.946708 -0.950134,-0.742629 -3.314341,0.887746 -9.928486,6.996828 -9.928486,6.996828 z"
        sodipodi:nodetypes="ccaac" />
     <g
        id="g18128"
@@ -81,7 +81,7 @@
     </g>
     <g
        id="g18138"
-       transform="matrix(-0.39127144,-0.69921378,-0.68764122,0.32416883,203.49566,125.56551)">
+       transform="matrix(-0.39127144,-0.69921378,-0.68764122,0.32416883,201.50528,126.51744)">
       <path
          id="path18130"
          style="fill:#050505;stroke-width:0.0677414;stroke-linejoin:bevel"
@@ -103,14 +103,9 @@
          d="m 94.025861,156.10509 c 0.190183,0.0194 0.281417,-0.18475 0.189069,-0.56177 -0.266784,-0.57121 -1.027428,-1.69233 -1.231484,-1.9323 -0.175323,0.0342 -0.364393,0.32662 -0.398775,0.7446 0.135986,0.35038 1.082585,1.54666 1.441186,1.74947 z"
          sodipodi:nodetypes="ccccc" />
     </g>
-    <path
-       id="path1868"
-       style="fill:#050505;stroke-width:0.1567;stroke-linejoin:bevel"
-       d="m 77.20642,135.07881 c -0.595675,-0.21621 -1.448998,-0.42573 -1.665816,0.50681 -0.230069,0.98951 1.594251,3.03124 0.05183,10.51243 2.752172,-1.24474 3.608303,-8.15636 3.381285,-9.20724 -0.226978,-1.05087 -1.20015,-1.60614 -1.7673,-1.812 z"
-       sodipodi:nodetypes="scccs" />
     <g
        id="g4846"
-       transform="matrix(0.01228434,-0.91799413,-1.1313457,-0.00783805,217.31124,193.96602)">
+       transform="matrix(0.01459006,-1.0534621,-1.3436951,-0.00899471,244.26493,205.85096)">
       <ellipse
          style="fill:#050505;fill-opacity:1;stroke-width:0.276598;stroke-linejoin:bevel"
          id="path846"
@@ -149,7 +144,7 @@
     </g>
     <g
        id="g4839"
-       transform="matrix(-0.2319883,-0.90301318,-1.1231028,0.14667368,240.14936,186.88859)">
+       transform="matrix(-0.2319883,-0.90301318,-1.1231028,0.14667368,240.40898,185.93667)">
       <ellipse
          style="fill:#f8ff25;fill-opacity:1;stroke-width:0.183264;stroke-linejoin:bevel"
          id="ellipse4835"
@@ -197,7 +192,7 @@
     </g>
     <g
        id="g14903"
-       transform="matrix(0.0956905,-0.68514186,-1.0212126,-0.05048294,192.96264,186.983)">
+       transform="matrix(0.0956905,-0.68514186,-1.0212126,-0.05048294,192.76496,181.57816)">
       <ellipse
          style="fill:#f0ff00;fill-opacity:1;stroke-width:0.307943;stroke-linejoin:bevel"
          id="path9417"
@@ -215,7 +210,7 @@
     </g>
     <g
        id="g113312"
-       transform="translate(0.61191933,-6.3639611)">
+       transform="translate(0.87153472,-7.3158842)">
       <path
          id="path18002"
          style="fill:#050505;stroke-width:0.159287;stroke-linejoin:bevel"
@@ -273,49 +268,20 @@
     </g>
     <path
        id="ellipse4848"
-       style="fill:#f0ff00;stroke-width:0.161082;stroke-linejoin:bevel"
-       d="M 86.37372,94.052569 C 83.662993,92.451188 75.014987,92.207867 72.479825,96.400103 70.428522,99.792219 72.211589,111.31217 76.0667,110.53753 80.817865,109.45427 91.162906,96.971304 86.37372,94.052569 Z"
+       style="fill:#f0ff00;stroke-width:0.157437;stroke-linejoin:bevel"
+       d="m 83.313635,101.41173 c -0.08186,-3.112731 -4.347601,-11.409688 -9.107259,-12.41049 -3.851238,-0.809786 -12.412001,4.751772 -9.783567,8.153898 3.345192,4.149722 18.96178,9.786072 18.890826,4.256592 z"
        sodipodi:nodetypes="cscc" />
     <ellipse
-       style="fill:#000000;fill-opacity:1;stroke-width:0.0813732;stroke-linejoin:bevel"
-       id="ellipse8524"
-       cx="3.7539961"
-       cy="-122.66324"
-       rx="5.041923"
-       ry="2.8828456"
-       transform="matrix(0.56680175,-0.82385422,-0.59571395,-0.80319667,0,0)" />
-    <g
-       id="g1908"
-       transform="matrix(-1.4325154,0.32803179,0.13408782,1.3423577,216.05401,-87.755508)"
-       style="fill:#d26895;fill-opacity:1">
-      <ellipse
-         style="fill:#d26895;fill-opacity:1;stroke-width:0.0596514;stroke-linejoin:bevel"
-         id="ellipse9386"
-         cx="-135.41614"
-         cy="70.235893"
-         rx="3.4313874"
-         ry="2.2762835"
-         transform="matrix(-0.30935394,-0.95094697,0.96059613,-0.27794798,0,0)" />
-    </g>
-    <ellipse
-       style="fill:#000000;fill-opacity:1;stroke-width:0.0910133;stroke-linejoin:bevel"
-       id="ellipse4850"
-       cx="68.857307"
-       cy="115.23106"
-       rx="5.3856759"
-       ry="3.376163"
-       transform="matrix(-0.39837399,0.91722307,0.95487458,0.29700933,0,0)" />
-    <ellipse
-       style="fill:#d26895;fill-opacity:1;stroke-width:0.0862462;stroke-linejoin:bevel"
+       style="fill:#5bcd59;fill-opacity:1;stroke:#043604;stroke-width:0.482552;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="ellipse8628"
-       cx="65.253876"
-       cy="112.78923"
-       rx="5.2531953"
-       ry="3.1082089"
-       transform="matrix(-0.38252623,0.92394463,0.94720748,0.32062126,0,0)" />
+       cx="0.99739128"
+       cy="117.91521"
+       rx="3.4382136"
+       ry="3.6492658"
+       transform="matrix(-0.84248838,0.53871452,0.64607496,0.76327397,0,0)" />
     <g
        id="g113404"
-       transform="matrix(-1,0,0,1,154.37191,-5.8744257)">
+       transform="matrix(-1,0,0,1,156.27576,-6.9994257)">
       <path
          id="path113394"
          style="fill:#050505;stroke-width:0.159287;stroke-linejoin:bevel"
@@ -341,5 +307,13 @@
            sodipodi:nodetypes="ccccc" />
       </g>
     </g>
+    <ellipse
+       style="fill:#5bcd59;fill-opacity:1;stroke:#043604;stroke-width:0.525653;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse18455"
+       cx="2.429646"
+       cy="123.80016"
+       rx="3.7489624"
+       ry="3.9713466"
+       transform="matrix(-0.84411254,0.53616604,0.64858256,0.76114431,0,0)" />
   </g>
 </svg>

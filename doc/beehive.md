@@ -28,7 +28,7 @@ How to open blocked access?
 Items
 -----
 
-- rock - can block movement or kill a bug when dropped onto it from above
+- stone - can block movement or kill a bug when dropped onto it from above
 - water - basis of life, make some flowers grow, prevent movement of bugs
 - potassium (green)- building block of green plants
 - nectar (yellow) - basic reward from visiting flowers

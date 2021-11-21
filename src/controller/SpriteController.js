@@ -17,7 +17,6 @@ import {
 	STRATEGY_JELLY_MAKER,
 	STRATEGY_MINERAL, STRATEGY_OBJECT, STRATEGY_QUEEN,
 	STRATEGY_STATIC,
-	STRATEGY_TURNER,
 	STRATEGY_WATER,
 	STRATEGY_WORM
 } from "../builder/SpriteStyle";
@@ -56,8 +55,6 @@ export default class SpriteController extends ControllerBase {
 				return new BugStrategy(this.game, model, this.controls);
 			case STRATEGY_BUTTERFLY:
 				return new ButterflyStrategy(this.game, model, this.controls);
-			case STRATEGY_TURNER:
-				return new StaticStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:
 				return new WaterStrategy(this.game, model, this.controls);
 			case STRATEGY_BUBBLE:

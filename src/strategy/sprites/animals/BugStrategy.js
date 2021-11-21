@@ -7,7 +7,7 @@ import Vector2 from "../../../class/Vector2";
 import MineralStrategy, {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy";
 
 const BUG_TIMEOUT = 1000;
-export const BUG_MAX_AMOUNT = 5;
+export const BUG_MAX_AMOUNT = 15;
 
 export default class BugStrategy extends ObjectStrategy {
 	static biteSound = new Sound(BiteSound);
@@ -21,10 +21,10 @@ export default class BugStrategy extends ObjectStrategy {
 
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = false;
+
 	}
 
 	updateStrategy() {
-
 		if (this.level.isWater(this.model.position)) {
 			this.defaultTimeout = this.defaultFallTimeout;
 			this.turnWhenMoving = false;
@@ -71,15 +71,12 @@ export default class BugStrategy extends ObjectStrategy {
 					}
 					this.turnWhenMoving = false;
 					eaten = true;
+					this.updateAmount();
 				}
 				i++;
 			}
 
 			if (eaten) return;
-		} else {
-			this.spawnEgg();
-			//this.die();
-			return;
 		}
 
 		if (this.level.isPlayable && this.level.bee) {

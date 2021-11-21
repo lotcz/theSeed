@@ -7,7 +7,8 @@ import GameRenderer from "./renderer/GameRenderer";
 import Pixies from "./class/Pixies";
 
 const MAX_DELTA = 500;
-const DEBUG_MASTER = false;
+const PROFILING_MASTER = false;
+const DEBUG_MASTER = true;
 
 const game = new GameModel();
 
@@ -18,6 +19,10 @@ controller.activate();
 
 const renderer = new GameRenderer(game, draw);
 renderer.activate();
+
+if (DEBUG_MASTER) {
+	window['game'] = game;
+}
 
 let lastTime = null;
 
@@ -34,7 +39,7 @@ const updateLoop = function ()
 
 	if (delta < MAX_DELTA)
 	{
-		if (DEBUG_MASTER) {
+		if (PROFILING_MASTER) {
 			if (cycles <= 0) {
 				cycles = 250;
 				if (renderingSession) Pixies.finishDebugSession(renderingSession);
@@ -49,14 +54,14 @@ const updateLoop = function ()
 
 		controller.update(delta);
 
-		if (DEBUG_MASTER) {
+		if (PROFILING_MASTER) {
 			Pixies.pauseDebugSession(controllingSession);
 			Pixies.resumeDebugSession(renderingSession);
 		}
 
 		renderer.render();
 
-		if (DEBUG_MASTER) {
+		if (PROFILING_MASTER) {
 			Pixies.pauseDebugSession(renderingSession);
 		}
 	} else {

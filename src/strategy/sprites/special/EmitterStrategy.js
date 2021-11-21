@@ -14,6 +14,7 @@ export default class EmitterStrategy extends UpdatedStrategy {
 
 		this.max = -1;
 		this.emitted = 0;
+		this.randomizeTimeout = true;
 
 		this.builder = new LevelBuilder(this.level);
 

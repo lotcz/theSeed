@@ -28,6 +28,11 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		this.model._is_crawlable = true;
 	}
 
+	activateInternal() {
+		this.updateAmount();
+		super.activateInternal();
+	}
+
 	updateStrategy() {
 		this.updateAmount();
 		this.defaultTimeout = this.defaultMoveTimeout;
