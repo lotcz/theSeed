@@ -49,7 +49,7 @@ export default class ParallaxRenderer extends SvgRenderer {
 		);
 		parallaxBack.filterWith(this.filter);
 
-		this.model.layers.children.sort((a, b) => (a.distance < b.distance) ? -1 : ((a.distance > b.distance) ? 1 : 0));
+		this.model.layers.children.sort((a, b) => (a.distance > b.distance) ? -1 : ((a.distance < b.distance) ? 1 : 0));
 
 		this.model.layers.forEach((layer) => {
 			layer.image.size = this.gridSize;
