@@ -38,6 +38,7 @@ export default class GameModel extends ModelBase {
 	levelName;
 	lastLevelName;
 	lives;
+	maxLives;
 	menu;
 	editor;
 	isInEditMode;
@@ -63,6 +64,8 @@ export default class GameModel extends ModelBase {
 
 		this.lives = new DirtyValue(0);
 		this.addChild(this.lives);
+		this.maxLives = new DirtyValue(0);
+		this.addChild(this.maxLives);
 
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
@@ -87,6 +90,7 @@ export default class GameModel extends ModelBase {
 			levelName: this.levelName.get(),
 			history: this.history.getState(),
 			lives: this.lives.getState(),
+			maxLives: this.maxLives.getState(),
 		}
 	}
 
@@ -96,6 +100,7 @@ export default class GameModel extends ModelBase {
 		if (state.levelName) this.levelName.restoreState(state.levelName);
 		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
 		if (state.lives) this.lives.restoreState(state.lives);
+		if (state.maxLives) this.maxLives.restoreState(state.maxLives);
 	}
 
 	initResources() {

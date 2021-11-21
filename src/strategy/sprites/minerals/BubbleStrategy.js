@@ -21,6 +21,7 @@ export default class BubbleStrategy extends MineralStrategy {
 			this.level.sprites.remove(this.model);
 			this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_WATER);
 		}
+		this.updateAmount();
 	}
 
 }

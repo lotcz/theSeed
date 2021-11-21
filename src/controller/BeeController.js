@@ -190,6 +190,7 @@ export default class BeeController extends ControllerBase {
 		const visitors = this.chessboard.getVisitors(position);
 		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
 		lives.forEach((l) => {
+			this.game.maxLives.set(this.game.maxLives.get() + 1);
 			this.game.lives.set(this.game.lives.get() + 1);
 			this.level.sprites.remove(l);
 		});

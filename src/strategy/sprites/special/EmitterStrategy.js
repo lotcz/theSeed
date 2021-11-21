@@ -1,6 +1,4 @@
-import LevelBuilder from "../../../builder/LevelBuilder";
 import {STRATEGY_MINERAL} from "../../../builder/SpriteStyle";
-import {MINERAL_MAX_AMOUNT} from "../minerals/MineralStrategy";
 import UpdatedStrategy from "../UpdatedStrategy";
 
 const EMITTER_TIMEOUT = 1000;
@@ -16,8 +14,6 @@ export default class EmitterStrategy extends UpdatedStrategy {
 		this.emitted = 0;
 		this.randomizeTimeout = true;
 
-		this.builder = new LevelBuilder(this.level);
-
 		if (this.model.data.timeout) {
 			this.defaultTimeout = this.model.data.timeout;
 		}
@@ -30,10 +26,9 @@ export default class EmitterStrategy extends UpdatedStrategy {
 	updateStrategy() {
 		if (this.max === -1 || this.emitted < this.max) {
 			const visitors = this.chessboard.getVisitors(this.model.position, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_MINERAL) && v.type === this.model.data.type);
-			const totalAmount = visitors.reduce((previous, current) => previous + current.data.amount, 0);
-			if (totalAmount < MINERAL_MAX_AMOUNT) {
+			if (visitors.length === 0) {
 				this.emitted++;
-				const sprite = this.builder.addSpriteFromStyle(this.model.position, this.model.data.type);
+				const sprite = this.level.addSpriteFromStyle(this.model.position, this.model.data.type);
 				if (this.model.data.amount) {
 					sprite.data.amount = this.model.data.amount;
 				}

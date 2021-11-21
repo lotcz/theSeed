@@ -127,7 +127,7 @@ export default class LevelController extends ControllerBase {
 						this.fadeIn();
 					} else {
 						if (this.game.lives.get() <= 0) {
-							this.game.lives.set(0);
+							this.game.lives.set(this.game.maxLives.get() || 0);
 							this.game.levelName.set('beehive');
 						} else {
 							this.game.lives.set(this.game.lives.get() - 1);

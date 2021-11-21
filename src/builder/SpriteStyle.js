@@ -274,6 +274,21 @@ SPRITE_STYLES[SPRITE_TYPE_YELLOW_JELLY] = {
 	}
 };
 
+export const SPRITE_TYPE_HONEY = 'honey';
+export const IMAGE_HONEY = 'img/honey.svg';
+import HoneyImage from "../../res/img/honey.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HONEY] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_HONEY,
+		resource: HoneyImage
+	},
+	data: {
+		amount: 1
+	}
+};
+
 /*
 BEES
  */
@@ -345,7 +360,9 @@ SPRITE_STYLES[SPRITE_TYPE_GREEN_JELLY_MAKER] = {
 		resource: GreenJellyMakerImage
 	},
 	data: {
-		hintDirection: NEIGHBOR_TYPE_UP
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_POTASSIUM,
+		produces: SPRITE_TYPE_GREEN_JELLY
 	}
 };
 
@@ -360,7 +377,9 @@ SPRITE_STYLES[SPRITE_TYPE_YELLOW_JELLY_MAKER] = {
 		resource: YellowJellyMakerImage
 	},
 	data: {
-		hintDirection: NEIGHBOR_TYPE_UP
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_NECTAR,
+		produces: SPRITE_TYPE_YELLOW_JELLY
 	}
 };
 
@@ -375,7 +394,9 @@ SPRITE_STYLES[SPRITE_TYPE_HONEY_MAKER] = {
 		resource: HoneyMakerImage
 	},
 	data: {
-		hintDirection: NEIGHBOR_TYPE_UP
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_YELLOW_JELLY,
+		produces: SPRITE_TYPE_HONEY
 	}
 };
 

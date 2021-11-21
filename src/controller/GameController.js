@@ -286,6 +286,8 @@ export default class GameController extends ControllerBase {
 		localForage.clear().then(() => {
 			this.model.history.reset();
 			this.model.id = Date.now();
+			this.model.lives.set(0);
+			this.model.maxLives.set(0);
 			this.model.lastLevelName = null;
 			this.model.levelName.set(null);
 			this.model.levelName.set('beehive');
