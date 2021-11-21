@@ -51,6 +51,8 @@ export const IMAGE_BUG_DEAD = 'img/bug-dead.svg';
 export const IMAGE_BUG_EGG = 'img/bug-egg.svg';
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 
+export const SPRITE_TYPE_RANDOM = 'random';
+
 export const SPRITE_TYPE_BEE_LIFE = 'bee-life';
 export const SPRITE_TYPE_BEE_DEAD = 'bee-dead';
 export const SPRITE_TYPE_BEE_EGG = 'bee-egg';

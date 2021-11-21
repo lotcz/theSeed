@@ -95,7 +95,7 @@ export default class BugStrategy extends ObjectStrategy {
 			return;
 		}
 */
-		if (!this.hasEgg()) {
+		if (this.isGrown() && !this.hasEgg()) {
 			const eggs = this.chessboard.getVisitorsMultiple(neighbors, (v) => v._is_sprite && v.type === SPRITE_TYPE_BUG_EGG);
 			if (eggs.length > 0) {
 				const egg = eggs[0];
@@ -140,6 +140,10 @@ export default class BugStrategy extends ObjectStrategy {
 			return egg;
 		}
 		return false;
+	}
+
+	isGrown() {
+		return (this.model.data.amount >= this.maxAmount);
 	}
 
 }
