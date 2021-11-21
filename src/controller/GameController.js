@@ -155,10 +155,6 @@ export default class GameController extends ControllerBase {
 		this.levelController.activate();
 		this.showPlayMenu();
 		this.onResize();
-		if (level.isPlayable && level.bee) {
-			level.centerOnCoordinates(level.bee.coordinates);
-		}
-		level.sanitizeViewBox();
 		if (this.model.isInEditMode.get()) {
 			this.activateEditor();
 		}
@@ -277,7 +273,6 @@ export default class GameController extends ControllerBase {
 		const level = new LevelModel(this.levels.get('intro'));
 		level.removeBee();
 		level.isPlayable = false;
-		level.centerView();
 		this.setActiveLevel(level);
 	}
 
@@ -349,9 +344,11 @@ export default class GameController extends ControllerBase {
 			level.viewBoxSize.set(this.model.viewBoxSize);
 			if (level.isPlayable && level.bee) {
 				const isMobile = this.model.viewBoxSize.x < 650;
-				const scale = isMobile ? 5 : 2.5;
+				const scale = isMobile ? 4 : 2.5;
 				level.viewBoxScale.set(scale);
 				level.centerOnCoordinates(level.bee.coordinates);
+			} else {
+				level.centerView();
 			}
 			level.sanitizeViewBox();
 		}
