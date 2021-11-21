@@ -21,7 +21,6 @@ import {
 	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES, SPRITE_TYPE_RESPAWN,
 	STRATEGY_STATIC
 } from "../builder/SpriteStyle";
-import LevelBuilder from "../builder/LevelBuilder";
 import {BEE_CENTER} from "../controller/BeeController";
 import Pixies from "../class/Pixies";
 
@@ -144,6 +143,30 @@ export default class LevelModel extends ModelBase {
 
 	}
 
+	setSize(size) {
+		this.grid.size.set(size);
+	}
+
+	setViewBoxSize(size) {
+		this.viewBoxSize.set(size);
+	}
+
+	setTileRadius(size) {
+		this.grid.tileRadius.set(size);
+	}
+
+	setName(name) {
+		this.name = name;
+	}
+
+	setViewBoxScale(scale) {
+		this.viewBoxScale.set(scale);
+	}
+
+	setStart(position) {
+		this.centerOnPosition(position);
+	}
+
 	createBee(position) {
 		return new BeeModel({
 			lives: 0,
@@ -210,6 +233,11 @@ export default class LevelModel extends ModelBase {
 		this.removeBee();
 		this.bee = bee;
 		return this.addChild(this.bee);
+	}
+
+	createBeeOnPosition(position) {
+		const bee = this.createBee(position);
+		return this.addBee(bee);
 	}
 
 	removeBee() {
@@ -377,6 +405,10 @@ export default class LevelModel extends ModelBase {
 		const center = this.grid.getMaxCoordinates().multiply(0.5);
 		const cameraOffset = cameraCoordinates.subtract(center);
 		this.parallax.cameraOffset.set(cameraOffset);
+	}
+
+	addGroundTileFromStyle(position, groundType) {
+		return this.ground.addTile({position: position.toArray(), type: groundType});
 	}
 
 	addSprite(position, strategy, data, path, scale, rotation, flipped, type) {

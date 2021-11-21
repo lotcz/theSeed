@@ -2,7 +2,6 @@ import ControllerBase from "../class/ControllerBase";
 import LevelController from "./LevelController";
 import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
-import LevelBuilder from "../builder/LevelBuilder";
 import * as localForage from "localforage";
 import LevelIntro from "../../levels/intro.json";
 import LevelBeehive from "../../levels/beehive.json";
@@ -300,15 +299,14 @@ export default class GameController extends ControllerBase {
 		const tileRadius = 75;
 		const scale = 3;
 
-		const levelBuilder = new LevelBuilder();
-		levelBuilder.setName('new-game');
-		levelBuilder.setSize(size);
-		levelBuilder.setTileRadius(tileRadius);
-		levelBuilder.setViewBoxSize(this.model.viewBoxSize);
-		levelBuilder.setViewBoxScale(scale);
-		levelBuilder.setStart(start);
-		levelBuilder.addBee(start);
-		const level = levelBuilder.build();
+		const level = new LevelModel();
+		level.setName('new-game');
+		level.setSize(size);
+		level.setTileRadius(tileRadius);
+		level.setViewBoxSize(this.model.viewBoxSize);
+		level.setViewBoxScale(scale);
+		level.setStart(start);
+		level.createBeeOnPosition(start);
 
 		this.hideMenu();
 		this.setActiveLevel(level);

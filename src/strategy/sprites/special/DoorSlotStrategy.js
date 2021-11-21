@@ -22,6 +22,9 @@ export default class DoorSlotStrategy extends AnimatedStrategy {
 				(position) => {
 					const door = this.chessboard.getVisitors(position, (v) => v._is_ground && v.type === this.model.data.door);
 					door.forEach((d) => this.level.ground.removeTile(d));
+					if (this.model.data.replaceWith) {
+						this.level.addGroundTileFromStyle(position, this.model.data.replaceWith);
+					}
 				}
 			);
 			this.isOpen = true;

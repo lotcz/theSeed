@@ -4,7 +4,6 @@ import {
 	EDITOR_MODE_GROUND,
 	EDITOR_MODE_SPRITES
 } from "../model/LevelEditorModel";
-import LevelBuilder from "../builder/LevelBuilder";
 
 const DEBUG_EDITOR_CONTROLLER = false;
 
@@ -58,8 +57,7 @@ export default class LevelEditorController extends ControllerBase {
 				const visitors2 = this.chessboard.getTile(position);
 				const groundVisitors2 = visitors2.filter((v) => v._is_ground === true);
 				groundVisitors2.forEach((v) => this.level.ground.removeTile(v));
-				const builder = new LevelBuilder(this.level);
-				builder.addTileFromStyle(position, this.model.selectedGroundType);
+				this.level.addGroundTileFromStyle(position, this.model.selectedGroundType);
 		}
 
 	}
@@ -96,8 +94,8 @@ export default class LevelEditorController extends ControllerBase {
 				this.model.selectedSprites.set(visitors2);
 				break;
 			default:
-				const builder = new LevelBuilder(this.level);
-				builder.addSpriteFromStyle(position, this.model.selectedSpriteType);
+				const sprite = this.level.addSpriteFromStyle(position, this.model.selectedSpriteType);
+				this.model.selectedSprites.set([sprite]);
 				break;
 		}
 
