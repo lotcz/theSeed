@@ -72,8 +72,6 @@ export default class BeeFlightStrategy extends ControllerBase {
 			return;
 		}
 
-		//this.parent.inspectForMinerals(this.grid.getNeighborDown(this.model.position));
-
 		let direction = this.model.direction;
 
 		if (this.controls.anyMovement() && !this.dead) {
@@ -107,7 +105,6 @@ export default class BeeFlightStrategy extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
-
 		if (this.speed <= 0) {
 			if (this.dead) {
 				this.parent.die();
@@ -125,7 +122,19 @@ export default class BeeFlightStrategy extends ControllerBase {
 		let position = null;
 		const crashCoords = this.model.coordinates.add(crashDistance);
 		let crashPosition = this.grid.getPosition(crashCoords);
-		const penetrable = this.level.isPenetrable(crashPosition);
+		let penetrable = this.level.isPenetrable(crashPosition);
+
+		if (penetrable && this.model.inventory.isSet() && this.model.inventory.get()._is_crawlable) {
+			const inventoryCrashCoords = crashCoords.addY(this.grid.tileSize.y);
+			const inventoryCrashPosition = this.grid.getPosition(inventoryCrashCoords);
+			if (!this.level.isPenetrable(inventoryCrashPosition)) {
+				penetrable = false;
+				this.parent.dropItem();
+				this.parent.dropItemTimeout = 100;
+				crashPosition = this.grid.getNeighborDown(this.model.position);
+			}
+		}
+
 		if (penetrable) {
 			coords = this.model.coordinates.add(distance);
 			position = this.grid.getPosition(coords);
