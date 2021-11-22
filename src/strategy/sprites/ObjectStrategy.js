@@ -73,6 +73,7 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			this.setTargetPosition(Pixies.randomElement(available));
 		} else {
 			this.defaultTimeout = this.defaultMoveTimeout;
+			this.updateStillObject();
 		}
 
 	}
@@ -98,6 +99,10 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			this.setTargetScale(scale);
 			this.lastAmount = this.model.data.amount;
 		}
+	}
+
+	updateStillObject() {
+		// override
 	}
 
 }

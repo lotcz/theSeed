@@ -1,13 +1,6 @@
 import ControllerBase from "../../class/ControllerBase";
-import {BEE_CENTER, WINGS_OFFSET} from "../../controller/BeeController";
+import {BEE_CENTER} from "../../controller/BeeController";
 import {
-	CORNER_LEFT,
-	CORNER_LOWER_LEFT,
-	CORNER_LOWER_RIGHT,
-	CORNER_RIGHT,
-	CORNER_UPPER_LEFT,
-	CORNER_UPPER_RIGHT,
-	NEIGHBOR_TYPE_DOWN,
 	NEIGHBOR_TYPE_LOWER_LEFT,
 	NEIGHBOR_TYPE_LOWER_RIGHT,
 	NEIGHBOR_TYPE_UP,
@@ -15,17 +8,9 @@ import {
 	NEIGHBOR_TYPE_UPPER_RIGHT
 } from "../../model/GridModel";
 import RotationValue from "../../class/RotationValue";
-import Vector2 from "../../class/Vector2";
 
 import CrawlSound from "../../../res/sound/crawl.wav";
 import Sound from "../../class/Sound";
-import {
-	CONTROLS_DOWN,
-	CONTROLS_LEFT, CONTROLS_LOWER_LEFT, CONTROLS_LOWER_RIGHT,
-	CONTROLS_RIGHT,
-	CONTROLS_UP,
-	CONTROLS_UPPER_LEFT, CONTROLS_UPPER_RIGHT
-} from "../../model/ControlsModel";
 import {CRAWLING_MATRIX, FALLBACK_FLY, FALLBACK_PROCEED} from "../../builder/CrawlingMatrix";
 
 const CRAWL_SPEED = 400; //pixels per second
@@ -48,11 +33,17 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 	activateInternal() {
 		this.crawlSound.play();
+
+		const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
+		const down = this.grid.getNeighborDown(crawlingPosition);
+		if (this.level.isPenetrable(down)) {
+			this.parent.inspectForMinerals(crawlingPosition);
+		}
+
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.targetCoordinates = this.grid.getCoordinates(this.model.position);
 		this.updateBee();
-		//console.log('crawling');
 	}
 
 	updateInternal(delta) {

@@ -13,6 +13,13 @@ export default class MineralStrategy extends ObjectStrategy {
 	}
 
 	updateStrategy() {
+		super.updateStrategy();
+
+		this.model._is_penetrable = (this.model.data.amount < MINERAL_MAX_AMOUNT);
+		this.model._is_crawlable = !this.model._is_penetrable;
+	}
+
+	updateStillObject() {
 		if (this.model.data.amount > MINERAL_MAX_AMOUNT) {
 			const amount = this.model.data.amount - MINERAL_MAX_AMOUNT;
 			this.separate(amount);
@@ -25,11 +32,6 @@ export default class MineralStrategy extends ObjectStrategy {
 				&& v.strategy.get() === STRATEGY_MINERAL
 				&& v.type === this.model.type);
 		visitors.forEach((v) => this.absorb(v));
-
-		this.model._is_penetrable = (this.model.data.amount < MINERAL_MAX_AMOUNT);
-		this.model._is_crawlable = !this.model._is_penetrable;
-
-		super.updateStrategy();
 	}
 
 	separate(amount) {

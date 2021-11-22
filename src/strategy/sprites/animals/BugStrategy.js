@@ -3,9 +3,6 @@ import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.wav";
 import Sound from "../../../class/Sound";
 import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_POTASSIUM} from "../../../builder/SpriteStyle";
-import Vector2 from "../../../class/Vector2";
-import MineralStrategy, {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy";
-import DecisionTree from "../../../class/DecisionTree";
 
 const BUG_TIMEOUT = 1000;
 export const BUG_MAX_AMOUNT = 15;
@@ -22,11 +19,6 @@ export default class BugStrategy extends ObjectStrategy {
 
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = false;
-		/*
-		this.decisionTree = new DecisionTree(
-			()
-		);
-*/
 	}
 
 	updateStrategy() {
@@ -120,6 +112,10 @@ export default class BugStrategy extends ObjectStrategy {
 			this.turnWhenMoving = true;
 			this.setTargetPosition(Pixies.randomElement(surfaceNeighbors));
 		}
+	}
+
+	eat() {
+
 	}
 
 	die() {

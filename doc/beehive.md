@@ -172,7 +172,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- falling objects trigger crawling
+- control menu with keyboard
 - start crawling when carrying crawlable and close to ground
 - when dropping during crawling, put someplace else
 - makers to turn heads
