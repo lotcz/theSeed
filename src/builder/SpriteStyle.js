@@ -17,7 +17,7 @@ import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeQueenImage from "../../res/img/bee-queen.svg";
 
 import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
-import {GROUND_TYPE_GRASS} from "./GroundStyle";
+import {GROUND_TYPE_GRASS, GROUND_TYPE_WAX_DOOR} from "./GroundStyle";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 
@@ -102,7 +102,7 @@ export const IMAGE_KEYHOLE = 'img/keyhole.svg';
 
 SPRITE_STYLES[SPRITE_TYPE_DOOR_SLOT] = {
 	strategy: STRATEGY_DOOR_SLOT,
-	data: {key: SPRITE_TYPE_POTASSIUM, door: GROUND_TYPE_GRASS, size:4},
+	data: {key: SPRITE_TYPE_POTASSIUM, door: GROUND_TYPE_WAX_DOOR, size:4},
 	image: {
 		uri: IMAGE_KEYHOLE,
 		resource: KeyholeImage

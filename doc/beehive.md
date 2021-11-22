@@ -173,15 +173,15 @@ TODO:
 =====
 
 - control menu with keyboard
-- start crawling when carrying crawlable and close to ground
-- when dropping during crawling, put someplace else
+- when crawling, pull item behind
 - makers to turn heads
-- build demo levels
+- build tutorial levels
+- zoom out when in menu to provide orientation
+- production mode (exception handling and logging, hide all dev UI)
+- BETA for friends
+
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
 - improve graphics
-- production mode (exception handling and logging, hide all dev UI)
-
-- BETA for friends
 
 Improvements
 

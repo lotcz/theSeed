@@ -4,6 +4,7 @@ import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import * as localForage from "localforage";
 import LevelIntro from "../../levels/intro.json";
+import LevelTutorial1 from "../../levels/tutorial-1.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
@@ -39,6 +40,7 @@ export default class GameController extends ControllerBase {
 
 		this.levels = new HashTableModel();
 		this.levels.set('intro', LevelIntro);
+		this.levels.set('tutorial-1', LevelTutorial1);
 		this.levels.set('beehive', LevelBeehive);
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);
