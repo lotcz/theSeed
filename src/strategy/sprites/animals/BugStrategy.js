@@ -5,6 +5,7 @@ import Sound from "../../../class/Sound";
 import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_POTASSIUM} from "../../../builder/SpriteStyle";
 import Vector2 from "../../../class/Vector2";
 import MineralStrategy, {MINERAL_FALL_TIMEOUT} from "../minerals/MineralStrategy";
+import DecisionTree from "../../../class/DecisionTree";
 
 const BUG_TIMEOUT = 1000;
 export const BUG_MAX_AMOUNT = 15;
@@ -21,7 +22,11 @@ export default class BugStrategy extends ObjectStrategy {
 
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = false;
-
+		/*
+		this.decisionTree = new DecisionTree(
+			()
+		);
+*/
 	}
 
 	updateStrategy() {
@@ -83,7 +88,7 @@ export default class BugStrategy extends ObjectStrategy {
 			const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
 			if (beePresent) {
 				BugStrategy.biteSound.replay();
-				this.level.bee.hurt(this.model.data.amount * 0.1);
+				this.level.bee.hurt((this.model.data.amount / this.maxAmount) * 0.8);
 				const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
 				this.setTargetRotation(angle, 500);
 				return;
@@ -122,13 +127,13 @@ export default class BugStrategy extends ObjectStrategy {
 		this.level.sprites.remove(this.model);
 	}
 
-	hasEgg() {
-		return this.model.attachedSprite.isSet();
-	}
-
 	spawnEgg() {
 		this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
 		this.model.data.amount -= 1;
+	}
+
+	hasEgg() {
+		return this.model.attachedSprite.isSet();
 	}
 
 	dropEgg() {

@@ -172,7 +172,10 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
+- falling objects trigger crawling
 - start crawling when carrying crawlable and close to ground
+- when dropping during crawling, put someplace else
+- makers to turn heads
 - build demo levels
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
 - improve graphics

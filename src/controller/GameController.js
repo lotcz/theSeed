@@ -330,10 +330,8 @@ export default class GameController extends ControllerBase {
 	}
 
 	deactivateEditor() {
-		//this.model.editor.set(null);
 		if (this.editorController !== null) {
 			this.removeChild(this.editorController);
-			//this.editorController = null;
 		}
 	}
 

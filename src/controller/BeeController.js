@@ -2,9 +2,11 @@ import ControllerBase from "../class/ControllerBase";
 import {
 	IMAGE_HINT_ARROWS,
 	IMAGE_HINT_WASD,
-	IMAGE_POTASSIUM, SPRITE_STYLES, SPRITE_TYPE_BEE_LIFE, STRATEGY_DOOR_SLOT,
-	STRATEGY_MINERAL, STRATEGY_OBJECT,
-	STRATEGY_STATIC
+	SPRITE_STYLES,
+	SPRITE_TYPE_BEE_LIFE,
+	STRATEGY_DOOR_SLOT,
+	STRATEGY_MINERAL,
+	STRATEGY_OBJECT
 } from "../builder/SpriteStyle";
 
 import Vector2 from "../class/Vector2";
@@ -14,12 +16,15 @@ import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
 
-import OuchSound from "../../res/sound/ouch.mp3";
+import OuchSound1 from "../../res/sound/ouch-1.mp3";
+import OuchSound2 from "../../res/sound/ouch-2.mp3";
+import DropSound from "../../res/sound/pop.mp3";
 import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
 import HintController from "./HintController";
 import ObjectStrategy, {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
+import Pixies from "../class/Pixies";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.1; // health per second
@@ -27,7 +32,8 @@ const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 1000;
 
 export default class BeeController extends ControllerBase {
-	static ouchSound = new Sound(OuchSound);
+	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
+	static dropSound = new Sound(DropSound);
 	dead;
 	leaving;
 	dropItemTimeout;
@@ -184,9 +190,6 @@ export default class BeeController extends ControllerBase {
 	}
 
 	inspectForMinerals(position) {
-		if (this.carriedAmount() >= MAX_INVENTORY_AMOUNT) {
-			return;
-		}
 		const visitors = this.chessboard.getVisitors(position);
 		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
 		lives.forEach((l) => {
@@ -194,9 +197,6 @@ export default class BeeController extends ControllerBase {
 			this.game.lives.set(this.game.lives.get() + 1);
 			this.level.sprites.remove(l);
 		});
-
-		const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT));
-		minerals.forEach((m) =>	this.takeItem(m));
 
 		const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
 		if (doors.length > 0) {
@@ -214,6 +214,11 @@ export default class BeeController extends ControllerBase {
 				this.hideHint();
 				this.showingDoorsHint = false;
 			}
+		}
+
+		if (this.carriedAmount() < MAX_INVENTORY_AMOUNT) {
+			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT));
+			minerals.forEach((m) =>	this.takeItem(m));
 		}
 	}
 
@@ -253,6 +258,7 @@ export default class BeeController extends ControllerBase {
 		item.position.set(position);
 		this.level.sprites.add(item);
 		this.dropItemTimeout = DROP_ITEM_TIMEOUT;
+		BeeController.dropSound.play();
 	}
 
 	emptyInventory() {
@@ -265,7 +271,8 @@ export default class BeeController extends ControllerBase {
 	}
 
 	onHurt(amount) {
-		BeeController.ouchSound.play();
+		const sound = Pixies.randomElement(BeeController.ouchSounds);
+		setTimeout(() => sound.play(), 250);
 		if (amount > 0.3 || this.model.health.get() < 0.5) {
 			this.dropItem();
 		}

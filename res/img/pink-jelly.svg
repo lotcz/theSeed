@@ -30,12 +30,12 @@
      units="px"
      inkscape:zoom="3.0574074"
      inkscape:cx="37.122956"
-     inkscape:cy="45.626893"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1272"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
+     inkscape:cy="45.79043"
+     inkscape:window-width="1284"
+     inkscape:window-height="1040"
+     inkscape:window-x="1894"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
      id="defs970">
@@ -56,7 +56,7 @@
      id="layer1"
      transform="translate(-52.972682,-68.7219)">
     <ellipse
-       style="fill:#d88db4;fill-opacity:0.764706;stroke:#c65174;stroke-width:2.017;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.827451"
+       style="fill:#ec757b;fill-opacity:0.76470602;stroke:#c65159;stroke-width:2.017;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.82745099"
        id="path47907"
        cx="72.861191"
        cy="88.783485"
@@ -64,7 +64,7 @@
        ry="19.053085" />
     <path
        id="path7742"
-       style="fill:#eca9f9;fill-opacity:1;stroke-width:1.36453;stroke-linecap:round;stroke-linejoin:bevel"
+       style="fill:#f2a6b1;fill-opacity:1;stroke-width:1.36453;stroke-linecap:round;stroke-linejoin:bevel"
        d="m 82.751323,77.036807 c -2.136649,-2.407393 -5.46934,-3.594796 -8.63838,-2.603634 -2.080358,0.650663 2.039842,2.788803 4.33708,4.353626 1.922512,1.309567 3.465309,5.807604 5.534302,5.09845 2.068991,-0.709156 0.193424,-5.24126 -1.233002,-6.848442 z"
        sodipodi:nodetypes="sssss" />
   </g>
