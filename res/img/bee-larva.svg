@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="79.671463"
+   height="135.14833"
+   viewBox="0 0 21.079741 35.757994"
+   version="1.1"
+   id="svg21096"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="bee-larva.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview21098"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="px"
+     inkscape:zoom="2.1619135"
+     inkscape:cx="-76.552554"
+     inkscape:cy="0.2312766"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs21093" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(4.3778985,-90.262621)">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24640"
+       transform="matrix(0.43777358,0.50404434,-1.6452392,0.38998815,204.29969,42.233928)"
+       width="100%"
+       height="100%" />
+    <path
+       id="path21680"
+       style="fill:#9f7753;fill-opacity:0.75058275;stroke-width:0.151847;stroke-linejoin:bevel"
+       d="m 10.993307,125.88777 c -3.1352646,0.65137 -6.3036653,-1.18707 -6.3361549,-3.45087 -0.036415,-2.5371 2.4256868,0.0954 5.0354828,-0.74683 2.2743561,-0.73396 3.0199111,-5.47707 4.7263381,-3.51998 1.457382,1.67145 -0.271725,7.06242 -3.425666,7.71768 z"
+       sodipodi:nodetypes="sssss" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24630"
+       transform="matrix(1.4773017,0.13625013,-0.08762328,1.4060989,2.3099781,-55.817891)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24632"
+       transform="matrix(1.5192596,-0.04600642,-0.6817925,1.6213931,72.752422,-85.319508)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24634"
+       transform="matrix(1.4156515,0.32551803,-1.1727909,1.2555635,134.85248,-54.892756)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24636"
+       transform="matrix(1.3865799,0.30496406,-1.2607059,1.5904185,144.77939,-90.86058)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path21680"
+       id="use24638"
+       transform="matrix(0.90306935,0.48061781,-1.5634873,0.89315027,188.21105,-16.231942)"
+       width="100%"
+       height="100%" />
+    <ellipse
+       style="fill:#9e7652;fill-opacity:0.75294119;stroke-width:0.555776;stroke-linejoin:bevel"
+       id="path24664"
+       cx="-41.017632"
+       cy="-94.002289"
+       rx="5.073637"
+       ry="2.7181365"
+       transform="matrix(-0.99622893,-0.08676353,0.31154623,-0.950231,0,0)" />
+    <path
+       id="path21179"
+       style="fill:#ffffff;fill-opacity:0.2;stroke-width:0.319866;stroke-linejoin:bevel"
+       d="M -3.0180151,109.27521 C -3.0483098,99.79585 3.6912472,90.923461 6.8700287,92.842649 9.0235284,94.142823 0.37668049,101.2594 0.88652274,109.38405 1.508453,119.29489 9.7057621,124.37153 7.1268238,123.72131 3.7230508,122.86313 -2.985821,119.34885 -3.0180151,109.27521 Z"
+       sodipodi:nodetypes="sssss" />
+    <ellipse
+       style="fill:#c1a07d;fill-opacity:0.839216;stroke-width:0.175559;stroke-linejoin:bevel"
+       id="use932"
+       cx="-34.363926"
+       cy="-90.926514"
+       rx="1.4590985"
+       ry="0.94308859"
+       transform="matrix(-0.99328307,-0.11570977,0.23987216,-0.97080448,0,0)" />
+  </g>
+</svg>

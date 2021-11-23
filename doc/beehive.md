@@ -91,14 +91,41 @@ Plants
 LEVELS
 ======
 
-Beehive
--------
+Hatching (starting level)
+-------------------------
 
-separated into chambers, originally some doors remain waxed until later time
-doors lead to different levels, each with a danger and puzzle mission
-when danger mission is finished, safer way may open for later
+originally only open way is tutorial path, later way to junction opens
 
-when you die and have no lives, you respawn in beehive
+learn movement controls
+
+Tutorial 1
+----------
+
+avoid ants, avoid water
+
+Tutorial 2
+----------
+
+Learn picking and dropping (unblock way?)
+learn firing/activate controls
+
+Tutorial 3
+----------
+
+Learn opening doors.
+
+Tutorial 4
+----------
+
+Learn feeding makers to obtain items.
+
+Bring egg shell to recycling maker to obtain green jelly to open door to Junction.
+
+Junction
+--------
+
+doors lead to different levels, originally some doors remain waxed until later time
+tunnel leads to beehive
 
 Cave 1
 ------

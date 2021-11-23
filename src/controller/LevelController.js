@@ -3,6 +3,7 @@ import SpriteCollectionController from "./SpriteCollectionController";
 import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 import Sound from "../class/Sound";
+import {START_LEVEL} from "../model/GameModel";
 
 const DEBUG_LEVEL_CONTROLLER = true;
 
@@ -118,7 +119,7 @@ export default class LevelController extends ControllerBase {
 					this.game.levelName.set(this.travelling);
 					this.travelling = false;
 				} else {
-					if (this.level.name === 'beehive') {
+					if (this.level.name === START_LEVEL) {
 						if (this.game.lives.get() > 0) {
 							this.game.lives.set(this.game.lives.get() - 1);
 						}
@@ -128,7 +129,7 @@ export default class LevelController extends ControllerBase {
 					} else {
 						if (this.game.lives.get() <= 0) {
 							this.game.lives.set(this.game.maxLives.get() || 0);
-							this.game.levelName.set('beehive');
+							this.game.levelName.set(START_LEVEL);
 						} else {
 							this.game.lives.set(this.game.lives.get() - 1);
 							this.model.spawn(this.model.bee, this.game.lastLevelName);

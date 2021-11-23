@@ -4,15 +4,12 @@ import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import ExitImage from "../../res/img/exit.svg";
-import HintWasdImage from "../../res/img/hint-wasd.svg";
-import HintArrowsImage from "../../res/img/hint-arrows.svg";
+
 
 import BugEggImage from "../../res/img/bug-egg.svg";
 import BugDeadImage from "../../res/img/bug-dead.svg";
 
 import BeeLifeImage from "../../res/img/bee-life.svg";
-import BeeEggImage from "../../res/img/bee-egg.svg";
-import BeeBrokenEggImage from "../../res/img/bee-egg-broken.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeQueenImage from "../../res/img/bee-queen.svg";
 
@@ -21,8 +18,7 @@ import {GROUND_TYPE_GRASS, GROUND_TYPE_WAX_DOOR} from "./GroundStyle";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 
-export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
-export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
+
 
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
@@ -31,8 +27,6 @@ export const IMAGE_BEE_WING = 'img/wing.svg';
 
 export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
 export const IMAGE_BEE_DEAD = 'img/bee-dead.svg';
-export const IMAGE_BEE_EGG = 'img/bee-egg.svg';
-export const IMAGE_BEE_BROKEN_EGG = 'img/bee-egg-broken.svg';
 export const IMAGE_BEE_QUEEN = 'img/bee-queen.svg';
 
 export const IMAGE_STARS_1 = 'img/stars-1.svg';
@@ -55,13 +49,10 @@ export const SPRITE_TYPE_RANDOM = 'random';
 
 export const SPRITE_TYPE_BEE_LIFE = 'bee-life';
 export const SPRITE_TYPE_BEE_DEAD = 'bee-dead';
-export const SPRITE_TYPE_BEE_EGG = 'bee-egg';
-export const SPRITE_TYPE_BEE_BROKEN_EGG = 'bee-egg-broken';
 export const SPRITE_TYPE_BEE_QUEEN = 'bee-queen';
 
 export const SPRITE_TYPE_HINT = 'hint';
-export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
-export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
+
 
 export const SPRITE_TYPE_BUG_DEAD = 'bug-dead';
 export const SPRITE_TYPE_BUG_EGG = 'bug-egg';
@@ -130,6 +121,7 @@ SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	data: {type:'water', timeout:3000, max:-1}
 };
 
+
 SPRITE_STYLES[SPRITE_TYPE_HINT] = {
 	strategy: STRATEGY_HINT,
 	image: {
@@ -138,6 +130,11 @@ SPRITE_STYLES[SPRITE_TYPE_HINT] = {
 		scale: 0.1
 	},
 };
+
+export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
+export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
+import HintWasdImage from "../../res/img/hint-wasd.svg";
+
 
 SPRITE_STYLES[SPRITE_TYPE_HINT_WASD] = {
 	strategy: STRATEGY_HINT,
@@ -148,11 +145,28 @@ SPRITE_STYLES[SPRITE_TYPE_HINT_WASD] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
+export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
+import HintArrowsImage from "../../res/img/hint-arrows.svg";
+
 SPRITE_STYLES[SPRITE_TYPE_HINT_ARROWS] = {
 	strategy: STRATEGY_HINT,
 	image: {
 		uri: IMAGE_HINT_ARROWS,
 		resource: HintArrowsImage,
+		scale: 0.1
+	},
+};
+
+export const SPRITE_TYPE_HINT_WATER = 'hint-water';
+export const IMAGE_HINT_WATER = 'img/hint-water.svg';
+import HintWaterImage from "../../res/img/hint-water.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_WATER] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_WATER,
+		resource: HintWaterImage,
 		scale: 0.1
 	},
 };
@@ -201,6 +215,47 @@ SPRITE_STYLES[SPRITE_TYPE_POTASSIUM] = {
 		scale: 0.01
 	},
 	data: {amount: 1}
+};
+
+export const SPRITE_TYPE_BEE_EGG = 'bee-egg';
+export const IMAGE_BEE_EGG = 'img/bee-egg.svg';
+import BeeEggImage from "../../res/img/bee-egg.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_EGG] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_BEE_EGG,
+		resource: BeeEggImage,
+		scale: 0.5
+	},
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
+};
+
+export const SPRITE_TYPE_BEE_BROKEN_EGG = 'bee-egg-broken';
+export const IMAGE_BEE_BROKEN_EGG = 'img/bee-egg-broken.svg';
+import BeeBrokenEggImage from "../../res/img/bee-egg-broken.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_BROKEN_EGG] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_BEE_BROKEN_EGG,
+		resource: BeeBrokenEggImage
+	},
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
+};
+
+export const SPRITE_TYPE_BEE_LARVA = 'bee-larva';
+export const IMAGE_BEE_LARVA = 'img/bee-larva.svg';
+import BeeLarvaImage from "../../res/img/bee-larva.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_LARVA] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_BEE_LARVA,
+		resource: BeeLarvaImage,
+		scale: 0.5
+	},
+	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };
 
 export const SPRITE_TYPE_POLLEN = 'pollen';
@@ -309,25 +364,6 @@ SPRITE_STYLES[SPRITE_TYPE_BEE_DEAD] = {
 	image: {
 		uri: IMAGE_BEE_DEAD,
 		resource: BeeDeadImage
-	},
-	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
-};
-
-SPRITE_STYLES[SPRITE_TYPE_BEE_EGG] = {
-	strategy: STRATEGY_OBJECT,
-	image: {
-		uri: IMAGE_BEE_EGG,
-		resource: BeeEggImage,
-		scale: 0.5
-	},
-	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
-};
-
-SPRITE_STYLES[SPRITE_TYPE_BEE_BROKEN_EGG] = {
-	strategy: STRATEGY_OBJECT,
-	image: {
-		uri: IMAGE_BEE_BROKEN_EGG,
-		resource: BeeBrokenEggImage
 	},
 	data: {amount: DEFAULT_OBJECT_MAX_AMOUNT}
 };

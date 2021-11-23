@@ -28,12 +28,20 @@ import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import {MUSIC_STYLES} from "../builder/MusicStyle";
 import ControlsModel from "./ControlsModel";
+import LevelIntro from "../../levels/intro.json";
+import LevelHatching from "../../levels/hatching.json";
+import LevelTutorial1 from "../../levels/tutorial-1.json";
+import LevelBeehive from "../../levels/beehive.json";
+import LevelLevel1 from "../../levels/level-1.json";
+import LevelLevel2 from "../../levels/level-2.json";
 
 export const DEBUG_MODE = true;
+export const START_LEVEL = 'hatching';
 
 export default class GameModel extends ModelBase {
 	id;
 	controls;
+	levels;
 	level;
 	levelName;
 	lastLevelName;
@@ -61,6 +69,14 @@ export default class GameModel extends ModelBase {
 		this.levelName = new DirtyValue();
 		this.addChild(this.levelName);
 		this.lastLevelName = null;
+
+		this.levels = new HashTableModel();
+		this.levels.set('intro', LevelIntro);
+		this.levels.set('hatching', LevelHatching);
+		this.levels.set('tutorial-1', LevelTutorial1);
+		this.levels.set('beehive', LevelBeehive);
+		this.levels.set('level-1', LevelLevel1);
+		this.levels.set('level-2', LevelLevel2);
 
 		this.lives = new DirtyValue(0);
 		this.addChild(this.lives);

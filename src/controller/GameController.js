@@ -4,6 +4,7 @@ import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import * as localForage from "localforage";
 import LevelIntro from "../../levels/intro.json";
+import LevelHatching from "../../levels/hatching.json";
 import LevelTutorial1 from "../../levels/tutorial-1.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
@@ -12,7 +13,7 @@ import LevelLevel2 from "../../levels/level-2.json";
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
 import HashTableModel from "../model/HashTableModel";
-import {DEBUG_MODE} from "../model/GameModel";
+import {DEBUG_MODE, START_LEVEL} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";
 
@@ -37,13 +38,6 @@ export default class GameController extends ControllerBase {
 		this.addChild(this.controlsController);
 
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
-
-		this.levels = new HashTableModel();
-		this.levels.set('intro', LevelIntro);
-		this.levels.set('tutorial-1', LevelTutorial1);
-		this.levels.set('beehive', LevelBeehive);
-		this.levels.set('level-1', LevelLevel1);
-		this.levels.set('level-2', LevelLevel2);
 
 		this.savedGameExists = false;
 	}
@@ -126,7 +120,7 @@ export default class GameController extends ControllerBase {
 				state = store;
 				console.log(`Editor level ${levelName} loaded from local storage.`);
 			} else {
-				state = this.levels.get(levelName);
+				state = this.model.levels.get(levelName);
 				if (state) console.log(`Editor level ${levelName} loaded from initial state.`);
 			}
 
@@ -195,7 +189,7 @@ export default class GameController extends ControllerBase {
 			state = store;
 			console.log(`Level ${name} loaded from local storage.`);
 		} else {
-			state = this.levels.get(name);
+			state = this.model.levels.get(name);
 			if (state) console.log(`Level ${name} loaded from initial state.`);
 		}
 
@@ -263,7 +257,7 @@ export default class GameController extends ControllerBase {
 
 	showLevelSelection() {
 		const builder = new MenuBuilder('main');
-		const levelNames = this.levels.keys();
+		const levelNames = this.model.levels.keys();
 		levelNames.forEach((name) => {
 			builder.addLine(name, (e) => this.onEditorLoadLevelRequestAsync(name));
 		});
@@ -272,7 +266,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	loadBackground() {
-		const level = new LevelModel(this.levels.get('intro'));
+		const level = new LevelModel(this.model.levels.get('intro'));
 		level.removeBee();
 		level.isPlayable = false;
 		this.setActiveLevel(level);
@@ -286,7 +280,7 @@ export default class GameController extends ControllerBase {
 			this.model.maxLives.set(0);
 			this.model.lastLevelName = null;
 			this.model.levelName.set(null);
-			this.model.levelName.set('beehive');
+			this.model.levelName.set(START_LEVEL);
 		});
 	}
 
@@ -297,7 +291,7 @@ export default class GameController extends ControllerBase {
 		const scale = 3;
 
 		const level = new LevelModel();
-		level.setName('new-game');
+		level.setName('new-level');
 		level.setSize(size);
 		level.setTileRadius(tileRadius);
 		level.setViewBoxSize(this.model.viewBoxSize);
