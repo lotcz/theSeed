@@ -52,7 +52,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 			return;
 		}
 
-		if (this.level.isAir(this.model.position)) {
+		if (!this.level.isGround(this.grid.getNeighborDown(this.model.position))) {
 			this.model.coordinates.set(this.model.coordinates.addY((delta / 1000) * FALL_SPEED));
 			this.model.position.set(this.grid.getPosition(this.model.coordinates));
 			this.parent.updateMovement();

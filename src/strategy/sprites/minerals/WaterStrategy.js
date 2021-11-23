@@ -4,7 +4,6 @@ import SplashSound from "../../../../res/sound/splash.wav";
 import Sound from "../../../class/Sound";
 
 const WATER_TIMEOUT = 700;
-export const WATER_UNIT_SIZE = 0.5;
 
 export default class WaterStrategy extends MineralStrategy {
 	static splashSound = new Sound(SplashSound);
@@ -14,19 +13,28 @@ export default class WaterStrategy extends MineralStrategy {
 	}
 
 	updateStrategy() {
+		if (this.level.isWater(this.model.position)) {
+			this.removeMyself();
+			return;
+		}
+
 		if (this.level.bee) {
-			if (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < 2) {
+			if (
+				(this.level.bee.coordinates.y > this.model.image.coordinates.y) &&
+				(this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2))
+			) {
 				WaterStrategy.splashSound.replay();
 				this.level.bee.hurt(0.5);
 			}
 		}
 
+		super.updateStrategy();
+	}
+
+	updateStillObject() {
 		const visitors = this.chessboard.getTile(this.model.position).filter((v) => v !== this.model && v._is_sprite === true && v.strategy.get() === STRATEGY_WATER);
 		if (visitors.length > 0) {
 			visitors.forEach((v) => this.absorb(v));
-		} else {
-			super.updateStrategy();
 		}
 	}
-
 }

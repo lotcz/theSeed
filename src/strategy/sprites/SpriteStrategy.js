@@ -36,4 +36,7 @@ export default class SpriteStrategy extends ControllerBase {
 		this.visit(position);
 	}
 
+	removeMyself() {
+		this.level.sprites.remove(this.model);
+	}
 }
