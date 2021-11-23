@@ -14,7 +14,7 @@ export default class HintController extends ControllerBase {
 	static ahaSound = new Sound(AhaSound);
 	background;
 	hint;
-	ahaTimer;
+	delayedHideTimer;
 	sprites;
 	soundPlayed;
 
@@ -24,28 +24,27 @@ export default class HintController extends ControllerBase {
 		this.background = [];
 		this.hint = null;
 		this.sprites = sprites || this.level.sprites;
-		this.ahaTimer = null;
+		this.delayedHideTimer = null;
 		this.soundPlayed = false;
-		this.playSoundHandler = () => this.playAhaSound();
+		this.delayedHideHandler = () => this.handleDelayedHide();
 		this.hiddenHandler = () => this.destroy();
 	}
 
 	show() {
+		this.clearHideTimer();
 		if (!this.isInitialized()) {
 			this.initialize();
 		} else if (this.hint.data.isHiding) {
 			this.background.forEach((b) => b.data.isHiding = false);
 			this.hint.data.isHiding = false;
-			this.setSoundTimer();
 		}
 	}
 
 	hide() {
 		if (this.isInitialized()) {
-			this.background.forEach((b) => b.data.isHiding = true);
-			this.hint.data.isHiding = true;
+			this.setHideTimer();
 		}
-		this.clearSoundTimer();
+		//this.clearHideTimer();
 	}
 
 	isInitialized() {
@@ -79,7 +78,6 @@ export default class HintController extends ControllerBase {
 		}
 
 		this.hint.addEventListener('hidden', this.hiddenHandler);
-		this.setSoundTimer();
 	}
 
 	destroy() {
@@ -91,22 +89,28 @@ export default class HintController extends ControllerBase {
 			this.hint.removeEventListener('hidden', this.hiddenHandler);
 			this.hint = null;
 		}
-		this.clearSoundTimer();
+		this.clearHideTimer();
 		this.soundPlayed = false;
 	}
 
-	setSoundTimer() {
-		this.clearSoundTimer();
+	setHideTimer() {
+		this.clearHideTimer();
 		if (!this.soundPlayed) {
-			this.ahaTimer = setTimeout(this.playSoundHandler, 1000);
+			this.delayedHideTimer = setTimeout(this.delayedHideHandler, 1000);
 		}
 	}
 
-	clearSoundTimer() {
-		if (this.ahaTimer) {
-			clearTimeout(this.ahaTimer);
-			this.ahaTimer = null;
+	clearHideTimer() {
+		if (this.delayedHideTimer) {
+			clearTimeout(this.delayedHideTimer);
+			this.delayedHideTimer = null;
 		}
+	}
+
+	handleDelayedHide() {
+		this.background.forEach((b) => b.data.isHiding = true);
+		this.hint.data.isHiding = true;
+		this.playAhaSound();
 	}
 
 	playAhaSound() {
