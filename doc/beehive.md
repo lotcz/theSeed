@@ -199,6 +199,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
+- water flows through ground, then drops
 - control menu with keyboard
 - when crawling, pull item behind
 - makers to turn heads

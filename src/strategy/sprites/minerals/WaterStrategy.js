@@ -10,6 +10,9 @@ export default class WaterStrategy extends MineralStrategy {
 
 	constructor(game, model, controls) {
 		super(game, model, controls, WATER_TIMEOUT);
+
+		this.model._is_crawlable = false;
+		this.model._is_penetrable = false;
 	}
 
 	updateStrategy() {
@@ -17,17 +20,17 @@ export default class WaterStrategy extends MineralStrategy {
 			this.removeMyself();
 			return;
 		}
-
+/*
 		if (this.level.bee) {
 			if (
 				(this.level.bee.coordinates.y > this.model.image.coordinates.y) &&
 				(this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2))
 			) {
 				WaterStrategy.splashSound.replay();
-				this.level.bee.hurt(0.5);
+				this.level.bee.hurt(0.2);
 			}
 		}
-
+*/
 		super.updateStrategy();
 	}
 

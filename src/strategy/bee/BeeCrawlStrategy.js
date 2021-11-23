@@ -12,10 +12,13 @@ import RotationValue from "../../class/RotationValue";
 import CrawlSound from "../../../res/sound/crawl.wav";
 import Sound from "../../class/Sound";
 import {CRAWLING_MATRIX, FALLBACK_FLY, FALLBACK_PROCEED} from "../../builder/CrawlingMatrix";
+import {SPRITE_TYPE_WATER} from "../../builder/SpriteStyle";
+import WaterStrategy from "../sprites/minerals/WaterStrategy";
 
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second
 const CONTROLS_TIMEOUT = 500;
+const DEFAULT_HIT_TIMEOUT = 300;
 
 export default class BeeCrawlStrategy extends ControllerBase {
 	targetCoordinates;
@@ -29,6 +32,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
 		this.crawlSound = new Sound(CrawlSound);
+		this.hitTimeout = 0;
 	}
 
 	activateInternal() {
@@ -133,6 +137,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			}
 			const options = matrix.options[this.controls.direction.get()];
 			if (options === false || options === undefined) {
+				console.log('No crawling options!');
 				return;
 			} else if (options === true) {
 				this.fly();
@@ -168,6 +173,22 @@ export default class BeeCrawlStrategy extends ControllerBase {
 						this.fly();
 						return;
 					}
+				}
+			}
+		}
+
+		if (this.hitTimeout > 0) {
+			this.hitTimeout -= delta;
+		}
+
+		const waterAbove = this.chessboard.getVisitors(this.grid.getNeighborUp(this.model.position), (v) => v._is_sprite && v.type === SPRITE_TYPE_WATER);
+		if (waterAbove.length > 0) {
+			const water = waterAbove[0];
+			if (this.model.coordinates.distanceTo(water.image.coordinates) < (this.grid.tileRadius.get() * 2)) {
+				if (this.hitTimeout <= 0) {
+					WaterStrategy.splashSound.replay();
+					this.model.hurt(0.2);
+					this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 				}
 			}
 		}

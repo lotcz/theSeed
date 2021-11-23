@@ -120,6 +120,7 @@ export default class LevelController extends ControllerBase {
 					this.travelling = false;
 				} else {
 					if (this.level.name === START_LEVEL) {
+						if (DEBUG_LEVEL_CONTROLLER) console.log('Died in start level');
 						if (this.game.lives.get() > 0) {
 							this.game.lives.set(this.game.lives.get() - 1);
 						}
@@ -128,9 +129,11 @@ export default class LevelController extends ControllerBase {
 						this.fadeIn();
 					} else {
 						if (this.game.lives.get() <= 0) {
+							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and transferring to start level.');
 							this.game.lives.set(this.game.maxLives.get() || 0);
 							this.game.levelName.set(START_LEVEL);
 						} else {
+							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and respawning.');
 							this.game.lives.set(this.game.lives.get() - 1);
 							this.model.spawn(this.model.bee, this.game.lastLevelName);
 							this.beeChanged();

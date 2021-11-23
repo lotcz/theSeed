@@ -1,4 +1,4 @@
-import WaterImage from "../../res/img/water.svg";
+
 import BubbleImage from "../../res/img/bubble.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
@@ -36,7 +36,7 @@ export const IMAGE_STARS_3 = 'img/stars-3.svg';
 export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';
 export const IMAGE_EXIT = 'img/exit.svg';
 
-export const IMAGE_WATER = 'img/water.svg';
+
 export const IMAGE_BUBBLE = 'img/bubble.svg';
 export const IMAGE_NITROGEN = 'img/nitrogen.svg';
 export const IMAGE_POTASSIUM = 'img/potassium.svg';
@@ -53,17 +53,14 @@ export const SPRITE_TYPE_BEE_QUEEN = 'bee-queen';
 
 export const SPRITE_TYPE_HINT = 'hint';
 
-
 export const SPRITE_TYPE_BUG_DEAD = 'bug-dead';
 export const SPRITE_TYPE_BUG_EGG = 'bug-egg';
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
-export const SPRITE_TYPE_WATER = 'water';
 export const SPRITE_TYPE_BUBBLE = 'bubble';
 export const SPRITE_TYPE_POTASSIUM = 'potassium';
 export const SPRITE_TYPE_RESPAWN = 'respawn';
 export const SPRITE_TYPE_EXIT = 'exit';
 export const SPRITE_TYPE_EMITTER = 'emitter';
-
 
 export const STRATEGY_EMPTY = 'empty';
 export const STRATEGY_STATIC = 'static';
@@ -75,7 +72,6 @@ export const STRATEGY_QUEEN = 'queen';
 export const STRATEGY_BUTTERFLY = 'butterfly';
 export const STRATEGY_WORM = 'worm';
 export const STRATEGY_BUBBLE = 'bubble';
-export const STRATEGY_WATER = 'water';
 
 export const STRATEGY_EMITTER = 'emitter';
 
@@ -176,8 +172,8 @@ Minerals and other objects
  */
 
 export const SPRITE_TYPE_STONE = 'stone';
-import StoneImage from "../../res/img/stone.svg";
 export const IMAGE_STONE = 'img/stone.svg';
+import StoneImage from "../../res/img/stone.svg";
 
 SPRITE_STYLES[SPRITE_TYPE_STONE] = {
 	strategy: STRATEGY_OBJECT,
@@ -187,6 +183,11 @@ SPRITE_STYLES[SPRITE_TYPE_STONE] = {
 	},
 };
 
+export const SPRITE_TYPE_WATER = 'water';
+export const IMAGE_WATER = 'img/water.svg';
+export const STRATEGY_WATER = 'water';
+import WaterImage from "../../res/img/water.svg";
+
 SPRITE_STYLES[SPRITE_TYPE_WATER] = {
 	strategy: STRATEGY_WATER,
 	image: {
@@ -195,6 +196,18 @@ SPRITE_STYLES[SPRITE_TYPE_WATER] = {
 		scale: 0.01
 	},
 	data: {amount: 1}
+};
+
+export const SPRITE_TYPE_WATER_CAP = 'water-cap';
+export const IMAGE_WATER_CAP = 'img/water-cap.svg';
+import WaterCapImage from "../../res/img/water-cap.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_WATER_CAP] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_WATER_CAP,
+		resource: WaterCapImage,
+	}
 };
 
 SPRITE_STYLES[SPRITE_TYPE_BUBBLE] = {

@@ -3,11 +3,13 @@ import Sound from "../../class/Sound";
 import HitSound from "../../../res/sound/hit.wav";
 
 import {BEE_CENTER} from "../../controller/BeeController";
-import {IMAGE_BEE, IMAGE_BEE_DEAD} from "../../builder/SpriteStyle";
+import {IMAGE_BEE, IMAGE_BEE_DEAD, SPRITE_TYPE_WATER} from "../../builder/SpriteStyle";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 import Pixies from "../../class/Pixies";
 import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
+import WaterStrategy from "../sprites/minerals/WaterStrategy";
+import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT, NEIGHBOR_TYPE_UPPER_RIGHT} from "../../model/GridModel";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -20,6 +22,8 @@ const SLOWDOWN_SPEED = 400;
 
 // how quickly will speed build up, pixels per second
 const SPEEDUP_SPEED = 800;
+
+const DEFAULT_HIT_TIMEOUT = 300;
 
 export default class BeeFlightStrategy extends ControllerBase {
 	static hitSound = new Sound(HitSound);
@@ -37,6 +41,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.speed = 0;
 		this.dead = false;
 		this.leaving = false;
+		this.hitTimeout = 0;
 	}
 
 	activateInternal() {
@@ -95,6 +100,27 @@ export default class BeeFlightStrategy extends ControllerBase {
 			if (this.speed > 0) {
 				const slowDown = (this.dead) ? SLOWDOWN_SPEED * 4 : SLOWDOWN_SPEED;
 				direction.setSize(Math.max(0, this.speed - (slowDown * secsDelta)));
+			}
+		}
+
+		if (this.hitTimeout > 0) {
+			this.hitTimeout -= delta;
+		}
+
+		const upperNeighbors = [NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_RIGHT, NEIGHBOR_TYPE_UPPER_LEFT];
+		const waterAbove = upperNeighbors.reduce(
+			(prev, current) => prev.concat(
+				this.chessboard.getVisitors(
+					this.grid.getNeighbor(this.model.position, current),
+				(v) => v._is_sprite && v.type === SPRITE_TYPE_WATER && this.model.coordinates.distanceTo(v.image.coordinates) < (this.grid.tileRadius.get() * 2))),
+			[]);
+
+		if (waterAbove.length > 0) {
+			direction = direction.addY(SPEEDUP_SPEED * secsDelta * 10);
+			if (this.hitTimeout <= 0) {
+				WaterStrategy.splashSound.replay();
+				this.model.hurt(0.2);
+				this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 			}
 		}
 
