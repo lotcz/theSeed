@@ -33,6 +33,7 @@ import LevelHatching from "../../levels/hatching.json";
 import LevelTutorial1 from "../../levels/tutorial-1.json";
 import LevelTutorial2 from "../../levels/tutorial-2.json";
 import LevelTutorial3 from "../../levels/tutorial-3.json";
+import LevelTutorial4 from "../../levels/tutorial-4.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
@@ -78,6 +79,7 @@ export default class GameModel extends ModelBase {
 		this.levels.set('tutorial-1', LevelTutorial1);
 		this.levels.set('tutorial-2', LevelTutorial2);
 		this.levels.set('tutorial-3', LevelTutorial3);
+		this.levels.set('tutorial-4', LevelTutorial4);
 		this.levels.set('beehive', LevelBeehive);
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);

@@ -188,6 +188,19 @@ SPRITE_STYLES[SPRITE_TYPE_HINT_PICKING] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_GROUPING = 'hint-grouping';
+export const IMAGE_HINT_GROUPING = 'img/hint-grouping.svg';
+import HintGroupingImage from "../../res/img/hint-grouping.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_GROUPING] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_GROUPING,
+		resource: HintGroupingImage,
+		scale: 1
+	},
+};
+
 export const SPRITE_TYPE_HINT_KEYHOLE_1 = 'hint-keyhole-1';
 export const IMAGE_HINT_KEYHOLE_1 = 'img/hint-keyhole-1.svg';
 import HintKeyhole1Image from "../../res/img/hint-keyhole-1.svg";
