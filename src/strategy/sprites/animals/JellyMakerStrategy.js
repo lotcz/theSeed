@@ -5,7 +5,7 @@ import StaticStrategy from "../StaticStrategy";
 import {MINERAL_MAX_AMOUNT} from "../minerals/MineralStrategy";
 
 const JELLY_MAKER_TIMEOUT = 2000;
-const HINT_DISTANCE = 1;
+const HINT_DISTANCE = 400;
 const JELLY_MAKER_CONSUMED_AMOUNT = MINERAL_MAX_AMOUNT;
 
 export default class JellyMakerStrategy extends StaticStrategy {
@@ -17,12 +17,6 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = true;
 
-		if (!this.model.data.consumes) {
-			this.model.data.consumes = SPRITE_TYPE_POLLEN;
-		}
-		if (!this.model.data.produces) {
-			this.model.data.produces = SPRITE_TYPE_PINK_JELLY;
-		}
 		if (!this.model.data.consumesAmount) {
 			this.model.data.consumesAmount = JELLY_MAKER_CONSUMED_AMOUNT;
 		}
@@ -35,8 +29,17 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		if (!this.hintController) {
 			const hintModel = new HintModel();
 			hintModel.position.set(this.model.position);
-			const style = SPRITE_STYLES[this.model.data.consumes];
-			hintModel.imagePaths = [style.image.uri];
+			if (this.model.data.consumes) {
+				const style = SPRITE_STYLES[this.model.data.consumes];
+				hintModel.imagePaths = [style.image.uri];
+			} else if (this.model.data.hint) {
+				hintModel.imagePaths = [...this.model.data.hint];
+			} else {
+				console.log('No hint type detected!');
+			}
+			if (this.model.data.hintSize !== undefined) {
+				hintModel.size = this.model.data.hintSize;
+			}
 			if (this.model.data.hintDirection !== undefined) {
 				hintModel.direction = this.model.data.hintDirection;
 			}
@@ -46,9 +49,10 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		}
 
 		if (this.level.isPlayable && this.level.bee && this.isHungry()) {
-			const beeDistance = this.model.position.distanceTo(this.level.bee.position);
-			if (this.hintController.isActivated()) {
-				if (beeDistance > (3 * HINT_DISTANCE)) {
+			const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
+			console.log(beeDistance);
+			if (this.hintController.isInitialized()) {
+				if (beeDistance > (2 * HINT_DISTANCE)) {
 					this.hintController.hide();
 				} else {
 					this.hintController.show();
@@ -68,7 +72,7 @@ export default class JellyMakerStrategy extends StaticStrategy {
 	}
 
 	consume() {
-		if (!this.isHungry()) {
+		if (!(this.isHungry() && this.model.data.consumes)) {
 			return;
 		}
 		const area = this.grid.getAffectedPositions(this.model.position, 2);
@@ -85,7 +89,7 @@ export default class JellyMakerStrategy extends StaticStrategy {
 	}
 
 	produce() {
-		if (this.isHungry()) {
+		if (this.isHungry() || ! this.model.data.produces) {
 			return;
 		}
 		this.model.data.consumedAmount = 0;

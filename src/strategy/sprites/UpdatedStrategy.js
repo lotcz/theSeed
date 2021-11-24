@@ -42,7 +42,7 @@ export default class UpdatedStrategy extends SpriteStrategy {
 				this.timeout = this.defaultTimeout;
 			}
 		}
-		this.updateInternal(delta);
+		super.update(delta);
 	}
 
 }

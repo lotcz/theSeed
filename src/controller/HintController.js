@@ -70,7 +70,7 @@ export default class HintController extends ControllerBase {
 		this.hint = this.addSprite(this.model.position, {targetScale: 2, targetPosition: position, isHiding: false}, defaultImage, 0.3);
 		if (this.model.imagePaths.length > 1) {
 			this.model.imagePaths.forEach((path) => this.level.addResource(path));
-			const anim = new AnimationModel({paths: this.model.imagePaths, frameRate: 0.33});
+			const anim = new AnimationModel({paths: this.model.imagePaths, frameRate: 0.5});
 			anim.image = this.hint.image;
 			const animationController = new AnimationController(this.game, anim, this.controls);
 			this.addChild(animationController);

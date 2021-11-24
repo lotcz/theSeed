@@ -188,6 +188,30 @@ SPRITE_STYLES[SPRITE_TYPE_HINT_PICKING] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_KEYHOLE_1 = 'hint-keyhole-1';
+export const IMAGE_HINT_KEYHOLE_1 = 'img/hint-keyhole-1.svg';
+import HintKeyhole1Image from "../../res/img/hint-keyhole-1.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_KEYHOLE_1] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_KEYHOLE_1,
+		resource: HintKeyhole1Image
+	},
+};
+
+export const SPRITE_TYPE_HINT_KEYHOLE_2 = 'hint-keyhole-2';
+export const IMAGE_HINT_KEYHOLE_2 = 'img/hint-keyhole-2.svg';
+import HintKeyhole2Image from "../../res/img/hint-keyhole-2.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_KEYHOLE_2] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_KEYHOLE_2,
+		resource: HintKeyhole2Image
+	},
+};
+
 /*
 Minerals and other objects
  */
@@ -416,6 +440,22 @@ SPRITE_STYLES[SPRITE_TYPE_BEE_DEAD] = {
 };
 
 export const STRATEGY_JELLY_MAKER = 'jellymaker';
+
+export const SPRITE_TYPE_BEE_FRIEND = 'bee-friend';
+export const IMAGE_BEE_FRIEND = 'img/bee-friend.svg';
+import BeeFriendImage from "../../res/img/bee-friend.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_FRIEND] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_FRIEND,
+		resource: BeeFriendImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP,
+		hint: [IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2]
+	}
+};
 
 export const SPRITE_TYPE_PINK_JELLY_MAKER = 'bee-jelly-maker-pink';
 export const IMAGE_PINK_JELLY_MAKER = 'img/jellymaker.svg';

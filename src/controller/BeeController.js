@@ -26,6 +26,7 @@ import HintModel from "../model/HintModel";
 import HintController from "./HintController";
 import ObjectStrategy, {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 import Pixies from "../class/Pixies";
+import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.1; // health per second
@@ -195,11 +196,14 @@ export default class BeeController extends ControllerBase {
 	inspectForMinerals(position) {
 		const visitors = this.chessboard.getVisitors(position);
 		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
-		lives.forEach((l) => {
-			this.game.maxLives.set(this.game.maxLives.get() + 1);
-			this.game.lives.set(this.game.lives.get() + 1);
-			this.level.sprites.remove(l);
-		});
+		if (lives.length > 0) {
+			DoorSlotStrategy.drJonesSound.play();
+			lives.forEach((l) => {
+				this.game.maxLives.set(this.game.maxLives.get() + 1);
+				this.game.lives.set(this.game.lives.get() + 1);
+				this.level.sprites.remove(l);
+			});
+		}
 
 		const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
 		if (doors.length > 0) {
@@ -291,8 +295,10 @@ export default class BeeController extends ControllerBase {
 	}
 
 	showControlsHint() {
-		this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
-		this.showingControlsHint = true;
+		if (!this.showingControlsHint) {
+			this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
+			this.showingControlsHint = true;
+		}
 	}
 
 	showActionHint() {
@@ -304,7 +310,8 @@ export default class BeeController extends ControllerBase {
 
 	showHint(images, size = 3) {
 		if (this.hintController) {
-			this.hintController.destroy()
+			this.hintController.destroy();
+			this.removeChild(this.hintController);
 		}
 		const hintModel = new HintModel();
 		hintModel.position.set(this.grid.getPosition(BEE_CENTER));
