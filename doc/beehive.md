@@ -199,6 +199,7 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
+- dont drop when leaving level on the bottom
 - rotate objects when rolling and keep rotation
 - add health indicator and improve lives indicator
 - control menu with keyboard
