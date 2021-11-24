@@ -9,7 +9,7 @@ import BeeLifeImage from "../../res/img/bee-life.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeQueenImage from "../../res/img/bee-queen.svg";
 
-import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
+import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT} from "../model/GridModel";
 import {GROUND_TYPE_GRASS, GROUND_TYPE_WAX_DOOR} from "./GroundStyle";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
@@ -467,6 +467,23 @@ SPRITE_STYLES[SPRITE_TYPE_BEE_FRIEND] = {
 	data: {
 		hintDirection: NEIGHBOR_TYPE_UP,
 		hint: [IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2]
+	}
+};
+
+export const SPRITE_TYPE_BEE_SOLDIER = 'bee-soldier';
+export const IMAGE_BEE_SOLDIER = 'img/bee-soldier.svg';
+import BeeSoldierImage from "../../res/img/bee-soldier.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_BEE_SOLDIER] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_SOLDIER,
+		resource: BeeSoldierImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
+		hint: [IMAGE_BEE_QUEEN],
+		hintSize: 5
 	}
 };
 
