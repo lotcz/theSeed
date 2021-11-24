@@ -11,11 +11,12 @@ export const GRAY_LIGHT = '#909090';
 export const GRAY_LIGHTEST = '#e0e0f0';
 
 export const BROWN_DARKEST = '#202010';
-export const BROWN_DARK = '#302811';
+export const BROWN_DARK = '#24201c';
 export const BROWN_MEDIUM = '#443c37';
 export const BROWN_LIGHT = '#6a5243';
 export const BROWN_LIGHTEST = '#eac2a4';
 
+export const GREEN_DARKEST = '#083008';
 export const GREEN_DARK = '#0b490a';
 export const GREEN_LIGHT = '#326522';
 export const GREEN_LIGHTEST = '#82a572';

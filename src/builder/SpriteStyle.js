@@ -149,16 +149,42 @@ SPRITE_STYLES[SPRITE_TYPE_HINT_ARROWS] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_ACTION = 'hint-action';
+export const IMAGE_HINT_ACTION = 'img/hint-action.svg';
+import HintActionImage from "../../res/img/hint-action.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_ACTION] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_ACTION,
+		resource: HintActionImage,
+		scale: 0.1
+	},
+};
+
 export const SPRITE_TYPE_HINT_WATER = 'hint-water';
 export const IMAGE_HINT_WATER = 'img/hint-water.svg';
 import HintWaterImage from "../../res/img/hint-water.svg";
 
 SPRITE_STYLES[SPRITE_TYPE_HINT_WATER] = {
-	strategy: STRATEGY_HINT,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_HINT_WATER,
 		resource: HintWaterImage,
-		scale: 0.1
+		scale: 1
+	},
+};
+
+export const SPRITE_TYPE_HINT_PICKING = 'hint-picking';
+export const IMAGE_HINT_PICKING = 'img/hint-picking.svg';
+import HintPickingImage from "../../res/img/hint-picking.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_PICKING] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_PICKING,
+		resource: HintPickingImage,
+		scale: 1
 	},
 };
 
@@ -175,6 +201,18 @@ SPRITE_STYLES[SPRITE_TYPE_STONE] = {
 	image: {
 		uri: IMAGE_STONE,
 		resource: StoneImage
+	},
+};
+
+export const SPRITE_TYPE_STONE_SOIL = 'stone-soil';
+export const IMAGE_STONE_SOIL = 'img/stone-soil.svg';
+import StoneSoilImage from "../../res/img/stone-soil.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_STONE_SOIL] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_STONE_SOIL,
+		resource: StoneSoilImage
 	},
 };
 

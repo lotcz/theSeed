@@ -199,7 +199,6 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- water flows through ground, then drops
 - rotate objects when rolling and keep rotation
 - add health indicator and improve lives indicator
 - control menu with keyboard

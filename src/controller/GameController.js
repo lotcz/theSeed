@@ -3,16 +3,8 @@ import LevelController from "./LevelController";
 import LevelModel from "../model/LevelModel";
 import Vector2 from "../class/Vector2";
 import * as localForage from "localforage";
-import LevelIntro from "../../levels/intro.json";
-import LevelHatching from "../../levels/hatching.json";
-import LevelTutorial1 from "../../levels/tutorial-1.json";
-import LevelBeehive from "../../levels/beehive.json";
-import LevelLevel1 from "../../levels/level-1.json";
-import LevelLevel2 from "../../levels/level-2.json";
-
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
-import HashTableModel from "../model/HashTableModel";
 import {DEBUG_MODE, START_LEVEL} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";

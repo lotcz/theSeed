@@ -1,5 +1,6 @@
 import ControllerBase from "../class/ControllerBase";
 import {
+	IMAGE_HINT_ACTION,
 	IMAGE_HINT_ARROWS,
 	IMAGE_HINT_WASD,
 	SPRITE_STYLES,
@@ -38,6 +39,7 @@ export default class BeeController extends ControllerBase {
 	leaving;
 	dropItemTimeout;
 	showingControlsHint;
+	showingActionHint;
 	showingDoorsHint;
 
 	constructor(game, model, controls) {
@@ -47,6 +49,7 @@ export default class BeeController extends ControllerBase {
 		this.leaving = null;
 		this.dropItemTimeout = 0;
 		this.showingControlsHint = false;
+		this.showingActionHint = false;
 		this.showingDoorsHint = false;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
@@ -227,6 +230,10 @@ export default class BeeController extends ControllerBase {
 	}
 
 	takeItem(item) {
+		if (!(this.showingActionHint || this.game.historyExists('hint-action-displayed'))) {
+			setTimeout(() => this.showActionHint(), 1000);
+		}
+
 		if (this.dropItemTimeout > 0) {
 			return;
 		}
@@ -249,6 +256,11 @@ export default class BeeController extends ControllerBase {
 	dropItem() {
 		if (this.model.inventory.isEmpty()) {
 			return;
+		}
+		if (this.showingActionHint) {
+			this.hideHint();
+			this.game.setHistory('hint-action-displayed');
+			this.showingActionHint = false;
 		}
 		const item = this.model.inventory.get();
 		this.model.inventory.set(null);
@@ -281,6 +293,11 @@ export default class BeeController extends ControllerBase {
 	showControlsHint() {
 		this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
 		this.showingControlsHint = true;
+	}
+
+	showActionHint() {
+		this.showHint([IMAGE_HINT_ACTION]);
+		this.showingActionHint = true;
 	}
 
 	showHint(images, size = 3) {
