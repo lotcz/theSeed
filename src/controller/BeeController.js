@@ -208,7 +208,7 @@ export default class BeeController extends ControllerBase {
 			const style = SPRITE_STYLES[key];
 			if (!style) {
 				console.log('Door style not found!', key, doors[0]);
-			} else {
+			} else if (!this.showingDoorsHint) {
 				this.showingDoorsHint = true;
 				this.showHint([style.image.uri], 2);
 			}
@@ -296,21 +296,24 @@ export default class BeeController extends ControllerBase {
 	}
 
 	showActionHint() {
-		this.showHint([IMAGE_HINT_ACTION]);
-		this.showingActionHint = true;
+		if (!this.showingActionHint) {
+			this.showHint([IMAGE_HINT_ACTION]);
+			this.showingActionHint = true;
+		}
 	}
 
 	showHint(images, size = 3) {
-		if (!this.hintController || !this.hintController.isInitialized()) {
-			const hintModel = new HintModel();
-			hintModel.position.set(this.grid.getPosition(BEE_CENTER));
-			hintModel.imagePaths = images;
-			hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
-			hintModel.size = size;
-			this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
-			this.addChild(this.hintController);
-			this.hintController.activate();
+		if (this.hintController) {
+			this.hintController.destroy()
 		}
+		const hintModel = new HintModel();
+		hintModel.position.set(this.grid.getPosition(BEE_CENTER));
+		hintModel.imagePaths = images;
+		hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
+		hintModel.size = size;
+		this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
+		this.addChild(this.hintController);
+		this.hintController.activate();
 		this.hintController.show();
 	}
 
