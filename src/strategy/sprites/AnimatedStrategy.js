@@ -28,7 +28,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 
 	activateInternal() {
 		super.activateInternal();
-		this.model.image.coordinates.set(this.getCoords(this.model.position));
+		if (this.model.image) {
+			this.model.image.coordinates.set(this.getCoords(this.model.position));
+		}
 	}
 
 	getCoords(position) {
@@ -40,6 +42,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	}
 
 	setTargetRotation(rotation, timeout = null) {
+		if (!this.model.image) {
+			return;
+		}
 		if (!this.model.image.rotation.equalsTo(rotation)) {
 			if (timeout === null) timeout = this.defaultTimeout;
 			if (this.oriented) {
@@ -53,6 +58,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	}
 
 	setTargetScale(scale) {
+		if (!this.model.image) {
+			return;
+		}
 		if (!this.model.image.scale.equalsTo(scale)) {
 			this.animatedScale = new AnimatedValue(this.model.image.scale.get(), scale, this.defaultTimeout);
 		}
@@ -65,6 +73,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	}
 
 	setTargetCoordinates(coordinates) {
+		if (!this.model.image) {
+			return;
+		}
 		if (!this.model.image.coordinates.equalsTo(coordinates)) {
 			this.animatedCoordinates = new AnimatedVector2(this.model.image.coordinates, coordinates, this.defaultTimeout);
 			if (this.turnWhenMoving) this.setTargetRotation(this.model.image.coordinates.getRotation(coordinates), this.turningDuration);
@@ -76,6 +87,10 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	}
 
 	updateInternal(delta) {
+		if (!this.model.image) {
+			return;
+		}
+
 		if (this.animatedRotation) {
 			let rotation = this.animatedRotation.get(delta);
 			if (this.oriented) {

@@ -338,7 +338,7 @@ export default class GameController extends ControllerBase {
 			level.viewBoxSize.set(this.model.viewBoxSize);
 			if (level.isPlayable && level.bee) {
 				const isMobile = this.model.viewBoxSize.x < 650;
-				const scale = isMobile ? 4 : 2.5;
+				const scale = isMobile ? 4 : 3;
 				level.viewBoxScale.set(scale);
 				level.centerOnCoordinates(level.bee.coordinates);
 			} else {

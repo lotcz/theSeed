@@ -1,16 +1,15 @@
 import {
-	SPRITE_STYLES, SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD, SPRITE_TYPE_BEE_EGG,
+	SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD,
 	SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG,
-	SPRITE_TYPE_POLLEN,
 	SPRITE_TYPE_RANDOM, SPRITE_TYPE_STONE,
 	STRATEGY_MINERAL
 } from "../../../builder/SpriteStyle";
-import UpdatedStrategy from "../UpdatedStrategy";
 import Pixies from "../../../class/Pixies";
+import StaticStrategy from "../StaticStrategy";
 
 const EMITTER_TIMEOUT = 1000;
 
-export default class EmitterStrategy extends UpdatedStrategy {
+export default class EmitterStrategy extends StaticStrategy {
 	max;
 	emitted;
 

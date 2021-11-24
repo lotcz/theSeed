@@ -65,6 +65,8 @@ export default class SpriteModel extends ModelBase {
 		}
 		if (state.strategy) this.strategy.restoreState(state.strategy);
 		if (state.data) this.data = state.data;
+		if (this.data.penetrable !== undefined) this._is_penetrable = this.data.penetrable;
+		if (this.data.crawlable !== undefined) this._is_crawlable = this.data.crawlable;
 		if (state.type) this.type = state.type;
 	}
 

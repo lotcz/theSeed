@@ -1,14 +1,10 @@
-
 import BubbleImage from "../../res/img/bubble.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import PotassiumImage from "../../res/img/potassium.svg";
 import ButterflyImage from "../../res/img/butterfly.svg";
 import ExitImage from "../../res/img/exit.svg";
-
-
 import BugEggImage from "../../res/img/bug-egg.svg";
 import BugDeadImage from "../../res/img/bug-dead.svg";
-
 import BeeLifeImage from "../../res/img/bee-life.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeQueenImage from "../../res/img/bee-queen.svg";
@@ -17,8 +13,6 @@ import {NEIGHBOR_TYPE_UP} from "../model/GridModel";
 import {GROUND_TYPE_GRASS, GROUND_TYPE_WAX_DOOR} from "./GroundStyle";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
-
-
 
 export const IMAGE_BEE = 'img/bee.svg';
 export const IMAGE_BEE_CRAWL = 'img/bee-walk.svg';
@@ -60,7 +54,6 @@ export const SPRITE_TYPE_BUBBLE = 'bubble';
 export const SPRITE_TYPE_POTASSIUM = 'potassium';
 export const SPRITE_TYPE_RESPAWN = 'respawn';
 export const SPRITE_TYPE_EXIT = 'exit';
-export const SPRITE_TYPE_EMITTER = 'emitter';
 
 export const STRATEGY_EMPTY = 'empty';
 export const STRATEGY_STATIC = 'static';
@@ -111,6 +104,8 @@ SPRITE_STYLES[SPRITE_TYPE_EXIT] = {
 	},
 	data: {level: 'level-0'}
 };
+
+export const SPRITE_TYPE_EMITTER = 'emitter';
 
 SPRITE_STYLES[SPRITE_TYPE_EMITTER] = {
 	strategy: STRATEGY_EMITTER,
@@ -193,7 +188,7 @@ SPRITE_STYLES[SPRITE_TYPE_WATER] = {
 	image: {
 		uri: IMAGE_WATER,
 		resource: WaterImage,
-		scale: 0.01
+		scale: 0.1
 	},
 	data: {amount: 1}
 };
@@ -203,7 +198,8 @@ export const IMAGE_WATER_CAP = 'img/water-cap.svg';
 import WaterCapImage from "../../res/img/water-cap.svg";
 
 SPRITE_STYLES[SPRITE_TYPE_WATER_CAP] = {
-	strategy: STRATEGY_STATIC,
+	strategy: STRATEGY_EMITTER,
+	data: {type:'water', timeout:3000, max:-1, penetrable: false, crawlable: false},
 	image: {
 		uri: IMAGE_WATER_CAP,
 		resource: WaterCapImage,
