@@ -10,7 +10,7 @@ export default class AnimationController extends ControllerBase {
 
 		this.currentFrame = 0;
 		this.frameDelay = 1000 / this.model.frameRate.get();
-		this.frameTimeout = 0;
+		this.frameTimeout = this.frameDelay;
 	}
 
 	updateInternal(delta) {

@@ -11,6 +11,7 @@
    sodipodi:docname="bee.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -24,9 +25,9 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:snap-global="false"
-     inkscape:zoom="4.323827"
-     inkscape:cx="122.69224"
-     inkscape:cy="66.029469"
+     inkscape:zoom="2.1619135"
+     inkscape:cx="169.06319"
+     inkscape:cy="45.56149"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -45,6 +46,22 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-48.474214,-104.77235)">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect76516"
+       id="use78163"
+       transform="rotate(19.187213,100.1789,132.81813)"
+       width="100%"
+       height="100%" />
+    <rect
+       style="fill:#050505;fill-opacity:1;stroke:none;stroke-width:2.23843;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       id="rect76516"
+       width="1.2544346"
+       height="6.394557"
+       x="2.3110993"
+       y="154.21396"
+       transform="rotate(-38.038428)" />
     <path
        id="path51643"
        style="fill:#000000;fill-opacity:1;stroke-width:0.159524;stroke-linejoin:bevel"
@@ -132,8 +149,10 @@
     <path
        id="path117403"
        style="fill:#050505;stroke-width:1.04054;stroke-linecap:round;stroke-linejoin:round"
-       d="m 103.02079,125.95674 1.00052,-0.64416 c 0,0 -1.8236,-10.03076 -3.72816,-12.26002 -0.437835,-0.51247 -0.966702,-0.17194 -1.000501,0.64416 -0.147085,3.55018 3.728141,12.26002 3.728141,12.26002 z"
-       sodipodi:nodetypes="ccaac" />
+       d="m 101.22547,119.63056 1.05461,0.55116 c 0,0 7.81721,-6.54468 8.81322,-9.30238 0.22897,-0.63395 -0.32851,-0.92528 -1.05459,-0.55115 -3.15858,1.6275 -8.81324,9.30237 -8.81324,9.30237 z"
+       sodipodi:nodetypes="ccaac"
+       inkscape:transform-center-x="-3.9509401"
+       inkscape:transform-center-y="-4.1933689" />
     <ellipse
        style="fill:#050505;fill-opacity:1;stroke-width:0.257397;stroke-linejoin:bevel"
        id="ellipse71560"
@@ -208,8 +227,10 @@
     <path
        id="path22857"
        style="fill:#050505;stroke-width:1.04054;stroke-linecap:round;stroke-linejoin:round"
-       d="m 101.36381,125.68344 0.5907,-1.033 c 0,0 -6.243753,-8.05961 -8.961733,-9.15939 -0.62478,-0.25295 -0.93708,0.29321 -0.59068,1.03297 1.50662,3.21798 8.961713,9.15942 8.961713,9.15942 z"
-       sodipodi:nodetypes="ccaac" />
+       d="m 96.845986,120.05466 1.189727,0.0239 c 0,0 4.085897,-9.34061 3.749947,-12.25336 -0.0771,-0.66962 -0.70611,-0.68227 -1.18968,-0.0239 -2.103682,2.86355 -3.749994,12.25337 -3.749994,12.25337 z"
+       sodipodi:nodetypes="ccaac"
+       inkscape:transform-center-x="-1.8004503"
+       inkscape:transform-center-y="-5.8171685" />
     <ellipse
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.02721;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="ellipse8524"

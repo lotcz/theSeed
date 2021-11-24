@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
-   sodipodi:docname="bee-friend.svg"
+   sodipodi:docname="bee-friend-bearded.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -246,6 +246,11 @@
        style="fill:#f0ff00;stroke:#000000;stroke-width:1.057;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 87.229919,102.3908 c -0.08186,-3.11273 -4.347601,-11.409687 -9.107259,-12.410489 -3.851238,-0.809786 -12.412001,4.751772 -9.783567,8.153898 3.345192,4.149721 18.96178,9.786071 18.890826,4.256591 z"
        sodipodi:nodetypes="cscc" />
+    <path
+       style="fill:#fdfdfd;fill-opacity:1;stroke:#999999;stroke-width:1.5387;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 63.733677,101.50595 c -0.816649,-2.372195 -1.038608,-3.351472 -0.04993,-6.52474 0.84445,-2.710358 7.616286,-5.681944 9.422316,-4.483904 0.954082,0.632895 -0.857335,4.100308 0.01539,6.755942 2.15738,6.564742 8.290846,3.879922 10.153089,7.479512 1.432531,6.58695 -17.551544,1.01292 -19.540865,-3.22681 z"
+       id="path96688"
+       sodipodi:nodetypes="cssscc" />
     <ellipse
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.12523;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="ellipse8628"
@@ -359,5 +364,10 @@
            sodipodi:nodetypes="ccccc" />
       </g>
     </g>
+    <path
+       style="fill:none;stroke:#646464;stroke-width:1.27594;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 70.323028,99.908032 C 69.474584,98.627489 69.568621,97.261349 69.568621,97.261349"
+       id="path101755"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
