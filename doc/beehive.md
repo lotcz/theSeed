@@ -147,6 +147,7 @@ Forest Gorge
 ------------
 
 find plants almost eaten, lure bugs away to let pollen grow
+catch drops of ??? before they fall to water
 
 Cave 3
 ------
@@ -201,8 +202,8 @@ TODO:
 BETA for friends
 ----------------
 
-- add health indicator and improve lives indicator
-- healing?
+- retain items lost to level edge, of possible
+- heal by eating honey, packed in doses or feeded from honeymaker
 - control menu with keyboard
 - makers to turn heads
 - production mode (exception handling and logging, hide all dev UI)

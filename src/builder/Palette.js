@@ -27,8 +27,13 @@ export const YELLOW_MEDIUM = '#c8680c';
 export const YELLOW_LIGHT = '#dcb306';
 export const YELLOW_LIGHTEST = '#fdf273';
 
-export const ORANGE_DARKEST = '#943c00';
-export const ORANGE_DARK = 'darkOrange';
-export const ORANGE_MEDIUM = 'orange';
-export const ORANGE_LIGHT = '#dcb306';
-export const ORANGE_LIGHTEST = '#fdf273';
+
+export const ORANGE_DARKEST = '#602020';
+export const ORANGE_DARK = '#943c00';
+export const ORANGE_MEDIUM = '#b45c10';
+export const ORANGE_LIGHT = 'darkOrange';
+
+
+export const RED_DARK = '#400000';
+export const RED_MEDIUM = '#800000';
+export const RED_LIGHT = '#c00000';

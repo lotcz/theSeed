@@ -5,7 +5,7 @@ import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ParallaxRenderer from "./ParallaxRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 
-export const HIDE_WHEN_OUTTA_SIGHT = false;
+export const HIDE_WHEN_OUTTA_SIGHT = true;
 const DEBUG_LEVEL_RENDERER = false;
 
 export default class LevelRenderer extends SvgRenderer {

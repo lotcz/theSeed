@@ -31,7 +31,6 @@ html, body {
 
 .menu {
 	position: fixed;
-	cursor: pointer;
 	z-index: 1000;
 }
 
@@ -73,6 +72,19 @@ html, body {
 
 .menu.status-bar .lives img.used {
 	filter: grayscale(1);
+}
+
+.menu.status-bar .health-wrapper {
+	min-width: 250px;
+	max-width: 100%;
+	border: 3px solid black;
+	border-radius: 10px;
+}
+
+.menu.status-bar .health-wrapper .health {
+	background-color: green;
+	border-radius: 5px;
+	height: 20px;
 }
 
 .centered,
