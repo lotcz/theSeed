@@ -606,6 +606,19 @@ SPRITE_STYLES[SPRITE_TYPE_BUG] = {
 	data: {amount: 1}
 };
 
+export const SPRITE_TYPE_ANT = 'ant';
+export const IMAGE_ANT = 'img/ant.svg';
+import AntImage from "../../res/img/ant.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_ANT] = {
+	strategy: STRATEGY_BUG,
+	image: {
+		uri: IMAGE_ANT,
+		resource: AntImage
+	},
+	data: {amount: 5, penetrable: true}
+};
+
 SPRITE_STYLES[SPRITE_TYPE_BUG_EGG] = {
 	strategy: STRATEGY_MINERAL,
 	image: {

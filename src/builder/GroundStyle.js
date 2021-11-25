@@ -9,7 +9,7 @@ import {
 	GRAY_MEDIUM,
 	GREEN_DARKEST,
 	GREEN_LIGHT,
-	GREEN_LIGHTEST, ORANGE_LIGHT, ORANGE_DARK, YELLOW_DARK, YELLOW_DARKEST
+	GREEN_LIGHTEST, ORANGE_LIGHT, ORANGE_DARK, YELLOW_DARK, YELLOW_DARKEST, RED_LIGHT, RED_DARKEST, RED_LIGHTEST
 } from "./Palette";
 
 export const GROUND_TYPE_BASIC = 'basic';
@@ -118,6 +118,24 @@ GROUND_STYLES[GROUND_TYPE_WAX_BACKGROUND] = {
 GROUND_STYLES[GROUND_TYPE_GRASS_BACKGROUND] = {
 	fill: GREEN_LIGHTEST,
 	stroke: { width: 20, color: GREEN_LIGHTEST},
+	background: true,
+	penetrable: true,
+	renderCorners: true
+};
+
+export const GROUND_TYPE_RED_FLOWER = 'red-flower';
+
+GROUND_STYLES[GROUND_TYPE_RED_FLOWER] = {
+	fill: RED_LIGHT,
+	stroke: { width: 10, color: RED_DARKEST},
+	renderCorners: true
+};
+
+export const GROUND_TYPE_RED_FLOWER_BACKGROUND = 'red-flower-background';
+
+GROUND_STYLES[GROUND_TYPE_RED_FLOWER_BACKGROUND] = {
+	fill: RED_LIGHTEST,
+	stroke: { width: 20, color: RED_LIGHTEST},
 	background: true,
 	penetrable: true,
 	renderCorners: true

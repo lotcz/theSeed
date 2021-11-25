@@ -189,7 +189,7 @@ export default class LevelModel extends ModelBase {
 					rotation: 0,
 					path: IMAGE_BEE_CRAWL
 				},
-				frameRate: 4,
+				frameRate: 3,
 				paths: [IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1]
 			},
 			starsAnimation: {

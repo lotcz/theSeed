@@ -17,7 +17,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.turnWhenMoving = true;
 		this.maxAmount = BUG_MAX_AMOUNT;
 
-		this.model._is_penetrable = false;
+		this.model._is_penetrable = (this.model.data.penetrable === true);
 		this.model._is_crawlable = false;
 	}
 
@@ -80,7 +80,7 @@ export default class BugStrategy extends ObjectStrategy {
 			const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
 			if (beePresent) {
 				BugStrategy.biteSound.replay();
-				this.level.bee.hurt((this.model.data.amount / this.maxAmount) * 0.8);
+				this.game.beeState.hurt((this.model.data.amount / this.maxAmount) * 0.8);
 				const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
 				this.setTargetRotation(angle, 500);
 				return;

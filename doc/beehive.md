@@ -140,14 +140,13 @@ collect some nectar and play with bugs
 Cave 2
 ------
 
-little more challenging caves, have worms eat your way through
+poison bugs with mushrooms
 catch drops of ??? before they fall to water
 
 Field
 -----
 
 there is field littered with insecticide and dead bugs
-
 
 Cave 3
 ------
