@@ -140,7 +140,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 
 			const distance = direction.multiply(secsDelta);
 			const crashDistance = distance.clone();
-			crashDistance.setSize(crashDistance.size() + this.grid.tileRadius.get());
+			crashDistance.setSize(crashDistance.size() + (this.grid.tileRadius.get() * 0.8));
 
 			const crashCoords = this.model.coordinates.add(crashDistance);
 			let crashPosition = this.grid.getPosition(crashCoords);
@@ -167,10 +167,9 @@ export default class BeeFlightStrategy extends ControllerBase {
 						this.parent.crawl(crawl);
 						return;
 					}
-					console.log('Uncrawlable: ', this.model.position, crashPosition);
+					console.log('Uncrawlable');
+					console.log(`[${this.model.position.x}, ${this.model.position.y}], [${crashPosition.x}, ${crashPosition.y}]`);
 				}
-
-				console.log(this.speed);
 
 				const possibleExit = this.level.isPossibleExit(crashPosition);
 				if (possibleExit) {
@@ -178,13 +177,14 @@ export default class BeeFlightStrategy extends ControllerBase {
 					return;
 				}
 
-				BeeFlightStrategy.hitSound.replay();
-				this.parent.emptyInventory();
-
-				this.game.beeState.hurt(HIT_HURT * this.speed / MAX_SPEED);
-				if (this.game.beeState.isDead()) {
-					this.dead = true;
-					this.game.beeState.health.set(0.001);
+				if (this.speed > MAX_CRAWL_SPEED) {
+					BeeFlightStrategy.hitSound.replay();
+					this.parent.emptyInventory();
+					this.game.beeState.hurt(HIT_HURT * this.speed / MAX_SPEED);
+					if (this.game.beeState.isDead()) {
+						this.dead = true;
+						this.game.beeState.health.set(0.001);
+					}
 				}
 
 				coords = this.model.coordinates.subtract(distance);

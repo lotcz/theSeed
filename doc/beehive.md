@@ -179,6 +179,7 @@ Ant Nest
 
 make way through ants nest, feed ants to carnivorous plant by luring them with honey
 you must gather nectar on the surface first, then make honey, then you can use it
+save girl friend from ants, bring her back like a bag :-)
 
 The Tree
 --------
