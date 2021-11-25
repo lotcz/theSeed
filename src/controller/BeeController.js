@@ -134,6 +134,11 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.controls.interacting.get()) {
+			if (this.showingActionHint) {
+				this.hideHint();
+				this.game.setHistory('hint-action-displayed');
+				this.showingActionHint = false;
+			}
 			this.dropItem();
 		}
 
@@ -166,6 +171,9 @@ export default class BeeController extends ControllerBase {
 	}
 
 	leave() {
+		if (this.hintController && this.hintController.isInitialized()) {
+			this.hintController.destroy();
+		}
 		if (!this.leaving) {
 			this.leaving = true;
 			if (!this.model.isFlying()) {
@@ -245,15 +253,21 @@ export default class BeeController extends ControllerBase {
 		if (this.model.inventory.isSet() && !sameType) {
 			return;
 		}
-		if (sameType && (sameType.data.amount + item.data.amount) >= MAX_INVENTORY_AMOUNT) {
-			return;
-		}
-		this.level.sprites.remove(item);
+
+		let amount = Pixies.between(1, MAX_INVENTORY_AMOUNT - this.carriedAmount(), item.data.amount);
+
 		if (sameType) {
-			sameType.data.amount += item.data.amount;
+			sameType.data.amount += amount;
 		} else {
-			this.model.inventory.set(item);
+			this.model.inventory.set(item.clone());
+			item.data.amount = amount;
 		}
+
+		item.data.amount -= amount;
+		if (item.data.amount <= 0) {
+			this.level.sprites.remove(item);
+		}
+
 		this.updateInventory();
 	}
 
@@ -263,7 +277,6 @@ export default class BeeController extends ControllerBase {
 		}
 		if (this.showingActionHint) {
 			this.hideHint();
-			this.game.setHistory('hint-action-displayed');
 			this.showingActionHint = false;
 		}
 		const item = this.model.inventory.get();

@@ -10,7 +10,6 @@ Basics
 - when Bee dies and has no followers, she respawns in a hive
 - motivation to travel to advanced levels is also quantity of resources
 
-
 Puzzles
 
 - bees presence can trigger opening/closing of gate
@@ -199,27 +198,26 @@ gather nectar from inside a giant flower
 TODO:
 =====
 
-- dont drop when leaving level on the bottom
-- rotate objects when rolling and keep rotation
+BETA for friends
+----------------
+
 - add health indicator and improve lives indicator
+- healing?
 - control menu with keyboard
-- when crawling, pull item behind
 - makers to turn heads
-- build tutorial levels
-- zoom out when in menu to provide orientation
 - production mode (exception handling and logging, hide all dev UI)
-- BETA for friends
+
+Demo
+----
 
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
-- improve graphics
 
 Improvements
 
 - better death (place sprite immediately and then follow it with camera so it behaves the same)
-- healing?
-
-- RELEASE
-
+- rotate objects when rolling and keep rotation
+- when crawling, pull item behind
+- zoom out when in menu to provide orientation
 
 
 Ads and monetization

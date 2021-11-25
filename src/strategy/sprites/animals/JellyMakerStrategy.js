@@ -50,9 +50,8 @@ export default class JellyMakerStrategy extends StaticStrategy {
 
 		if (this.level.isPlayable && this.level.bee && this.isHungry()) {
 			const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
-			console.log(beeDistance);
 			if (this.hintController.isInitialized()) {
-				if (beeDistance > (2 * HINT_DISTANCE)) {
+				if (beeDistance > (1.5 * HINT_DISTANCE)) {
 					this.hintController.hide();
 				} else {
 					this.hintController.show();

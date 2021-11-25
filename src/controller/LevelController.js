@@ -110,12 +110,14 @@ export default class LevelController extends ControllerBase {
 			}
 		}
 
-		if (this.isDead || this.travelling !== false) {
+		if ((this.isDead === true) || (this.travelling !== false)) {
 			if (this.level.clipAmount.get() < 1) {
+				if (DEBUG_LEVEL_CONTROLLER) console.log(`Fading out`);
 				this.level.clipCenter.set(this.model.bee.coordinates);
 				this.level.clipAmount.set(Math.min(this.level.clipAmount.get() + (0.5 * delta / 1000), 1));
 			} else {
 				if (this.travelling !== false) {
+					if (DEBUG_LEVEL_CONTROLLER) console.log(`Travelling to ${this.travelling}`);
 					this.game.levelName.set(this.travelling);
 					this.travelling = false;
 				} else {

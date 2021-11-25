@@ -15,13 +15,13 @@ export default class MineralStrategy extends ObjectStrategy {
 	updateStrategy() {
 		super.updateStrategy();
 
-		this.model._is_penetrable = (this.model.data.amount < MINERAL_MAX_AMOUNT);
+		this.model._is_penetrable = (this.model.data.amount < this.maxAmount);
 		this.model._is_crawlable = !this.model._is_penetrable;
 	}
 
 	updateStillObject() {
-		if (this.model.data.amount > MINERAL_MAX_AMOUNT) {
-			const amount = this.model.data.amount - MINERAL_MAX_AMOUNT;
+		if (this.model.data.amount > this.maxAmount) {
+			const amount = this.model.data.amount - this.maxAmount;
 			this.separate(amount);
 		}
 

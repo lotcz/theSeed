@@ -153,7 +153,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (penetrable && this.model.inventory.isSet() && this.model.inventory.get()._is_crawlable) {
 			const inventoryCrashCoords = crashCoords.addY(this.grid.tileSize.y);
 			const inventoryCrashPosition = this.grid.getPosition(inventoryCrashCoords);
-			if (!this.level.isPenetrable(inventoryCrashPosition)) {
+			if (this.level.isValidPosition(inventoryCrashPosition) && !this.level.isPenetrable(inventoryCrashPosition)) {
 				penetrable = false;
 				this.parent.dropItem();
 				this.parent.dropItemTimeout = 100;

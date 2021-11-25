@@ -2,6 +2,7 @@ import ModelBase from "../class/ModelBase";
 import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
+import Pixies from "../class/Pixies";
 
 export default class SpriteModel extends ModelBase {
 	position;
@@ -48,7 +49,7 @@ export default class SpriteModel extends ModelBase {
 			image: (this.image) ? this.image.getState() : null,
 			attachedSprite: (this.attachedSprite.isSet()) ? this.attachedSprite.get().getState() : null,
 			strategy: this.strategy.get(),
-			data: this.data,
+			data: Pixies.clone(this.data),
 			type: this.type
 		}
 	}
@@ -68,6 +69,15 @@ export default class SpriteModel extends ModelBase {
 		if (this.data.penetrable !== undefined) this._is_penetrable = this.data.penetrable;
 		if (this.data.crawlable !== undefined) this._is_crawlable = this.data.crawlable;
 		if (state.type) this.type = state.type;
+	}
+
+	clone() {
+		const state = this.getState();
+		const sprite = new SpriteModel(state);
+		sprite.isPersistent = this.isPersistent;
+		sprite._is_penetrable = this._is_penetrable;
+		sprite._is_crawlable = this._is_crawlable;
+		return sprite;
 	}
 
 }
