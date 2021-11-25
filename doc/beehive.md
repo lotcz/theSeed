@@ -140,14 +140,14 @@ collect some nectar and play with bugs
 Cave 2
 ------
 
-you must collect pollen
 little more challenging caves, have worms eat your way through
-
-Forest Gorge
-------------
-
-find plants almost eaten, lure bugs away to let pollen grow
 catch drops of ??? before they fall to water
+
+Field
+-----
+
+there is field littered with insecticide and dead bugs
+
 
 Cave 3
 ------
@@ -158,7 +158,6 @@ feed small bugs to the ants to pass
 Party Table
 -----------
 
-there is field littered with insecticide and dead bugs
 ants have stolen butterfly cocoons, kill ants with insecticide or lure them away
 butterflies block access to straw
 get few drops from the lemonade
@@ -204,9 +203,7 @@ BETA for friends
 ----------------
 
 - allow leaving levels when crawling
-- heal when in wax
 - retain items lost to level edge, of possible
-- heal by eating honey, packed in doses or feeded from honeymaker
 - control menu with keyboard
 - makers to turn heads
 - production mode (exception handling and logging, hide all dev UI)
@@ -215,17 +212,15 @@ Demo
 ----
 
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
-
-Improvements
-
+- heal by eating honey, packed in doses or feeded from honeymaker
 - better death (place sprite immediately and then follow it with camera so it behaves the same)
 - rotate objects when rolling and keep rotation
 - when crawling, pull item behind
 - zoom out when in menu to provide orientation
 
 
-Ads and monetization
---------------------
+Release
+-------
 
 - free 2 or 3 levels
 - pay to remove ads and unlock whole game

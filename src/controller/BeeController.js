@@ -34,6 +34,7 @@ export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
 const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 1000;
+const STARS_TIMEOUT = 3000;
 
 export default class BeeController extends ControllerBase {
 	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
@@ -44,6 +45,7 @@ export default class BeeController extends ControllerBase {
 	showingControlsHint;
 	showingActionHint;
 	showingDoorsHint;
+	starsTimeout;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -51,6 +53,7 @@ export default class BeeController extends ControllerBase {
 		this.dead = false;
 		this.leaving = null;
 		this.dropItemTimeout = 0;
+		this.starsTimeout = 0;
 		this.showingControlsHint = false;
 		this.showingActionHint = false;
 		this.showingDoorsHint = false;
@@ -116,16 +119,21 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
+		/*
 		if (this.game.beeState.isHurt()) {
-			if (!this.starsAnimationController.isActivated()) {
-				this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
-				this.starsAnimationController.activate();
-			}
 			this.game.beeState.heal(HEALING_SPEED * secsDelta);
-		} else {
+		}
+		*/
+
+		if (this.starsTimeout <= 0) {
 			if (this.starsAnimationController.isActivated()) {
 				this.starsAnimationController.deactivate();
 			}
+			if (this.model.starsVisible.get()) {
+				this.model.starsVisible.set(false);
+			}
+		} else {
+			this.starsTimeout -= delta;
 		}
 
 		if (this.dropItemTimeout > 0) {
@@ -316,6 +324,14 @@ console.log(amount);
 		if (amount > 0.3 || this.game.beeState.health.get() < 0.5) {
 			this.dropItem();
 		}
+		if (!this.model.starsVisible.get()) {
+			this.model.starsVisible.set(true);
+		}
+		if (!this.starsAnimationController.isActivated()) {
+			this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
+			this.starsAnimationController.activate();
+		}
+		this.starsTimeout = STARS_TIMEOUT;
 	}
 
 	showControlsHint() {

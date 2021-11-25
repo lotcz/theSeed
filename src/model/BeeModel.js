@@ -57,6 +57,8 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.leftWing);
 		this.rightWing = new ImageModel();
 		this.addChild(this.rightWing);
+		this.starsVisible = new DirtyValue(false);
+		this.addChild(this.starsVisible);
 
 		if (state) {
 			this.restoreState(state);

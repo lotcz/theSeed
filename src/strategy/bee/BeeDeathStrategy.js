@@ -22,6 +22,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 		this.model.direction.set(0,0);
 		this.model.crawling.set(null);
 		this.model.crawling.makeDirty();
+		this.model.starsVisible.set(false);
 		this.timeout = DEATH_TIMEOUT;
 		this.triggered = false;
 		this.parent.emptyInventory();

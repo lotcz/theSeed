@@ -79,6 +79,7 @@ html, body {
 	max-width: 100%;
 	border: 3px solid black;
 	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .menu.status-bar .health-wrapper .health {

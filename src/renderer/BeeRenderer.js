@@ -86,11 +86,10 @@ export default class BeeRenderer extends SvgRenderer {
 			this.updateFlip();
 		}
 
-		const isHurt = this.game.beeState.isHurt() && !this.game.beeState.isDead();
-		if (isHurt && !this.starsAnimationRenderer.isActivated()) {
+		if (this.model.starsVisible.get() && !this.starsAnimationRenderer.isActivated()) {
 			this.starsAnimationRenderer.activate();
 		}
-		if (this.starsAnimationRenderer.isActivated() && !isHurt) {
+		if (this.starsAnimationRenderer.isActivated() && !this.model.starsVisible.get()) {
 			this.starsAnimationRenderer.deactivate();
 		}
 
