@@ -25,6 +25,9 @@ const SPEEDUP_SPEED = 800;
 
 const DEFAULT_HIT_TIMEOUT = 300;
 
+const WATER_HURT = 0.2;
+const HIT_HURT = 0.1;
+
 export default class BeeFlightStrategy extends ControllerBase {
 	static hitSound = new Sound(HitSound);
 	wingRotation;
@@ -119,7 +122,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 			direction = direction.addY(SPEEDUP_SPEED * secsDelta * 10);
 			if (this.hitTimeout <= 0) {
 				WaterStrategy.splashSound.replay();
-				this.game.beeState.hurt(0.2);
+				this.game.beeState.hurt(WATER_HURT);
 				this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 			}
 		}
@@ -131,92 +134,93 @@ export default class BeeFlightStrategy extends ControllerBase {
 			direction.setSize(MAX_SPEED);
 		}
 
-		if (this.speed <= 0) {
+		if (this.speed > 0) {
+			let coords = null;
+			let position = null;
+
+			const distance = direction.multiply(secsDelta);
+			const crashDistance = distance.clone();
+			crashDistance.setSize(crashDistance.size() + this.grid.tileRadius.get());
+
+			const crashCoords = this.model.coordinates.add(crashDistance);
+			let crashPosition = this.grid.getPosition(crashCoords);
+			let penetrable = this.level.isPenetrable(crashPosition);
+
+			if (penetrable && this.model.inventory.isSet() && this.model.inventory.get()._is_crawlable) {
+				const inventoryCrashCoords = crashCoords.addY(this.grid.tileSize.y);
+				const inventoryCrashPosition = this.grid.getPosition(inventoryCrashCoords);
+				if (this.level.isValidPosition(inventoryCrashPosition) && !this.level.isPenetrable(inventoryCrashPosition)) {
+					penetrable = false;
+					this.parent.dropItem();
+					this.parent.dropItemTimeout = 100;
+					crashPosition = this.grid.getNeighborDown(this.model.position);
+				}
+			}
+
+			if (penetrable) {
+				coords = this.model.coordinates.add(distance);
+				position = this.grid.getPosition(coords);
+			} else {
+				if (this.speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
+					const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
+					if (crawl !== undefined) {
+						this.parent.crawl(crawl);
+						return;
+					}
+					console.log('Uncrawlable: ', this.model.position, crashPosition);
+				}
+
+				console.log(this.speed);
+
+				const possibleExit = this.level.isPossibleExit(crashPosition);
+				if (possibleExit) {
+					this.model.triggerOnTravelEvent(possibleExit);
+					return;
+				}
+
+				BeeFlightStrategy.hitSound.replay();
+				this.parent.emptyInventory();
+
+				this.game.beeState.hurt(HIT_HURT * this.speed / MAX_SPEED);
+				if (this.game.beeState.isDead()) {
+					this.dead = true;
+					this.game.beeState.health.set(0.001);
+				}
+
+				coords = this.model.coordinates.subtract(distance);
+				direction = direction.multiply(-0.5);
+
+				const newPosition = this.grid.getPosition(coords);
+				const newPenetrable = this.level.isPenetrable(newPosition);
+				if (!newPenetrable) {
+					const nei = this.grid.getNeighbors(this.model.position);
+					const free = nei.filter((n) => this.level.isPenetrable(n));
+					if (free.length > 0) {
+						position = newPosition;
+						coords = this.grid.getCoordinates(free[0]);
+					} else {
+						console.log('Lost');
+					}
+				} else {
+					position = this.grid.getPosition(coords);
+				}
+
+			}
+			// apply movement
+			this.model.position.set(position);
+			this.model.coordinates.set(coords);
+			this.model.direction.set(direction);
+
+			this.parent.updateMovement();
+		} else {
 			if (this.dead) {
 				this.parent.die();
 				return;
 			}
 			this.speed = 0;
-			this.updateBee();
-			return;
 		}
 
-		const distance = direction.multiply(secsDelta);
-		const crashDistance = distance.clone();
-		crashDistance.setSize(crashDistance.size() + this.grid.tileRadius.get());
-		let coords = null;
-		let position = null;
-		const crashCoords = this.model.coordinates.add(crashDistance);
-		let crashPosition = this.grid.getPosition(crashCoords);
-		let penetrable = this.level.isPenetrable(crashPosition);
-
-		if (penetrable && this.model.inventory.isSet() && this.model.inventory.get()._is_crawlable) {
-			const inventoryCrashCoords = crashCoords.addY(this.grid.tileSize.y);
-			const inventoryCrashPosition = this.grid.getPosition(inventoryCrashCoords);
-			if (this.level.isValidPosition(inventoryCrashPosition) && !this.level.isPenetrable(inventoryCrashPosition)) {
-				penetrable = false;
-				this.parent.dropItem();
-				this.parent.dropItemTimeout = 100;
-				crashPosition = this.grid.getNeighborDown(this.model.position);
-			}
-		}
-
-		if (penetrable) {
-			coords = this.model.coordinates.add(distance);
-			position = this.grid.getPosition(coords);
-		} else {
-			if (this.speed < MAX_CRAWL_SPEED && this.level.isCrawlable(crashPosition)) {
-				const crawl = this.grid.getNeighborType(this.model.position, crashPosition);
-				if (crawl !== undefined) {
-					this.parent.crawl(crawl);
-					return;
-				}
-				console.log('Uncrawlable: ', this.model.position, crashPosition);
-			}
-
-			console.log(this.speed);
-
-			const possibleExit = this.level.isPossibleExit(crashPosition);
-			if (possibleExit) {
-				this.model.triggerOnTravelEvent(possibleExit);
-				return;
-			}
-
-			BeeFlightStrategy.hitSound.replay();
-			this.parent.emptyInventory();
-
-			this.game.beeState.hurt(0.5 * this.speed / MAX_SPEED);
-			if (this.game.beeState.isDead()) {
-				this.dead = true;
-				this.game.beeState.health.set(0.001);
-			}
-
-			coords = this.model.coordinates.subtract(distance);
-			direction = direction.multiply(-0.5);
-
-			const newPosition = this.grid.getPosition(coords);
-			const newPenetrable = this.level.isPenetrable(newPosition);
-			if (!newPenetrable) {
-				const nei = this.grid.getNeighbors(this.model.position);
-				const free = nei.filter((n) => this.level.isPenetrable(n));
-				if (free.length > 0) {
-					position = newPosition;
-					coords = this.grid.getCoordinates(free[0]);
-				} else {
-					console.log('Lost');
-				}
-			} else {
-				position = this.grid.getPosition(coords);
-			}
-
-		}
-
-		// apply movement
-		this.model.position.set(position);
-		this.model.coordinates.set(coords);
-		this.model.direction.set(direction);
 		this.updateBee();
-		this.parent.updateMovement();
 	}
 
 	updateBee() {

@@ -202,6 +202,8 @@ TODO:
 BETA for friends
 ----------------
 
+- allow leaving levels when crawling
+- heal when in wax
 - retain items lost to level edge, of possible
 - heal by eating honey, packed in doses or feeded from honeymaker
 - control menu with keyboard

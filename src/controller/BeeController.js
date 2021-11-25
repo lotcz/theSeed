@@ -27,9 +27,11 @@ import HintController from "./HintController";
 import ObjectStrategy, {DEFAULT_OBJECT_MAX_AMOUNT} from "../strategy/sprites/ObjectStrategy";
 import Pixies from "../class/Pixies";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
+import {GROUND_TYPE_WAX_BACKGROUND, GROUND_TYPE_WAX_DOOR} from "../builder/GroundStyle";
+import {MAX_HEALTH} from "../model/BeeStateModel";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
-const HEALING_SPEED = 0.1; // health per second
+const HEALING_SPEED = 0.01; // health per second
 const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 1000;
 
@@ -129,7 +131,7 @@ export default class BeeController extends ControllerBase {
 		if (this.dropItemTimeout > 0) {
 			this.dropItemTimeout -= delta;
 		} else {
-			this.inspectForMinerals(this.model.position);
+			this.inspectForMinerals(this.model.position, delta);
 		}
 
 		if (this.controls.interacting.get()) {
@@ -201,16 +203,25 @@ export default class BeeController extends ControllerBase {
 		this.model.triggerOnStrategyChangedEvent();
 	}
 
-	inspectForMinerals(position) {
+	inspectForMinerals(position, delta) {
 		const visitors = this.chessboard.getVisitors(position);
+
 		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
 		if (lives.length > 0) {
 			DoorSlotStrategy.drJonesSound.play();
 			lives.forEach((l) => {
 				this.game.beeState.maxLives.set(this.game.beeState.maxLives.get() + 1);
 				this.game.beeState.lives.set(this.game.beeState.lives.get() + 1);
+				this.game.beeState.health.set(MAX_HEALTH);
 				this.level.sprites.remove(l);
 			});
+		}
+
+		if (this.game.beeState.isHurt()) {
+			const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX_BACKGROUND);
+			if (wax.length > 0) {
+				this.game.beeState.heal(10 * HEALING_SPEED * delta / 1000);
+			}
 		}
 
 		const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
@@ -255,7 +266,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		let amount = Pixies.between(1, MAX_INVENTORY_AMOUNT - this.carriedAmount(), item.data.amount);
-
+console.log(amount);
 		if (sameType) {
 			sameType.data.amount += amount;
 		} else {

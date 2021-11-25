@@ -179,6 +179,19 @@ export const SPRITE_TYPE_HINT_PICKING = 'hint-picking';
 export const IMAGE_HINT_PICKING = 'img/hint-picking.svg';
 import HintPickingImage from "../../res/img/hint-picking.svg";
 
+export const SPRITE_TYPE_HINT_HEALING = 'hint-healing';
+export const IMAGE_HINT_HEALING = 'img/hint-healing.svg';
+import HintHealingImage from "../../res/img/hint-healing.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_HEALING] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_HEALING,
+		resource: HintHealingImage,
+		scale: 1
+	},
+};
+
 SPRITE_STYLES[SPRITE_TYPE_HINT_PICKING] = {
 	strategy: STRATEGY_STATIC,
 	image: {

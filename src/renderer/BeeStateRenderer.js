@@ -70,6 +70,9 @@ export default class BeeStateRenderer extends DomRenderer {
 			this.model.health.clean();
 		}
 		this.model.clean();
+		if (this.game.isInEditMode.get()) {
+			this.mainElement.style.right = '550px';
+		}
 	}
 
 	renderLives() {
