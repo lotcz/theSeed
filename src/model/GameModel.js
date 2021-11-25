@@ -1,5 +1,4 @@
 import ModelBase from "../class/ModelBase";
-import LevelModel from "./LevelModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 import LevelEditorModel from "./LevelEditorModel";
@@ -38,6 +37,7 @@ import LevelJunction from "../../levels/junction.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
+import BeeStateModel from "./BeeStateModel";
 
 export const DEBUG_MODE = true;
 export const START_LEVEL = 'hatching';
@@ -49,8 +49,7 @@ export default class GameModel extends ModelBase {
 	level;
 	levelName;
 	lastLevelName;
-	lives;
-	maxLives;
+	beeState;
 	menu;
 	editor;
 	isInEditMode;
@@ -86,10 +85,8 @@ export default class GameModel extends ModelBase {
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);
 
-		this.lives = new DirtyValue(0);
-		this.addChild(this.lives);
-		this.maxLives = new DirtyValue(0);
-		this.addChild(this.maxLives);
+		this.beeState = new BeeStateModel();
+		this.addChild(this.beeState);
 
 		this.menu = new DirtyValue();
 		this.addChild(this.menu);
@@ -113,8 +110,7 @@ export default class GameModel extends ModelBase {
 			lastLevelName: this.lastLevelName,
 			levelName: this.levelName.get(),
 			history: this.history.getState(),
-			lives: this.lives.getState(),
-			maxLives: this.maxLives.getState(),
+			beeState: this.beeState.getState(),
 		}
 	}
 
@@ -123,8 +119,7 @@ export default class GameModel extends ModelBase {
 		if (state.lastLevelName) this.lastLevelName = state.lastLevelName;
 		if (state.levelName) this.levelName.restoreState(state.levelName);
 		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
-		if (state.lives) this.lives.restoreState(state.lives);
-		if (state.maxLives) this.maxLives.restoreState(state.maxLives);
+		if (state.beeState) this.beeState.restoreState(state.beeState);
 	}
 
 	initResources() {

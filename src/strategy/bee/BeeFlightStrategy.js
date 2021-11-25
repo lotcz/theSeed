@@ -119,7 +119,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 			direction = direction.addY(SPEEDUP_SPEED * secsDelta * 10);
 			if (this.hitTimeout <= 0) {
 				WaterStrategy.splashSound.replay();
-				this.model.hurt(0.2);
+				this.game.beeState.hurt(0.2);
 				this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 			}
 		}
@@ -171,7 +171,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 					this.parent.crawl(crawl);
 					return;
 				}
+				console.log('Uncrawlable: ', this.model.position, crashPosition);
 			}
+
+			console.log(this.speed);
 
 			const possibleExit = this.level.isPossibleExit(crashPosition);
 			if (possibleExit) {
@@ -182,10 +185,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 			BeeFlightStrategy.hitSound.replay();
 			this.parent.emptyInventory();
 
-			this.model.hurt(0.5 * this.speed / MAX_SPEED);
-			if (this.model.health.get() <= 0) {
+			this.game.beeState.hurt(0.5 * this.speed / MAX_SPEED);
+			if (this.game.beeState.isDead()) {
 				this.dead = true;
-				this.model.health.set(0.001);
+				this.game.beeState.health.set(0.001);
 			}
 
 			coords = this.model.coordinates.subtract(distance);

@@ -57,7 +57,7 @@ html, body {
 	left: 100px;
 }
 
-.menu.lives {
+.menu.status-bar {
 	top: 20px;
 	right: 40px;
 	display: flex;
@@ -65,10 +65,14 @@ html, body {
 	align-items: center;
 }
 
-.menu.lives img {
+.menu.status-bar .lives img {
 	max-width: 120px;
 	max-height: 60px;
 	margin-right: 20px;
+}
+
+.menu.status-bar .lives img.used {
+	filter: grayscale(1);
 }
 
 .centered,

@@ -1,5 +1,4 @@
 import SvgRenderer from "./SvgRenderer";
-import PlantRenderer from "./PlantRenderer";
 import BeeRenderer from "./BeeRenderer";
 import GroundRenderer from "./GroundRenderer";
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
@@ -7,7 +6,6 @@ import ParallaxRenderer from "./ParallaxRenderer";
 import ResourceLoader from "../class/ResourceLoader";
 
 export const HIDE_WHEN_OUTTA_SIGHT = false;
-
 const DEBUG_LEVEL_RENDERER = false;
 
 export default class LevelRenderer extends SvgRenderer {
@@ -28,12 +26,6 @@ export default class LevelRenderer extends SvgRenderer {
 
 		// FOREGROUND
 		this.foreground = this.group.group().addClass('foreground');
-		/*
-		if (this.model.plant) {
-			this.plantRenderer = new PlantRenderer(this.game, this.model.plant, this.foreground);
-			this.addChild(this.plantRenderer);
-		}
-		*/
 
 		// PARALLAX
 		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
@@ -44,15 +36,7 @@ export default class LevelRenderer extends SvgRenderer {
 		this.spritesRenderer = new SpriteCollectionRenderer(this.game, this.model.sprites, this.sprites);
 		this.addChild(this.spritesRenderer);
 
-		// INVENTORY
-		/*
-		if (this.model.inventory) {
-			this.inventory = this.group.group().addClass('inventory');
-			this.inventoryRenderer = new InventoryRenderer(this.game, this.model.inventory, this.inventory);
-			this.addChild(this.inventoryRenderer);
-		}
-		*/
-		//Bee
+		// BEE
 		if (this.model.bee) {
 			this.beeRenderer = new BeeRenderer(this.game, this.model.bee, this.group);
 			this.addChild(this.beeRenderer);

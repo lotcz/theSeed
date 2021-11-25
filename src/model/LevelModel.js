@@ -257,7 +257,6 @@ export default class LevelModel extends ModelBase {
 		} else {
 			bee = this.createBee(respawn.position);
 		}
-		bee.health.set(1);
 		this.addBee(bee);
 	}
 

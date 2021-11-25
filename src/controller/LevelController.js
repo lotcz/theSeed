@@ -4,6 +4,7 @@ import BeeController from "./BeeController";
 import GroundController from "./GroundController";
 import Sound from "../class/Sound";
 import {START_LEVEL} from "../model/GameModel";
+import {MAX_HEALTH} from "../model/BeeStateModel";
 
 const DEBUG_LEVEL_CONTROLLER = true;
 
@@ -121,22 +122,22 @@ export default class LevelController extends ControllerBase {
 					this.game.levelName.set(this.travelling);
 					this.travelling = false;
 				} else {
+					this.game.beeState.lives.set(this.game.beeState.lives.get() - 1);
 					if (this.level.name === START_LEVEL) {
 						if (DEBUG_LEVEL_CONTROLLER) console.log('Died in start level');
-						if (this.game.lives.get() > 0) {
-							this.game.lives.set(this.game.lives.get() - 1);
-						}
+						this.game.beeState.health.set(MAX_HEALTH);
 						this.model.spawn(this.model.bee, 'start');
 						this.beeChanged();
 						this.fadeIn();
 					} else {
-						if (this.game.lives.get() <= 0) {
+						if (this.game.beeState.lives.get() < 0) {
 							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and transferring to start level.');
-							this.game.lives.set(this.game.maxLives.get() || 0);
+							this.game.beeState.lives.set(0);
+							this.game.beeState.lives.set(this.game.beeState.maxLives.get() || 0);
 							this.game.levelName.set(START_LEVEL);
 						} else {
-							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and respawning.');
-							this.game.lives.set(this.game.lives.get() - 1);
+							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and respawning in the same level.');
+							this.game.beeState.health.set(MAX_HEALTH);
 							this.model.spawn(this.model.bee, this.game.lastLevelName);
 							this.beeChanged();
 							this.fadeIn();

@@ -85,12 +85,12 @@ export default class BeeController extends ControllerBase {
 		}
 
 		this.model.addOnTravelListener(this.onTravelHandler);
-		this.model.addOnHurtListener(this.onHurtHandler);
+		this.game.beeState.addOnHurtListener(this.onHurtHandler);
 	}
 
 	deactivateInternal() {
 		this.model.removeOnTravelListener(this.onTravelHandler);
-		this.model.removeOnHurtListener(this.onHurtHandler);
+		this.game.beeState.removeOnHurtListener(this.onHurtHandler);
 	}
 
 	updateInternal(delta) {
@@ -101,10 +101,10 @@ export default class BeeController extends ControllerBase {
 		const secsDelta = delta / 1000;
 
 		if (this.level.isCloud(this.model.position)) {
-			this.model.hurt(secsDelta);
+			this.game.beeState.hurt(secsDelta);
 		}
 
-		if (this.model.health.get() <= 0) {
+		if (this.game.beeState.isDead()) {
 			this.die();
 			return;
 		}
@@ -114,13 +114,12 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
-		const isHurt = this.model.health.get() < 1;
-		if (isHurt) {
+		if (this.game.beeState.isHurt()) {
 			if (!this.starsAnimationController.isActivated()) {
 				this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
 				this.starsAnimationController.activate();
 			}
-			this.model.heal(HEALING_SPEED * secsDelta);
+			this.game.beeState.heal(HEALING_SPEED * secsDelta);
 		} else {
 			if (this.starsAnimationController.isActivated()) {
 				this.starsAnimationController.deactivate();
@@ -199,6 +198,7 @@ export default class BeeController extends ControllerBase {
 		this.strategy = strategy;
 		this.addChild(this.strategy);
 		this.strategy.activate();
+		this.model.triggerOnStrategyChangedEvent();
 	}
 
 	inspectForMinerals(position) {
@@ -207,8 +207,8 @@ export default class BeeController extends ControllerBase {
 		if (lives.length > 0) {
 			DoorSlotStrategy.drJonesSound.play();
 			lives.forEach((l) => {
-				this.game.maxLives.set(this.game.maxLives.get() + 1);
-				this.game.lives.set(this.game.lives.get() + 1);
+				this.game.beeState.maxLives.set(this.game.beeState.maxLives.get() + 1);
+				this.game.beeState.lives.set(this.game.beeState.lives.get() + 1);
 				this.level.sprites.remove(l);
 			});
 		}
@@ -302,7 +302,7 @@ export default class BeeController extends ControllerBase {
 	onHurt(amount) {
 		const sound = Pixies.randomElement(BeeController.ouchSounds);
 		setTimeout(() => sound.play(), 250);
-		if (amount > 0.3 || this.model.health.get() < 0.5) {
+		if (amount > 0.3 || this.game.beeState.health.get() < 0.5) {
 			this.dropItem();
 		}
 	}

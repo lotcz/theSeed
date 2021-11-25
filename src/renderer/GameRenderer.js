@@ -3,14 +3,12 @@ import Stats from "../class/stats.module";
 import LevelRenderer from "./LevelRenderer";
 import MenuRenderer from "./MenuRenderer";
 import LevelEditorRenderer from "./LevelEditorRenderer";
-import MenuBuilder from "../builder/MenuBuilder";
 import TextRenderer from "./TextRenderer";
 import ResourcesLoader from "../class/ResourcesLoader";
 import DomRenderer from "./DomRenderer";
-import ModelBase from "../class/ModelBase";
 import TextModel from "../model/TextModel";
 import Pixies from "../class/Pixies";
-import LivesRenderer from "./LivesRenderer";
+import BeeStateRenderer from "./BeeStateRenderer";
 
 const DEBUG_FPS = true;
 
@@ -36,7 +34,7 @@ export default class GameRenderer extends SvgRenderer {
 		this.levelRenderer = null;
 		this.menuRenderer = null;
 		this.editorRenderer = null;
-		this.livesRenderer = null;
+		this.statusBarRenderer = null;
 
 		this.draw.fill('black');
 
@@ -158,14 +156,14 @@ export default class GameRenderer extends SvgRenderer {
 
 	showLives() {
 		this.hideLives();
-		this.livesRenderer = new LivesRenderer(this.game, this.game.lives, this.dom);
-		this.addChild(this.livesRenderer);
-		this.livesRenderer.activate();
+		this.statusBarRenderer = new BeeStateRenderer(this.game, this.game.beeState, this.dom);
+		this.addChild(this.statusBarRenderer);
+		this.statusBarRenderer.activate();
 	}
 
 	hideLives() {
-		if (this.livesRenderer) this.removeChild(this.livesRenderer);
-		this.livesRenderer = null;
+		if (this.statusBarRenderer) this.removeChild(this.statusBarRenderer);
+		this.statusBarRenderer = null;
 	}
 
 	showEditor() {

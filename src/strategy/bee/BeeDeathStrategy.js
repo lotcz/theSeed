@@ -18,9 +18,10 @@ export default class BeeDeathStrategy extends ControllerBase {
 
 	activateInternal() {
 		this.deathSound.play();
-		this.model.health.set(0);
+		this.game.beeState.health.set(0);
 		this.model.direction.set(0,0);
 		this.model.crawling.set(null);
+		this.model.crawling.makeDirty();
 		this.timeout = DEATH_TIMEOUT;
 		this.triggered = false;
 		this.parent.emptyInventory();

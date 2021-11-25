@@ -8,6 +8,7 @@ import LevelEditorController from "./LevelEditorController";
 import {DEBUG_MODE, START_LEVEL} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";
+import {MAX_HEALTH} from "../model/BeeStateModel";
 
 const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
@@ -82,9 +83,10 @@ export default class GameController extends ControllerBase {
 				}
 			}
 			if (bee) {
-				if (bee.health.get() > 0) {
+				if (this.model.beeState.isAlive()) {
 					await this.loadLevelAsync(levelName, this.model.lastLevelName, bee);
 				} else {
+					this.model.beeState.health.set(MAX_HEALTH);
 					await this.loadLevelAsync(levelName, 'start');
 				}
 			} else {
@@ -268,8 +270,9 @@ export default class GameController extends ControllerBase {
 		localForage.clear().then(() => {
 			this.model.history.reset();
 			this.model.id = Date.now();
-			this.model.lives.set(0);
-			this.model.maxLives.set(0);
+			this.model.beeState.lives.set(0);
+			this.model.beeState.maxLives.set(0);
+			this.model.beeState.health.set(MAX_HEALTH);
 			this.model.lastLevelName = null;
 			this.model.levelName.set(null);
 			this.model.levelName.set(START_LEVEL);

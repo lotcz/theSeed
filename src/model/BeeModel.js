@@ -17,7 +17,6 @@ export default class BeeModel extends ModelBase {
 	headingLeft; // if false, then bee is heading right
 	inventory;
 	sprites;
-	health;
 	image;
 	deadImagePath;
 	crawlingAnimation;
@@ -46,9 +45,6 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.inventory);
 		this.sprites = new CollectionModel();
 		this.addChild(this.sprites);
-		this.health = new DirtyValue(1);
-		this.addChild(this.health);
-
 		this.image = new ImageModel();
 		this.addChild(this.image);
 		this.deadImagePath = new DirtyValue();
@@ -77,7 +73,6 @@ export default class BeeModel extends ModelBase {
 			headingLeft: this.headingLeft.getState(),
 			inventory: this.inventory.isEmpty() ? null : this.inventory.get().getState(),
 			sprites: this.sprites.getState(),
-			health: this.health.getState(),
 			image: this.image.getState(),
 			deadImagePath: this.deadImagePath.getState(),
 			crawlingAnimation: this.crawlingAnimation.getState(),
@@ -96,7 +91,6 @@ export default class BeeModel extends ModelBase {
 		if (state.headingLeft) this.headingLeft.restoreState(state.headingLeft);
 		if (state.inventory) this.inventory.set(new SpriteModel(state.inventory));
 		if (state.sprites) this.sprites.restoreState(state.sprites, (s) => new SpriteModel(s));
-		if (state.health) this.health.restoreState(state.health);
 		if (state.image) this.image.restoreState(state.image);
 		if (state.deadImagePath) this.deadImagePath.restoreState(state.deadImagePath);
 		if (state.crawlingAnimation) this.crawlingAnimation.restoreState(state.crawlingAnimation);
@@ -113,21 +107,16 @@ export default class BeeModel extends ModelBase {
 		return !this.isFlying();
 	}
 
-	hurt(amount) {
-		this.heal(-amount);
+	addOnStrategyChangedListener(listener) {
+		this.addEventListener('strategy-changed', listener);
 	}
 
-	heal(amount) {
-		this.health.set(this.health.get() + amount);
-		this.triggerEvent(amount < 0 ? 'hurt' : 'heal', Math.abs(amount));
+	removeOnStrategyChangedListener(listener) {
+		this.removeEventListener('strategy-changed', listener);
 	}
 
-	addOnHurtListener(listener) {
-		this.addEventListener('hurt', listener);
-	}
-
-	removeOnHurtListener(listener) {
-		this.removeEventListener('hurt', listener);
+	triggerOnStrategyChangedEvent() {
+		this.triggerEvent('strategy-changed');
 	}
 
 	addOnDeathListener(listener) {

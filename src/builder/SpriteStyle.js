@@ -281,6 +281,18 @@ SPRITE_STYLES[SPRITE_TYPE_WATER_CAP] = {
 	}
 };
 
+export const SPRITE_TYPE_MUSHROOM = 'mushroom';
+export const IMAGE_MUSHROOM = 'img/mushroom.svg';
+import MushroomImage from "../../res/img/mushroom.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_MUSHROOM] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_MUSHROOM,
+		resource: MushroomImage,
+	}
+};
+
 SPRITE_STYLES[SPRITE_TYPE_BUBBLE] = {
 	strategy: STRATEGY_BUBBLE,
 	image: {
