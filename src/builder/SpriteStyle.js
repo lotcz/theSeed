@@ -238,6 +238,18 @@ SPRITE_STYLES[SPRITE_TYPE_HINT_KEYHOLE_2] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_JUNCTION = 'hint-junction';
+export const IMAGE_HINT_JUNCTION = 'img/hint-junction.svg';
+import HintJunctionImage from "../../res/img/hint-junction.svg";
+
+SPRITE_STYLES[SPRITE_TYPE_HINT_JUNCTION] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_JUNCTION,
+		resource: HintJunctionImage
+	},
+};
+
 /*
 Minerals and other objects
  */

@@ -201,6 +201,7 @@ TODO:
 BETA for friends
 ----------------
 
+- place signpost to junction
 - allow leaving levels when crawling
 - retain items lost to level edge, of possible
 - control menu with keyboard

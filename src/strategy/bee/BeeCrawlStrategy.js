@@ -187,7 +187,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			if (this.model.coordinates.distanceTo(water.image.coordinates) < (this.grid.tileRadius.get() * 2)) {
 				if (this.hitTimeout <= 0) {
 					WaterStrategy.splashSound.replay();
-					this.model.hurt(0.2);
+					this.game.beeState.hurt(0.2);
 					this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 				}
 			}
