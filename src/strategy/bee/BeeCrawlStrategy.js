@@ -12,8 +12,8 @@ import RotationValue from "../../class/RotationValue";
 import CrawlSound from "../../../res/sound/crawl.wav";
 import Sound from "../../class/Sound";
 import {CRAWLING_MATRIX, FALLBACK_FLY, FALLBACK_PROCEED} from "../../builder/CrawlingMatrix";
-import {SPRITE_TYPE_WATER} from "../../builder/SpriteStyle";
 import WaterStrategy from "../sprites/minerals/WaterStrategy";
+import {SPRITE_TYPE_WATER} from "../../builder/sprites/SpriteStyleMinerals";
 
 const CRAWL_SPEED = 400; //pixels per second
 const ROTATION_SPEED = 180; //angles per second

@@ -5,17 +5,8 @@ import LevelEditorModel from "./LevelEditorModel";
 import HashTableModel from "./HashTableModel";
 import ResourceModel, {RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_SOUND} from "./ResourceModel";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
-import {
-	IMAGE_BEE,
-	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
-	IMAGE_BEE_DEAD,
-	IMAGE_BEE_WING, IMAGE_HINT_BACKGROUND,
-	IMAGE_STARS_1,
-	IMAGE_STARS_2,
-	IMAGE_STARS_3,
-	SPRITE_STYLES
-} from "../builder/SpriteStyle";
-
+import {SPRITE_STYLES} from "../builder/SpriteStyle";
+import {MUSIC_STYLES} from "../builder/MusicStyle";
 import BeeImage from "../../res/img/bee.svg";
 import BeeDeadImage from "../../res/img/bee-dead.svg";
 import BeeCrawlImage from "../../res/img/bee-walk.svg";
@@ -25,7 +16,6 @@ import Stars1Image from "../../res/img/stars-1.svg";
 import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
-import {MUSIC_STYLES} from "../builder/MusicStyle";
 import ControlsModel from "./ControlsModel";
 import LevelIntro from "../../levels/intro.json";
 import LevelHatching from "../../levels/hatching.json";
@@ -38,6 +28,16 @@ import LevelBeehive from "../../levels/beehive.json";
 import LevelLevel1 from "../../levels/level-1.json";
 import LevelLevel2 from "../../levels/level-2.json";
 import BeeStateModel from "./BeeStateModel";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL_1,
+	IMAGE_BEE_WING,
+	IMAGE_STARS_1,
+	IMAGE_STARS_2, IMAGE_STARS_3
+} from "../builder/sprites/SpriteStyleBees";
+import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
+import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
 
 export const DEBUG_MODE = true;
 export const START_LEVEL = 'hatching';

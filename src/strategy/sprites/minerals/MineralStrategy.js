@@ -1,5 +1,5 @@
 import ObjectStrategy from "../ObjectStrategy";
-import {STRATEGY_MINERAL} from "../../../builder/SpriteStyle";
+import {STRATEGY_MINERAL} from "../../../builder/sprites/SpriteStyleMinerals";
 
 const MINERAL_TIMEOUT = 1000;
 

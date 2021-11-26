@@ -6,23 +6,24 @@ import PlantModel from "./PlantModel";
 import GroundModel from "./GroundModel";
 import SpriteModel from "./SpriteModel";
 import CollectionModel from "./CollectionModel";
-import ResourceModel, {RESOURCE_TYPE_IMAGE} from "./ResourceModel";
 import ParallaxModel from "./ParallaxModel";
 import BeeModel from "./BeeModel";
 import {GROUND_TYPE_CLOUD, GROUND_TYPE_WATER} from "../builder/GroundStyle";
 import {PARALLAX_HILLS, PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import ParallaxLayerModel from "./ParallaxLayerModel";
 import HashTableModel from "./HashTableModel";
-import {
-	IMAGE_BEE,
-	IMAGE_BEE_CRAWL, IMAGE_BEE_CRAWL_1,
-	IMAGE_BEE_DEAD,
-	IMAGE_BEE_WING,
-	IMAGE_STARS_1, IMAGE_STARS_2, IMAGE_STARS_3, SPRITE_STYLES, SPRITE_TYPE_RESPAWN,
-	STRATEGY_STATIC
-} from "../builder/SpriteStyle";
 import {BEE_CENTER} from "../controller/BeeController";
 import Pixies from "../class/Pixies";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL_1, IMAGE_BEE_WING,
+	IMAGE_STARS_1,
+	IMAGE_STARS_2, IMAGE_STARS_3
+} from "../builder/sprites/SpriteStyleBees";
+import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
+import {SPRITE_TYPE_RESPAWN} from "../builder/sprites/SpriteStyleSpecial";
+import {SPRITE_STYLES} from "../builder/SpriteStyle";
 
 export default class LevelModel extends ModelBase {
 	name;

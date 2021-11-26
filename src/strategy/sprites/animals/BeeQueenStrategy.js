@@ -1,6 +1,6 @@
-import {SPRITE_TYPE_BEE_EGG} from "../../../builder/SpriteStyle";
 import StaticStrategy from "../StaticStrategy";
 import AnimatedValue from "../../../class/AnimatedValue";
+import {SPRITE_TYPE_BEE_EGG} from "../../../builder/sprites/SpriteStyleObjects";
 
 const QUEEN_TIMEOUT = 5000;
 

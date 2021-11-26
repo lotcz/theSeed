@@ -1,22 +1,11 @@
 import ControllerBase from "../class/ControllerBase";
-import {
-	IMAGE_HINT_ACTION,
-	IMAGE_HINT_ARROWS,
-	IMAGE_HINT_WASD,
-	SPRITE_STYLES,
-	SPRITE_TYPE_BEE_LIFE,
-	STRATEGY_DOOR_SLOT,
-	STRATEGY_MINERAL,
-	STRATEGY_OBJECT
-} from "../builder/SpriteStyle";
-
+import {SPRITE_STYLES} from "../builder/SpriteStyle";
 import Vector2 from "../class/Vector2";
 import BeeFlightStrategy from "../strategy/bee/BeeFlightStrategy";
 import BeeCrawlStrategy from "../strategy/bee/BeeCrawlStrategy";
 import AnimationController from "./AnimationController";
 import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
-
 import OuchSound1 from "../../res/sound/ouch-1.mp3";
 import OuchSound2 from "../../res/sound/ouch-2.mp3";
 import DropSound from "../../res/sound/pop.mp3";
@@ -29,6 +18,11 @@ import Pixies from "../class/Pixies";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 import {GROUND_TYPE_WAX_BACKGROUND, GROUND_TYPE_WAX_DOOR} from "../builder/GroundStyle";
 import {MAX_HEALTH} from "../model/BeeStateModel";
+import {SPRITE_TYPE_BEE_LIFE} from "../builder/sprites/SpriteStyleObjects";
+import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/sprites/SpriteStyleHints";
+import {STRATEGY_DOOR_SLOT} from "../builder/sprites/SpriteStyleSpecial";
+import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
+import {STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
@@ -241,7 +235,7 @@ export default class BeeController extends ControllerBase {
 				console.log('Door style not found!', key, doors[0]);
 			} else if (!this.showingDoorsHint) {
 				this.showingDoorsHint = true;
-				this.showHint([style.image.uri], 2);
+				this.showHint([style.image.uri], 2, data.hintDirection);
 			}
 		} else {
 			if (this.showingDoorsHint) {
@@ -274,7 +268,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		let amount = Pixies.between(1, MAX_INVENTORY_AMOUNT - this.carriedAmount(), item.data.amount);
-console.log(amount);
+
 		if (sameType) {
 			sameType.data.amount += amount;
 		} else {
@@ -348,7 +342,7 @@ console.log(amount);
 		}
 	}
 
-	showHint(images, size = 3) {
+	showHint(images, size = 3, direction = NEIGHBOR_TYPE_UPPER_RIGHT) {
 		if (this.hintController) {
 			this.hintController.destroy();
 			this.removeChild(this.hintController);
@@ -356,7 +350,7 @@ console.log(amount);
 		const hintModel = new HintModel();
 		hintModel.position.set(this.grid.getPosition(BEE_CENTER));
 		hintModel.imagePaths = images;
-		hintModel.direction = NEIGHBOR_TYPE_UPPER_RIGHT;
+		hintModel.direction = direction;
 		hintModel.size = size;
 		this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
 		this.addChild(this.hintController);

@@ -1,7 +1,7 @@
 import ControllerBase from "../../class/ControllerBase";
-import {IMAGE_BEE_DEAD, SPRITE_TYPE_BEE_DEAD} from "../../builder/SpriteStyle";
 import DeathSound from "../../../res/sound/death.wav";
 import Sound from "../../class/Sound";
+import {IMAGE_BEE_DEAD, SPRITE_TYPE_BEE_DEAD} from "../../builder/sprites/SpriteStyleObjects";
 
 const FALL_SPEED = 800; // pixels per second
 const DEATH_TIMEOUT = 3000;

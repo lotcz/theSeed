@@ -1,14 +1,10 @@
 import ControllerBase from "../class/ControllerBase";
-import {
-	IMAGE_HINT_BACKGROUND,
-	SPRITE_TYPE_HINT,
-	STRATEGY_HINT
-} from "../builder/SpriteStyle";
 import SpriteModel from "../model/SpriteModel";
 import Sound from "../class/Sound";
 import AhaSound from "../../res/sound/a-ha.mp3";
 import AnimationController from "./AnimationController";
 import AnimationModel from "../model/AnimationModel";
+import {IMAGE_HINT_BACKGROUND, SPRITE_TYPE_HINT, STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
 
 export default class HintController extends ControllerBase {
 	static ahaSound = new Sound(AhaSound);

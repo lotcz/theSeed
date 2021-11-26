@@ -7,7 +7,7 @@
    viewBox="0 0 39.687501 39.687503"
    version="1.1"
    id="svg7958"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    sodipodi:docname="hint-background.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,7 +28,7 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="2.7709666"
-     inkscape:cx="13.533184"
+     inkscape:cx="13.894069"
      inkscape:cy="71.274767"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -45,32 +45,8 @@
      id="layer1"
      transform="translate(-70.446548,-80.699328)">
     <a
-       id="a8343"
-       transform="matrix(0.62152894,0,0,0.55826503,55.220417,50.234098)"
-       style="fill:#ffffff;fill-opacity:0.538462">
-      <ellipse
-         style="fill:#ffffff;fill-opacity:0.538462;stroke-width:0.264999;stroke-linejoin:bevel"
-         id="path8041"
-         cx="56.059578"
-         cy="89.79454"
-         rx="31.254457"
-         ry="35.223274" />
-    </a>
-    <a
-       id="a112530"
-       transform="matrix(0.58945085,0,0,0.52844595,56.970959,53.007173)"
-       style="fill:#ffffff;fill-opacity:0.538462">
-      <ellipse
-         style="fill:#ffffff;fill-opacity:0.538462;stroke-width:0.264999;stroke-linejoin:bevel"
-         id="ellipse112528"
-         cx="56.059578"
-         cy="89.79454"
-         rx="31.254457"
-         ry="35.223274" />
-    </a>
-    <a
        id="a112518"
-       transform="matrix(0.54973511,0,0,0.49184982,59.197406,56.150079)"
+       transform="matrix(0.6138913,0,0,0.54606632,55.88729,51.568186)"
        style="fill:#ffffff;fill-opacity:1">
       <ellipse
          style="fill:#ffffff;fill-opacity:1;stroke-width:0.264999;stroke-linejoin:bevel"

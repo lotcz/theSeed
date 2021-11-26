@@ -6,20 +6,6 @@ import WaterStrategy from "../strategy/sprites/minerals/WaterStrategy";
 import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
 import ExitStrategy from "../strategy/sprites/special/ExitStrategy";
 import EmitterStrategy from "../strategy/sprites/special/EmitterStrategy";
-import {
-	STRATEGY_BUBBLE,
-	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY,
-	STRATEGY_DOOR_SLOT,
-	STRATEGY_EMITTER, STRATEGY_EMPTY,
-	STRATEGY_EXIT,
-	STRATEGY_HINT,
-	STRATEGY_JELLY_MAKER,
-	STRATEGY_MINERAL, STRATEGY_OBJECT, STRATEGY_QUEEN,
-	STRATEGY_STATIC,
-	STRATEGY_WATER,
-	STRATEGY_WORM
-} from "../builder/SpriteStyle";
 import BubbleStrategy from "../strategy/sprites/minerals/BubbleStrategy";
 import JellyMakerStrategy from "../strategy/sprites/animals/JellyMakerStrategy";
 import HintStrategy from "../strategy/sprites/special/HintStrategy";
@@ -27,6 +13,18 @@ import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 import EmptyStrategy from "../strategy/sprites/EmptyStrategy";
 import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
 import BeeQueenStrategy from "../strategy/sprites/animals/BeeQueenStrategy";
+import {
+	STRATEGY_EMITTER,
+	STRATEGY_EMPTY,
+	STRATEGY_JELLY_MAKER,
+	STRATEGY_OBJECT,
+	STRATEGY_STATIC
+} from "../builder/sprites/SpriteStyleBasic";
+import {STRATEGY_BUG, STRATEGY_BUTTERFLY} from "../builder/sprites/SpriteStyleAnimals";
+import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
+import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT} from "../builder/sprites/SpriteStyleSpecial";
+import {STRATEGY_QUEEN} from "../builder/sprites/SpriteStyleBees";
+import {STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
 
 export default class SpriteController extends ControllerBase {
 	strategy;

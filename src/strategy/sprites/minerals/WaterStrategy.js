@@ -1,7 +1,7 @@
-import {STRATEGY_WATER} from "../../../builder/SpriteStyle";
 import MineralStrategy from "./MineralStrategy";
 import SplashSound from "../../../../res/sound/splash.wav";
 import Sound from "../../../class/Sound";
+import {STRATEGY_WATER} from "../../../builder/sprites/SpriteStyleMinerals";
 
 const WATER_TIMEOUT = 700;
 

@@ -1,11 +1,13 @@
-import {
-	SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD,
-	SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG,
-	SPRITE_TYPE_RANDOM, SPRITE_TYPE_STONE,
-	STRATEGY_MINERAL
-} from "../../../builder/SpriteStyle";
 import Pixies from "../../../class/Pixies";
 import StaticStrategy from "../StaticStrategy";
+import {STRATEGY_MINERAL} from "../../../builder/sprites/SpriteStyleMinerals";
+import {SPRITE_TYPE_RANDOM} from "../../../builder/sprites/SpriteStyleBasic";
+import {
+	SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD,
+	SPRITE_TYPE_BUG_DEAD,
+	SPRITE_TYPE_BUG_EGG,
+	SPRITE_TYPE_STONE
+} from "../../../builder/sprites/SpriteStyleObjects";
 
 const EMITTER_TIMEOUT = 1000;
 
