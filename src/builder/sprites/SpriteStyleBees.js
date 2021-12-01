@@ -1,6 +1,6 @@
-import {IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2} from "./SpriteStyleHints";
+import {IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED, IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2} from "./SpriteStyleHints";
 import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
-import {STRATEGY_JELLY_MAKER} from "./SpriteStyleBasic";
+import {STRATEGY_JELLY_MAKER, STRATEGY_OBJECT, STRATEGY_STATIC} from "./SpriteStyleBasic";
 import {
 	IMAGE_POLLEN_PURPLE,
 	SPRITE_TYPE_GREEN_JELLY,
@@ -121,6 +121,32 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_HONEY_MAKER] = {
 		consumes: SPRITE_TYPE_YELLOW_JELLY,
 		produces: SPRITE_TYPE_HONEY
 	}
+};
+
+export const SPRITE_TYPE_BEE_GIRL = 'bee-girl';
+export const IMAGE_BEE_GIRL = 'img/bee-friend-girl.svg';
+import BeeGirlImage from "../../../res/img/bee-friend-girl.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_GIRL] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_BEE_GIRL,
+		resource: BeeGirlImage
+	},
+	data: {}
+};
+
+export const SPRITE_TYPE_BEE_BOY = 'bee-boy';
+export const IMAGE_BEE_BOY = `img/bee-friend-boy.svg`;
+import BeeBoyImage from "../../../res/img/bee-friend-boy.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_BOY,
+		resource: BeeBoyImage
+	},
+	data: {hint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED], hintDirection: NEIGHBOR_TYPE_UP, hintSize: 3}
 };
 
 export const IMAGE_BEE_QUEEN = 'img/bee-queen.svg';

@@ -2,56 +2,15 @@ import {STRATEGY_STATIC} from "./SpriteStyleBasic";
 
 export const SPRITE_STYLES_HINTS = [];
 
-export const SPRITE_TYPE_HINT = 'hint';
-export const STRATEGY_HINT = 'hint';
-export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';
-import HintBackgroundImage from "../../../res/img/hint-background.svg";
+export const SPRITE_TYPE_MENU_BG = 'menu-background';
+export const IMAGE_MENU_BG = 'img/menu-background.svg';
+import MenuBackgroundImage from "../../../res/img/menu-background.svg";
 
-SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT] = {
-	strategy: STRATEGY_HINT,
+SPRITE_STYLES_HINTS[SPRITE_TYPE_MENU_BG] = {
+	strategy: STRATEGY_STATIC,
 	image: {
-		uri: IMAGE_HINT_BACKGROUND,
-		resource: HintBackgroundImage,
-		scale: 0.1
-	},
-};
-
-export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
-export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
-import HintWasdImage from "../../../res/img/hint-wasd.svg";
-
-SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_WASD] = {
-	strategy: STRATEGY_HINT,
-	image: {
-		uri: IMAGE_HINT_WASD,
-		resource: HintWasdImage,
-		scale: 0.1
-	},
-};
-
-export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
-export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
-import HintArrowsImage from "../../../res/img/hint-arrows.svg";
-
-SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_ARROWS] = {
-	strategy: STRATEGY_HINT,
-	image: {
-		uri: IMAGE_HINT_ARROWS,
-		resource: HintArrowsImage,
-		scale: 0.1
-	},
-};
-
-export const SPRITE_TYPE_HINT_ACTION = 'hint-action';
-export const IMAGE_HINT_ACTION = 'img/hint-action.svg';
-import HintActionImage from "../../../res/img/hint-action.svg";
-
-SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_ACTION] = {
-	strategy: STRATEGY_HINT,
-	image: {
-		uri: IMAGE_HINT_ACTION,
-		resource: HintActionImage,
-		scale: 0.1
+		uri: IMAGE_MENU_BG,
+		resource: MenuBackgroundImage
 	},
 };
 
@@ -107,6 +66,71 @@ SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_GROUPING] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_JUNCTION = 'hint-junction';
+export const IMAGE_HINT_JUNCTION = 'img/hint-junction.svg';
+import HintJunctionImage from "../../../res/img/hint-junction.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_JUNCTION] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_JUNCTION,
+		resource: HintJunctionImage
+	},
+};
+
+export const SPRITE_TYPE_HINT = 'hint';
+export const STRATEGY_HINT = 'hint';
+export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';
+import HintBackgroundImage from "../../../res/img/hint-background.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_BACKGROUND,
+		resource: HintBackgroundImage,
+		scale: 0.1
+	},
+};
+
+export const SPRITE_TYPE_HINT_WASD = 'hint-wasd';
+export const IMAGE_HINT_WASD = 'img/hint-wasd.svg';
+import HintWasdImage from "../../../res/img/hint-wasd.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_WASD] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_WASD,
+		resource: HintWasdImage,
+		scale: 0.1
+	},
+};
+
+export const SPRITE_TYPE_HINT_ARROWS = 'hint-arrows';
+export const IMAGE_HINT_ARROWS = 'img/hint-arrows.svg';
+import HintArrowsImage from "../../../res/img/hint-arrows.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_ARROWS] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_ARROWS,
+		resource: HintArrowsImage,
+		scale: 0.1
+	},
+};
+
+export const SPRITE_TYPE_HINT_ACTION = 'hint-action';
+export const IMAGE_HINT_ACTION = 'img/hint-action.svg';
+import HintActionImage from "../../../res/img/hint-action.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_ACTION] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_ACTION,
+		resource: HintActionImage,
+		scale: 0.1
+	},
+};
+
 export const SPRITE_TYPE_HINT_KEYHOLE_1 = 'hint-keyhole-1';
 export const IMAGE_HINT_KEYHOLE_1 = 'img/hint-keyhole-1.svg';
 import HintKeyhole1Image from "../../../res/img/hint-keyhole-1.svg";
@@ -131,14 +155,26 @@ SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_KEYHOLE_2] = {
 	},
 };
 
-export const SPRITE_TYPE_HINT_JUNCTION = 'hint-junction';
-export const IMAGE_HINT_JUNCTION = 'img/hint-junction.svg';
-import HintJunctionImage from "../../../res/img/hint-junction.svg";
+export const SPRITE_TYPE_HINT_ANTS = 'hint-ants';
+export const IMAGE_HINT_ANTS = 'img/hint-ants.svg';
+import HintAntsImage from "../../../res/img/hint-ants.svg";
 
-SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_JUNCTION] = {
-	strategy: STRATEGY_STATIC,
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_ANTS] = {
+	strategy: STRATEGY_HINT,
 	image: {
-		uri: IMAGE_HINT_JUNCTION,
-		resource: HintJunctionImage
+		uri: IMAGE_HINT_ANTS,
+		resource: HintAntsImage
+	},
+};
+
+export const SPRITE_TYPE_HINT_GIRL_TRAPPED = 'hint-girl-trapped';
+export const IMAGE_HINT_GIRL_TRAPPED = 'img/hint-girl-trapped.svg';
+import HintGirlTrappedImage from "../../../res/img/hint-girl-trapped.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_GIRL_TRAPPED] = {
+	strategy: STRATEGY_HINT,
+	image: {
+		uri: IMAGE_HINT_GIRL_TRAPPED,
+		resource: HintGirlTrappedImage
 	},
 };
