@@ -30,6 +30,9 @@ export default class GameController extends ControllerBase {
 		this.controlsController = new ControlsController(this.game, this.model.controls, dom);
 		this.addChild(this.controlsController);
 
+		this.model.controls.debugModeRequested.addOnChangeListener(() => this.onDebugModeRequested());
+		this.model.controls.menuRequested.addOnChangeListener(() => this.onMenuRequested());
+
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 
 		this.savedGameExists = false;
@@ -54,19 +57,28 @@ export default class GameController extends ControllerBase {
 		window.removeEventListener('resize', this.onResizeEvent);
 	}
 
-	updateInternal() {
-		if (this.controls.menuRequested.isDirty()) {
-			if (this.controls.menuRequested.get()) {
-				if (!this.model.isInEditMode.get()) {
-					this.model.isInEditMode.set(true);
-					this.activateEditor();
-				} else {
-					this.model.isInEditMode.set(false);
-					this.deactivateEditor();
-				}
+	onMenuRequested() {
+		if (this.controls.menuRequested.get()) {
+			const isMenuOpen = this.model.menu.isSet() && this.model.menu.get().css === 'main';
+			if (!isMenuOpen) {
+				this.showMainMenu();
+			} else if (this.model.level.isSet() && this.model.level.get().isPlayable) {
+				this.resume();
 			}
 			this.controls.menuRequested.set(false);
-			this.controls.menuRequested.clean();
+		}
+	}
+
+	onDebugModeRequested() {
+		if (this.controls.debugModeRequested.get()) {
+			if (!this.model.isInEditMode.get()) {
+				this.model.isInEditMode.set(true);
+				this.activateEditor();
+			} else {
+				this.model.isInEditMode.set(false);
+				this.deactivateEditor();
+			}
+			this.controls.debugModeRequested.set(false);
 		}
 	}
 

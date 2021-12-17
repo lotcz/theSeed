@@ -46,13 +46,14 @@ export default class ControlsController extends ControllerBase {
 				this.model.interacting.set(true);
 				break;
 			case 27: /*Ecs*/ this.model.menuRequested.set(true); break;
+			case 67: /*C*/ this.model.debugModeRequested.set(true); break;
 		}
 	}
 
 	onKeyUp(event) {
 		//this.caps = event.getModifierState("CapsLock");
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		//console.log("key:" + key);
+		console.log("key:" + key);
 		switch( key ) {
 			case 38: /*up*/
 			case 87: /*W*/ this.model.movingUp.set(false); break;
@@ -67,7 +68,6 @@ export default class ControlsController extends ControllerBase {
 			case 13: /*Enter*/
 				this.model.interacting.set(false);
 				break;
-			case 27: /*Ecs*/ this.model.menuRequested.set(false); break;
 		}
 		this.makeDirty();
 	}

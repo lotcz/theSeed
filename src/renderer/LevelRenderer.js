@@ -48,6 +48,22 @@ export default class LevelRenderer extends SvgRenderer {
 		this.clipCircle = null;
 	}
 
+	activateInternal() {
+		if (!this.model.isPlayable) {
+			const text = this.draw.defs().text(function(add) {
+				add.tspan("Beehive").newLine();
+				add.tspan("Adventures").newLine();
+			}).fill('#fff');
+			const center = this.model.grid.getMaxCoordinates().multiply(0.5);
+			text.center(center.x, center.y);
+			text.scale(20);
+			//const path = text.path('M 100 200 C 200 100 300 0 400 100 C 500 200 600 300 700 200 C 800 100 900 100 900 100');
+
+			const clipPath = this.draw.clip().add(text);
+			this.group.clipWith(clipPath);
+		}
+	}
+
 	deactivateInternal() {
 		if (this.group) this.group.remove();
 	}
@@ -81,7 +97,6 @@ export default class LevelRenderer extends SvgRenderer {
 					this.clipPath = this.draw.clip().add(this.clipCircle);
 					this.group.clipWith(this.clipPath);
 				}
-				const center = this.model.viewBoxSize.multiply(0.5);
 				const diameter = this.model.viewBoxSize.size();
 				const radius = (diameter * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
 				this.clipCircle.radius(Math.max(radius, 0));

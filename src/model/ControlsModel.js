@@ -28,6 +28,7 @@ export default class ControlsModel extends ModelBase {
 	direction;
 	interacting;
 	menuRequested;
+	debugModeRequested;
 	zoom;
 
 	constructor() {
@@ -46,11 +47,13 @@ export default class ControlsModel extends ModelBase {
 
 		this.menuRequested = new DirtyValue(false);
 		this.addChild(this.menuRequested);
+		this.debugModeRequested = new DirtyValue(false);
+		this.addChild(this.debugModeRequested);
 
 		this.zoom = new DirtyValue(0);
 		this.addChild(this.zoom);
 
-		this.onMovementChangeHandler = () => this.setDirection();
+		this.onMovementChangeHandler = () => this.updateDirection();
 		this.movingUp = new DirtyValue(false);
 		this.movingUp.addOnChangeListener(this.onMovementChangeHandler);
 		this.addChild(this.movingUp);
@@ -78,7 +81,7 @@ export default class ControlsModel extends ModelBase {
 		return this.movingUp.get() || this.movingLeft.get() || this.movingDown.get() || this.movingRight.get();
 	}
 
-	setDirection() {
+	updateDirection() {
 		if (this.movingUp.get()) {
 			if (this.movingLeft.get()) {
 				this.direction.set(CONTROLS_UPPER_LEFT);
