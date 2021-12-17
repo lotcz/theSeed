@@ -53,6 +53,7 @@ export default class GameModel extends ModelBase {
 	menu;
 	editor;
 	isInEditMode;
+	isFullscreen;
 	viewBoxSize;
 	resources;
 
@@ -95,6 +96,9 @@ export default class GameModel extends ModelBase {
 		this.addChild(this.editor);
 		this.isInEditMode = new DirtyValue(DEBUG_MODE);
 		this.addChild(this.isInEditMode);
+
+		this.isFullscreen = new DirtyValue(false);
+		this.addChild(this.isFullscreen);
 
 		this.viewBoxSize = new Vector2();
 		this.addChild(this.viewBoxSize);

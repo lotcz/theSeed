@@ -39,11 +39,23 @@ export default class GameRenderer extends SvgRenderer {
 		this.draw.fill('black');
 
 		this.showLoading();
+		Pixies.destroyElement(document.getElementById('initial_loading'));
 	}
 
 	render() {
 		if (DEBUG_FPS) {
 			this.stats.update();
+		}
+
+		if (this.model.isFullscreen.isDirty()) {
+			if (this.model.isFullscreen.get()) {
+				Pixies.addClass(this.draw.root().node, 'fullscreen');
+				Pixies.removeClass(this.draw.root().node, 'window');
+			} else {
+				Pixies.addClass(this.draw.root().node, 'window');
+				Pixies.removeClass(this.draw.root().node, 'fullscreen');
+			}
+			this.model.isFullscreen.clean();
 		}
 
 		if (this.model.viewBoxSize.isDirty()) {

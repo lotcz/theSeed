@@ -364,7 +364,15 @@ export default class LevelModel extends ModelBase {
 		this.centerOnCoordinates(this.grid.getCoordinates(position));
 	}
 
-	centerView() {
+	centerOnLevel() {
+		const max = this.grid.getMaxCoordinates();
+		const aspectRatio = this.viewBoxSize.y / this.viewBoxSize.x;
+		let newWidth = max.x;
+		const newHeight = newWidth * aspectRatio;
+		if (newHeight > max.y) {
+			newWidth = max.y / aspectRatio;
+		}
+		this.viewBoxScale.set(newWidth / this.viewBoxSize.x);
 		const center = new Vector2(Math.round(this.grid.size.x / 2), Math.round(this.grid.size.y / 2));
 		this.centerOnPosition(center);
 	}

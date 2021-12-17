@@ -151,6 +151,7 @@ export default class GameController extends ControllerBase {
 
 	setActiveLevel(level) {
 		if (this.levelController) this.removeChild(this.levelController);
+		this.model.isFullscreen.set(level.isPlayable);
 		this.model.level.set(level);
 		this.levelController = new LevelController(this.model, level, this.controls);
 		this.addChild(this.levelController);
@@ -340,16 +341,24 @@ export default class GameController extends ControllerBase {
 
 	onResize() {
 		this.model.viewBoxSize.set(window.innerWidth, window.innerHeight);
-		if (!this.model.level.isEmpty()) {
+		if (this.model.level.isSet()) {
 			const level = this.model.level.get();
-			level.viewBoxSize.set(this.model.viewBoxSize);
-			if (level.isPlayable && level.bee) {
-				const isMobile = this.model.viewBoxSize.x < 650;
+			const isMobile = this.model.viewBoxSize.x < 650;
+			const isPlayable = (level.isPlayable && level.bee);
+			const isFullscreen = this.model.isFullscreen.get();
+			if (isFullscreen) {
+				level.viewBoxSize.set(this.model.viewBoxSize);
 				const scale = isMobile ? 4 : 3;
 				level.viewBoxScale.set(scale);
-				level.centerOnCoordinates(level.bee.coordinates);
+				if (isPlayable) {
+					level.centerOnCoordinates(level.bee.coordinates);
+				}
 			} else {
-				level.centerView();
+				const width = this.model.viewBoxSize.x * 0.5;
+				level.viewBoxSize.set(width, width * 0.625);
+				const scale = isMobile ? 12 : 9;
+				level.viewBoxScale.set(scale);
+				level.centerOnLevel();
 			}
 			level.sanitizeViewBox();
 		}
