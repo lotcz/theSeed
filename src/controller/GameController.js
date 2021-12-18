@@ -5,7 +5,7 @@ import Vector2 from "../class/Vector2";
 import * as localForage from "localforage";
 import MenuBuilder from "../builder/MenuBuilder";
 import LevelEditorController from "./LevelEditorController";
-import {DEBUG_MODE, START_LEVEL} from "../model/GameModel";
+import {EDIT_MODE_ENABLED, START_LEVEL} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";
 import {MAX_HEALTH} from "../model/BeeStateModel";
@@ -30,7 +30,7 @@ export default class GameController extends ControllerBase {
 		this.controlsController = new ControlsController(this.game, this.model.controls, dom);
 		this.addChild(this.controlsController);
 
-		this.model.controls.debugModeRequested.addOnChangeListener(() => this.onDebugModeRequested());
+		this.model.controls.editModeRequested.addOnChangeListener(() => this.onEditModeRequested());
 		this.model.controls.menuRequested.addOnChangeListener(() => this.onMenuRequested());
 
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
@@ -69,8 +69,10 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	onDebugModeRequested() {
-		if (this.controls.debugModeRequested.get()) {
+	onEditModeRequested() {
+		if (!EDIT_MODE_ENABLED) return;
+
+		if (this.controls.editModeRequested.get()) {
 			if (!this.model.isInEditMode.get()) {
 				this.model.isInEditMode.set(true);
 				this.activateEditor();
@@ -78,7 +80,7 @@ export default class GameController extends ControllerBase {
 				this.model.isInEditMode.set(false);
 				this.deactivateEditor();
 			}
-			this.controls.debugModeRequested.set(false);
+			this.controls.editModeRequested.set(false);
 		}
 	}
 
@@ -227,10 +229,11 @@ export default class GameController extends ControllerBase {
 	}
 
 	saveGame() {
+		this.savedGameExists = true;
 		this.saveLevelToStorageAsync().then(() => {
-			const state = this.game.getState();
-			localForage.setItem(SAVE_GAME_NAME, state)
-				.then(() => console.log('Game saved.'));
+		const state = this.game.getState();
+		localForage.setItem(SAVE_GAME_NAME, state)
+			.then(() => console.log('Game saved.'));
 		});
 	}
 
@@ -242,8 +245,14 @@ export default class GameController extends ControllerBase {
 		} else if (this.savedGameExists) {
 			builder.addLine("Continue", (e) => this.loadGameAsync());
 		}
-		builder.addLine("New Game", (e) => this.newGame());
-		if (DEBUG_MODE) {
+
+		if (this.savedGameExists) {
+			builder.addLine("Start New Adventure", (e) => this.newGameConfirm());
+		} else {
+			builder.addLine("Start New Adventure", (e) => this.newGame());
+		}
+
+		if (EDIT_MODE_ENABLED) {
 			builder.addLine("Editor", (e) => this.showEditorMenu());
 		}
 		this.model.menu.set(builder.build());
@@ -277,6 +286,13 @@ export default class GameController extends ControllerBase {
 		level.removeBee();
 		level.isPlayable = false;
 		this.setActiveLevel(level);
+	}
+
+	newGameConfirm() {
+		const builder = new MenuBuilder('main');
+		builder.addLine("Yes", (e) => this.newGame());
+		builder.addLine("No", (e) => this.showMainMenu());
+		this.model.menu.set(builder.build());
 	}
 
 	newGame() {

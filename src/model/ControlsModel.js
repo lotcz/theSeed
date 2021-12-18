@@ -28,7 +28,7 @@ export default class ControlsModel extends ModelBase {
 	direction;
 	interacting;
 	menuRequested;
-	debugModeRequested;
+	editModeRequested;
 	zoom;
 
 	constructor() {
@@ -47,8 +47,8 @@ export default class ControlsModel extends ModelBase {
 
 		this.menuRequested = new DirtyValue(false);
 		this.addChild(this.menuRequested);
-		this.debugModeRequested = new DirtyValue(false);
-		this.addChild(this.debugModeRequested);
+		this.editModeRequested = new DirtyValue(false);
+		this.addChild(this.editModeRequested);
 
 		this.zoom = new DirtyValue(0);
 		this.addChild(this.zoom);
