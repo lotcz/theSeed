@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import Pixies from "../class/Pixies";
+import Vector2 from "../class/Vector2";
 
 const DEBUG_IMAGE_RENDERER = false;
 
@@ -21,6 +22,7 @@ export default class ImageRenderer extends SvgRenderer {
 
 		this.group = null;
 		this.image = null;
+		this.imageSize = null;
 
 		if (DEBUG_IMAGE_RENDERER && !ImageRenderer.session) {
 			ImageRenderer.session = Pixies.startDebugSession(`Image rendering ${ImageRenderer.cycles} cycles`);
@@ -96,6 +98,7 @@ export default class ImageRenderer extends SvgRenderer {
 		const ref = this.getRef(this.model.path.get());
 		this.model.path.clean();
 		this.image = this.group.use(ref);
+		//this.imageSize = new Vector2(ref.width(), ref.height());
 		if (this.onClick) {
 			this.setOnClick(this.onClick);
 		}

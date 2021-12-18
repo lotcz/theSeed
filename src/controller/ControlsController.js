@@ -53,7 +53,7 @@ export default class ControlsController extends ControllerBase {
 	onKeyUp(event) {
 		//this.caps = event.getModifierState("CapsLock");
 		const key = event.keyCode ? event.keyCode : event.charCode;
-		console.log("key:" + key);
+		//console.log("key:" + key);
 		switch( key ) {
 			case 38: /*up*/
 			case 87: /*W*/ this.model.movingUp.set(false); break;

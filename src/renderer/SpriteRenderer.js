@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import ImageRenderer from "./ImageRenderer";
+import Vector2 from "../class/Vector2";
 
 export default class SpriteRenderer extends SvgRenderer {
 	constructor(game, model, draw) {

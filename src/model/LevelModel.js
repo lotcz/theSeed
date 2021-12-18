@@ -274,10 +274,13 @@ export default class LevelModel extends ModelBase {
 		return this.isCoordinateInView(coords);
 	}
 
-	isCoordinateInView(coords) {
+	isCoordinateInView(coords, threshold) {
 		const min = this.viewBoxCoordinates.clone();
 		const max = min.add(this.viewBoxSize.multiply(this.viewBoxScale.get()));
-		return coords.x >= (min.x - this.grid.tileSize.x) && coords.x <= (max.x + this.grid.tileSize.x) && coords.y >= (min.y - this.grid.tileSize.y) && coords.y <= (max.y + this.grid.tileSize.y);
+		if (!threshold) {
+			threshold = this.grid.tileSize.clone();
+		}
+		return coords.x >= (min.x - threshold.x) && coords.x <= (max.x + threshold.x) && coords.y >= (min.y - threshold.y) && coords.y <= (max.y + threshold.y);
 	}
 
 	isValidPosition(position) {

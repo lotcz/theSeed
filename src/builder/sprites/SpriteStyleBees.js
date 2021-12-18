@@ -149,10 +149,24 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
 	data: {hint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED], hintDirection: NEIGHBOR_TYPE_UP, hintSize: 3}
 };
 
+export const SPRITE_TYPE_BEE_OLD = 'bee-old';
+export const IMAGE_BEE_OLD = `img/bee-friend-bearded.svg`;
+import BeeOldImage from "../../../res/img/bee-friend-bearded.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_OLD] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_OLD,
+		resource: BeeOldImage
+	},
+	data: {hint: [IMAGE_BEE_BOY, IMAGE_WATER_CAP], hintDirection: NEIGHBOR_TYPE_UP, hintSize: 3}
+};
+
 export const IMAGE_BEE_QUEEN = 'img/bee-queen.svg';
 export const STRATEGY_QUEEN = 'queen';
 export const SPRITE_TYPE_BEE_QUEEN = 'bee-queen';
 import BeeQueenImage from "../../../res/img/bee-queen.svg";
+import {IMAGE_WATER_CAP} from "./SpriteStyleObjects";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_QUEEN] = {
 	strategy: STRATEGY_QUEEN,
