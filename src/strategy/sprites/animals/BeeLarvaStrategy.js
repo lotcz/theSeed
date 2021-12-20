@@ -5,7 +5,7 @@ import BugStrategy from "./BugStrategy";
 const LARVA_TIMEOUT = 5000;
 export const LARVA_MAX_AMOUNT = 5;
 
-export default class LarvaStrategy extends BugStrategy {
+export default class BeeLarvaStrategy extends BugStrategy {
 	constructor(game, model, controls) {
 		super(game, model, controls);
 

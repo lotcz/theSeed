@@ -20,12 +20,13 @@ import {
 	STRATEGY_OBJECT,
 	STRATEGY_STATIC
 } from "../builder/sprites/SpriteStyleBasic";
-import {STRATEGY_BUG, STRATEGY_BUTTERFLY} from "../builder/sprites/SpriteStyleAnimals";
+import {STRATEGY_ANT, STRATEGY_BUG, STRATEGY_BUTTERFLY} from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_BEE_LARVA, STRATEGY_QUEEN} from "../builder/sprites/SpriteStyleBees";
 import {STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
-import LarvaStrategy from "../strategy/sprites/animals/LarvaStrategy";
+import BeeLarvaStrategy from "../strategy/sprites/animals/BeeLarvaStrategy";
+import AntStrategy from "../strategy/sprites/animals/AntStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -53,7 +54,9 @@ export default class SpriteController extends ControllerBase {
 			case STRATEGY_BUG:
 				return new BugStrategy(this.game, model, this.controls);
 			case STRATEGY_BEE_LARVA:
-				return new LarvaStrategy(this.game, model, this.controls);
+				return new BeeLarvaStrategy(this.game, model, this.controls);
+			case STRATEGY_ANT:
+				return new AntStrategy(this.game, model, this.controls);
 			case STRATEGY_BUTTERFLY:
 				return new ButterflyStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:

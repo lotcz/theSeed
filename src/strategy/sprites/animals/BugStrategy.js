@@ -1,7 +1,6 @@
 import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.mp3";
-import CrawlingSound from "../../../../res/sound/ant-crawling.mp3";
 import Sound from "../../../class/Sound";
 import {SPRITE_TYPE_POTASSIUM} from "../../../builder/sprites/SpriteStyleMinerals";
 import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "../../../builder/sprites/SpriteStyleObjects";
@@ -9,11 +8,8 @@ import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "../../../builder/sprite
 const BUG_TIMEOUT = 1000;
 export const BUG_MAX_AMOUNT = 15;
 
-const BUG_SOUND_DISTANCE = 1000;
-
 export default class BugStrategy extends ObjectStrategy {
 	static biteSound = new Sound(BiteSound);
-	static crawlingSound = new Sound(CrawlingSound);
 
 	constructor(game, model, controls) {
 		super(game, model, controls, BUG_TIMEOUT);
@@ -82,19 +78,14 @@ export default class BugStrategy extends ObjectStrategy {
 		}
 
 		if (this.level.isPlayable && this.level.bee) {
-			const dist = this.level.bee.coordinates.distanceTo(this.model.image.coordinates);
-			if (dist < BUG_SOUND_DISTANCE) {
-				BugStrategy.crawlingSound.volume(1 - (dist/BUG_SOUND_DISTANCE));
-				BugStrategy.crawlingSound.play();
-				if (this.game.beeState.health.get() > 0) {
-					const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
-					if (beePresent) {
-						BugStrategy.biteSound.replay();
-						this.game.beeState.hurt((this.model.data.amount / this.maxAmount) * 0.8);
-						const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
-						this.setTargetRotation(angle, 500);
-						return;
-					}
+			if (this.game.beeState.health.get() > 0) {
+				const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
+				if (beePresent) {
+					BugStrategy.biteSound.replay();
+					this.game.beeState.hurt((this.model.data.amount / this.maxAmount) * 0.8);
+					const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
+					this.setTargetRotation(angle, 500);
+					return;
 				}
 			}
 		}

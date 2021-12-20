@@ -15,11 +15,12 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUG] = {
 };
 
 export const SPRITE_TYPE_ANT = 'ant';
+export const STRATEGY_ANT = 'ant';
 export const IMAGE_ANT = 'img/ant.svg';
 import AntImage from "../../../res/img/ant.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
-	strategy: STRATEGY_BUG,
+	strategy: STRATEGY_ANT,
 	image: {
 		uri: IMAGE_ANT,
 		resource: AntImage
