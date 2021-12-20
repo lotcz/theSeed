@@ -100,19 +100,6 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_BEE_BROKEN_EGG] = {
 	}
 };
 
-export const SPRITE_TYPE_BEE_LARVA = 'bee-larva';
-export const IMAGE_BEE_LARVA = 'img/bee-larva.svg';
-import BeeLarvaImage from "../../../res/img/bee-larva.svg";
-
-SPRITE_STYLES_OBJECTS[SPRITE_TYPE_BEE_LARVA] = {
-	strategy: STRATEGY_OBJECT,
-	image: {
-		uri: IMAGE_BEE_LARVA,
-		resource: BeeLarvaImage,
-		scale: 0.5
-	}
-};
-
 export const SPRITE_TYPE_BUG_EGG = 'bug-egg';
 export const IMAGE_BUG_EGG = 'img/bug-egg.svg';
 import BugEggImage from "../../../res/img/bug-egg.svg";

@@ -201,8 +201,6 @@ TODO:
 BETA for friends
 ----------------
 
-- redraw boy's legs
-- redraw larva
 - retain items lost to level edge, if possible
 - solve crawling and carrying problem
 - control menu with keyboard

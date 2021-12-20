@@ -22,6 +22,19 @@ export const IMAGE_STARS_1 = 'img/stars-1.svg';
 export const IMAGE_STARS_2 = 'img/stars-2.svg';
 export const IMAGE_STARS_3 = 'img/stars-3.svg';
 
+export const SPRITE_TYPE_BEE_LARVA = 'bee-larva';
+export const STRATEGY_BEE_LARVA = 'bee-larva';
+export const IMAGE_BEE_LARVA = 'img/bee-larva.svg';
+import BeeLarvaImage from "../../../res/img/bee-larva.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_LARVA] = {
+	strategy: STRATEGY_BEE_LARVA,
+	image: {
+		uri: IMAGE_BEE_LARVA,
+		resource: BeeLarvaImage
+	}
+};
+
 export const SPRITE_TYPE_BEE_FRIEND = 'bee-friend';
 export const IMAGE_BEE_FRIEND = 'img/bee-friend.svg';
 import BeeFriendImage from "../../../res/img/bee-friend.svg";
@@ -167,6 +180,7 @@ export const STRATEGY_QUEEN = 'queen';
 export const SPRITE_TYPE_BEE_QUEEN = 'bee-queen';
 import BeeQueenImage from "../../../res/img/bee-queen.svg";
 import {IMAGE_WATER_CAP} from "./SpriteStyleObjects";
+import {STRATEGY_BUG} from "./SpriteStyleAnimals";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_QUEEN] = {
 	strategy: STRATEGY_QUEEN,

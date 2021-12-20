@@ -281,6 +281,7 @@ export default class LevelModel extends ModelBase {
 			threshold = this.grid.tileSize.clone();
 		}
 		return coords.x >= (min.x - threshold.x) && coords.x <= (max.x + threshold.x) && coords.y >= (min.y - threshold.y) && coords.y <= (max.y + threshold.y);
+		return coords.x >= (min.x - threshold.x) && coords.x <= (max.x + threshold.x) && coords.y >= (min.y - threshold.y) && coords.y <= (max.y + threshold.y);
 	}
 
 	isValidPosition(position) {

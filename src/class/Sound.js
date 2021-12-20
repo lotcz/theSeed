@@ -1,4 +1,8 @@
+import Pixies from "./Pixies";
+
 const HAVE_ENOUGH_DATA = 4;
+
+export const MAX_SOUND_DISTANCE = 1000;
 
 export default class Sound {
 	audio;
@@ -46,6 +50,21 @@ export default class Sound {
 
 	pause() {
 		this.audio.pause();
+	}
+
+	getDistanceVolume(distance) {
+		if (distance > MAX_SOUND_DISTANCE) return 0;
+		return Math.min(1, 1.1 - Pixies.between(0, 0.9, distance/MAX_SOUND_DISTANCE));
+	}
+
+	playInDistance(distance) {
+		const volume = this.getDistanceVolume(distance);
+		if (volume <= 0) {
+			this.pause();
+			return;
+		}
+		this.volume(volume);
+		this.play();
 	}
 
 }
