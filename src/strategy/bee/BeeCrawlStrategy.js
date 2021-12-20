@@ -154,6 +154,12 @@ export default class BeeCrawlStrategy extends ControllerBase {
 
 				const nextPosition = this.grid.getNeighbor(this.model.position, options.nextPosition);
 
+				const possibleExit = this.level.isPossibleExit(nextPosition);
+				if (possibleExit) {
+					this.model.triggerOnTravelEvent(possibleExit);
+					return;
+				}
+
 				if (options.skipMovement !== true) {
 					if (this.level.isPenetrable(nextPosition)) {
 						this.model.position.set(nextPosition);

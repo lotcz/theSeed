@@ -203,8 +203,7 @@ BETA for friends
 
 - redraw boy's legs
 - redraw larva
-- allow leaving levels when crawling
-- retain items lost to level edge, of possible
+- retain items lost to level edge, if possible
 - solve crawling and carrying problem
 - control menu with keyboard
 - makers to turn heads
