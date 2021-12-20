@@ -5,6 +5,7 @@ import GroundController from "./GroundController";
 import Sound from "../class/Sound";
 import {START_LEVEL} from "../model/GameModel";
 import {MAX_HEALTH} from "../model/BeeStateModel";
+import {SPRITE_TYPE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 
 const DEBUG_LEVEL_CONTROLLER = true;
 
@@ -123,6 +124,7 @@ export default class LevelController extends ControllerBase {
 					this.travelling = false;
 				} else {
 					this.game.beeState.lives.set(this.game.beeState.lives.get() - 1);
+					this.model.addSpriteFromStyle(this.model.bee.position, SPRITE_TYPE_BEE_DEAD);
 					if (this.level.name === START_LEVEL) {
 						if (DEBUG_LEVEL_CONTROLLER) console.log('Died in start level');
 						this.game.beeState.health.set(MAX_HEALTH);
@@ -132,8 +134,7 @@ export default class LevelController extends ControllerBase {
 					} else {
 						if (this.game.beeState.lives.get() < 0) {
 							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and transferring to start level.');
-							this.game.beeState.lives.set(0);
-							this.game.beeState.lives.set(this.game.beeState.maxLives.get() || 0);
+							this.game.beeState.lives.set(this.game.beeState.maxLives.get());
 							this.game.levelName.set(START_LEVEL);
 						} else {
 							if (DEBUG_LEVEL_CONTROLLER) console.log('Died and respawning in the same level.');

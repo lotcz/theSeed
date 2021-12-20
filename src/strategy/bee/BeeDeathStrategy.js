@@ -27,12 +27,6 @@ export default class BeeDeathStrategy extends ControllerBase {
 		this.triggered = false;
 		this.parent.emptyInventory();
 		this.model.image.path.set(IMAGE_BEE_DEAD);
-		this.initialPosition = this.model.position.clone();
-	}
-
-	deactivateInternal() {
-		const carcass = this.level.addSpriteFromStyle(this.initialPosition, SPRITE_TYPE_BEE_DEAD);
-		carcass.isPersistent = false;
 	}
 
 	updateInternal(delta) {
@@ -54,7 +48,7 @@ export default class BeeDeathStrategy extends ControllerBase {
 			return;
 		}
 
-		if (!this.level.isGround(this.model.position)) {
+		if (this.level.isPenetrable(this.grid.getNeighborDown(this.model.position))) {
 			this.model.coordinates.set(this.model.coordinates.addY((delta / 1000) * FALL_SPEED));
 			this.model.position.set(this.grid.getPosition(this.model.coordinates));
 			this.parent.updateMovement();

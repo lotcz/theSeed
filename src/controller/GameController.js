@@ -91,7 +91,7 @@ export default class GameController extends ControllerBase {
 			if (!this.model.level.isEmpty()) {
 				const level = this.model.level.get();
 				if (level.isPlayable) {
-					this.saveGame();
+					await this.saveGameAsync();
 					this.model.lastLevelName = level.name;
 					bee = level.bee;
 				}
@@ -164,7 +164,7 @@ export default class GameController extends ControllerBase {
 			this.activateEditor();
 		}
 		if (level.isPlayable) {
-			this.saveGame();
+			this.saveGameAsync();
 		}
 	}
 
@@ -228,13 +228,12 @@ export default class GameController extends ControllerBase {
 		}
 	}
 
-	saveGame() {
+	async saveGameAsync() {
 		this.savedGameExists = true;
-		this.saveLevelToStorageAsync().then(() => {
+		await this.saveLevelToStorageAsync();
 		const state = this.game.getState();
-		localForage.setItem(SAVE_GAME_NAME, state)
+		return localForage.setItem(SAVE_GAME_NAME, state)
 			.then(() => console.log('Game saved.'));
-		});
 	}
 
 	showMainMenu() {
