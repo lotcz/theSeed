@@ -9,6 +9,7 @@ import {EDIT_MODE_ENABLED, START_LEVEL} from "../model/GameModel";
 import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";
 import {MAX_HEALTH} from "../model/BeeStateModel";
+import Pixies from "../class/Pixies";
 
 const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
@@ -236,14 +237,17 @@ export default class GameController extends ControllerBase {
 			.then(() => console.log('Game saved.'));
 	}
 
+	switchFullscreen() {
+		if (Pixies.isFullscreen()) {
+			Pixies.closeFullscreen();
+		} else {
+			Pixies.openFullscreen(document.documentElement);
+		}
+	}
+
 	showMainMenu() {
 		const level = this.model.level.get();
 		const builder = new MenuBuilder('main');
-		if (level && level.isPlayable) {
-			builder.addLine("Continue", (e) => this.resume());
-		} else if (this.savedGameExists) {
-			builder.addLine("Continue", (e) => this.loadGameAsync());
-		}
 
 		if (this.savedGameExists) {
 			builder.addLine("Start New Adventure", (e) => this.newGameConfirm());
@@ -251,9 +255,18 @@ export default class GameController extends ControllerBase {
 			builder.addLine("Start New Adventure", (e) => this.newGame());
 		}
 
+		builder.addLine("Fullscreen", (e) => this.switchFullscreen());
+
 		if (EDIT_MODE_ENABLED) {
 			builder.addLine("Editor", (e) => this.showEditorMenu());
 		}
+
+		if (level && level.isPlayable) {
+			builder.addLine("Continue", (e) => this.resume());
+		} else if (this.savedGameExists) {
+			builder.addLine("Continue", (e) => this.loadGameAsync());
+		}
+
 		this.model.menu.set(builder.build());
 
 		if (level && level.isPlayable) {

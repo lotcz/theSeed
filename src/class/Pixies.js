@@ -70,6 +70,30 @@ export default class Pixies {
 		}
 	}
 
+	static isFullscreen() {
+		return (window.fullScreen || (window.innerWidth == screen.width && window.innerHeight == screen.height))
+	}
+
+	static openFullscreen(elem) {
+		if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		} else if (elem.webkitRequestFullscreen) { /* Safari */
+			elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) { /* IE11 */
+			elem.msRequestFullscreen();
+		}
+	}
+
+	static closeFullscreen() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.webkitExitFullscreen) { /* Safari */
+			document.webkitExitFullscreen();
+		} else if (document.msExitFullscreen) { /* IE11 */
+			document.msExitFullscreen();
+		}
+	}
+
 	static clone(obj) {
 		if (obj === null || obj === undefined) {
 			return obj;
