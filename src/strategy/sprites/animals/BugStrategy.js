@@ -1,6 +1,6 @@
 import ObjectStrategy from "../ObjectStrategy";
 import Pixies from "../../../class/Pixies";
-import BiteSound from "../../../../res/sound/bite.wav";
+import BiteSound from "../../../../res/sound/ant-bite.mp3";
 import Sound from "../../../class/Sound";
 import {SPRITE_TYPE_POTASSIUM} from "../../../builder/sprites/SpriteStyleMinerals";
 import {SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "../../../builder/sprites/SpriteStyleObjects";

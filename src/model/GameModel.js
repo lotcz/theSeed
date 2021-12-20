@@ -39,7 +39,7 @@ import {
 import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
 
-export const EDIT_MODE_ENABLED = false;
+export const EDIT_MODE_ENABLED = true;
 export const START_LEVEL = 'hatching';
 
 export default class GameModel extends ModelBase {
