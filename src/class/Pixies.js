@@ -82,6 +82,7 @@ export default class Pixies {
 		} else if (elem.msRequestFullscreen) { /* IE11 */
 			elem.msRequestFullscreen();
 		}
+		Pixies.addClass(document.body, 'fullscreen');
 	}
 
 	static closeFullscreen() {
@@ -92,6 +93,7 @@ export default class Pixies {
 		} else if (document.msExitFullscreen) { /* IE11 */
 			document.msExitFullscreen();
 		}
+		Pixies.removeClass(document.body, 'fullscreen');
 	}
 
 	static clone(obj) {

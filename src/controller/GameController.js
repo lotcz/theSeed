@@ -15,8 +15,12 @@ const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
 const SAVE_LEVEL_NAME_PREFIX = 'beehive-save-game';
 
+const HIDE_MOUSE_TIMEOUT = 3000;
+
 export default class GameController extends ControllerBase {
 	levels;
+	hideMouseTimeout;
+	cursorHidden;
 
 	constructor(model, dom) {
 		super(model, model);
@@ -33,10 +37,13 @@ export default class GameController extends ControllerBase {
 
 		this.model.controls.editModeRequested.addOnChangeListener(() => this.onEditModeRequested());
 		this.model.controls.menuRequested.addOnChangeListener(() => this.onMenuRequested());
+		this.model.controls.mouseCoordinates.addOnChangeListener(() => this.onMouseMove());
 
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 
 		this.savedGameExists = false;
+		this.hideMouseTimeout = HIDE_MOUSE_TIMEOUT;
+		this.cursorHidden = false;
 	}
 
 	reset() {
@@ -56,6 +63,33 @@ export default class GameController extends ControllerBase {
 
 	deactivateInternal() {
 		window.removeEventListener('resize', this.onResizeEvent);
+	}
+
+	updateInternal(delta) {
+		if ((!this.cursorHidden) && this.model.level.isSet() && this.model.level.get().isPlayable) {
+			if (this.hideMouseTimeout <= 0) {
+				this.hideCursor();
+			} else {
+				this.hideMouseTimeout -= delta;
+			}
+		}
+	}
+
+	hideCursor() {
+		Pixies.addClass(document.body, 'cursor-hidden');
+		this.cursorHidden = true;
+	}
+
+	showCursor() {
+		Pixies.removeClass(document.body, 'cursor-hidden');
+		this.cursorHidden = false;
+	}
+
+	onMouseMove() {
+		if (this.cursorHidden) {
+			this.showCursor();
+		}
+		this.hideMouseTimeout = HIDE_MOUSE_TIMEOUT;
 	}
 
 	onMenuRequested() {
@@ -246,8 +280,14 @@ export default class GameController extends ControllerBase {
 	}
 
 	showMainMenu() {
-		const level = this.model.level.get();
 		const builder = new MenuBuilder('main');
+
+		const level = this.model.level.get();
+		if (level && level.isPlayable) {
+			builder.addLine("Continue", (e) => this.resume());
+		} else if (this.savedGameExists) {
+			builder.addLine("Continue", (e) => this.loadGameAsync());
+		}
 
 		if (this.savedGameExists) {
 			builder.addLine("Start New Adventure", (e) => this.newGameConfirm());
@@ -259,12 +299,6 @@ export default class GameController extends ControllerBase {
 
 		if (EDIT_MODE_ENABLED) {
 			builder.addLine("Editor", (e) => this.showEditorMenu());
-		}
-
-		if (level && level.isPlayable) {
-			builder.addLine("Continue", (e) => this.resume());
-		} else if (this.savedGameExists) {
-			builder.addLine("Continue", (e) => this.loadGameAsync());
 		}
 
 		this.model.menu.set(builder.build());

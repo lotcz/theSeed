@@ -36,11 +36,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
 		this.hitTimeout = 0;
+
+		BeeCrawlStrategy.crawlSound.play();
 	}
 
 	activateInternal() {
-		BeeCrawlStrategy.crawlSound.play();
-
 		const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
 		const down = this.grid.getNeighborDown(crawlingPosition);
 		if (this.level.isPenetrable(down)) {
@@ -51,10 +51,6 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.targetCoordinates = this.grid.getCoordinates(this.model.position);
 		this.updateBee();
-	}
-
-	deactivateInternal() {
-		BeeCrawlStrategy.uncrawlSound.play();
 	}
 
 	updateInternal(delta) {
@@ -224,6 +220,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		if (this.model.crawling.isSet()) {
 			const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
 			this.parent.inspectForMinerals(crawlingPosition);
+			BeeCrawlStrategy.uncrawlSound.play();
 		}
 		this.parent.fly();
 	}
