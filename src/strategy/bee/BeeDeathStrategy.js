@@ -1,5 +1,5 @@
 import ControllerBase from "../../class/ControllerBase";
-import DeathSound from "../../../res/sound/death.wav";
+import DeathSound from "../../../res/sound/death.mp3";
 import Sound from "../../class/Sound";
 import {IMAGE_BEE_DEAD, SPRITE_TYPE_BEE_DEAD} from "../../builder/sprites/SpriteStyleObjects";
 

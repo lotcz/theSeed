@@ -8,7 +8,7 @@ import BeeDeathStrategy from "../strategy/bee/BeeDeathStrategy";
 import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel";
 import OuchSound1 from "../../res/sound/ouch-1.mp3";
 import OuchSound2 from "../../res/sound/ouch-2.mp3";
-import DropSound from "../../res/sound/pop.mp3";
+import DropSound from "../../res/sound/pop-2.mp3";
 import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
@@ -23,6 +23,7 @@ import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/
 import {STRATEGY_DOOR_SLOT} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
+import WaterStrategy from "../strategy/sprites/minerals/WaterStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
@@ -109,6 +110,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.level.isWater(this.model.position)) {
+			WaterStrategy.splashSound.replay();
 			this.die();
 			return;
 		}

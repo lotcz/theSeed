@@ -9,7 +9,8 @@ import {
 } from "../../model/GridModel";
 import RotationValue from "../../class/RotationValue";
 
-import CrawlSound from "../../../res/sound/crawl.wav";
+import CrawlSound from "../../../res/sound/pop-1.mp3";
+import UnCrawlSound from "../../../res/sound/pop-2.mp3";
 import Sound from "../../class/Sound";
 import {CRAWLING_MATRIX, FALLBACK_FLY, FALLBACK_PROCEED} from "../../builder/CrawlingMatrix";
 import WaterStrategy from "../sprites/minerals/WaterStrategy";
@@ -21,6 +22,9 @@ const CONTROLS_TIMEOUT = 500;
 const DEFAULT_HIT_TIMEOUT = 300;
 
 export default class BeeCrawlStrategy extends ControllerBase {
+	static crawlSound = new Sound(CrawlSound);
+	static uncrawlSound = new Sound(UnCrawlSound);
+
 	targetCoordinates;
 	targetRotation;
 	timeout;
@@ -31,12 +35,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetCoordinates = null;
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
-		this.crawlSound = new Sound(CrawlSound);
 		this.hitTimeout = 0;
 	}
 
 	activateInternal() {
-		this.crawlSound.play();
+		BeeCrawlStrategy.crawlSound.play();
 
 		const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
 		const down = this.grid.getNeighborDown(crawlingPosition);
@@ -48,6 +51,10 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.targetCoordinates = this.grid.getCoordinates(this.model.position);
 		this.updateBee();
+	}
+
+	deactivateInternal() {
+		BeeCrawlStrategy.uncrawlSound.play();
 	}
 
 	updateInternal(delta) {

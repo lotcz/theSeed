@@ -1,6 +1,6 @@
 import ControllerBase from "../../class/ControllerBase";
 import Sound from "../../class/Sound";
-import HitSound from "../../../res/sound/hit.wav";
+import HitSound from "../../../res/sound/hit.mp3";
 
 import {BEE_CENTER} from "../../controller/BeeController";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";

@@ -1,5 +1,5 @@
 import MineralStrategy from "./MineralStrategy";
-import SplashSound from "../../../../res/sound/splash.wav";
+import SplashSound from "../../../../res/sound/splash.mp3";
 import Sound from "../../../class/Sound";
 import {STRATEGY_WATER} from "../../../builder/sprites/SpriteStyleMinerals";
 

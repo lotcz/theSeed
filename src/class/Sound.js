@@ -13,6 +13,13 @@ export default class Sound {
 		this.audio.muted = options.muted || false;
 	}
 
+	volume(value) {
+		if (value !== undefined) {
+			this.audio.volume = value;
+		}
+		return this.audio.volume;
+	}
+
 	rewind() {
 		this.audio.currentTime = 0;
 	}
