@@ -297,6 +297,9 @@ export default class GameController extends ControllerBase {
 	}
 
 	showMainMenu() {
+		this.showCursor();
+		this.hideMouseTimeout = HIDE_MOUSE_TIMEOUT;
+
 		const builder = new MenuBuilder('main');
 
 		const level = this.model.level.get();
