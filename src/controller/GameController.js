@@ -190,9 +190,26 @@ export default class GameController extends ControllerBase {
 		if (this.levelController) this.removeChild(this.levelController);
 		this.model.isFullscreen.set(level.isPlayable);
 		this.model.level.set(level);
+
 		this.levelController = new LevelController(this.model, level, this.controls);
 		this.addChild(this.levelController);
 		this.levelController.activate();
+
+		if (level.isPlayable) {
+			const fallen = this.model.fallenItems.flush(level.name);
+			fallen.forEach((fromLevel, items) => {
+				const respawn = level.findRespawn(fromLevel);
+				if (!respawn) {
+					console.log(`Respawn spot '${fromLevel}' not found!`);
+					return;
+				}
+				if (DEBUG_GAME_CONTROLLER) console.log('Adding sprites from another level:', fromLevel, items);
+				items.forEach((item) => {
+					level.addFallenItem(respawn.position, item);
+				});
+			});
+		}
+
 		this.showPlayMenu();
 		this.onResize();
 		if (this.model.isInEditMode.get()) {
@@ -344,6 +361,7 @@ export default class GameController extends ControllerBase {
 	newGame() {
 		localForage.clear().then(() => {
 			this.model.history.reset();
+			this.model.fallenItems.reset();
 			this.model.id = Date.now();
 			this.model.beeState.lives.set(0);
 			this.model.beeState.maxLives.set(0);

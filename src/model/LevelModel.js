@@ -246,8 +246,12 @@ export default class LevelModel extends ModelBase {
 		this.bee = null;
 	}
 
+	findRespawn(name) {
+		return this.sprites.children.find((s) => s.type === SPRITE_TYPE_RESPAWN && s.data.name === name);
+	}
+
 	spawn(bee, name) {
-		const respawn = this.sprites.children.find((s) => s.type === SPRITE_TYPE_RESPAWN && s.data.name === name);
+		const respawn = this.findRespawn(name);
 		if (!respawn) {
 			console.log(`Respawn spot '${name}' not found!`);
 			return;
@@ -464,6 +468,18 @@ export default class LevelModel extends ModelBase {
 			false,
 			spriteType
 		);
+	}
+
+	addFallenItem(position, sprite) {
+		let steps = 10;
+		let down = this.grid.getNeighborDown(position);
+		while (steps > 0 && this.isPenetrable(down)) {
+			position = down;
+			down = this.grid.getNeighborDown(position);
+			steps--;
+		}
+		sprite.position.set(position);
+		this.sprites.add(sprite);
 	}
 
 	setParallaxFromStyle(parallaxType) {

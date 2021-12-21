@@ -201,7 +201,6 @@ TODO:
 BETA for friends
 ----------------
 
-- retain items lost to level edge, if possible
 - solve crawling and carrying problem
 - control menu with keyboard
 - makers to turn heads

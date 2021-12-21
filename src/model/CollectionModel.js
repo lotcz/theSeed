@@ -4,7 +4,7 @@ export default class CollectionModel extends ModelBase {
 	constructor(state, restoreFunc) {
 		super();
 
-		if (state && restoreFunc) {
+		if (restoreFunc && state) {
 			this.restoreState(state, restoreFunc);
 		}
 	}
@@ -38,6 +38,10 @@ export default class CollectionModel extends ModelBase {
 
 	count() {
 		return this.children.length;
+	}
+
+	clone() {
+		return new CollectionModel(this.getState(), this.res)
 	}
 
 	removeFirst() {

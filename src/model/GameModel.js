@@ -38,6 +38,9 @@ import {
 } from "../builder/sprites/SpriteStyleBees";
 import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
+import CollectionModel from "./CollectionModel";
+import SpriteModel from "./SpriteModel";
+import FallenItemsModel from "./FallenItemsModel";
 
 export const EDIT_MODE_ENABLED = true;
 export const START_LEVEL = 'hatching';
@@ -56,6 +59,7 @@ export default class GameModel extends ModelBase {
 	isFullscreen;
 	viewBoxSize;
 	resources;
+	fallenItems;
 
 	constructor() {
 		super();
@@ -86,6 +90,8 @@ export default class GameModel extends ModelBase {
 		this.levels.set('level-1', LevelLevel1);
 		this.levels.set('level-2', LevelLevel2);
 
+		this.fallenItems = new FallenItemsModel();
+
 		this.beeState = new BeeStateModel();
 		this.addChild(this.beeState);
 
@@ -115,6 +121,7 @@ export default class GameModel extends ModelBase {
 			levelName: this.levelName.get(),
 			history: this.history.getState(),
 			beeState: this.beeState.getState(),
+			fallenItems: this.fallenItems.getState()
 		}
 	}
 
@@ -124,6 +131,7 @@ export default class GameModel extends ModelBase {
 		if (state.levelName) this.levelName.restoreState(state.levelName);
 		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
 		if (state.beeState) this.beeState.restoreState(state.beeState);
+		if (state.fallenItems) this.fallenItems.restoreState(state.fallenItems);
 	}
 
 	initResources() {

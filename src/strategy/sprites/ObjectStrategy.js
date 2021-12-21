@@ -39,7 +39,15 @@ export default class ObjectStrategy extends AnimatedStrategy {
 
 		const down = this.grid.getNeighborDown(this.model.position);
 		if (!this.level.isValidPosition(down)) {
-			this.level.sprites.remove(this.model);
+			this.removeMyself();
+			if (this.model.isPersistent) {
+				const exit = this.level.isPossibleExit(down);
+				if (exit) {
+					this.game.fallenItems.addFallenItem(this.level.name, exit, this.model);
+					console.log('Object going to another level:', exit);
+				}
+			}
+			console.log('Object over board!', this.model);
 			return;
 		}
 

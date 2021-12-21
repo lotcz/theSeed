@@ -28,7 +28,14 @@ export default class UpdatedStrategy extends SpriteStrategy {
 		this.timeout -= delta;
 		if (this.timeout <= 0) {
 			if (!this.level.isValidPosition(this.model.position)) {
-				this.level.sprites.remove(this.model);
+				this.removeMyself();
+				if (this.model.isPersistent) {
+					const exit = this.level.isPossibleExit(this.model.position);
+					if (exit) {
+						this.game.fallenItems.addFallenItem(this.level.name, exit, this.model);
+						console.log('Sprite going to another level:', exit);
+					}
+				}
 				console.log('Sprite over board!', this.model);
 				return;
 			}
