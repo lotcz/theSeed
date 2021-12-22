@@ -24,8 +24,15 @@ export default class Sound {
 		return this.audio.volume;
 	}
 
-	rewind() {
-		this.audio.currentTime = 0;
+	speed(speed) {
+		if (speed !== undefined) {
+			this.audio.playbackRate = speed;
+		}
+		return this.audio.playbackRate;
+	}
+
+	rewind(time = 0) {
+		this.audio.currentTime = time;
 	}
 
 	stop() {

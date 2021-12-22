@@ -1,7 +1,7 @@
 import ControllerBase from "../../class/ControllerBase";
 import Sound from "../../class/Sound";
 import HitSound from "../../../res/sound/hit.mp3";
-
+import WingSound from "../../../res/sound/wing.mp3";
 import {BEE_CENTER} from "../../controller/BeeController";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 import Pixies from "../../class/Pixies";
@@ -31,6 +31,7 @@ const HIT_HURT = 0.1;
 
 export default class BeeFlightStrategy extends ControllerBase {
 	static hitSound = new Sound(HitSound);
+	static wingSound = new Sound(WingSound);
 	wingRotation;
 	speed;
 	dead;
@@ -70,8 +71,10 @@ export default class BeeFlightStrategy extends ControllerBase {
 		//animate wings
 		if (this.wingRotation > 60) {
 			this.wingRotation = -60;
+			BeeFlightStrategy.wingSound.replay();
 		}
 		this.wingRotation += secsDelta * (100 + (400 * this.speed / MAX_SPEED));
+		BeeFlightStrategy.wingSound.speed(1 + this.speed / MAX_SPEED);
 
 		if (this.leaving) {
 			this.model.scale.set(this.scaleAnimation.get(delta));

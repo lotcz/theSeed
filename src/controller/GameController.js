@@ -37,7 +37,7 @@ export default class GameController extends ControllerBase {
 
 		this.model.controls.editModeRequested.addOnChangeListener(() => this.onEditModeRequested());
 		this.model.controls.menuRequested.addOnChangeListener(() => this.onMenuRequested());
-		this.model.controls.mouseCoordinates.addOnChangeListener(() => this.onMouseMove());
+		window.document.body.addEventListener('mousemove', () => this.onMouseMove());
 
 		this.model.levelName.addOnChangeListener(async (value) => await this.onLoadLevelRequestAsync(value));
 

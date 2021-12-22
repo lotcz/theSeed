@@ -34,6 +34,7 @@ const STARS_TIMEOUT = 3000;
 export default class BeeController extends ControllerBase {
 	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
 	static dropSound = new Sound(DropSound);
+
 	dead;
 	leaving;
 	dropItemTimeout;

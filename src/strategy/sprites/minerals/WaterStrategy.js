@@ -1,23 +1,32 @@
 import MineralStrategy from "./MineralStrategy";
-import SplashSound from "../../../../res/sound/splash.mp3";
+import SplashSound from "../../../../res/sound/water-drop-reverb.mp3";
+import DropSound from "../../../../res/sound/water-drop.mp3";
 import Sound from "../../../class/Sound";
 import {STRATEGY_WATER} from "../../../builder/sprites/SpriteStyleMinerals";
 
 const WATER_TIMEOUT = 700;
 
 export default class WaterStrategy extends MineralStrategy {
-	static splashSound = new Sound(SplashSound);
-
 	constructor(game, model, controls) {
 		super(game, model, controls, WATER_TIMEOUT);
 
 		this.model._is_crawlable = false;
 		this.model._is_penetrable = false;
+
+		this.dropSound = null;
+		this.splashSound = null;
 	}
 
 	updateStrategy() {
 		if (this.level.isWater(this.model.position)) {
 			this.removeMyself();
+			if (this.falling) {
+				if (!this.splashSound) {
+					this.splashSound = new Sound(SplashSound);
+				}
+				this.splashSound.replay();
+				this.falling = false;
+			}
 			return;
 		}
 
@@ -30,6 +39,13 @@ export default class WaterStrategy extends MineralStrategy {
 		}
 
 		super.updateStrategy();
+	}
+
+	objectHitGround() {
+		if (!this.dropSound) {
+			this.dropSound = new Sound(DropSound);
+		}
+		this.dropSound.replay();
 	}
 
 	updateStillObject() {

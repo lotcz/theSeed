@@ -8,6 +8,7 @@ const DEFAULT_FLOAT_TIMEOUT = 500;
 
 export default class ObjectStrategy extends AnimatedStrategy {
 	maxAmount;
+	falling;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
@@ -19,6 +20,7 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		this.defaultFloatTimeout = DEFAULT_FLOAT_TIMEOUT;
 		this.lastAmount = null;
 		this.timeout = 0;
+		this.falling = false;
 
 		if (!this.model.data.amount) {
 			this.model.data.amount = DEFAULT_OBJECT_MAX_AMOUNT;
@@ -63,7 +65,13 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			this.defaultTimeout = this.level.isWater(down) ? this.defaultFloatTimeout * 2: this.defaultFallTimeout;
 			this.setTargetPosition(down);
 			this.setTargetRotation(0);
+			this.falling = true;
 			return;
+		}
+
+		if (this.falling) {
+			this.objectHitGround();
+			this.falling = false;
 		}
 
 		const available = [];
@@ -82,7 +90,6 @@ export default class ObjectStrategy extends AnimatedStrategy {
 			this.defaultTimeout = this.defaultMoveTimeout;
 			this.updateStillObject();
 		}
-
 	}
 
 	static getObjectScale(amount, maxAmount) {
@@ -109,6 +116,14 @@ export default class ObjectStrategy extends AnimatedStrategy {
 	}
 
 	updateStillObject() {
+		// override
+	}
+
+	objectHitGround() {
+		// override
+	}
+
+	objectHitWater() {
 		// override
 	}
 

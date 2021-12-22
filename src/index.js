@@ -14,7 +14,7 @@ const game = new GameModel();
 
 const draw = SVG().addTo(window.document.body);
 
-const controller = new GameController(game, window.document.body);
+const controller = new GameController(game, draw.node);
 controller.activate();
 
 const renderer = new GameRenderer(game, draw);

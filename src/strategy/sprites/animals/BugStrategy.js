@@ -22,6 +22,15 @@ export default class BugStrategy extends ObjectStrategy {
 		this.model._is_crawlable = false;
 	}
 
+	activateInternal() {
+		super.activateInternal();
+
+		// fix fallout bug
+		while (!this.level.isPenetrable(this.model.position)) {
+			this.model.position.set(this.grid.getNeighborUp(this.model.position));
+		}
+	}
+
 	updateStrategy() {
 		if (this.level.isWater(this.model.position)) {
 			this.defaultTimeout = this.defaultFallTimeout;
