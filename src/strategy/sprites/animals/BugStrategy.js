@@ -26,7 +26,7 @@ export default class BugStrategy extends ObjectStrategy {
 		super.activateInternal();
 
 		// fix fallout bug
-		while (!this.level.isPenetrable(this.model.position)) {
+		while (this.level.isGround(this.model.position)) {
 			this.model.position.set(this.grid.getNeighborUp(this.model.position));
 		}
 	}
