@@ -9,6 +9,7 @@ import {NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_UPPER_RIGHT} from "../model/GridModel"
 import OuchSound1 from "../../res/sound/ouch-1.mp3";
 import OuchSound2 from "../../res/sound/ouch-2.mp3";
 import DropSound from "../../res/sound/pop-2.mp3";
+import SplashSound from "../../res/sound/splash.mp3";
 import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
@@ -34,6 +35,7 @@ const STARS_TIMEOUT = 3000;
 export default class BeeController extends ControllerBase {
 	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
 	static dropSound = new Sound(DropSound);
+	static splashSound = new Sound(SplashSound);
 
 	dead;
 	leaving;

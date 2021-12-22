@@ -1,5 +1,5 @@
 import ControllerBase from "../../class/ControllerBase";
-import {BEE_CENTER} from "../../controller/BeeController";
+import BeeController, {BEE_CENTER} from "../../controller/BeeController";
 import {
 	NEIGHBOR_TYPE_LOWER_LEFT,
 	NEIGHBOR_TYPE_LOWER_RIGHT,
@@ -195,7 +195,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			const water = waterAbove[0];
 			if (this.model.coordinates.distanceTo(water.image.coordinates) < (this.grid.tileRadius.get() * 2)) {
 				if (this.hitTimeout <= 0) {
-					WaterStrategy.splashSound.replay();
+					BeeController.splashSound.replay();
 					this.game.beeState.hurt(0.2);
 					this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 				}

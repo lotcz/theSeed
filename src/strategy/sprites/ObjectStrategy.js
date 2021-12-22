@@ -1,6 +1,8 @@
 import AnimatedStrategy from "./AnimatedStrategy";
 import Vector2 from "../../class/Vector2";
 import Pixies from "../../class/Pixies";
+import SplashSound from "../../../res/sound/splash.mp3";
+import Sound from "../../class/Sound";
 
 export const DEFAULT_OBJECT_MAX_AMOUNT = 5;
 const DEFAULT_FALL_TIMEOUT = 200;
@@ -28,6 +30,8 @@ export default class ObjectStrategy extends AnimatedStrategy {
 
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = true;
+
+		this.splashSound = null;
 	}
 
 	activateInternal() {
@@ -62,6 +66,12 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		}
 
 		if (this.level.isPenetrable(down)) {
+			if (this.falling) {
+				if (this.level.isWater(down)) {
+					this.objectHitWater();
+					this.falling = false;
+				}
+			}
 			this.defaultTimeout = this.level.isWater(down) ? this.defaultFloatTimeout * 2: this.defaultFallTimeout;
 			this.setTargetPosition(down);
 			this.setTargetRotation(0);
@@ -124,7 +134,10 @@ export default class ObjectStrategy extends AnimatedStrategy {
 	}
 
 	objectHitWater() {
-		// override
+		if (!this.splashSound) {
+			this.splashSound = new Sound(SplashSound);
+		}
+		this.splashSound.replay();
 	}
 
 }

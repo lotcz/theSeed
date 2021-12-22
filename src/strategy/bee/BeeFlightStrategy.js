@@ -2,7 +2,7 @@ import ControllerBase from "../../class/ControllerBase";
 import Sound from "../../class/Sound";
 import HitSound from "../../../res/sound/hit.mp3";
 import WingSound from "../../../res/sound/wing.mp3";
-import {BEE_CENTER} from "../../controller/BeeController";
+import BeeController, {BEE_CENTER} from "../../controller/BeeController";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 import Pixies from "../../class/Pixies";
 import AnimatedValue from "../../class/AnimatedValue";
@@ -125,7 +125,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		if (waterAbove.length > 0) {
 			direction = direction.addY(SPEEDUP_SPEED * secsDelta * 10);
 			if (this.hitTimeout <= 0) {
-				WaterStrategy.splashSound.replay();
+				BeeController.splashSound.replay();
 				this.game.beeState.hurt(WATER_HURT);
 				this.hitTimeout = DEFAULT_HIT_TIMEOUT;
 			}

@@ -1,5 +1,4 @@
 import MineralStrategy from "./MineralStrategy";
-import SplashSound from "../../../../res/sound/water-drop-reverb.mp3";
 import DropSound from "../../../../res/sound/water-drop.mp3";
 import Sound from "../../../class/Sound";
 import {STRATEGY_WATER} from "../../../builder/sprites/SpriteStyleMinerals";
@@ -14,19 +13,11 @@ export default class WaterStrategy extends MineralStrategy {
 		this.model._is_penetrable = false;
 
 		this.dropSound = null;
-		this.splashSound = null;
 	}
 
 	updateStrategy() {
 		if (this.level.isWater(this.model.position)) {
 			this.removeMyself();
-			if (this.falling) {
-				if (!this.splashSound) {
-					this.splashSound = new Sound(SplashSound);
-				}
-				this.splashSound.replay();
-				this.falling = false;
-			}
 			return;
 		}
 
