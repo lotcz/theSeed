@@ -1,7 +1,7 @@
 import AnimatedStrategy from "./AnimatedStrategy";
 import Vector2 from "../../class/Vector2";
 import Pixies from "../../class/Pixies";
-import SplashSound from "../../../res/sound/splash.mp3";
+import SplashSound from "../../../res/sound/water-drop-reverb.mp3";
 import Sound from "../../class/Sound";
 
 export const DEFAULT_OBJECT_MAX_AMOUNT = 5;

@@ -22,4 +22,12 @@ MUSIC_STYLES[MUSIC_CAVE] = {
 	resource: CaveMusic
 };
 
+export const MUSIC_HAPPY_TUNE = 'happy-tune.mp3';
+import HappyTuneMusic from "../../res/sound/happy-tune.mp3";
+
+MUSIC_STYLES[MUSIC_HAPPY_TUNE] = {
+	url: MUSIC_HAPPY_TUNE,
+	resource: HappyTuneMusic
+};
+
 export const MUSIC_TYPES = Object.keys(MUSIC_STYLES).sort();

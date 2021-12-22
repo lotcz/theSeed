@@ -5,6 +5,7 @@ const HAVE_ENOUGH_DATA = 4;
 export const MAX_SOUND_DISTANCE = 1000;
 
 export default class Sound {
+	static soundEnabled = true;
 	audio;
 
 	constructor(src, options) {
@@ -46,6 +47,7 @@ export default class Sound {
 	}
 
 	play() {
+		if (!Sound.soundEnabled) return;
 		if (this.audio.readyState === HAVE_ENOUGH_DATA) {
 			this.audio.play();
 		} else {
@@ -65,6 +67,7 @@ export default class Sound {
 	}
 
 	playInDistance(distance) {
+		if (!Sound.soundEnabled) return;
 		const volume = this.getDistanceVolume(distance);
 		if (volume <= 0) {
 			this.pause();

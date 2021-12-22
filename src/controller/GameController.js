@@ -10,6 +10,7 @@ import {EDITOR_LEVEL_NAME_PREFIX} from "../renderer/LevelEditorRenderer";
 import ControlsController from "./ControlsController";
 import {MAX_HEALTH} from "../model/BeeStateModel";
 import Pixies from "../class/Pixies";
+import Sound from "../class/Sound";
 
 const DEBUG_GAME_CONTROLLER = true;
 const SAVE_GAME_NAME = 'beehive-save-game';
@@ -57,6 +58,12 @@ export default class GameController extends ControllerBase {
 		this.onResize();
 		localForage.getItem(SAVE_GAME_NAME).then((saveGame) => {
 			this.savedGameExists = (saveGame !== null);
+			if (this.savedGameExists) {
+				if (saveGame.soundEnabled !== undefined) {
+					this.model.soundEnabled.set(saveGame.soundEnabled);
+					Sound.soundEnabled = this.model.soundEnabled.get();
+				}
+			}
 			this.reset();
 		});
 	}
@@ -273,6 +280,7 @@ export default class GameController extends ControllerBase {
 			console.log('Game loaded');
 			const state = store;
 			this.model.restoreState(state);
+			Sound.soundEnabled = this.model.soundEnabled.get();
 			return true;
 		} else {
 			console.log('No saved game found.');
@@ -294,6 +302,13 @@ export default class GameController extends ControllerBase {
 		} else {
 			Pixies.openFullscreen(document.documentElement);
 		}
+		setTimeout(() => this.showMainMenu(), 500);
+	}
+
+	switchSound() {
+		this.model.soundEnabled.set(!this.model.soundEnabled.get());
+		Sound.soundEnabled = this.model.soundEnabled.get();
+		this.showMainMenu();
 	}
 
 	showMainMenu() {
@@ -305,17 +320,20 @@ export default class GameController extends ControllerBase {
 		const level = this.model.level.get();
 		if (level && level.isPlayable) {
 			builder.addLine("Continue", (e) => this.resume());
-		} else if (this.savedGameExists) {
-			builder.addLine("Continue", (e) => this.loadGameAsync());
+		} else {
+			if (this.savedGameExists) {
+				builder.addLine("Continue", (e) => this.loadGameAsync());
+			} else {
+				builder.addLine("Start New Adventure", (e) => this.newGame());
+			}
 		}
+
+		builder.addLine("Fullscreen " + (Pixies.isFullscreen() ? "On" : "Off"), (e) => this.switchFullscreen());
+		builder.addLine("Sound " + (Sound.soundEnabled ? "On" : "Off"), (e) => this.switchSound());
 
 		if (this.savedGameExists) {
 			builder.addLine("Start New Adventure", (e) => this.newGameConfirm());
-		} else {
-			builder.addLine("Start New Adventure", (e) => this.newGame());
 		}
-
-		builder.addLine("Fullscreen", (e) => this.switchFullscreen());
 
 		if (EDIT_MODE_ENABLED) {
 			builder.addLine("Editor", (e) => this.showEditorMenu());

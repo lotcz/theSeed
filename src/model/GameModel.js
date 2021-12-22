@@ -55,6 +55,7 @@ export default class GameModel extends ModelBase {
 	beeState;
 	menu;
 	editor;
+	soundEnabled;
 	isInEditMode;
 	isFullscreen;
 	viewBoxSize;
@@ -106,6 +107,9 @@ export default class GameModel extends ModelBase {
 		this.isFullscreen = new DirtyValue(false);
 		this.addChild(this.isFullscreen);
 
+		this.soundEnabled = new DirtyValue(true);
+		this.addChild(this.soundEnabled);
+
 		this.viewBoxSize = new Vector2();
 		this.addChild(this.viewBoxSize);
 
@@ -121,7 +125,8 @@ export default class GameModel extends ModelBase {
 			levelName: this.levelName.get(),
 			history: this.history.getState(),
 			beeState: this.beeState.getState(),
-			fallenItems: this.fallenItems.getState()
+			fallenItems: this.fallenItems.getState(),
+			soundEnabled: this.soundEnabled.getState()
 		}
 	}
 
@@ -132,6 +137,7 @@ export default class GameModel extends ModelBase {
 		if (state.history) this.history.restoreState(state.history, (state) => new DirtyValue(state));
 		if (state.beeState) this.beeState.restoreState(state.beeState);
 		if (state.fallenItems) this.fallenItems.restoreState(state.fallenItems);
+		if (state.soundEnabled !== undefined) this.soundEnabled.restoreState(state.soundEnabled);
 	}
 
 	initResources() {
