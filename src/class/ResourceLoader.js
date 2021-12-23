@@ -1,5 +1,5 @@
 import Tree from "./Tree";
-import ResourceModel, {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
+import {RESOURCE_TYPE_IMAGE} from "../model/ResourceModel";
 import Pixies from "./Pixies";
 
 const DEBUG_RESOURCE_LOADER = false;

@@ -1,13 +1,12 @@
 import ControllerBase from "../../class/ControllerBase";
 import Sound from "../../class/Sound";
 import HitSound from "../../../res/sound/hit.mp3";
-import WingSound from "../../../res/sound/wing.mp3";
+//import WingSound from "../../../res/sound/wing.mp3";
 import BeeController, {BEE_CENTER} from "../../controller/BeeController";
 import {MINERAL_MAX_AMOUNT} from "../sprites/minerals/MineralStrategy";
 import Pixies from "../../class/Pixies";
 import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
-import WaterStrategy from "../sprites/minerals/WaterStrategy";
 import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT, NEIGHBOR_TYPE_UPPER_RIGHT} from "../../model/GridModel";
 import {IMAGE_BEE} from "../../builder/sprites/SpriteStyleBees";
 import {SPRITE_TYPE_WATER} from "../../builder/sprites/SpriteStyleMinerals";

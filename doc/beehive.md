@@ -201,9 +201,9 @@ TODO:
 BETA for friends
 ----------------
 
+- makers to turn heads
 - solve crawling and carrying problem
 - control menu with keyboard
-- makers to turn heads
 - production mode (exception handling and logging, hide all dev UI)
 
 Demo

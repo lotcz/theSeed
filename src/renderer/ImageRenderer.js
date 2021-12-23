@@ -98,6 +98,10 @@ export default class ImageRenderer extends SvgRenderer {
 		const ref = this.getRef(this.model.path.get());
 		this.model.path.clean();
 		this.image = this.group.use(ref);
+
+		console.log(this.group.findOne('.head'));
+		console.log(ref.findOne('.head'));
+
 		//this.imageSize = new Vector2(ref.width(), ref.height());
 		if (this.onClick) {
 			this.setOnClick(this.onClick);
