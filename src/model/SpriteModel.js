@@ -28,6 +28,7 @@ export default class SpriteModel extends ModelBase {
 
 		this.attachedSprite = new DirtyValue(null);
 		this.addChild(this.attachedSprite);
+		this.attachedSpriteBehind = false;
 
 		this.position = new Vector2();
 		this.addChild(this.position);

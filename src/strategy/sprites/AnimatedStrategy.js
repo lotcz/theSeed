@@ -24,6 +24,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.turnWhenMoving = false;
 		this.oriented = false;
 		this.turningDuration = DEFAULT_TURNING_DURATION;
+		this.rotateAttachedSprite = true;
 	}
 
 	activateInternal() {
@@ -97,7 +98,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 				rotation += 180;
 			}
 			this.model.image.rotation.set(rotation);
-			if (this.model.attachedSprite.isSet()) {
+			if (this.rotateAttachedSprite && this.model.attachedSprite.isSet()) {
 				this.model.attachedSprite.get().image.rotation.set(rotation);
 			}
 			if (this.animatedRotation.isFinished()) {

@@ -68,6 +68,18 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_SOLDIER] = {
 	}
 };
 
+export const SPRITE_TYPE_JELLY_MAKER_BODY = 'bee-jelly-maker-body';
+export const IMAGE_JELLY_MAKER_BODY = 'img/bee-jelly-maker-body.svg';
+import JellyMakerBodyImage from "../../../res/img/bee-jellymaker-body.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_JELLY_MAKER_BODY] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_JELLY_MAKER_BODY,
+		resource: JellyMakerBodyImage
+	}
+};
+
 export const SPRITE_TYPE_PINK_JELLY_MAKER = 'bee-jelly-maker-pink';
 export const IMAGE_PINK_JELLY_MAKER = 'img/jellymaker.svg';
 import PinkJellyMakerImage from "../../../res/img/pink-jelly-maker.svg";
@@ -87,7 +99,7 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_PINK_JELLY_MAKER] = {
 
 export const SPRITE_TYPE_GREEN_JELLY_MAKER = 'bee-jelly-maker-green';
 export const IMAGE_GREEN_JELLY_MAKER = 'img/green-jelly-maker.svg';
-import GreenJellyMakerImage from "../../../res/img/green-jelly-maker.svg";
+import GreenJellyMakerImage from "../../../res/img/bee-jellymaker-head-green.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_GREEN_JELLY_MAKER] = {
 	strategy: STRATEGY_JELLY_MAKER,
