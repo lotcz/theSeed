@@ -62,5 +62,13 @@ export default class BeeStateModel extends ModelBase {
 		this.removeEventListener('hurt', listener);
 	}
 
+	addOnHealListener(listener) {
+		this.addEventListener('heal', listener);
+	}
+
+	removeOnHealListener(listener) {
+		this.removeEventListener('heal', listener);
+	}
+
 }
 

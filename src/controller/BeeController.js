@@ -10,6 +10,7 @@ import OuchSound1 from "../../res/sound/ouch-1.mp3";
 import OuchSound2 from "../../res/sound/ouch-2.mp3";
 import DropSound from "../../res/sound/pop-2.mp3";
 import SplashSound from "../../res/sound/splash.mp3";
+import HealingSound from "../../res/sound/healing.mp3";
 import Sound from "../class/Sound";
 import SpriteCollectionController from "./SpriteCollectionController";
 import HintModel from "../model/HintModel";
@@ -36,6 +37,7 @@ export default class BeeController extends ControllerBase {
 	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
 	static dropSound = new Sound(DropSound);
 	static splashSound = new Sound(SplashSound);
+	static healingSound = new Sound(HealingSound);
 
 	dead;
 	leaving;
@@ -74,6 +76,7 @@ export default class BeeController extends ControllerBase {
 
 		this.onTravelHandler = () => this.leave();
 		this.onHurtHandler = (amount) => this.onHurt(amount);
+		this.onHealHandler = (amount) => this.onHeal(amount);
 	}
 
 	activateInternal() {
@@ -89,11 +92,13 @@ export default class BeeController extends ControllerBase {
 
 		this.model.addOnTravelListener(this.onTravelHandler);
 		this.game.beeState.addOnHurtListener(this.onHurtHandler);
+		this.game.beeState.addOnHealListener(this.onHealHandler);
 	}
 
 	deactivateInternal() {
 		this.model.removeOnTravelListener(this.onTravelHandler);
 		this.game.beeState.removeOnHurtListener(this.onHurtHandler);
+		this.game.beeState.removeOnHealListener(this.onHealHandler);
 	}
 
 	updateInternal(delta) {
@@ -331,6 +336,10 @@ export default class BeeController extends ControllerBase {
 			this.starsAnimationController.activate();
 		}
 		this.starsTimeout = STARS_TIMEOUT;
+	}
+
+	onHeal(amount) {
+		BeeController.healingSound.play();
 	}
 
 	showControlsHint() {
