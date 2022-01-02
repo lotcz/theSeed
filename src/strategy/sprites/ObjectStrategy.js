@@ -7,6 +7,7 @@ import Sound from "../../class/Sound";
 export const DEFAULT_OBJECT_MAX_AMOUNT = 5;
 const DEFAULT_FALL_TIMEOUT = 200;
 const DEFAULT_FLOAT_TIMEOUT = 500;
+const DEBUG_OBJECT_STRATEGY = false;
 
 export default class ObjectStrategy extends AnimatedStrategy {
 	maxAmount;
@@ -50,10 +51,10 @@ export default class ObjectStrategy extends AnimatedStrategy {
 				const exit = this.level.isPossibleExit(down);
 				if (exit) {
 					this.game.fallenItems.addFallenItem(this.level.name, exit, this.model);
-					console.log('Object going to another level:', exit);
+					if (DEBUG_OBJECT_STRATEGY) console.log('Object going to another level:', exit);
 				}
 			}
-			console.log('Object over board!', this.model);
+			if (DEBUG_OBJECT_STRATEGY) console.log('Object over board!', this.model);
 			return;
 		}
 

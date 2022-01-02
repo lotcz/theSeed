@@ -201,9 +201,8 @@ TODO:
 BETA for friends
 ----------------
 
-- makers to turn heads
+- makers to turn heads and eat effects
 - solve crawling and carrying problem
-- control menu with keyboard
 - production mode (exception handling and logging, hide all dev UI)
 
 Demo

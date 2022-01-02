@@ -37,7 +37,7 @@ export default class HintController extends ControllerBase {
 	}
 
 	hide() {
-		if (this.isInitialized()) {
+		if (this.isInitialized() && (this.delayedHideTimer === null)) {
 			this.setHideTimer();
 		}
 		//this.clearHideTimer();

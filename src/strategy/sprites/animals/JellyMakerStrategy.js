@@ -41,6 +41,18 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		}
 	}
 
+	activateInternal() {
+		super.activateInternal();
+		const bodyPosition = this.grid.getNeighborDown(this.model.position);
+		this.model.attachedSprite.get().position.set(bodyPosition);
+		this.model.attachedSprite.get().image.coordinates.set(this.grid.getCoordinates(bodyPosition));
+		this.chessboard.addVisitor(bodyPosition, this.model);
+	}
+
+	deactivateInternal() {
+		this.chessboard.removeVisitor(this.model.attachedSprite.get().position, this.model);
+		super.deactivateInternal();
+	}
 
 	updateStrategy() {
 		if (!this.hintController) {
@@ -68,7 +80,7 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		if (this.level.isPlayable && this.level.bee && this.isHungry()) {
 			const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
 			if (this.hintController.isInitialized()) {
-				if (beeDistance > (1.5 * HINT_DISTANCE)) {
+				if (beeDistance > (1.1 * HINT_DISTANCE)) {
 					this.hintController.hide();
 				} else {
 					this.hintController.show();
