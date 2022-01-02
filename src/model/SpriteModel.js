@@ -3,6 +3,7 @@ import ImageModel from "./ImageModel";
 import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 import Pixies from "../class/Pixies";
+import NullableModelValue from "../class/NullableModelValue";
 
 export default class SpriteModel extends ModelBase {
 	position;
@@ -26,7 +27,7 @@ export default class SpriteModel extends ModelBase {
 
 		this.image = null;
 
-		this.attachedSprite = new DirtyValue(null);
+		this.attachedSprite = new NullableModelValue(null);
 		this.addChild(this.attachedSprite);
 		this.attachedSpriteBehind = false;
 

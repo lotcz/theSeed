@@ -46,15 +46,15 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		if (!this.model.image) {
 			return;
 		}
-		if (!this.model.image.rotation.equalsTo(rotation)) {
+		if (this.model.image.rotation.equalsTo(rotation)) {
+			this.animatedRotation = null;
+		} else {
 			if (timeout === null) timeout = this.defaultTimeout;
 			if (this.oriented) {
 				this.animatedRotation = new AnimatedValue(RotationValue.normalizeValue(this.model.image.rotation.get() + 180), RotationValue.normalizeValue(rotation + 180), timeout);
 			} else {
 				this.animatedRotation = new AnimatedRotation(this.model.image.rotation.get(), rotation, timeout);
 			}
-		} else {
-			this.animatedRotation = null;
 		}
 	}
 
