@@ -38,8 +38,6 @@ import {
 } from "../builder/sprites/SpriteStyleBees";
 import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
-import CollectionModel from "./CollectionModel";
-import SpriteModel from "./SpriteModel";
 import FallenItemsModel from "./FallenItemsModel";
 
 export const EDIT_MODE_ENABLED = true;

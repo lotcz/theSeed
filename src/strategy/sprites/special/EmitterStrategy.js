@@ -33,7 +33,7 @@ export default class EmitterStrategy extends StaticStrategy {
 
 	updateStrategy() {
 		if (this.max === -1 || this.emitted < this.max) {
-			const visitors = this.chessboard.getVisitors(this.model.position, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_MINERAL) && v.type === this.model.data.type);
+			const visitors = this.chessboard.getVisitors(this.model.position, (v) => (v._is_sprite && v.type === this.model.data.type) || (v._is_penetrable === false));
 			if (visitors.length === 0) {
 				this.emitted++;
 				let style = this.model.data.type;

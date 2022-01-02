@@ -1,5 +1,6 @@
 import ObjectStrategy from "../ObjectStrategy";
 import {STRATEGY_MINERAL} from "../../../builder/sprites/SpriteStyleMinerals";
+import Pixies from "../../../class/Pixies";
 
 const MINERAL_TIMEOUT = 1000;
 
@@ -25,13 +26,35 @@ export default class MineralStrategy extends ObjectStrategy {
 			this.separate(amount);
 		}
 
-		const visitors = this.chessboard.getTile(this.model.position)
+		const visitors = this.chessboard.getVisitors(this.model.position, (v) => v !== this.model);
+		const impenetrable = visitors.filter((v) => v._is_penetrable === false);
+
+		if (impenetrable.length > 0) {
+			const available = [];
+			const u = this.grid.getNeighborUp(this.model.position);
+			if (this.level.isPenetrable(u)) {
+				available.push(u);
+			}
+			const ul = this.grid.getNeighborUpperLeft(this.model.position);
+			if (this.level.isPenetrable(ul)) {
+				available.push(ul);
+			}
+			const ur = this.grid.getNeighborUpperRight(this.model.position);
+			if (this.level.isPenetrable(ur)) {
+				available.push(ur);
+			}
+			if (available.length > 0) {
+				this.setTargetPosition(Pixies.randomElement(available));
+				return;
+			}
+		}
+
+		visitors
 			.filter((v) =>
-				v !== this.model
-				&& v._is_sprite === true
+				v._is_sprite === true
 				&& v.strategy.get() === STRATEGY_MINERAL
-				&& v.type === this.model.type);
-		visitors.forEach((v) => this.absorb(v));
+				&& v.type === this.model.type
+			).forEach((v) => this.absorb(v));
 	}
 
 	separate(amount) {
