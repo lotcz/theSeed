@@ -51,6 +51,8 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		this.model.attachedSprite.get().position.set(bodyPosition);
 		this.model.attachedSprite.get().image.coordinates.set(this.grid.getCoordinates(bodyPosition));
 		this.chessboard.addVisitor(bodyPosition, this.model);
+		this.updateScale();
+		this.deflateHead();
 	}
 
 	deactivateInternal() {

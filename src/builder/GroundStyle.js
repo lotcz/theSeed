@@ -25,6 +25,7 @@ export const GROUND_TYPE_CLOUD = 'cloud';
 export const GROUND_TYPE_SOIL_BACKGROUND = 'background-soil';
 export const GROUND_TYPE_ROCK_BACKGROUND = 'background-rock';
 export const GROUND_TYPE_WAX_BACKGROUND = 'background-wax';
+export const GROUND_TYPE_KEYHOLE_BACKGROUND = 'keyhole-background';
 export const GROUND_TYPE_GRASS_BACKGROUND = 'background-grass';
 
 export const GROUND_STYLES = [];
@@ -108,6 +109,14 @@ GROUND_STYLES[GROUND_TYPE_SOIL_BACKGROUND] = {
 };
 
 GROUND_STYLES[GROUND_TYPE_WAX_BACKGROUND] = {
+	fill: '#e49665',
+	stroke: { width: 20, color: '#e49665'},
+	background: true,
+	penetrable: true,
+	renderCorners: true
+};
+
+GROUND_STYLES[GROUND_TYPE_KEYHOLE_BACKGROUND] = {
 	fill: '#e49665',
 	stroke: { width: 20, color: '#e49665'},
 	background: true,

@@ -32,7 +32,8 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_LARVA] = {
 	image: {
 		uri: IMAGE_BEE_LARVA,
 		resource: BeeLarvaImage
-	}
+	},
+	data: {amount: 1, penetrable: true}
 };
 
 export const SPRITE_TYPE_BEE_FRIEND = 'bee-friend';
@@ -40,13 +41,16 @@ export const IMAGE_BEE_FRIEND = 'img/bee-friend.svg';
 import BeeFriendImage from "../../../res/img/bee-friend.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_FRIEND] = {
-	strategy: STRATEGY_JELLY_MAKER,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_FRIEND,
 		resource: BeeFriendImage
 	},
 	data: {
+		penetrable: false,
+		crawlable: true,
 		hintDirection: NEIGHBOR_TYPE_UP,
+		hintSize: 3,
 		hint: [IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2]
 	}
 };
@@ -56,95 +60,16 @@ export const IMAGE_BEE_SOLDIER = 'img/bee-soldier.svg';
 import BeeSoldierImage from "../../../res/img/bee-soldier.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_SOLDIER] = {
-	strategy: STRATEGY_JELLY_MAKER,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_SOLDIER,
 		resource: BeeSoldierImage
 	},
 	data: {
+		penetrable: false,
+		crawlable: true,
 		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
-		hint: [IMAGE_POLLEN_PURPLE],
-		hintSize: 5
-	}
-};
-
-export const SPRITE_TYPE_JELLY_MAKER_BODY = 'bee-jelly-maker-body';
-export const IMAGE_JELLY_MAKER_BODY = 'img/bee-jelly-maker-body.svg';
-import JellyMakerBodyImage from "../../../res/img/bee-jellymaker-body.svg";
-
-SPRITE_STYLES_BEES[SPRITE_TYPE_JELLY_MAKER_BODY] = {
-	strategy: STRATEGY_STATIC,
-	image: {
-		uri: IMAGE_JELLY_MAKER_BODY,
-		resource: JellyMakerBodyImage
-	}
-};
-
-export const SPRITE_TYPE_PINK_JELLY_MAKER = 'bee-jelly-maker-pink';
-export const IMAGE_PINK_JELLY_MAKER = 'img/jellymaker.svg';
-import PinkJellyMakerImage from "../../../res/img/pink-jelly-maker.svg";
-
-SPRITE_STYLES_BEES[SPRITE_TYPE_PINK_JELLY_MAKER] = {
-	strategy: STRATEGY_JELLY_MAKER,
-	image: {
-		uri: IMAGE_PINK_JELLY_MAKER,
-		resource: PinkJellyMakerImage
-	},
-	data: {
-		hintDirection: NEIGHBOR_TYPE_UP,
-		consumes: SPRITE_TYPE_POLLEN,
-		produces: SPRITE_TYPE_PINK_JELLY
-	}
-};
-
-export const SPRITE_TYPE_GREEN_JELLY_MAKER = 'bee-jelly-maker-green';
-export const IMAGE_GREEN_JELLY_MAKER = 'img/green-jelly-maker.svg';
-import GreenJellyMakerImage from "../../../res/img/bee-jellymaker-head-green.svg";
-
-SPRITE_STYLES_BEES[SPRITE_TYPE_GREEN_JELLY_MAKER] = {
-	strategy: STRATEGY_JELLY_MAKER,
-	image: {
-		uri: IMAGE_GREEN_JELLY_MAKER,
-		resource: GreenJellyMakerImage
-	},
-	data: {
-		hintDirection: NEIGHBOR_TYPE_UP,
-		consumes: SPRITE_TYPE_POTASSIUM,
-		produces: SPRITE_TYPE_GREEN_JELLY
-	}
-};
-
-export const SPRITE_TYPE_YELLOW_JELLY_MAKER = 'bee-jelly-maker-yellow';
-export const IMAGE_YELLOW_JELLY_MAKER = 'img/yellow-jelly-maker.svg';
-import YellowJellyMakerImage from "../../../res/img/yellow-jelly-maker.svg";
-
-SPRITE_STYLES_BEES[SPRITE_TYPE_YELLOW_JELLY_MAKER] = {
-	strategy: STRATEGY_JELLY_MAKER,
-	image: {
-		uri: IMAGE_YELLOW_JELLY_MAKER,
-		resource: YellowJellyMakerImage
-	},
-	data: {
-		hintDirection: NEIGHBOR_TYPE_UP,
-		consumes: SPRITE_TYPE_NECTAR,
-		produces: SPRITE_TYPE_YELLOW_JELLY
-	}
-};
-
-export const SPRITE_TYPE_HONEY_MAKER = 'bee-honey-maker';
-export const IMAGE_HONEY_MAKER = 'img/honey-maker.svg';
-import HoneyMakerImage from "../../../res/img/honey-maker.svg";
-
-SPRITE_STYLES_BEES[SPRITE_TYPE_HONEY_MAKER] = {
-	strategy: STRATEGY_JELLY_MAKER,
-	image: {
-		uri: IMAGE_HONEY_MAKER,
-		resource: HoneyMakerImage
-	},
-	data: {
-		hintDirection: NEIGHBOR_TYPE_UP,
-		consumes: SPRITE_TYPE_YELLOW_JELLY,
-		produces: SPRITE_TYPE_HONEY
+		hint: [IMAGE_POLLEN_PURPLE]
 	}
 };
 
@@ -166,12 +91,18 @@ export const IMAGE_BEE_BOY = `img/bee-friend-boy.svg`;
 import BeeBoyImage from "../../../res/img/bee-friend-boy.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
-	strategy: STRATEGY_JELLY_MAKER,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_BOY,
 		resource: BeeBoyImage
 	},
-	data: {hint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED], hintDirection: NEIGHBOR_TYPE_UP, hintSize: 3}
+	data: {
+		penetrable: false,
+		crawlable: true,
+		hint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED],
+		hintDirection: NEIGHBOR_TYPE_UP,
+		hintSize: 3
+	}
 };
 
 export const SPRITE_TYPE_BEE_OLD = 'bee-old';
@@ -179,12 +110,18 @@ export const IMAGE_BEE_OLD = `img/bee-friend-bearded.svg`;
 import BeeOldImage from "../../../res/img/bee-friend-bearded.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_OLD] = {
-	strategy: STRATEGY_JELLY_MAKER,
+	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_BEE_OLD,
 		resource: BeeOldImage
 	},
-	data: {hint: [IMAGE_BEE_BOY, IMAGE_WATER_CAP], hintDirection: NEIGHBOR_TYPE_UP, hintSize: 3}
+	data: {
+		penetrable: false,
+		crawlable: true,
+		hint: [IMAGE_BEE_BOY, IMAGE_WATER_CAP],
+		hintDirection: NEIGHBOR_TYPE_UP,
+		hintSize: 3
+	}
 };
 
 export const IMAGE_BEE_QUEEN = 'img/bee-queen.svg';
@@ -201,3 +138,78 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_QUEEN] = {
 		resource: BeeQueenImage
 	}
 };
+
+export const SPRITE_TYPE_JELLY_MAKER_BODY = 'bee-jelly-maker-body';
+export const IMAGE_JELLY_MAKER_BODY = 'img/bee-jelly-maker-body.svg';
+import JellyMakerBodyImage from "../../../res/img/bee-jellymaker-body.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_JELLY_MAKER_BODY] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_JELLY_MAKER_BODY,
+		resource: JellyMakerBodyImage
+	}
+};
+
+export const SPRITE_TYPE_BEE_JELLY_MAKER = 'bee-jelly-maker';
+export const IMAGE_BEE_JELLY_MAKER_HEAD = 'img/bee-jelly-maker.svg';
+import BeeJellyMakerHeadImage from "../../../res/img/bee-jelly-maker-head.svg";
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_JELLY_MAKER] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_JELLY_MAKER_HEAD,
+		resource: BeeJellyMakerHeadImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_POLLEN,
+		produces: SPRITE_TYPE_PINK_JELLY
+	}
+};
+
+export const SPRITE_TYPE_GREEN_JELLY_MAKER = 'bee-jelly-maker-green';
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_GREEN_JELLY_MAKER] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_JELLY_MAKER_HEAD,
+		resource: BeeJellyMakerHeadImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_POTASSIUM,
+		produces: SPRITE_TYPE_GREEN_JELLY
+	}
+};
+
+export const SPRITE_TYPE_YELLOW_JELLY_MAKER = 'bee-jelly-maker-yellow';
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_YELLOW_JELLY_MAKER] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_JELLY_MAKER_HEAD,
+		resource: BeeJellyMakerHeadImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_NECTAR,
+		produces: SPRITE_TYPE_YELLOW_JELLY
+	}
+};
+
+export const SPRITE_TYPE_HONEY_MAKER = 'bee-honey-maker';
+
+SPRITE_STYLES_BEES[SPRITE_TYPE_HONEY_MAKER] = {
+	strategy: STRATEGY_JELLY_MAKER,
+	image: {
+		uri: IMAGE_BEE_JELLY_MAKER_HEAD,
+		resource: BeeJellyMakerHeadImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UP,
+		consumes: SPRITE_TYPE_YELLOW_JELLY,
+		produces: SPRITE_TYPE_HONEY
+	}
+};
+

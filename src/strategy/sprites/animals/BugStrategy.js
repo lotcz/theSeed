@@ -20,6 +20,10 @@ export default class BugStrategy extends ObjectStrategy {
 
 		this.model._is_penetrable = (this.model.data.penetrable === true);
 		this.model._is_crawlable = false;
+
+		if (this.model.data.timeout !== undefined) {
+			this.defaultMoveTimeout = this.model.data.timeout;
+		}
 	}
 
 	activateInternal() {
@@ -53,12 +57,12 @@ export default class BugStrategy extends ObjectStrategy {
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 		neighbors.push(this.model.position);
 
-		if (this.model.data.amount < this.maxAmount) {
+		if (this.model.data.consumes !== undefined && this.model.data.amount < this.maxAmount) {
 			let eaten = false;
 			let i = 0;
 
 			while (i < neighbors.length && !eaten) {
-				const food = this.chessboard.getVisitors(neighbors[i], (v) => v._is_sprite === true && v.type === SPRITE_TYPE_POTASSIUM);
+				const food = this.chessboard.getVisitors(neighbors[i], (v) => v._is_sprite === true && v.type === this.model.data.consumes);
 				if (food.length > 0) {
 					const meal = food[0];
 
@@ -86,7 +90,7 @@ export default class BugStrategy extends ObjectStrategy {
 			if (eaten) return;
 		}
 
-		if (this.level.isPlayable && this.level.bee) {
+		if (this.level.isPlayable && this.level.bee && this.model.data.hurts) {
 			if (this.game.beeState.health.get() > 0) {
 				const beePresent = neighbors.filter((n) => n.equalsTo(this.level.bee.position)).length > 0;
 				if (beePresent) {

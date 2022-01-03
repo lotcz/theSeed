@@ -11,7 +11,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUG] = {
 		uri: IMAGE_BUG,
 		resource: BugImage
 	},
-	data: {amount: 1}
+	data: {amount: 1, hurts: true}
 };
 
 export const SPRITE_TYPE_ANT = 'ant';
@@ -25,7 +25,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
 		uri: IMAGE_ANT,
 		resource: AntImage
 	},
-	data: {amount: 5, penetrable: true}
+	data: {amount: 5, penetrable: true, hurts: true}
 };
 
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
@@ -41,3 +41,15 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
 	}
 };
 
+export const SPRITE_TYPE_BUTTERFLY_LARVA = 'butterfly-larva';
+export const IMAGE_BUTTERFLY_LARVA = 'img/butterfly-larva.svg';
+import ButterflyLarvaImage from "../../../res/img/butterfly-larva.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
+	strategy: STRATEGY_BUG,
+	image: {
+		uri: IMAGE_BUTTERFLY_LARVA,
+		resource: ButterflyLarvaImage
+	},
+	data: {amount: 5, penetrable: false, timeout: 5000}
+};

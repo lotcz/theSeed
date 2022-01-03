@@ -202,6 +202,8 @@ BETA for friends
 ----------------
 
 - solve crawling and carrying problem
+- hit sound
+- healing sound
 - production mode (exception handling and logging, hide all dev UI)
 
 Demo

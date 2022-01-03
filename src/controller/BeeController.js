@@ -215,7 +215,7 @@ export default class BeeController extends ControllerBase {
 		this.model.triggerOnStrategyChangedEvent();
 	}
 
-	inspectForMinerals(position, delta) {
+	inspectForMinerals(position, delta = 0) {
 		const visitors = this.chessboard.getVisitors(position);
 
 		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
