@@ -32,7 +32,7 @@ export const ORANGE_DARKEST = '#602020';
 export const ORANGE_DARK = '#943c00';
 export const ORANGE_MEDIUM = '#b45c10';
 export const ORANGE_LIGHT = 'darkOrange';
-
+export const ORANGE_LIGHTEST = '#e49665';
 
 export const RED_DARKEST = '#400000';
 export const RED_MEDIUM = '#800000';

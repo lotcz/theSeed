@@ -1,6 +1,7 @@
 import {
 	BLUE_MEDIUM,
-	BROWN_DARK, BROWN_DARKEST,
+	BROWN_DARK,
+	BROWN_DARKEST,
 	BROWN_LIGHT,
 	BROWN_MEDIUM,
 	GRAY_DARK,
@@ -9,7 +10,15 @@ import {
 	GRAY_MEDIUM,
 	GREEN_DARKEST,
 	GREEN_LIGHT,
-	GREEN_LIGHTEST, ORANGE_LIGHT, ORANGE_DARK, YELLOW_DARK, YELLOW_DARKEST, RED_LIGHT, RED_DARKEST, RED_LIGHTEST
+	GREEN_LIGHTEST,
+	ORANGE_LIGHT,
+	ORANGE_DARK,
+	YELLOW_DARK,
+	YELLOW_DARKEST,
+	RED_LIGHT,
+	RED_DARKEST,
+	RED_LIGHTEST,
+	ORANGE_DARKEST, ORANGE_LIGHTEST
 } from "./Palette";
 
 export const GROUND_TYPE_BASIC = 'basic';
@@ -109,16 +118,16 @@ GROUND_STYLES[GROUND_TYPE_SOIL_BACKGROUND] = {
 };
 
 GROUND_STYLES[GROUND_TYPE_WAX_BACKGROUND] = {
-	fill: '#e49665',
-	stroke: { width: 20, color: '#e49665'},
+	fill: ORANGE_LIGHTEST,
+	stroke: { width: 20, color: ORANGE_LIGHTEST},
 	background: true,
 	penetrable: true,
 	renderCorners: true
 };
 
 GROUND_STYLES[GROUND_TYPE_KEYHOLE_BACKGROUND] = {
-	fill: '#e49665',
-	stroke: { width: 20, color: '#e49665'},
+	fill: ORANGE_LIGHTEST,
+	stroke: { width: 20, color: ORANGE_LIGHTEST},
 	background: true,
 	penetrable: true,
 	renderCorners: true

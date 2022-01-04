@@ -4,12 +4,13 @@ import TreesImage from "../../res/img/trees.svg";
 import BulbsImage from "../../res/img/bulbs.svg";
 import HillsImage from "../../res/img/hill.svg";
 
-import {BLUE_DARK, BLUE_LIGHT, BROWN_LIGHT} from "./Palette";
+import {BLUE_DARK, BLUE_LIGHT, BROWN_LIGHT, ORANGE_LIGHTEST} from "./Palette";
 
 export const PARALLAX_HILLS = 'hills';
 export const PARALLAX_FOREST = 'forest';
 export const PARALLAX_FOREST_HIGH = 'forest-high';
 export const PARALLAX_SOIL = 'soil';
+export const PARALLAX_WAX = 'wax';
 
 export const PARALLAX_IMAGE_GRASS = 'img/grass.svg';
 export const PARALLAX_IMAGE_STALK = 'img/stalk.svg';
@@ -94,3 +95,7 @@ PARALLAX_STYLES[PARALLAX_SOIL] = {
 	backgroundEnd: BROWN_LIGHT,
 };
 
+PARALLAX_STYLES[PARALLAX_WAX] = {
+	background: ORANGE_LIGHTEST,
+	backgroundEnd: ORANGE_LIGHTEST
+};

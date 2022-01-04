@@ -201,7 +201,7 @@ TODO:
 BETA for friends
 ----------------
 
-- solve crawling and carrying problem
+- balance volume (compare with other games and music)
 - hit sound
 - healing sound
 - production mode (exception handling and logging, hide all dev UI)
