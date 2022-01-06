@@ -1,5 +1,5 @@
 import AnimatedStrategy from "../AnimatedStrategy";
-import DrJonesSound from "../../../../res/sound/dr-jones.mp3";
+import DrJonesSound from "../../../../res/sound/door-open.mp3";
 import Sound from "../../../class/Sound";
 
 const DOOR_TIMEOUT = 1000;
