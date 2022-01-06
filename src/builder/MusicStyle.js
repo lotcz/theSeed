@@ -30,4 +30,12 @@ MUSIC_STYLES[MUSIC_HAPPY_TUNE] = {
 	resource: HappyTuneMusic
 };
 
+export const MUSIC_SPRING = 'spring-of-spring.mp3';
+import SpringMusic from "../../res/sound/spring-of-spring.mp3";
+
+MUSIC_STYLES[MUSIC_SPRING] = {
+	url: MUSIC_SPRING,
+	resource: SpringMusic
+};
+
 export const MUSIC_TYPES = Object.keys(MUSIC_STYLES).sort();

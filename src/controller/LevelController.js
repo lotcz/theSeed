@@ -13,7 +13,6 @@ export default class LevelController extends ControllerBase {
 	isDead;
 	travelling; // false or level name
 	isFadingIn;
-	music;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -21,7 +20,6 @@ export default class LevelController extends ControllerBase {
 		this.isDead = false;
 		this.travelling = false;
 		this.isFadingIn = false;
-		this.music = null;
 
 		this.groundController = new GroundController(game, model.ground, controls);
 		this.addChild(this.groundController);
@@ -72,29 +70,9 @@ export default class LevelController extends ControllerBase {
 
 	activateInternal() {
 		if (DEBUG_LEVEL_CONTROLLER) console.log('Activated level controller');
-		if (this.model.levelMusic.isEmpty()) {
-			if (this.music) this.music.pause();
-			this.music = null;
-			if (DEBUG_LEVEL_CONTROLLER) console.log('level music empty');
-		} else {
-			const resource = this.game.resources.get(this.model.levelMusic.get());
-			if (this.music && resource && this.music.audio.src === resource.data) {
-				this.music.play();
-				if (DEBUG_LEVEL_CONTROLLER) console.log('restored playing');
-			} else {
-				if (this.music) this.music.pause();
-				this.music = null;
-				if (resource && resource.data) {
-					this.music = new Sound(resource.data, {loop: true});
-					this.music.play();
-					if (DEBUG_LEVEL_CONTROLLER) console.log('loaded level music:', resource.uri);
-				}
-			}
-		}
 	}
 
 	deactivateInternal() {
-		if (this.music) this.music.pause();
 		if (DEBUG_LEVEL_CONTROLLER) console.log('Deactivated level controller');
 	}
 

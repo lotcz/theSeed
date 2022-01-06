@@ -204,6 +204,8 @@ BETA for friends
 - balance volume (compare with other games and music)
 - hit sound
 - healing sound
+- door sound
+-
 - production mode (exception handling and logging, hide all dev UI)
 
 Demo

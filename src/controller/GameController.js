@@ -22,9 +22,12 @@ export default class GameController extends ControllerBase {
 	levels;
 	hideMouseTimeout;
 	cursorHidden;
+	music;
 
 	constructor(model, dom) {
 		super(model, model);
+
+		this.music = null;
 
 		this.onResizeEvent = () => this.onResize();
 
@@ -202,6 +205,8 @@ export default class GameController extends ControllerBase {
 		this.addChild(this.levelController);
 		this.levelController.activate();
 
+		this.playMusic(level.levelMusic.get());
+
 		if (level.isPlayable) {
 			const fallen = this.model.fallenItems.flush(level.name);
 			fallen.forEach((fromLevel, items) => {
@@ -341,6 +346,8 @@ export default class GameController extends ControllerBase {
 
 		this.model.menu.set(builder.build());
 
+		this.pauseMusic();
+
 		if (level && level.isPlayable) {
 			this.levelController.deactivate();
 		}
@@ -424,7 +431,8 @@ export default class GameController extends ControllerBase {
 
 	resume() {
 		this.showPlayMenu();
-		this.levelController.activate();
+		if (this.levelController) this.levelController.activate();
+		if (this.model.level.isSet()) this.playMusic(this.model.level.get().levelMusic.get());
 	}
 
 	activateEditor() {
@@ -438,6 +446,39 @@ export default class GameController extends ControllerBase {
 		if (this.editorController !== null) {
 			this.removeChild(this.editorController);
 		}
+	}
+
+	playMusic(name = null) {
+		console.log(name);
+		if (name === null) {
+			this.stopMusic();
+			this.music = null;
+			if (DEBUG_GAME_CONTROLLER) console.log('level music empty');
+		} else {
+			const resource = this.model.resources.get(name);
+			if (this.music && resource && this.music.audio.src === resource.data) {
+				this.music.play();
+				if (DEBUG_GAME_CONTROLLER) console.log('restored playing');
+			} else {
+				this.stopMusic();
+				this.music = null;
+				if (resource && resource.data) {
+					this.music = new Sound(resource.data, {loop: true});
+					this.music.play();
+					if (DEBUG_GAME_CONTROLLER) console.log('loaded level music:', resource.uri);
+				} else {
+					if (DEBUG_GAME_CONTROLLER) console.log('level music resource not found:', name);
+				}
+			}
+		}
+	}
+
+	stopMusic() {
+		if (this.music) this.music.pause();
+	}
+
+	pauseMusic() {
+		this.stopMusic();
 	}
 
 	onResize() {
