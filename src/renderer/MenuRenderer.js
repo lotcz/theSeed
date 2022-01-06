@@ -15,6 +15,11 @@ export default class MenuRenderer extends DomRenderer {
 	activateInternal() {
 		this.menu = this.createElement(this.dom, 'div', 'menu');
 		this.addClass(this.menu, this.model.css);
+		if (this.model.text !== null) {
+			const t = this.createElement(this.menu, 'div', 'text');
+			t.innerHTML = this.model.text;
+		}
+
 		const ul = this.createElement(this.menu, 'ul');
 
 		const lines = this.model.children;

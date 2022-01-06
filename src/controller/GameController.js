@@ -344,7 +344,9 @@ export default class GameController extends ControllerBase {
 			builder.addLine("Editor", (e) => this.showEditorMenu());
 		}
 
-		this.model.menu.set(builder.build());
+		const menu = builder.build();
+		menu.text = "Beehive Adventures";
+		this.model.menu.set(menu);
 
 		this.pauseMusic();
 
@@ -383,7 +385,9 @@ export default class GameController extends ControllerBase {
 		const builder = new MenuBuilder('main');
 		builder.addLine("Yes", (e) => this.newGame());
 		builder.addLine("No", (e) => this.showMainMenu());
-		this.model.menu.set(builder.build());
+		const menu = builder.build();
+		menu.text = "Your progress will be lost! Do you want to start new adventure?";
+		this.model.menu.set(menu);
 	}
 
 	newGame() {

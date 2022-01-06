@@ -96,6 +96,12 @@ html, body {
 	height: 20px;
 }
 
+.menu .text {
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+	border-bottom: 1px solid yellow;
+}
+
 .centered,
 .loading {
 	position: fixed;
@@ -113,6 +119,10 @@ html, body {
 	z-index: 2000;
 	pointer-events: none;
 	animation: fadeIn 1s ease-in;
+}
+
+.text {
+	font-size: 80%;
 }
 
 @keyframes fadeIn {
