@@ -78,6 +78,19 @@ SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_JUNCTION] = {
 	},
 };
 
+export const SPRITE_TYPE_HINT_POSTER_BEES = 'poster-the-bees';
+export const IMAGE_HINT_POSTER_BEES = 'img/poster-the-bees.svg';
+import HintPosterBeesImage from "../../../res/img/poster-the-bees.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_POSTER_BEES] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_POSTER_BEES,
+		resource: HintPosterBeesImage,
+		scale: 1
+	},
+};
+
 export const SPRITE_TYPE_HINT = 'hint';
 export const STRATEGY_HINT = 'hint';
 export const IMAGE_HINT_BACKGROUND = 'img/hint-background.svg';

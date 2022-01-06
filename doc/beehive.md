@@ -201,12 +201,9 @@ TODO:
 BETA for friends
 ----------------
 
-- balance volume (compare with other games and music)
-- hit sound
-- healing sound
-- door sound
--
 - production mode (exception handling and logging, hide all dev UI)
+- finish happy tune
+- add some music or ambient sounds to all levels
 
 Demo
 ----
@@ -222,6 +219,7 @@ Demo
 Release
 -------
 
+- website
 - free 2 or 3 levels
 - pay to remove ads and unlock whole game
 - how to use same system for ads and payment on all platforms?
