@@ -80,13 +80,52 @@ SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_JUNCTION] = {
 
 export const SPRITE_TYPE_HINT_POSTER_BEES = 'poster-the-bees';
 export const IMAGE_HINT_POSTER_BEES = 'img/poster-the-bees.svg';
-import HintPosterBeesImage from "../../../res/img/poster-the-bees.svg";
+import PosterBeesImage from "../../../res/img/poster-the-bees.svg";
 
 SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_POSTER_BEES] = {
 	strategy: STRATEGY_STATIC,
 	image: {
 		uri: IMAGE_HINT_POSTER_BEES,
-		resource: HintPosterBeesImage,
+		resource: PosterBeesImage,
+		scale: 1
+	},
+};
+
+export const SPRITE_TYPE_HINT_POSTER_NO_ANTS = 'poster-no-ants';
+export const IMAGE_HINT_POSTER_NO_ANTS = 'img/poster-no-ants.svg';
+import PosterNoAntsImage from "../../../res/img/poster-no-ants.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_POSTER_NO_ANTS] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_POSTER_NO_ANTS,
+		resource: PosterNoAntsImage,
+		scale: 1
+	},
+};
+
+export const SPRITE_TYPE_HINT_POSTER_QUEEN = 'poster-queen';
+export const IMAGE_HINT_POSTER_QUEEN = 'img/poster-queen.svg';
+import PosterQueenImage from "../../../res/img/poster-queen.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_POSTER_QUEEN] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_POSTER_QUEEN,
+		resource: PosterQueenImage,
+		scale: 1
+	},
+};
+
+export const SPRITE_TYPE_HINT_TONIGHT = 'hint-tonight';
+export const IMAGE_HINT_TONIGHT = 'img/hint-tonight.svg';
+import HintTonightImage from "../../../res/img/hint-tonight.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_TONIGHT] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_TONIGHT,
+		resource: HintTonightImage,
 		scale: 1
 	},
 };
