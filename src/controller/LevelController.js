@@ -2,12 +2,11 @@ import ControllerBase from "../class/ControllerBase";
 import SpriteCollectionController from "./SpriteCollectionController";
 import BeeController from "./BeeController";
 import GroundController from "./GroundController";
-import Sound from "../class/Sound";
 import {START_LEVEL} from "../model/GameModel";
 import {MAX_HEALTH} from "../model/BeeStateModel";
 import {SPRITE_TYPE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 
-const DEBUG_LEVEL_CONTROLLER = false;
+const DEBUG_LEVEL_CONTROLLER = true;
 
 export default class LevelController extends ControllerBase {
 	isDead;

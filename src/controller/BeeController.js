@@ -25,7 +25,6 @@ import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/
 import {STRATEGY_DOOR_SLOT} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
-import WaterStrategy from "../strategy/sprites/minerals/WaterStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
@@ -118,7 +117,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.level.isWater(this.model.position)) {
-			WaterStrategy.splashSound.replay();
+			BeeController.splashSound.replay();
 			this.die();
 			return;
 		}

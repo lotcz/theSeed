@@ -53,3 +53,16 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
 	},
 	data: {amount: 5, penetrable: false, timeout: 5000}
 };
+
+export const SPRITE_TYPE_TOAD = 'toad';
+export const STRATEGY_TOAD = 'toad';
+export const IMAGE_TOAD_HEAD = 'img/toad-head.svg';
+import ToadHeadImage from "../../../res/img/toad-head.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD] = {
+	strategy: STRATEGY_TOAD,
+	image: {
+		uri: IMAGE_TOAD_HEAD,
+		resource: ToadHeadImage
+	},
+};

@@ -46,7 +46,7 @@ export default class ControlsController extends ControllerBase {
 				this.model.interacting.set(true);
 				break;
 			case 27: /*Ecs*/ this.model.menuRequested.set(true); break;
-			case 67: /*C*/ this.model.editModeRequested.set(true); break;
+			case 192: /*~*/ this.model.editModeRequested.set(true); break;
 		}
 	}
 
