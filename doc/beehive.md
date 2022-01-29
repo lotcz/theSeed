@@ -195,7 +195,6 @@ TODO:
 BETA for friends
 ----------------
 
-- add Friend strategy that will give items in exchange for gifts
 - wait some time before re-emitting pollen etc.
 -
 - production mode (exception handling and logging, hide all dev UI)

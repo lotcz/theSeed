@@ -17,6 +17,7 @@ export default class AntStrategy extends BugStrategy {
 		this.model._is_penetrable = false;
 		this.model._is_crawlable = false;
 
+		this.model.data.hurts = true;
 		this.crawlingSound = new Sound(CrawlingSound);
 	}
 
