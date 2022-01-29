@@ -18,7 +18,7 @@ import {
 	RED_LIGHT,
 	RED_DARKEST,
 	RED_LIGHTEST,
-	ORANGE_DARKEST, ORANGE_LIGHTEST
+	ORANGE_LIGHTEST, PURPLE_LIGHTEST, PURPLE_DARK, PURPLE_DARKEST, RED_DARK, PURPLE_MEDIUM
 } from "./Palette";
 
 export const GROUND_TYPE_BASIC = 'basic';
@@ -156,5 +156,43 @@ GROUND_STYLES[GROUND_TYPE_RED_FLOWER_BACKGROUND] = {
 	stroke: { width: 20, color: RED_LIGHTEST},
 	background: true,
 	penetrable: true,
+	renderCorners: true
+};
+
+export const GROUND_TYPE_RED_FLOWER_DOOR = 'red-flower-door';
+
+GROUND_STYLES[GROUND_TYPE_RED_FLOWER_DOOR] = {
+	fill: RED_DARK,
+	stroke: { width: 10, color: RED_DARKEST},
+	background: false,
+	penetrable: false,
+	renderCorners: true
+};
+
+export const GROUND_TYPE_PURPLE_FLOWER = 'purple-flower';
+
+GROUND_STYLES[GROUND_TYPE_PURPLE_FLOWER] = {
+	fill: PURPLE_MEDIUM,
+	stroke: { width: 10, color: PURPLE_DARKEST},
+	renderCorners: true
+};
+
+export const GROUND_TYPE_PURPLE_FLOWER_BACKGROUND = 'purple-flower-background';
+
+GROUND_STYLES[GROUND_TYPE_PURPLE_FLOWER_BACKGROUND] = {
+	fill: PURPLE_LIGHTEST,
+	stroke: { width: 20, color: PURPLE_LIGHTEST},
+	background: true,
+	penetrable: true,
+	renderCorners: true
+};
+
+export const GROUND_TYPE_PURPLE_FLOWER_DOOR = 'purple-flower-door';
+
+GROUND_STYLES[GROUND_TYPE_PURPLE_FLOWER_DOOR] = {
+	fill: PURPLE_DARK,
+	stroke: { width: 10, color: PURPLE_DARKEST},
+	background: false,
+	penetrable: false,
 	renderCorners: true
 };

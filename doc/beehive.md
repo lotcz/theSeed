@@ -1,14 +1,8 @@
 Basics
 ------
 
-- start in beehive with a queen and some bees
-- choose door to a level
-- collect pollen and nectar
-- bring it to the hive to create followers
+- bring pollen to the hive to create lives
 - queen can eat and then lay eggs
-- bee can fly, crawl, take and drop small things
-- when Bee dies and has no followers, she respawns in a hive
-- motivation to travel to advanced levels is also quantity of resources
 
 Puzzles
 
@@ -100,12 +94,12 @@ learn movement controls
 Tutorial 1
 ----------
 
-avoid ants, avoid water
+avoid water
 
 Tutorial 2
 ----------
 
-Learn picking and dropping (unblock way?)
+Learn picking and dropping (unblock way)
 learn firing/activate controls
 
 Tutorial 3
@@ -118,24 +112,24 @@ Tutorial 4
 
 Learn feeding makers to obtain items.
 
-Bring egg shell to recycling maker to obtain green jelly to open door to Junction.
-
 Junction
 --------
 
 doors lead to different levels, originally some doors remain waxed until later time
 tunnel leads to beehive
 
-Cave 1
-------
-
-jelly maker asks for nectar
-fly to surface, avoid water
-
 A Meadow
 --------
 
 collect some nectar and play with bugs
+
+Cave
+----
+
+jelly maker asks for nectar
+fly to surface, avoid water
+
+
 
 Cave 2
 ------
@@ -201,6 +195,7 @@ TODO:
 BETA for friends
 ----------------
 
+- add Friend strategy that will give items in exchange for gifts
 - wait some time before re-emitting pollen etc.
 -
 - production mode (exception handling and logging, hide all dev UI)

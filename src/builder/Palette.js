@@ -35,6 +35,13 @@ export const ORANGE_LIGHT = 'darkOrange';
 export const ORANGE_LIGHTEST = '#e49665';
 
 export const RED_DARKEST = '#400000';
+export const RED_DARK = '#600000';
 export const RED_MEDIUM = '#800000';
 export const RED_LIGHT = '#c00000';
 export const RED_LIGHTEST = '#c08080';
+
+export const PURPLE_DARKEST = '#82528c';
+export const PURPLE_DARK = '#8a6186';
+export const PURPLE_MEDIUM = '#9a61a6';
+export const PURPLE_LIGHT = '#c281d0';
+export const PURPLE_LIGHTEST = '#cfa1d9';

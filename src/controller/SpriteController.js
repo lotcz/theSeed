@@ -15,7 +15,7 @@ import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
 import BeeQueenStrategy from "../strategy/sprites/animals/BeeQueenStrategy";
 import {
 	STRATEGY_EMITTER,
-	STRATEGY_EMPTY,
+	STRATEGY_EMPTY, STRATEGY_FRIEND,
 	STRATEGY_JELLY_MAKER,
 	STRATEGY_OBJECT,
 	STRATEGY_STATIC
@@ -28,6 +28,7 @@ import {STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
 import BeeLarvaStrategy from "../strategy/sprites/animals/BeeLarvaStrategy";
 import AntStrategy from "../strategy/sprites/animals/AntStrategy";
 import ToadStrategy from "../strategy/sprites/animals/ToadStrategy";
+import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -72,6 +73,8 @@ export default class SpriteController extends ControllerBase {
 				return new ExitStrategy(this.game, model, this.controls);
 			case STRATEGY_EMITTER:
 				return new EmitterStrategy(this.game, model, this.controls);
+			case STRATEGY_FRIEND:
+				return new FriendStrategy(this.game, model, this.controls);
 			case STRATEGY_JELLY_MAKER:
 				return new JellyMakerStrategy(this.game, model, this.controls);
 			case STRATEGY_QUEEN:

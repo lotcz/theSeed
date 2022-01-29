@@ -13,32 +13,44 @@ export default class StaticStrategy extends AnimatedStrategy {
 		this.hintController = null;
 		this._is_penetrable = (this.model.data.penetrable !== false);
 		this._is_crawlable = (this.model.data.crawlable === true);
+
+		this.resetHintController();
 	}
 
 	updateStrategy() {
 		super.updateStrategy();
 
-		if (this.model.data.hint) {
+		if (this.hintController) {
 			this.updateHint();
 		}
 	}
 
-	updateHint() {
-		if (!this.hintController) {
-			const hintModel = new HintModel();
-			hintModel.position.set(this.model.position);
-			hintModel.imagePaths = [...this.model.data.hint];
-			if (this.model.data.hintSize !== undefined) {
-				hintModel.size = this.model.data.hintSize;
-			}
-			if (this.model.data.hintDirection !== undefined) {
-				hintModel.direction = this.model.data.hintDirection;
-			}
-			this.hintController = new HintController(this.game, hintModel, this.controls);
-			this.addChild(this.hintController);
-			this.hintController.activate();
+	resetHintController() {
+		if (this.hintController) {
+			this.hintController.destroy();
 		}
+		this.hintController = null;
+		if (this.model.data.hint) {
+			this.createHintController();
+		}
+	}
 
+	createHintController() {
+		const hintModel = new HintModel();
+		hintModel.position.set(this.model.position);
+		hintModel.imagePaths = [...this.model.data.hint];
+		if (this.model.data.hintSize !== undefined) {
+			hintModel.size = this.model.data.hintSize;
+		}
+		if (this.model.data.hintDirection !== undefined) {
+			hintModel.direction = this.model.data.hintDirection;
+		}
+		this.hintController = new HintController(this.game, hintModel, this.controls);
+		this.addChild(this.hintController);
+		this.hintController.activate();
+	}
+
+	updateHint() {
 		if (this.level.isPlayable && this.level.bee) {
 			const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
 			if (this.hintController.isInitialized()) {

@@ -1,8 +1,7 @@
 import {IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED, IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2} from "./SpriteStyleHints";
 import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
-import {STRATEGY_JELLY_MAKER, STRATEGY_OBJECT, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {STRATEGY_FRIEND, STRATEGY_JELLY_MAKER, STRATEGY_OBJECT, STRATEGY_STATIC} from "./SpriteStyleBasic";
 import {
-	IMAGE_POLLEN_PURPLE,
 	SPRITE_TYPE_GREEN_JELLY,
 	SPRITE_TYPE_HONEY,
 	SPRITE_TYPE_NECTAR,
@@ -60,7 +59,7 @@ export const IMAGE_BEE_SOLDIER = 'img/bee-soldier.svg';
 import BeeSoldierImage from "../../../res/img/bee-soldier.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_SOLDIER] = {
-	strategy: STRATEGY_STATIC,
+	strategy: STRATEGY_FRIEND,
 	image: {
 		uri: IMAGE_BEE_SOLDIER,
 		resource: BeeSoldierImage
@@ -69,7 +68,9 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_SOLDIER] = {
 		penetrable: false,
 		crawlable: true,
 		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
-		hint: [IMAGE_POLLEN_PURPLE]
+		consumes: SPRITE_TYPE_NECTAR,
+		produces: SPRITE_TYPE_HONEY,
+		defaultHint: null
 	}
 };
 
@@ -91,7 +92,7 @@ export const IMAGE_BEE_BOY = `img/bee-friend-boy.svg`;
 import BeeBoyImage from "../../../res/img/bee-friend-boy.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
-	strategy: STRATEGY_STATIC,
+	strategy: STRATEGY_FRIEND,
 	image: {
 		uri: IMAGE_BEE_BOY,
 		resource: BeeBoyImage
@@ -99,7 +100,11 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
 	data: {
 		penetrable: false,
 		crawlable: true,
-		hint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED],
+		consumes: SPRITE_TYPE_BEE_GIRL,
+		consumesAmount: DEFAULT_OBJECT_MAX_AMOUNT,
+		consumesHint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED],
+		produces: SPRITE_TYPE_PINK_JELLY,
+		defaultHint: [IMAGE_WATER_CAP],
 		hintDirection: NEIGHBOR_TYPE_UP,
 		hintSize: 3
 	}
@@ -154,6 +159,7 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_JELLY_MAKER_BODY] = {
 export const SPRITE_TYPE_BEE_JELLY_MAKER = 'bee-jelly-maker';
 export const IMAGE_BEE_JELLY_MAKER_HEAD = 'img/bee-jelly-maker.svg';
 import BeeJellyMakerHeadImage from "../../../res/img/bee-jelly-maker-head.svg";
+import {DEFAULT_OBJECT_MAX_AMOUNT} from "../../strategy/sprites/ObjectStrategy";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_JELLY_MAKER] = {
 	strategy: STRATEGY_JELLY_MAKER,

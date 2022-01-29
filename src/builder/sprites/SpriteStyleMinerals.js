@@ -60,6 +60,20 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN] = {
 	data: {amount: 1}
 };
 
+export const SPRITE_TYPE_NECTAR_RED = 'nectar-red';
+export const IMAGE_NECTAR_RED = 'img/nectar-red.svg';
+import NectarRedImage from "../../../res/img/nectar-red.svg";
+
+SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR_RED] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_NECTAR_RED,
+		resource: NectarRedImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
 export const SPRITE_TYPE_POLLEN_PURPLE = 'pollen-purple';
 export const IMAGE_POLLEN_PURPLE = 'img/pollen-purple.svg';
 import PollenPurpleImage from "../../../res/img/pollen-purple.svg";
@@ -69,6 +83,34 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_PURPLE] = {
 	image: {
 		uri: IMAGE_POLLEN_PURPLE,
 		resource: PollenPurpleImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
+export const SPRITE_TYPE_POLLEN_RED = 'pollen-red';
+export const IMAGE_POLLEN_RED = 'img/pollen-red.svg';
+import PollenRedImage from "../../../res/img/pollen-red.svg";
+
+SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_RED] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_POLLEN_RED,
+		resource: PollenRedImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
+export const SPRITE_TYPE_POLLEN_YELLOW = 'pollen-yellow';
+export const IMAGE_POLLEN_YELLOW = 'img/pollen-yellow.svg';
+import PollenYellowImage from "../../../res/img/pollen-yellow.svg";
+
+SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_YELLOW] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_POLLEN_YELLOW,
+		resource: PollenYellowImage,
 		scale: 0.01
 	},
 	data: {amount: 1}
