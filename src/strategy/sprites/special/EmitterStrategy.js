@@ -1,7 +1,11 @@
 import Pixies from "../../../class/Pixies";
 import StaticStrategy from "../StaticStrategy";
-import {STRATEGY_MINERAL} from "../../../builder/sprites/SpriteStyleMinerals";
-import {SPRITE_TYPE_RANDOM} from "../../../builder/sprites/SpriteStyleBasic";
+import {
+	SPRITE_TYPE_GREEN_JELLY,
+	SPRITE_TYPE_PINK_JELLY, SPRITE_TYPE_YELLOW_JELLY,
+	STRATEGY_MINERAL
+} from "../../../builder/sprites/SpriteStyleMinerals";
+import {SPRITE_TYPE_RANDOM, SPRITE_TYPE_RANDOM_JELLY} from "../../../builder/sprites/SpriteStyleBasic";
 import {
 	SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD,
 	SPRITE_TYPE_BUG_DEAD,
@@ -39,6 +43,9 @@ export default class EmitterStrategy extends StaticStrategy {
 				let style = this.model.data.type;
 				if (style === SPRITE_TYPE_RANDOM) {
 					style = Pixies.randomElement([SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_STONE, SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_BEE_BROKEN_EGG, SPRITE_TYPE_BEE_DEAD]);
+				}
+				if (style === SPRITE_TYPE_RANDOM_JELLY) {
+					style = Pixies.randomElement([SPRITE_TYPE_PINK_JELLY, SPRITE_TYPE_GREEN_JELLY, SPRITE_TYPE_PINK_JELLY, SPRITE_TYPE_YELLOW_JELLY]);
 				}
 				const sprite = this.level.addSpriteFromStyle(this.model.position, style);
 				if (this.model.data.amount) {

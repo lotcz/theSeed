@@ -122,12 +122,6 @@ export default class BeeController extends ControllerBase {
 			return;
 		}
 
-		/*
-		if (this.game.beeState.isHurt()) {
-			this.game.beeState.heal(HEALING_SPEED * secsDelta);
-		}
-		*/
-
 		if (this.starsTimeout <= 0) {
 			if (this.starsAnimationController.isActivated()) {
 				this.starsAnimationController.deactivate();
@@ -228,34 +222,36 @@ export default class BeeController extends ControllerBase {
 			});
 		}
 
-		if (this.game.beeState.isHurt()) {
-			const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX_BACKGROUND);
-			if (wax.length > 0) {
-				this.game.beeState.heal(10 * HEALING_SPEED * delta / 1000);
-			}
-		}
-
-		const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
-		if (doors.length > 0) {
-			const data = doors[0].data;
-			const key = data && data.key;
-			const style = SPRITE_STYLES[key];
-			if (!style) {
-				console.log('Door style not found!', key, doors[0]);
-			} else if (!this.showingDoorsHint) {
-				this.showingDoorsHint = true;
-				this.showHint([style.image.uri], 2, data.hintDirection);
-			}
-		} else {
-			if (this.showingDoorsHint) {
-				this.hideHint();
-				this.showingDoorsHint = false;
-			}
-		}
-
 		if (this.carriedAmount() < MAX_INVENTORY_AMOUNT) {
 			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT));
 			minerals.forEach((m) =>	this.takeItem(m));
+		}
+
+		if (delta > 0) {
+			if (this.game.beeState.isHurt()) {
+				const wax = visitors.filter((v) => v._is_ground && v.type === GROUND_TYPE_WAX_BACKGROUND);
+				if (wax.length > 0) {
+					this.game.beeState.heal(10 * HEALING_SPEED * delta / 1000);
+				}
+			}
+
+			const doors = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_DOOR_SLOT));
+			if (doors.length > 0) {
+				const data = doors[0].data;
+				const key = data && data.key;
+				const style = SPRITE_STYLES[key];
+				if (!style) {
+					console.log('Door style not found!', key, doors[0]);
+				} else if (!this.showingDoorsHint) {
+					this.showingDoorsHint = true;
+					this.showHint([style.image.uri], 2, data.hintDirection);
+				}
+			} else {
+				if (this.showingDoorsHint) {
+					this.hideHint();
+					this.showingDoorsHint = false;
+				}
+			}
 		}
 	}
 

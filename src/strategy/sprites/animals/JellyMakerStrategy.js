@@ -159,14 +159,14 @@ export default class JellyMakerStrategy extends StaticStrategy {
 			return;
 		}
 
-		if (this.isEating()) {
-			this.eat();
-		} else {
-			if (this.isHungry()) {
-				this.lookForFood();
+		if (this.isHungry()) {
+			if (this.isEating()) {
+				this.eat();
 			} else {
-				this.produce();
+				this.lookForFood();
 			}
+		} else {
+			this.produce();
 		}
 	}
 

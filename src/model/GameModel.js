@@ -26,6 +26,7 @@ import LevelTutorial4 from "../../levels/tutorial-4.json";
 import LevelJunction from "../../levels/junction.json";
 import LevelBeehive from "../../levels/beehive.json";
 import LevelMeadow1 from "../../levels/meadow-1.json";
+import LevelMeadow2 from "../../levels/meadow-2.json";
 import LevelPond from "../../levels/pond.json";
 import BeeStateModel from "./BeeStateModel";
 
@@ -88,6 +89,7 @@ export default class GameModel extends ModelBase {
 		this.levels.set('junction', LevelJunction);
 		this.levels.set('beehive', LevelBeehive);
 		this.levels.set('meadow-1', LevelMeadow1);
+		this.levels.set('meadow-2', LevelMeadow2);
 		this.levels.set('pond', LevelPond);
 
 		this.fallenItems = new FallenItemsModel();

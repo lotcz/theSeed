@@ -195,6 +195,8 @@ TODO:
 BETA for friends
 ----------------
 
+- allow taking moving larvas etc.
+- lever
 - wait some time before re-emitting pollen etc.
 -
 - production mode (exception handling and logging, hide all dev UI)
