@@ -1,10 +1,9 @@
 import ModelBase from "../class/ModelBase";
 import Vector2 from "../class/Vector2";
 import DirtyValue from "../class/DirtyValue";
-import CollectionModel from "./CollectionModel";
 import VectorCollectionModel from "./VectorCollectionModel";
 import {GROUND_STYLES} from "../builder/GroundStyle";
-import {SPRITE_STYLES} from "../builder/SpriteStyle";
+import {SPRITE_STYLES, SPRITE_TYPES} from "../builder/SpriteStyle";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {MUSIC_TYPES} from "../builder/MusicStyle";
 
@@ -56,7 +55,7 @@ export default class LevelEditorModel extends ModelBase {
 		this.groundTypes.sort();
 		this.selectedGroundType = this.groundTypes[0];
 
-		this.spriteTypes = Object.keys(SPRITE_STYLES);
+		this.spriteTypes = [...SPRITE_TYPES];
 		this.spriteTypes.unshift(EDITOR_TOOL_SELECT);
 		this.spriteTypes.unshift(EDITOR_TOOL_DELETE);
 		this.spriteTypes.sort();

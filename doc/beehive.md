@@ -1,12 +1,9 @@
 Basics
 ------
 
-- bring pollen to the hive to create lives
-- queen can eat and then lay eggs
-
 Puzzles
 
-- bees presence can trigger opening/closing of gate
+- bees presence can trigger levers that might open and close gates
 - save bugs from pit by throwing crawlable stuff inside
 - block road with uncrawlable stuff
 
@@ -15,8 +12,8 @@ How to open blocked access?
 - bring certain item for guarding NPC
 - lure away guarding animal
 - bring pollen to blossom to get to nectar
-- feed bugs until they pop/poison bugs
-
+- feed bugs until they pop
+- poison ants
 
 Items
 -----

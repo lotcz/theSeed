@@ -3,7 +3,8 @@ import Vector2 from "../class/Vector2";
 import * as dat from "dat.gui";
 import * as localForage from "localforage";
 import {EDITOR_MODE_GROUND, EDITOR_MODE_SPRITES} from "../model/LevelEditorModel";
-import {SPRITE_STRATEGIES} from "../builder/SpriteStyle";
+import {SPRITE_STRATEGIES, SPRITE_STYLES, SPRITE_TYPES} from "../builder/SpriteStyle";
+import Pixies from "../class/Pixies";
 
 const DEBUG_EDITOR_RENDERER = false;
 export const EDITOR_LEVEL_NAME_PREFIX = 'beehive-editor';
@@ -12,6 +13,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	group;
 	gui;
 	additionalGUI;
+	jsonEditor;
 	toolsFolder;
 	showGroundTilesController;
 	brushController;
@@ -20,11 +22,13 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	spriteHelpers;
 	highlights;
 
-	constructor(game, model, draw) {
+	constructor(game, model, draw, dom) {
 		super(game, model, draw);
 
+		this.dom = dom;
 		this.gui = null;
 		this.additionalGUI = [];
+		this.jsonEditor = null;
 		this.toolsFolder = null;
 		this.brushController = null;
 		this.toolTypeController = null;
@@ -107,7 +111,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.toolsFolder = this.gui.addFolder('Tools');
 		this.toolsFolder.add(this.model.selectedMode, 'value', this.model.modes)
 			.name('Mode')
-			.onChange(() => this.model.selectedMode.makeDirty());
+			.onChange(() => {
+				this.hideAdditionalGUI();
+				this.model.selectedMode.makeDirty();
+			});
 		this.model.selectedMode.makeDirty();
 
 		this.toolsFolder.add(this.model.showGroundTiles, 'value')
@@ -117,7 +124,6 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			.name('Sprite Helpers')
 			.onChange(() => this.model.showSpriteHelpers.makeDirty());
 		this.brushController = this.toolsFolder.add(this.model, 'brushSize', 1, 10).name('Brush');
-
 
 		this.toolsFolder.open();
 
@@ -136,6 +142,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.hideSpriteHelpers();
 		this.hideHighlights();
 		this.hideAdditionalGUI();
+		this.hideJsonEditor();
 
 		if (this.group) {
 			this.group.remove();
@@ -339,6 +346,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	hideAdditionalGUI() {
 		this.additionalGUI.forEach((gui) => gui.destroy());
 		this.additionalGUI = [];
+		this.hideJsonEditor();
 	}
 
 	newAdditionalGUI() {
@@ -352,10 +360,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		gui.add(sprite.position, 'x').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.position, 'y').onChange(() => sprite.position.makeDirty());
 		gui.add(sprite.strategy, 'value', SPRITE_STRATEGIES).name('strategy').onChange(() => sprite.strategy.makeDirty());
-
-		const obj = {str: JSON.stringify(sprite.data)};
-		gui.add(obj, 'str').name('data').listen().onChange(() => sprite.data = JSON.parse(obj.str));
-		gui.add(sprite, 'type');
+		gui.add(sprite, 'type', SPRITE_TYPES);
 
 		if (sprite.image) {
 			const imgFolder = gui.addFolder('image');
@@ -365,6 +370,10 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation').listen().onChange(() => sprite.image.rotation.makeDirty());
 			imgFolder.add(sprite.image.scale, 'value').name('scale').listen().onChange(() => sprite.image.scale.makeDirty());
 			imgFolder.open();
+		}
+
+		if (sprite.data) {
+			this.showJsonEditor(sprite.data, (obj) => sprite.data = obj);
 		}
 
 		const actions = {
@@ -379,6 +388,33 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			}
 		}
 		gui.add(actions, 'deleteSprite').name('Delete');
+	}
+
+	hideJsonEditor() {
+		if (this.jsonEditor) {
+			Pixies.destroyElement(this.jsonEditor);
+			this.jsonEditor = null;
+		}
+	}
+
+	showJsonEditor(obj, onUpdate) {
+		this.hideJsonEditor();
+		this.jsonEditor = Pixies.createElement(this.dom, 'div', ['menu', 'json-editor']);
+		const input = Pixies.createElement(this.jsonEditor, 'textarea');
+		input.wrap = "soft";
+		const str = JSON.stringify(obj, null, 2);
+		input.value = str;
+		const button = Pixies.createElement(this.jsonEditor, 'button');
+		button.innerText = "Update";
+		button.addEventListener('click', () => {
+			const newObj = JSON.parse(input.value);
+			onUpdate(newObj);
+		});
+		const closeButton = Pixies.createElement(this.jsonEditor, 'button');
+		closeButton.innerText = "Close";
+		closeButton.addEventListener('click', () => {
+			this.hideJsonEditor();
+		});
 	}
 
 	//</editor-fold>

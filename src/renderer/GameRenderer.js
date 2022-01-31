@@ -180,7 +180,7 @@ export default class GameRenderer extends SvgRenderer {
 
 	showEditor() {
 		this.hideEditor();
-		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw);
+		this.editorRenderer = new LevelEditorRenderer(this.game, this.model.editor, this.draw, this.dom);
 		this.addChild(this.editorRenderer);
 		this.editorRenderer.activate();
 	}

@@ -138,3 +138,33 @@ body.cursor-hidden,
 body.cursor-hidden * {
 	cursor: none;
 }
+
+.json-editor {
+	bottom: 0;
+	left: 40%;
+	background-color: #303030;
+	color: #a0a0a0;
+	font-family: monospace;
+	padding: 10px;
+}
+
+.json-editor textarea {
+	height: 150px;
+	width: 400px;
+	margin: 0;
+	padding: 5px;
+	display: block;
+	background-color: #303030;
+	color: #a0a0a0;
+}
+
+.json-editor button {
+	background-color: #303030;
+	color: #a0a0a0;
+	border: solid 1px #a0a0a0;
+	padding: 5px;
+	display: inline-block;
+	float: left;
+	margin-right:10px;
+	margin-top:10px;
+}
