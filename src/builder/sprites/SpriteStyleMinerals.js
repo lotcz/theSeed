@@ -46,15 +46,15 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_POTASSIUM] = {
 	data: {amount: 1}
 };
 
-export const SPRITE_TYPE_POLLEN = 'pollen';
-export const IMAGE_POLLEN = 'img/pollen.svg';
-import PollenImage from "../../../res/img/pollen.svg";
+export const SPRITE_TYPE_NECTAR = 'nectar';
+export const IMAGE_NECTAR = 'img/nectar.svg';
+import NectarImage from "../../../res/img/nectar.svg";
 
-SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN] = {
+SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
-		uri: IMAGE_POLLEN,
-		resource: PollenImage,
+		uri: IMAGE_NECTAR,
+		resource: NectarImage,
 		scale: 0.01
 	},
 	data: {amount: 1}
@@ -111,20 +111,6 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_YELLOW] = {
 	image: {
 		uri: IMAGE_POLLEN_YELLOW,
 		resource: PollenYellowImage,
-		scale: 0.01
-	},
-	data: {amount: 1}
-};
-
-export const SPRITE_TYPE_NECTAR = 'nectar';
-export const IMAGE_NECTAR = 'img/nectar.svg';
-import NectarImage from "../../../res/img/nectar.svg";
-
-SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR] = {
-	strategy: STRATEGY_MINERAL,
-	image: {
-		uri: IMAGE_NECTAR,
-		resource: NectarImage,
 		scale: 0.01
 	},
 	data: {amount: 1}

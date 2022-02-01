@@ -5,10 +5,10 @@
    shape-rendering="geometricPrecision"
    text-rendering="geometricPrecision"
    version="1.1"
-   sodipodi:docname="pollen.svg"
+   sodipodi:docname="nectar-purple.svg"
    width="130"
    height="130"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -17,12 +17,12 @@
      id="defs3851" />
   <sodipodi:namedview
      id="namedview3849"
-     pagecolor="#ffffff"
+     pagecolor="#595959"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="true"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -46,7 +46,7 @@
      stroke-width="0"
      cx="65.131744"
      cy="65.129982"
-     style="fill:#54080e;fill-opacity:1" />
+     style="fill:#82528c;fill-opacity:1" />
   <ellipse
      id="ehnPv1x25VC2"
      rx="59.416859"
@@ -56,7 +56,7 @@
      stroke-width="0"
      cx="21.275824"
      cy="82.418045"
-     style="fill:#84141d;fill-opacity:1"
+     style="fill:#9a61a6;fill-opacity:1"
      transform="matrix(0.85612405,-0.51677037,0.51850522,0.85507447,0,0)" />
   <ellipse
      id="ellipse159132"
@@ -67,7 +67,7 @@
      stroke-width="0"
      cx="19.659185"
      cy="59.920395"
-     style="fill:#bc444e;fill-opacity:1"
+     style="fill:#c281d0;fill-opacity:1"
      transform="matrix(0.83755319,-0.54635579,0.55023259,0.83501143,0,0)" />
   <ellipse
      id="ehnPv1x25VC3"
@@ -76,7 +76,7 @@
      stroke-width="0"
      cx="20.326899"
      cy="47.040718"
-     style="fill:#d07373;fill-opacity:1"
+     style="fill:#cfa1d9;fill-opacity:1"
      rx="14.208838"
      ry="12.395134"
      transform="matrix(0.81981592,-0.57262716,0.57651835,0.8170842,0,0)" />

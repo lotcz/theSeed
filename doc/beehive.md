@@ -18,28 +18,33 @@ How to open blocked access?
 Items
 -----
 
+- life (heart?) that extends health
+
 - stone - can block movement or kill a bug when dropped onto it from above
 - water - basis of life, make some flowers grow, prevent movement of bugs
-- potassium (green)- building block of green plants
-- nectar (yellow) - basic reward from visiting flowers
-- pollen (red) - another flower product
+- potassium (green) - building block of green plants, can be obtained on a meadow and other places
+- chloroplast - comes from wounded green plants
+- nectar (yellow, red) - basic reward from visiting flowers
+- pollen (red, yellow, purple) - another flower product
 - insecticide (poisonous to all insect)
 - drop of lemonade
 
-- yellow jelly - made from nectar and water
-- pink jelly - made from pollen and water
-- green jelly - made from potassium and water
-- honey - made from yellow and pink jelly
-- propolis - made from green and red jelly, repels or kills some bugs
+- yellow jelly - made from nectar
+- pink jelly - made from pollen (heals bee)
+- purple jelly - made from purple pollen
+- green jelly - made from potassium
+- propolis - made from purple and red jelly, repels bugs and ants
+- wax - made from green and yellow jelly
+- honey - made from propolis and wax
+
 - egg - produced by Queen, becomes a larva when placed in a jelly basin
-- larva - becomes a follower when fed with yellow jelly
+- larva - becomes a follower when fed with honey
 
 - rock spike
 
 Bees
 ----
 
-- Worker - flies around, cleans and guards a beehive, kills bugs
 - Queen - lay an egg when fed with honey
 - Yellow Jellymaker - turns nectar and water into yellow jelly
 - Red Jellymaker - turns pollen and water into pink jelly
@@ -51,14 +56,12 @@ Animals
 -------
 
 - red bug egg, will grow into red bug, can be taken by bee
-- Red Bug - eats nectar, can hurt bee, spawns reb bug eggs
+- Red Bug - eats potassium, repelled by propolis, killed by insecticide, can hurt bee, spawns reb bug eggs
 
-- ant egg - will draw ant workers attention
-- Ant Worker - steals everything
-- Ant Warrior - kills bee, can be drawn away by bugs
+- ants - eats everything, hurts bee, can be repelled by mushrooms, poisoned by insecticide
 
 - butterfly egg
-- Caterpillar - eats everything, will turn into pupa
+- Caterpillar (butterfly larva) - eats everything, will turn into pupa
 - Pupa/Cocoon - will grow into butterfly
 - Butterfly - eats pollen, can spawn eggs
 
@@ -69,9 +72,6 @@ Animals
 Plants
 ------
 
-- grass stalks - produces potassium
-- red blossoms - produces pollen
-- yellow blossoms - produces nectar
 - pumpkin/gourd
 - tree
 - cave moss, ivy
@@ -112,51 +112,40 @@ Learn feeding makers to obtain items.
 Junction
 --------
 
-doors lead to different levels, originally some doors remain waxed until later time
-tunnel leads to beehive
+open door to ant nest with dead bug
+boy misses girl
+bring nectar to get into beehive
+enter meadow
 
-A Meadow
+tunnels leads to beehive and forest
+
+Meadow 1
 --------
 
 collect some nectar and play with bugs
 
-Cave
-----
+Meadow 2
+--------
 
-jelly maker asks for nectar
-fly to surface, avoid water
+drawn bugs in water or poison them with insecticide
 
+Beehive
+-------
 
+visit Hermit
+access factory from here
+bring wax to get to the queen
 
-Cave 2
+Hermit
 ------
 
-poison bugs with mushrooms
-catch drops of ??? before they fall to water
+pass maze to get to hermit
+hermit reveals that bugs can be repelled by propolis
 
-Field
------
+Factory
+-------
 
-there is field littered with insecticide and dead bugs
-
-Cave 3
-------
-
-avoid ants, spikes and water
-feed small bugs to the ants to pass
-
-Party Table
------------
-
-ants have stolen butterfly cocoons, kill ants with insecticide or lure them away
-butterflies block access to straw
-get few drops from the lemonade
-
-Big Flyby
----------
-
-Fly over large distance, avoid clouds and hornets
-
+connect factory pipes to produce propolis or wax
 
 Pond
 ----
@@ -170,21 +159,61 @@ make way through ants nest, feed ants to carnivorous plant by luring them with h
 you must gather nectar on the surface first, then make honey, then you can use it
 save girl friend from ants, bring her back like a bag :-)
 
-The Tree
---------
+Forest
+------
 
-save bee eggs or larvae from ant abduction
-
-Rainy Day
----------
-
-avoid rain by hiding under leaves and rocks
-hide under a car
+save bee larvae from ant abduction
 
 Pumpkin
 -------
 
 gather nectar from inside a giant flower
+
+Cave
+----
+
+avoid lots of water and some ants
+catch drops of spores before they fall to water
+
+Big Flyby
+---------
+
+Fly over large distance, avoid clouds and hornets
+
+Party Table
+-----------
+
+get few drops from the lemonade
+
+Picnic Basket
+-------------
+
+insecticide
+
+Rock
+----
+
+Queen
+-----
+
+Story
+=====
+
+- tutorial
+- get nectar to access beehive
+- find hermit to learn about bugs
+- bring coccon from rock to butterfly in meadow 2 to access forest
+- get chloroplasts from forest
+- get nectar from pond
+- bring purple nectar and chloroplasts to activate factory
+- enter queen's lair
+- create propolis
+- kill bug and get to ant hive
+- get through cave to pumpkin
+- take pumpkin seeds to open prison door
+- get to picnic basket and take ant poison
+- poison ants and get girl
+- save ant girl, demo ends
 
 TODO:
 =====
@@ -192,17 +221,21 @@ TODO:
 BETA for friends
 ----------------
 
-- allow taking moving larvas etc.
+- no lives, just max. health and healing
+- bugs
 - lever
+- drop minerals one by one
 - wait some time before re-emitting pollen etc.
--
+- allow taking moving larvas etc.
+- when dropping mineral, split it
+- allow wearing a cap
 - production mode (exception handling and logging, hide all dev UI)
 - finish happy tune
 - add some music or ambient sounds to all levels
 
 Demo
 ----
-
+-
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
 - heal by eating honey, packed in doses or feeded from honeymaker
 - better death (place sprite immediately and then follow it with camera so it behaves the same)
