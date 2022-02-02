@@ -14,8 +14,9 @@ export const NEIGHBOR_TYPE_LOWER_RIGHT = 2;
 export const NEIGHBOR_TYPE_DOWN = 3;
 export const NEIGHBOR_TYPE_LOWER_LEFT = 4;
 export const NEIGHBOR_TYPE_UPPER_LEFT = 5;
+export const NEIGHBOR_TYPE_SELF = 6;
 
-export const NEIGHBOR_TYPES = [NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_RIGHT, NEIGHBOR_TYPE_LOWER_RIGHT, NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_LOWER_LEFT, NEIGHBOR_TYPE_UPPER_LEFT];
+export const NEIGHBOR_TYPES = [NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_RIGHT, NEIGHBOR_TYPE_LOWER_RIGHT, NEIGHBOR_TYPE_DOWN, NEIGHBOR_TYPE_LOWER_LEFT, NEIGHBOR_TYPE_UPPER_LEFT, NEIGHBOR_TYPE_SELF];
 
 export const CORNER_RIGHT = 0;
 export const CORNER_LOWER_RIGHT = 1;
@@ -117,7 +118,9 @@ export default class GridModel extends ModelBase {
 				return this.getNeighborLowerLeft(position, steps);
 			case NEIGHBOR_TYPE_UPPER_LEFT:
 				return this.getNeighborUpperLeft(position, steps);
-		};
+			default:
+				return position;
+		}
 	}
 
 	getNeighbors(position) {

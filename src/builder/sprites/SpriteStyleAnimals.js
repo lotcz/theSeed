@@ -1,3 +1,5 @@
+import {SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "./SpriteStyleObjects";
+
 export const SPRITE_STYLES_ANIMALS = [];
 
 export const SPRITE_TYPE_BUG = 'bug';
@@ -11,7 +13,14 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUG] = {
 		uri: IMAGE_BUG,
 		resource: BugImage
 	},
-	data: {amount: 1, hurts: true}
+	data: {
+		amount: 1,
+		hurts: 0.1,
+		deadSprite: SPRITE_TYPE_BUG_DEAD,
+		consumes: [SPRITE_TYPE_POTASSIUM],
+		carries: [SPRITE_TYPE_BUG_EGG],
+		repelledBy: [SPRITE_TYPE_PURPLE_JELLY]
+	}
 };
 
 export const SPRITE_TYPE_ANT = 'ant';
@@ -25,7 +34,15 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
 		uri: IMAGE_ANT,
 		resource: AntImage
 	},
-	data: {amount: 5, penetrable: true, hurts: true}
+	data: {
+		amount: 5,
+		penetrable: true,
+		hurts: 0.3,
+		deadSprite: SPRITE_TYPE_BUG_DEAD,
+		consumes: [SPRITE_TYPE_POTASSIUM, SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED, SPRITE_TYPE_YELLOW_JELLY],
+		carries: [SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD],
+		repelledBy: [SPRITE_TYPE_YELLOW_JELLY]
+	}
 };
 
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
@@ -58,6 +75,12 @@ export const SPRITE_TYPE_TOAD = 'toad';
 export const STRATEGY_TOAD = 'toad';
 export const IMAGE_TOAD_HEAD = 'img/toad-head.svg';
 import ToadHeadImage from "../../../res/img/toad-head.svg";
+import {
+	SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED,
+	SPRITE_TYPE_POTASSIUM,
+	SPRITE_TYPE_PURPLE_JELLY,
+	SPRITE_TYPE_YELLOW_JELLY
+} from "./SpriteStyleMinerals";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD] = {
 	strategy: STRATEGY_TOAD,
