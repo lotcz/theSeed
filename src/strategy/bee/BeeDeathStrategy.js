@@ -7,17 +7,12 @@ const FALL_SPEED = 800; // pixels per second
 const DEATH_TIMEOUT = 3000;
 
 export default class BeeDeathStrategy extends ControllerBase {
+	static deathSound = new Sound(DeathSound);
 	timeout;
 	triggered;
 
-	constructor(game, model, controls) {
-		super(game, model, controls);
-
-		this.deathSound = new Sound(DeathSound);
-	}
-
 	activateInternal() {
-		this.deathSound.play();
+		BeeDeathStrategy.deathSound.play();
 		this.game.beeState.health.set(0);
 		this.model.direction.set(0,0);
 		this.model.crawling.set(null);

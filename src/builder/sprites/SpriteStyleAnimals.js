@@ -14,12 +14,13 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUG] = {
 		resource: BugImage
 	},
 	data: {
-		amount: 1,
+		amount: 5,
 		hurts: 0.1,
 		deadSprite: SPRITE_TYPE_BUG_DEAD,
 		consumes: [SPRITE_TYPE_POTASSIUM],
 		carries: [SPRITE_TYPE_BUG_EGG],
-		repelledBy: [SPRITE_TYPE_PURPLE_JELLY]
+		repelledBy: [SPRITE_TYPE_PURPLE_JELLY],
+		poisonedBy: [SPRITE_TYPE_NECTAR_RED]
 	}
 };
 
@@ -29,7 +30,7 @@ export const IMAGE_ANT = 'img/ant.svg';
 import AntImage from "../../../res/img/ant.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
-	strategy: STRATEGY_ANT,
+	strategy: STRATEGY_BUG,
 	image: {
 		uri: IMAGE_ANT,
 		resource: AntImage

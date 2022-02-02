@@ -1,10 +1,11 @@
 import ObjectStrategy from "../ObjectStrategy";
-import Pixies from "../../../class/Pixies";
 import BiteSound from "../../../../res/sound/bite.mp3";
 import Sound from "../../../class/Sound";
 import {GROUND_TYPE_WATER} from "../../../builder/GroundStyle";
+import BeeDeathStrategy from "../../bee/BeeDeathStrategy";
 
-const BUG_TIMEOUT = 1000;
+const DEBUG_BUG_STRATEGY = true;
+const BUG_TIMEOUT = 1500;
 const VISIBLE_DISTANCE = 5;
 export const BUG_MAX_AMOUNT = 15;
 
@@ -36,6 +37,9 @@ export default class BugStrategy extends ObjectStrategy {
 		if (!this.model.data.attractedBy) {
 			this.model.data.attractedBy = [];
 		}
+		if (!this.model.data.poisonedBy) {
+			this.model.data.poisonedBy = [];
+		}
 	}
 
 	activateInternal() {
@@ -50,14 +54,10 @@ export default class BugStrategy extends ObjectStrategy {
 	updateStrategy() {
 		const localVisitors = this.grid.chessboard.getVisitors(this.model.position);
 
-		// FLOAT
+		// DIE
 		const isWater = localVisitors.some((v) => v._is_ground === true && v.type === GROUND_TYPE_WATER);
 		if (isWater) {
-			this.defaultTimeout = this.defaultFallTimeout;
-			this.turnWhenMoving = false;
-			const up = this.grid.getNeighborUp(this.model.position);
-			this.setTargetPosition(up);
-			this.setTargetRotation(0);
+			this.die();
 			return;
 		}
 
@@ -71,16 +71,12 @@ export default class BugStrategy extends ObjectStrategy {
 			return;
 		}
 
-		this.decision(localVisitors);
-	}
-
-	decision(localVisitors) {
 		const neighbors = this.grid.getValidNeighbors(this.model.position);
 
 		// EAT NEARBY FOOD
 		if (this.isHungry()) {
 			const neighborVisitors = this.chessboard.getVisitorsMultiple(neighbors);
-			const food = neighborVisitors.filter((v) => this.filterFood(v));
+			const food = neighborVisitors.filter((v) => this.filterFood(v) || this.filterPoison(v));
 			if (food.length > 0) {
 				this.eat(food[0]);
 				return;
@@ -109,83 +105,93 @@ export default class BugStrategy extends ObjectStrategy {
 
 		// FLEE/APPROACH
 		if (this.isAffectedByEnvironment()) {
-			let step = 0;
-			let firstLeft = null;
-			let lastLeft = this.model.position;
-			let firstRight = null;
-			let lastRight = this.model.position;
-			let leftBlocked = false;
-			let rightBlocked = false;
-
-			while (leftBlocked === false && rightBlocked === false && step < VISIBLE_DISTANCE) {
-				if (!leftBlocked) {
-					const left = this.getLeftWalkPath(lastLeft);
-					if (left) {
-						if (!firstLeft) {
-							firstLeft = left;
-						}
-						const visitors = this.chessboard.getVisitors(left);
-						const isThereRepellent = visitors.some((v) => this.filterRepellents(v));
-						if (isThereRepellent) {
-							if (firstRight) {
-								this.walkTo(firstRight);
-							} else {
-								this.walkRight();
-							}
-							console.log('repelled from left', left);
-							return;
-						}
-						const isThereAttraction = visitors.some((v) => this.filterAttractions(v));
-						if (isThereAttraction) {
-							this.walkTo(firstLeft);
-							console.log('attracted to left', left);
-							return;
-						}
-						lastLeft = left;
-					} else {
-						leftBlocked = true;
-					}
-				}
-				if (!rightBlocked) {
-					const right = this.getRightWalkPath(lastRight);
-					if (right) {
-						if (!firstRight) {
-							firstRight = right;
-						}
-						const visitors = this.chessboard.getVisitors(right);
-						const isThereRepellent = visitors.some((v) => this.filterRepellents(v));
-						if (isThereRepellent) {
-							if (firstLeft) {
-								this.walkTo(firstLeft);
-							} else {
-								this.walkLeft();
-							}
-							console.log('repelled from right', right);
-							return;
-						}
-						const isThereAttraction = visitors.some((v) => this.filterAttractions(v));
-						if (isThereAttraction) {
-							this.walkTo(firstRight);
-							console.log('attracted to right', right);
-							return;
-						}
-						lastRight = right;
-					} else {
-						rightBlocked = true;
-					}
-				}
-				step += 1;
+			if (this.fleeApproach()) {
+				return;
 			}
 		}
 
 		// WANDER AROUND
-		if (Math.random() < 0.5) {
-			if (Math.random() < 0.5) {
+		const roll = Math.random();
+		if (roll < 0.5) {
+			if (roll < 0.3) {
 				this.walkRight();
 			} else {
 				this.walkLeft();
 			}
 		}
+	}
+
+	fleeApproach() {
+		let step = 0;
+		let firstLeft = null;
+		let lastLeft = this.model.position;
+		let firstRight = null;
+		let lastRight = this.model.position;
+		let leftBlocked = false;
+		let rightBlocked = false;
+
+		while (leftBlocked === false && rightBlocked === false && step < VISIBLE_DISTANCE) {
+			if (!leftBlocked) {
+				const left = this.getLeftWalkPath(lastLeft);
+				if (left) {
+					if (!firstLeft) {
+						firstLeft = left;
+					}
+				} else {
+					leftBlocked = true;
+				}
+				const position = left ? left : this.grid.getNeighborUpperLeft(lastLeft);
+				const visitors = this.chessboard.getVisitorsMultiple([position, this.grid.getNeighborDown(position)] );
+				const isThereRepellent = visitors.some((v) => this.filterRepellents(v));
+				if (isThereRepellent) {
+					if (firstRight) {
+						this.runTo(firstRight);
+					} else {
+						this.runRight();
+					}
+					if (DEBUG_BUG_STRATEGY) console.log('repelled from left', left);
+					return true;
+				}
+				const isThereAttraction = visitors.some((v) => this.filterAttractions(v));
+				if (isThereAttraction) {
+					this.walkTo(firstLeft);
+					if (DEBUG_BUG_STRATEGY) console.log('attracted to left', left);
+					return true;
+				}
+				lastLeft = left;
+			}
+			if (!rightBlocked) {
+				const right = this.getRightWalkPath(lastRight);
+				if (right) {
+					if (!firstRight) {
+						firstRight = right;
+					}
+				} else {
+					rightBlocked = true;
+				}
+				const position = right ? right : this.grid.getNeighborUpperRight(lastRight);
+				const visitors = this.chessboard.getVisitorsMultiple([position, this.grid.getNeighborDown(position)]);
+				const isThereRepellent = visitors.some((v) => this.filterRepellents(v));
+				if (isThereRepellent) {
+					if (firstLeft) {
+						this.runTo(firstLeft);
+					} else {
+						this.runLeft();
+					}
+					if (DEBUG_BUG_STRATEGY) console.log('repelled from right', right);
+					return true;
+				}
+				const isThereAttraction = visitors.some((v) => this.filterAttractions(v));
+				if (isThereAttraction) {
+					this.walkTo(firstRight);
+					if (DEBUG_BUG_STRATEGY) console.log('attracted to right', right);
+					return true;
+				}
+				lastRight = right;
+			}
+			step += 1;
+		}
+		return false;
 	}
 
 	filterFood(visitor) {
@@ -204,12 +210,16 @@ export default class BugStrategy extends ObjectStrategy {
 		return (this.filterFood(visitor) || this.filterTakeable(visitor) || (visitor._is_sprite && this.model.data.attractedBy.includes(visitor.type)));
 	}
 
+	filterPoison(visitor) {
+		return visitor._is_sprite && this.model.data.poisonedBy.includes(visitor.type);
+	}
+
 	isAffectedByEnvironment() {
 		return ((this.model.data.repelledBy.length > 0) || (this.model.data.attractedBy.length > 0) || (this.model.data.carries.length > 0) || (this.model.data.consumes.length > 0));
 	}
 
 	isHungry() {
-		return (this.model.data.consumes.length > 0);
+		return (this.model.data.consumes.length > 0 || this.model.data.poisonedBy.length > 0);
 	}
 
 	eat(food) {
@@ -233,11 +243,14 @@ export default class BugStrategy extends ObjectStrategy {
 				BugStrategy.biteSound.play();
 			}
 		}
+		if (this.filterPoison(food)) {
+			this.die();
+		}
 	}
 
 	isBeeInRange() {
-		if (this.level.isPlayable && this.level.bee && this.model.data.hurts && (this.game.beeState.health.get() > 0)) {
-			return (this.model.position.distanceTo(this.level.bee.position) < (this.grid.tileRadius * 1.2));
+		if (this.level.isPlayable && this.level.bee && (this.model.data.hurts > 0) && (this.game.beeState.health.get() > 0)) {
+			return (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2.2));
 		} else {
 			return false;
 		}
@@ -255,8 +268,14 @@ export default class BugStrategy extends ObjectStrategy {
 		if (this.model.data.deadSprite === undefined) {
 			return;
 		}
-		this.level.addSpriteFromStyle(this.model.position, this.model.data.deadSprite);
-		this.level.sprites.remove(this.model);
+		const carcass = this.level.addSpriteFromStyle(this.model.position, this.model.data.deadSprite);
+		carcass.data.amount = this.model.data.amount;
+		if (this.level.isPlayable && this.level.bee) {
+			if (this.model.position.distanceTo(this.level.bee.position) < 10) {
+				BeeDeathStrategy.deathSound.play();
+			}
+		}
+		this.removeMyself();
 	}
 
 	spawnEgg() {
@@ -332,6 +351,40 @@ export default class BugStrategy extends ObjectStrategy {
 			return;
 		}
 		this.defaultTimeout = this.defaultMoveTimeout;
+		this.turnWhenMoving = true;
+		this.setTargetPosition(position);
+	}
+
+	runLeft() {
+		const ll = this.grid.getNeighborLowerLeft(this.model.position);
+		if (this.level.isPenetrable(ll)) {
+			this.runTo(ll);
+			return;
+		}
+		const ul = this.grid.getNeighborUpperLeft(this.model.position);
+		if (this.level.isPenetrable(ul)) {
+			this.runTo(ul);
+			return;
+		}
+	}
+
+	runRight() {
+		const lr = this.grid.getNeighborLowerRight(this.model.position);
+		if (this.level.isPenetrable(lr)) {
+			this.runTo(lr);
+			return;
+		}
+		const ur = this.grid.getNeighborUpperRight(this.model.position);
+		if (this.level.isPenetrable(ur)) {
+			this.runTo(ur);
+		}
+	}
+
+	runTo(position) {
+		if (!position) {
+			return;
+		}
+		this.defaultTimeout = this.defaultMoveTimeout / 2;
 		this.turnWhenMoving = true;
 		this.setTargetPosition(position);
 	}
