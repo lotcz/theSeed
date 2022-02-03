@@ -1,4 +1,11 @@
 import {SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "./SpriteStyleObjects";
+import {
+	SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED,
+	SPRITE_TYPE_POTASSIUM,
+	SPRITE_TYPE_PURPLE_JELLY,
+	SPRITE_TYPE_YELLOW_JELLY
+} from "./SpriteStyleMinerals";
+import {STRATEGY_LARVA, STRATEGY_STATIC} from "./SpriteStyleBasic";
 
 export const SPRITE_STYLES_ANIMALS = [];
 
@@ -76,18 +83,47 @@ export const SPRITE_TYPE_TOAD = 'toad';
 export const STRATEGY_TOAD = 'toad';
 export const IMAGE_TOAD_HEAD = 'img/toad-head.svg';
 import ToadHeadImage from "../../../res/img/toad-head.svg";
-import {
-	SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED,
-	SPRITE_TYPE_POTASSIUM,
-	SPRITE_TYPE_PURPLE_JELLY,
-	SPRITE_TYPE_YELLOW_JELLY
-} from "./SpriteStyleMinerals";
-import {STRATEGY_LARVA} from "./SpriteStyleBasic";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD] = {
 	strategy: STRATEGY_TOAD,
 	image: {
 		uri: IMAGE_TOAD_HEAD,
 		resource: ToadHeadImage
+	},
+};
+
+export const SPRITE_TYPE_TOAD_BODY = 'toad-body';
+export const IMAGE_TOAD_BODY = 'img/toad-body.svg';
+import ToadBodyImage from "../../../res/img/toad-body.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_BODY] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_TOAD_BODY,
+		resource: ToadBodyImage
+	},
+};
+
+export const SPRITE_TYPE_TOAD_TONGUE = 'toad-tongue';
+export const IMAGE_TOAD_TONGUE = 'img/toad-tongue.svg';
+import ToadTongueImage from "../../../res/img/toad-tongue.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_TONGUE] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_TOAD_TONGUE,
+		resource: ToadTongueImage
+	},
+};
+
+export const SPRITE_TYPE_TOAD_HEAD_OPEN = 'toad-head-open';
+export const IMAGE_TOAD_HEAD_OPEN = 'img/toad-head-open.svg';
+import ToadHeadOpenImage from "../../../res/img/toad-head-open.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_HEAD_OPEN] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_TOAD_HEAD_OPEN,
+		resource: ToadHeadOpenImage
 	},
 };

@@ -1,6 +1,12 @@
 import StaticStrategy from "../StaticStrategy";
 import {SPRITE_TYPE_PINK_JELLY} from "../../../builder/sprites/SpriteStyleMinerals";
 import AnimatedVector2 from "../../../class/AnimatedVector2";
+import {
+	IMAGE_TOAD_HEAD,
+	IMAGE_TOAD_HEAD_OPEN,
+	SPRITE_TYPE_TOAD_BODY,
+	SPRITE_TYPE_TOAD_TONGUE
+} from "../../../builder/sprites/SpriteStyleAnimals";
 
 const TOAD_TONGUE_LENGTH = 10;
 const TOAD_TIMEOUT = 1000;
@@ -10,6 +16,7 @@ const TOAD_ATTACK_DISTANCE = 1500;
 
 export default class ToadStrategy extends StaticStrategy {
 	tongue;
+	body;
 	tongueAnimations;
 	foodCoordinates;
 
@@ -24,8 +31,11 @@ export default class ToadStrategy extends StaticStrategy {
 		this.model.attachedSpriteBehind = true;
 
 		this.tongue = null;
+		this.body = null;
 		this.tongueAnimations = null;
 		this.foodCoordinates = null;
+
+		this.level.addResource(IMAGE_TOAD_HEAD_OPEN);
 
 		if (this.model.attachedSprite.isEmpty()) {
 			this.createAttachedSprites();
@@ -37,14 +47,6 @@ export default class ToadStrategy extends StaticStrategy {
 
 	activateInternal() {
 		super.activateInternal();
-		/*
-		const bodyPosition = this.grid.getNeighborDown(this.model.position);
-		this.model.attachedSprite.get().position.set(bodyPosition);
-		this.model.attachedSprite.get().image.coordinates.set(this.grid.getCoordinates(bodyPosition));
-		this.chessboard.addVisitor(bodyPosition, this.model);
-		this.updateScale();
-
-		 */
 		this.deflateHead();
 	}
 
@@ -71,6 +73,8 @@ export default class ToadStrategy extends StaticStrategy {
 			return;
 		}
 
+		this.model.image.path.set(IMAGE_TOAD_HEAD);
+
 		if (this.model.image.scale.get() > 1) {
 			this.deflateHead();
 			return;
@@ -86,11 +90,15 @@ export default class ToadStrategy extends StaticStrategy {
 	// ATTACHED SPRITES
 
 	createAttachedSprites() {
-		let sprite = this.model;
+		const body = this.level.createSpriteFromStyle(this.model.position, SPRITE_TYPE_TOAD_BODY);
+		body.position.set(this.model.position);
+		body.image.coordinates.set(this.model.image.coordinates);
+		this.model.attachedSprite.set(body);
+		let sprite = body;
 		for (let i = 0; i < TOAD_TONGUE_LENGTH; i++) {
-			const t = this.level.addSpriteFromStyle(this.model.position, SPRITE_TYPE_PINK_JELLY);
-			this.level.sprites.remove(t);
-			t.setDeleted(false);
+			const t = this.level.createSpriteFromStyle(this.model.position, SPRITE_TYPE_TOAD_TONGUE);
+			t.position.set(this.model.position);
+			t.image.coordinates.set(this.model.image.coordinates);
 			sprite.attachedSprite.set(t);
 			sprite = t;
 		}
@@ -99,10 +107,17 @@ export default class ToadStrategy extends StaticStrategy {
 
 	mapAttachedSprites() {
 		this.tongue = [];
-		let sprite = this.model;
+		this.body = this.model.attachedSprite.get();
+		this.body.position.set(this.model.position);
+		this.body.image.coordinates.set(this.model.image.coordinates);
+		let sprite = this.body;
 		for (let i = 0; i < TOAD_TONGUE_LENGTH; i++) {
 			const t = sprite.attachedSprite.get();
-			this.tongue[i] = sprite = t;
+			if (t) {
+				t.position.set(this.model.position);
+				t.image.coordinates.set(this.model.image.coordinates);
+				this.tongue[i] = sprite = t;
+			}
 		}
 	}
 
@@ -163,6 +178,7 @@ export default class ToadStrategy extends StaticStrategy {
 			const tc = start.add(coordinates.subtract(start).multiply(i/(TOAD_TONGUE_LENGTH - 1)))
 			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, tc, 500);
 		}
+		this.model.image.path.set(IMAGE_TOAD_HEAD_OPEN);
 	}
 
 	snapped() {

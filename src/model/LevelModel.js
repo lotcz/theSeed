@@ -427,7 +427,7 @@ export default class LevelModel extends ModelBase {
 		return this.ground.addTile({position: position.toArray(), type: groundType});
 	}
 
-	addSprite(position, strategy, data, path, scale, rotation, flipped, type) {
+	createSprite(position, strategy, data, path, scale, rotation, flipped, type) {
 		if (path) {
 			this.addResource(path);
 		}
@@ -443,10 +443,14 @@ export default class LevelModel extends ModelBase {
 			data: data,
 			type: type
 		};
-		return this.sprites.add(new SpriteModel(state));
+		return new SpriteModel(state);
 	}
 
-	addSpriteFromStyle(position, spriteType) {
+	addSprite(position, strategy, data, path, scale, rotation, flipped, type) {
+		return this.sprites.add(this.createSprite(position, strategy, data, path, scale, rotation, flipped, type));
+	}
+
+	createSpriteFromStyle(position, spriteType) {
 		const style = SPRITE_STYLES[spriteType];
 		if (!style) {
 			console.error(`Style for spriteType '${spriteType}' not found!`);
@@ -458,7 +462,7 @@ export default class LevelModel extends ModelBase {
 			uri = style.image.uri;
 			scale = style.image.scale || 1;
 		}
-		return this.addSprite(
+		return this.createSprite(
 			position,
 			style.strategy,
 			Pixies.clone(style.data),
@@ -468,6 +472,10 @@ export default class LevelModel extends ModelBase {
 			false,
 			spriteType
 		);
+	}
+
+	addSpriteFromStyle(position, spriteType) {
+		return this.sprites.add(this.createSpriteFromStyle(position, spriteType));
 	}
 
 	addFallenItem(position, sprite) {
