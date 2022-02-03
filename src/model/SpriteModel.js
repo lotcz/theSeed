@@ -46,6 +46,7 @@ export default class SpriteModel extends ModelBase {
 	}
 
 	getState() {
+		//this.data.penetrable = this._is_penetrable;
 		return {
 			position: this.position.toArray(),
 			image: (this.image) ? this.image.getState() : null,

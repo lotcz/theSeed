@@ -310,8 +310,9 @@ export default class BeeController extends ControllerBase {
 		}
 		const item = this.model.inventory.get();
 		const dropped = item.clone();
-		dropped.data.amount = 1;
-		item.data.amount -= 1;
+		const amount = (item.strategy.equalsTo(STRATEGY_MINERAL)) ? 1 : item.data.amount;
+		dropped.data.amount = amount;
+		item.data.amount -= amount;
 		if (item.data.amount <= 0) {
 			this.model.inventory.set(null);
 		}

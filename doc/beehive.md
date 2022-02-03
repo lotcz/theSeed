@@ -221,12 +221,9 @@ TODO:
 BETA for friends
 ----------------
 
-- no lives, just max. health and healing
-- drop minerals one by one
 - wait some time before re-emitting pollen etc.
 - allow taking moving larvas etc.
-- when dropping mineral, split it
-- allow wearing a cap
+- no lives, just max. health and healing
 - production mode (exception handling and logging, hide all dev UI)
 - finish happy tune
 - add some music or ambient sounds to all levels
@@ -247,5 +244,6 @@ Release
 
 - website
 - free 2 or 3 levels
+- allow wearing a cap/helmet
 - pay to remove ads and unlock whole game
 - how to use same system for ads and payment on all platforms?

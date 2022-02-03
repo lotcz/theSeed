@@ -19,6 +19,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.turnWhenMoving = true;
 		this.rotateAttachedSprite = false;
 		this.maxAmount = BUG_MAX_AMOUNT;
+		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -1.5);
 
 		this.model._is_penetrable = (this.model.data.penetrable === true);
 		this.model._is_crawlable = false;
@@ -92,11 +93,11 @@ export default class BugStrategy extends ObjectStrategy {
 
 		// TAKE/DROP ITEM
 		if (this.hasItem()) {
-			if (Math.random() < 0.1) {
+			if (Math.random() < 0.15) {
 				this.dropItem();
 				return;
 			}
-		} else {
+		} else if (Math.random() < 0.5) {
 			let item = localVisitors.find((v) => this.filterTakeable(v));
 			if (!item) {
 				item = neighborVisitors.find((v) => this.filterTakeable(v));
@@ -254,7 +255,7 @@ export default class BugStrategy extends ObjectStrategy {
 
 	isBeeInRange() {
 		if (this.level.isPlayable && this.level.bee && (this.model.data.hurts > 0) && (this.game.beeState.health.get() > 0)) {
-			return (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2.2));
+			return (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2.5));
 		} else {
 			return false;
 		}
@@ -287,20 +288,20 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	takeItem(item) {
+		const taken = item.clone();
 		this.level.sprites.remove(item);
-		item.setDeleted(false);
-		item.image.rotation.set(0);
-		this.model.attachedSprite.set(item);
-		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -1.5);
+		taken.image.rotation.set(0);
+		taken.image.coordinates.set(this.model.image.coordinates.add(this.attachedSpriteOffset));
+		this.model.attachedSprite.set(taken);
 	}
 
 	dropItem() {
 		if (!this.hasItem()) {
 			return;
 		}
-		const item = this.model.attachedSprite.get();
-		item.position.set(this.grid.getNeighborUp(this.model.position));
+		const item = this.model.attachedSprite.get().clone();
 		this.model.attachedSprite.set(null);
+		item.position.set(this.grid.getNeighborUp(this.model.position));
 		this.level.sprites.add(item);
 		return item;
 	}
