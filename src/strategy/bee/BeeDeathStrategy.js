@@ -33,6 +33,11 @@ export default class BeeDeathStrategy extends ControllerBase {
 			}
 		}
 
+		if (this.model.held.get()) {
+			this.parent.updateMovement();
+			return;
+		}
+
 		if (this.level.isWater(this.model.position)) {
 			const coords = this.model.coordinates.addY(-(delta / 1000) * FALL_SPEED / 3);
 			if (this.level.isWater(this.grid.getPosition(coords))) {

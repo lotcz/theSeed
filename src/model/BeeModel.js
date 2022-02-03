@@ -59,6 +59,10 @@ export default class BeeModel extends ModelBase {
 		this.addChild(this.rightWing);
 		this.starsVisible = new DirtyValue(false);
 		this.addChild(this.starsVisible);
+		this.held = new DirtyValue(false);
+		this.addChild(this.held);
+		this.visible = new DirtyValue(true);
+		this.addChild(this.visible);
 
 		if (state) {
 			this.restoreState(state);
@@ -143,6 +147,18 @@ export default class BeeModel extends ModelBase {
 
 	triggerOnTravelEvent(levelName) {
 		this.triggerEvent('travel', levelName);
+	}
+
+	addOnPushedListener(listener) {
+		this.addEventListener('bee-pushed', listener);
+	}
+
+	removeOnPushedListener(listener) {
+		this.removeEventListener('bee-pushed', listener);
+	}
+
+	triggerOnPushedEvent(param) {
+		this.triggerEvent('bee-pushed', param);
 	}
 
 }

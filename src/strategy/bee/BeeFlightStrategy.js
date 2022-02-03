@@ -46,6 +46,7 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.dead = false;
 		this.leaving = false;
 		this.hitTimeout = 0;
+		this.pushedListener = (p) => this.pushed(p);
 	}
 
 	activateInternal() {
@@ -60,8 +61,13 @@ export default class BeeFlightStrategy extends ControllerBase {
 		} else if (this.controls.movingRight.get()) {
 			this.model.headingLeft.set(false);
 		}
+		this.model.addOnPushedListener(this.pushedListener);
 		this.updateBee();
 		//console.log('flying');
+	}
+
+	deactivateInternal() {
+		this.model.removeOnPushedListener(this.pushedListener);
 	}
 
 	updateInternal(delta) {
@@ -246,4 +252,9 @@ export default class BeeFlightStrategy extends ControllerBase {
 		this.scaleAnimation = new AnimatedValue(this.model.scale.get(), 0.1, 2000);
 		this.coordinatesAnimation = new AnimatedVector2(this.model.coordinates, this.grid.getCoordinates(this.model.position), 2000);
 	}
+
+	pushed(push) {
+		this.model.direction.set(this.model.direction.add(push));
+	}
+
 }

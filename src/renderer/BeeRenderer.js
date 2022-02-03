@@ -45,6 +45,7 @@ export default class BeeRenderer extends SvgRenderer {
 		this.addChild(this.spritesRenderer);
 
 		this.beeStrategyChangedHandler = () => this.updateBeeState();
+		this.visibilityChangedHandler = () => this.updateBeeState();
 
 		if (DEBUG_BEE) {
 			this.helper = this.group.group();
@@ -59,11 +60,13 @@ export default class BeeRenderer extends SvgRenderer {
 		this.updateInventory();
 		this.model.inventory.addOnChangeListener(this.inventoryChangeHandler);
 		this.model.addOnStrategyChangedListener(this.beeStrategyChangedHandler);
+		this.model.visible.addOnChangeListener(this.visibilityChangedHandler);
 	}
 
 	deactivateInternal() {
 		this.model.inventory.removeOnChangeListener(this.inventoryChangeHandler);
 		this.model.removeOnStrategyChangedListener(this.beeStrategyChangedHandler);
+		this.model.visible.removeOnChangeListener(this.visibilityChangedHandler);
 	}
 
 	renderInternal() {
@@ -118,23 +121,26 @@ export default class BeeRenderer extends SvgRenderer {
 	}
 
 	updateBeeState() {
+		this.imageRenderer.deactivate();
+		this.crawlingAnimationRenderer.deactivate();
+		this.leftWingRenderer.deactivate();
+		this.rightWingRenderer.deactivate();
+
+		if (this.model.visible.get() === false) {
+			this.starsAnimationRenderer.deactivate();
+			return;
+		}
+
 		if (this.game.beeState.isDead()) {
 			this.imageRenderer.activate();
-			this.crawlingAnimationRenderer.deactivate();
-			this.leftWingRenderer.deactivate();
-			this.rightWingRenderer.deactivate();
 			this.starsAnimationRenderer.deactivate();
 		} else if (this.model.isFlying()) {
-			this.crawlingAnimationRenderer.deactivate();
 			this.imageRenderer.activate();
 			this.leftWingRenderer.activate();
 			this.rightWingRenderer.activate();
 			this.updateFlip();
 		} else {
 			this.crawlingAnimationRenderer.activate();
-			this.leftWingRenderer.deactivate();
-			this.rightWingRenderer.deactivate();
-			this.imageRenderer.deactivate();
 		}
 		this.spritesGroup.front();
 		this.inventoryGroup.front();

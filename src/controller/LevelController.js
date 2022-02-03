@@ -51,6 +51,7 @@ export default class LevelController extends ControllerBase {
 		this.travelling = false;
 		this.isFadingIn = false;
 		this.model.clipAmount.set(0);
+		this.model.bee.held.set(false);
 	}
 
 	onTravel(levelName) {
@@ -58,6 +59,7 @@ export default class LevelController extends ControllerBase {
 		this.isDead = false;
 		this.isFadingIn = false;
 		this.model.clipAmount.set(0);
+		this.model.bee.held.set(false);
 	}
 
 	fadeIn() {
@@ -101,7 +103,9 @@ export default class LevelController extends ControllerBase {
 					this.travelling = false;
 				} else {
 					this.game.beeState.lives.set(this.game.beeState.lives.get() - 1);
-					this.model.addSpriteFromStyle(this.model.bee.position, SPRITE_TYPE_BEE_DEAD);
+					if (this.model.bee.visible.get() === true) {
+						this.model.addSpriteFromStyle(this.model.bee.position, SPRITE_TYPE_BEE_DEAD);
+					}
 					if (this.level.name === START_LEVEL) {
 						if (DEBUG_LEVEL_CONTROLLER) console.log('Died in start level');
 						this.game.beeState.health.set(MAX_HEALTH);

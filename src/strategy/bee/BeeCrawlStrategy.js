@@ -36,6 +36,7 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.targetRotation = null;
 		this.timeout = CONTROLS_TIMEOUT;
 		this.hitTimeout = 0;
+		this.pushedListener = (p) => this.pushed(p);
 
 		BeeCrawlStrategy.crawlSound.play();
 	}
@@ -50,7 +51,12 @@ export default class BeeCrawlStrategy extends ControllerBase {
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
 		this.model.crawlingAnimation.image.coordinates.set(BEE_CENTER);
 		this.targetCoordinates = this.grid.getCoordinates(this.model.position);
+		this.model.addOnPushedListener(this.pushedListener);
 		this.updateBee();
+	}
+
+	deactivateInternal() {
+		this.model.removeOnPushedListener(this.pushedListener);
 	}
 
 	updateInternal(delta) {
@@ -223,6 +229,11 @@ export default class BeeCrawlStrategy extends ControllerBase {
 			BeeCrawlStrategy.uncrawlSound.play();
 		}
 		this.parent.fly();
+	}
+
+	pushed(push) {
+		this.fly();
+		this.model.triggerOnPushedEvent(push);
 	}
 
 }
