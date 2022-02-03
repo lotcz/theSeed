@@ -1,5 +1,4 @@
 import StaticStrategy from "../StaticStrategy";
-import {SPRITE_TYPE_PINK_JELLY} from "../../../builder/sprites/SpriteStyleMinerals";
 import AnimatedVector2 from "../../../class/AnimatedVector2";
 import {
 	IMAGE_TOAD_HEAD,
@@ -11,7 +10,8 @@ import {
 const TOAD_TONGUE_LENGTH = 10;
 const TOAD_TIMEOUT = 1000;
 const TOAD_CLOSE_TIMEOUT = 500;
-const TOAD_NOTICE_DISTANCE = 2000;
+const TOAD_TONGUE_SPEED = 3000; // pixels per second
+const TOAD_NOTICE_DISTANCE = 3000;
 const TOAD_ATTACK_DISTANCE = 1500;
 
 export default class ToadStrategy extends StaticStrategy {
@@ -34,6 +34,7 @@ export default class ToadStrategy extends StaticStrategy {
 		this.body = null;
 		this.tongueAnimations = null;
 		this.foodCoordinates = null;
+		this.usedTongLength = 0;
 
 		this.level.addResource(IMAGE_TOAD_HEAD_OPEN);
 
@@ -58,7 +59,8 @@ export default class ToadStrategy extends StaticStrategy {
 	updateInternal(delta) {
 		super.updateInternal(delta);
 		if (this.tongueAnimations) {
-			for (let i = 0; i < TOAD_TONGUE_LENGTH; i++) {
+			const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
+			for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
 				this.tongue[i].image.coordinates.set(this.tongueAnimations[i].get(delta));
 			}
 			if (this.tongueAnimations[TOAD_TONGUE_LENGTH - 1].isFinished()) {
@@ -157,7 +159,7 @@ export default class ToadStrategy extends StaticStrategy {
 
 		const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
 		if (beeDistance < TOAD_ATTACK_DISTANCE) {
-			this.snap(this.level.bee.coordinates);
+			this.snap(this.level.bee.coordinates, beeDistance);
 		} else if (beeDistance < TOAD_NOTICE_DISTANCE) {
 			this.foodCoordinates = this.level.bee.coordinates;
 			this.setTargetRotation(this.model.image.coordinates.getRotation(this.foodCoordinates));
@@ -170,13 +172,19 @@ export default class ToadStrategy extends StaticStrategy {
 		return this.tongueAnimations;
 	}
 
-	snap(coordinates) {
+	snap(coordinates, distance) {
 		this.foodCoordinates = coordinates;
 		this.tongueAnimations = [];
 		const start = this.model.image.coordinates;
-		for (let i = 0; i < TOAD_TONGUE_LENGTH; i++) {
-			const tc = start.add(coordinates.subtract(start).multiply(i/(TOAD_TONGUE_LENGTH - 1)))
-			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, tc, 500);
+		const rotation = this.model.image.coordinates.getRotation(coordinates);
+		this.setTargetRotation(rotation);
+		const duration = (distance / TOAD_TONGUE_SPEED) * 1000;
+		this.usedTongLength = Math.ceil(TOAD_TONGUE_LENGTH * (distance / TOAD_ATTACK_DISTANCE));
+		const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
+		for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
+			const tc = start.add(coordinates.subtract(start).multiply((i - unused)/(this.usedTongLength - 1)))
+			this.tongue[i].image.rotation.set(rotation);
+			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, tc, duration);
 		}
 		this.model.image.path.set(IMAGE_TOAD_HEAD_OPEN);
 	}
@@ -185,7 +193,6 @@ export default class ToadStrategy extends StaticStrategy {
 		if (!this.foodCoordinates) {
 			return;
 		}
-		this.foodCoordinates = null;
 
 		const lastTongue = this.tongue[TOAD_TONGUE_LENGTH - 1];
 		const beeDistance = lastTongue.image.coordinates.distanceTo(this.level.bee.coordinates);
@@ -195,9 +202,14 @@ export default class ToadStrategy extends StaticStrategy {
 		}
 
 		this.tongueAnimations = [];
-		for (let i = 0; i < TOAD_TONGUE_LENGTH; i++) {
-			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, this.model.image.coordinates, 1500);
+		const distance = this.model.image.coordinates.distanceTo(this.foodCoordinates);
+		const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
+		const duration = (distance / TOAD_TONGUE_SPEED) * 1000 * 3;
+		for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
+			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, this.model.image.coordinates, duration);
 		}
+
+		this.foodCoordinates = null;
 	}
 
 }
