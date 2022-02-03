@@ -3,6 +3,7 @@ import AnimatedValue from "../../class/AnimatedValue";
 import AnimatedVector2 from "../../class/AnimatedVector2";
 import AnimatedRotation from "../../class/AnimatedRotation";
 import RotationValue from "../../class/RotationValue";
+import Vector2 from "../../class/Vector2";
 
 const DEFAULT_TURNING_DURATION = 500;
 
@@ -25,6 +26,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.oriented = false;
 		this.turningDuration = DEFAULT_TURNING_DURATION;
 		this.rotateAttachedSprite = true;
+		this.attachedSpriteOffset = new Vector2();
 	}
 
 	activateInternal() {
@@ -99,7 +101,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 			}
 			this.model.image.rotation.set(rotation);
 			if (this.rotateAttachedSprite && this.model.attachedSprite.isSet()) {
-				this.model.attachedSprite.get().image.rotation.set(rotation);
+				this.model.attachedSprite.get().image.rotation.set(rotation + 90);
 			}
 			if (this.animatedRotation.isFinished()) {
 				this.animatedRotation = null;
@@ -130,7 +132,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 			const coords = this.animatedCoordinates.get(delta);
 			this.model.image.coordinates.set(coords);
 			if (this.model.attachedSprite.isSet()) {
-				this.model.attachedSprite.get().image.coordinates.set(coords);
+				this.model.attachedSprite.get().image.coordinates.set(coords.add(this.attachedSpriteOffset));
 			}
 			if (this.animatedCoordinates.isFinished()) {
 				this.animatedCoordinates = null;

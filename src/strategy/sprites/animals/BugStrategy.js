@@ -17,6 +17,7 @@ export default class BugStrategy extends ObjectStrategy {
 
 		this.oriented = true;
 		this.turnWhenMoving = true;
+		this.rotateAttachedSprite = false;
 		this.maxAmount = BUG_MAX_AMOUNT;
 
 		this.model._is_penetrable = (this.model.data.penetrable === true);
@@ -72,13 +73,13 @@ export default class BugStrategy extends ObjectStrategy {
 		}
 
 		const neighbors = this.grid.getValidNeighbors(this.model.position);
+		const neighborVisitors = this.chessboard.getVisitorsMultiple(neighbors);
 
 		// EAT NEARBY FOOD
 		if (this.isHungry()) {
-			const neighborVisitors = this.chessboard.getVisitorsMultiple(neighbors);
-			const food = neighborVisitors.filter((v) => this.filterFood(v) || this.filterPoison(v));
-			if (food.length > 0) {
-				this.eat(food[0]);
+			const food = neighborVisitors.find((v) => this.filterFood(v) || this.filterPoison(v));
+			if (food) {
+				this.eat(food);
 				return;
 			}
 		}
@@ -96,7 +97,10 @@ export default class BugStrategy extends ObjectStrategy {
 				return;
 			}
 		} else {
-			const item = localVisitors.find((v) => this.filterTakeable(v));
+			let item = localVisitors.find((v) => this.filterTakeable(v));
+			if (!item) {
+				item = neighborVisitors.find((v) => this.filterTakeable(v));
+			}
 			if (item) {
 				this.takeItem(item);
 				return;
@@ -278,13 +282,6 @@ export default class BugStrategy extends ObjectStrategy {
 		this.removeMyself();
 	}
 
-	spawnEgg() {
-		/*
-		this.level.addSpriteFromStyle(this.grid.getNeighborUp(this.model.position), SPRITE_TYPE_BUG_EGG);
-		this.model.data.amount -= 1;
-		 */
-	}
-
 	hasItem() {
 		return this.model.attachedSprite.isSet();
 	}
@@ -292,7 +289,9 @@ export default class BugStrategy extends ObjectStrategy {
 	takeItem(item) {
 		this.level.sprites.remove(item);
 		item.setDeleted(false);
+		item.image.rotation.set(0);
 		this.model.attachedSprite.set(item);
+		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -1.5);
 	}
 
 	dropItem() {
