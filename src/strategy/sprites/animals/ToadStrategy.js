@@ -58,14 +58,16 @@ export default class ToadStrategy extends StaticStrategy {
 
 	updateInternal(delta) {
 		super.updateInternal(delta);
-		if (this.tongueAnimations) {
+		if (this.isSnapping()) {
 			const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
 			for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
 				this.tongue[i].image.coordinates.set(this.tongueAnimations[i].get(delta));
 			}
 			if (this.tongueAnimations[TOAD_TONGUE_LENGTH - 1].isFinished()) {
 				this.tongueAnimations = null;
-				this.snapped();
+				if (this.foodCoordinates) {
+					this.snapped();
+				}
 			}
 		}
 	}
@@ -175,24 +177,35 @@ export default class ToadStrategy extends StaticStrategy {
 	snap(coordinates, distance) {
 		this.foodCoordinates = coordinates;
 		this.tongueAnimations = [];
+		this.model.image.path.set(IMAGE_TOAD_HEAD_OPEN);
 		const start = this.model.image.coordinates;
 		const rotation = this.model.image.coordinates.getRotation(coordinates);
 		this.setTargetRotation(rotation);
+		let block = null;
+		let lastValid = start;
 		const duration = (distance / TOAD_TONGUE_SPEED) * 1000;
 		this.usedTongLength = Math.ceil(TOAD_TONGUE_LENGTH * (distance / TOAD_ATTACK_DISTANCE));
 		const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
-		for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
-			const tc = start.add(coordinates.subtract(start).multiply((i - unused)/(this.usedTongLength - 1)))
+		for (let i = unused; i < TOAD_TONGUE_LENGTH; i++) {
 			this.tongue[i].image.rotation.set(rotation);
-			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, tc, duration);
+			if (block) {
+				this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, block, duration);
+			} else {
+				const tc = start.add(coordinates.subtract(start).multiply((i - unused + 1) / (Math.max(this.usedTongLength - 1, 1))));
+				const position = this.grid.getPosition(tc);
+				if (this.level.isPenetrable(position)) {
+					lastValid = tc;
+					this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, tc, duration);
+				} else {
+					block = lastValid;
+					this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, block, duration);
+				}
+			}
 		}
-		this.model.image.path.set(IMAGE_TOAD_HEAD_OPEN);
 	}
 
 	snapped() {
-		if (!this.foodCoordinates) {
-			return;
-		}
+		this.foodCoordinates = null;
 
 		const lastTongue = this.tongue[TOAD_TONGUE_LENGTH - 1];
 		const beeDistance = lastTongue.image.coordinates.distanceTo(this.level.bee.coordinates);
@@ -202,14 +215,13 @@ export default class ToadStrategy extends StaticStrategy {
 		}
 
 		this.tongueAnimations = [];
-		const distance = this.model.image.coordinates.distanceTo(this.foodCoordinates);
+		const distance = this.model.image.coordinates.distanceTo(lastTongue.image.coordinates);
 		const unused = TOAD_TONGUE_LENGTH - this.usedTongLength;
 		const duration = (distance / TOAD_TONGUE_SPEED) * 1000 * 3;
 		for (let i = TOAD_TONGUE_LENGTH - 1; i >= unused; i--) {
 			this.tongueAnimations[i] = new AnimatedVector2(this.tongue[i].image.coordinates, this.model.image.coordinates, duration);
 		}
 
-		this.foodCoordinates = null;
 	}
 
 }
