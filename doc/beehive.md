@@ -222,8 +222,6 @@ BETA for friends
 ----------------
 
 - no lives, just max. health and healing
-- bugs
-- lever
 - drop minerals one by one
 - wait some time before re-emitting pollen etc.
 - allow taking moving larvas etc.

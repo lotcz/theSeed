@@ -147,7 +147,9 @@ export default class BeeController extends ControllerBase {
 				this.game.setHistory('hint-action-displayed');
 				this.showingActionHint = false;
 			}
-			this.dropItem();
+			if (this.dropItemTimeout <= 0) {
+				this.dropItem();
+			}
 		}
 
 		if (this.showingControlsHint && this.controls.anyMovement()) {
@@ -307,12 +309,18 @@ export default class BeeController extends ControllerBase {
 			this.showingActionHint = false;
 		}
 		const item = this.model.inventory.get();
-		this.model.inventory.set(null);
+		const dropped = item.clone();
+		dropped.data.amount = 1;
+		item.data.amount -= 1;
+		if (item.data.amount <= 0) {
+			this.model.inventory.set(null);
+		}
+		this.updateInventory();
+		this.level.addResource(dropped.image.path.get());
 		const down = this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_DOWN);
 		const position = this.level.isPenetrable(down) ? down : this.model.position;
-		this.level.addResource(item.image.path.get());
-		item.position.set(position);
-		this.level.sprites.add(item);
+		dropped.position.set(position);
+		this.level.sprites.add(dropped);
 		this.dropItemTimeout = DROP_ITEM_TIMEOUT;
 		BeeController.dropSound.play();
 	}
