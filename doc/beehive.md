@@ -221,8 +221,8 @@ TODO:
 BETA for friends
 ----------------
 
-- wait some time before re-emitting pollen etc.
 - allow taking moving larvas etc.
+- animate animal aggression
 - no lives, just max. health and healing
 - production mode (exception handling and logging, hide all dev UI)
 - finish happy tune
