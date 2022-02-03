@@ -22,13 +22,14 @@ import {
 } from "../builder/sprites/SpriteStyleBasic";
 import {STRATEGY_ANT, STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TOAD} from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
-import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT} from "../builder/sprites/SpriteStyleSpecial";
+import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_BEE_LARVA, STRATEGY_QUEEN} from "../builder/sprites/SpriteStyleBees";
 import {STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
 import BeeLarvaStrategy from "../strategy/sprites/animals/BeeLarvaStrategy";
 import AntStrategy from "../strategy/sprites/animals/AntStrategy";
 import ToadStrategy from "../strategy/sprites/animals/ToadStrategy";
 import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
+import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -83,6 +84,8 @@ export default class SpriteController extends ControllerBase {
 				return new HintStrategy(this.game, model, this.controls);
 			case STRATEGY_DOOR_SLOT:
 				return new DoorSlotStrategy(this.game, model, this.controls);
+			case STRATEGY_SWITCH:
+				return new SwitchStrategy(this.game, model, this.controls);
 			default:
 				console.error('Strategy not found:', id);
 		}

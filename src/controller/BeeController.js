@@ -22,7 +22,7 @@ import {GROUND_TYPE_WAX_BACKGROUND, GROUND_TYPE_WAX_DOOR} from "../builder/Groun
 import {MAX_HEALTH} from "../model/BeeStateModel";
 import {SPRITE_TYPE_BEE_LIFE} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/sprites/SpriteStyleHints";
-import {STRATEGY_DOOR_SLOT} from "../builder/sprites/SpriteStyleSpecial";
+import {STRATEGY_DOOR_SLOT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
 
@@ -45,6 +45,7 @@ export default class BeeController extends ControllerBase {
 	showingActionHint;
 	showingDoorsHint;
 	starsTimeout;
+	lastLever;
 
 	constructor(game, model, controls) {
 		super(game, model, controls);
@@ -56,6 +57,7 @@ export default class BeeController extends ControllerBase {
 		this.showingControlsHint = false;
 		this.showingActionHint = false;
 		this.showingDoorsHint = false;
+		this.lastLever = null;
 
 		this.crawlingAnimationController = new AnimationController(this.game, this.model.crawlingAnimation, this.controls);
 		this.addChild(this.crawlingAnimationController);
@@ -252,6 +254,13 @@ export default class BeeController extends ControllerBase {
 					this.showingDoorsHint = false;
 				}
 			}
+			const lever = visitors.find((v) => v._is_sprite && (v.strategy.get() === STRATEGY_SWITCH));
+			if (lever) {
+				if (this.lastLever !== lever) {
+					lever.data.on = !lever.data.on;
+				}
+			}
+			this.lastLever = lever;
 		}
 	}
 
