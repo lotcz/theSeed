@@ -1,6 +1,12 @@
 import {IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED, IMAGE_HINT_KEYHOLE_1, IMAGE_HINT_KEYHOLE_2} from "./SpriteStyleHints";
 import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
-import {STRATEGY_FRIEND, STRATEGY_JELLY_MAKER, STRATEGY_OBJECT, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {
+	STRATEGY_FRIEND,
+	STRATEGY_JELLY_MAKER,
+	STRATEGY_LARVA,
+	STRATEGY_OBJECT,
+	STRATEGY_STATIC
+} from "./SpriteStyleBasic";
 import {
 	SPRITE_TYPE_GREEN_JELLY,
 	SPRITE_TYPE_HONEY,
@@ -21,12 +27,11 @@ export const IMAGE_STARS_2 = 'img/stars-2.svg';
 export const IMAGE_STARS_3 = 'img/stars-3.svg';
 
 export const SPRITE_TYPE_BEE_LARVA = 'bee-larva';
-export const STRATEGY_BEE_LARVA = 'bee-larva';
 export const IMAGE_BEE_LARVA = 'img/bee-larva.svg';
 import BeeLarvaImage from "../../../res/img/bee-larva.svg";
 
 SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_LARVA] = {
-	strategy: STRATEGY_BEE_LARVA,
+	strategy: STRATEGY_LARVA,
 	image: {
 		uri: IMAGE_BEE_LARVA,
 		resource: BeeLarvaImage

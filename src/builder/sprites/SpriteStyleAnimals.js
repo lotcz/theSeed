@@ -64,7 +64,7 @@ export const IMAGE_BUTTERFLY_LARVA = 'img/butterfly-larva.svg';
 import ButterflyLarvaImage from "../../../res/img/butterfly-larva.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
-	strategy: STRATEGY_BUG,
+	strategy: STRATEGY_LARVA,
 	image: {
 		uri: IMAGE_BUTTERFLY_LARVA,
 		resource: ButterflyLarvaImage
@@ -82,6 +82,7 @@ import {
 	SPRITE_TYPE_PURPLE_JELLY,
 	SPRITE_TYPE_YELLOW_JELLY
 } from "./SpriteStyleMinerals";
+import {STRATEGY_LARVA} from "./SpriteStyleBasic";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD] = {
 	strategy: STRATEGY_TOAD,

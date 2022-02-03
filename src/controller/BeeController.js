@@ -24,7 +24,8 @@ import {SPRITE_TYPE_BEE_LIFE} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/sprites/SpriteStyleHints";
 import {STRATEGY_DOOR_SLOT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
-import {STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
+import {STRATEGY_LARVA, STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
+import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
@@ -227,7 +228,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.carriedAmount() < MAX_INVENTORY_AMOUNT) {
-			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT));
+			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT || v.strategy.get() === STRATEGY_LARVA));
 			minerals.forEach((m) =>	this.takeItem(m));
 		}
 
@@ -288,8 +289,9 @@ export default class BeeController extends ControllerBase {
 		if (sameType) {
 			sameType.data.amount += amount;
 		} else {
-			this.model.inventory.set(item.clone());
-			item.data.amount = amount;
+			const taken = item.clone();
+			taken.data.amount = amount;
+			this.model.inventory.set(taken);
 		}
 
 		item.data.amount -= amount;
@@ -309,14 +311,18 @@ export default class BeeController extends ControllerBase {
 			this.showingActionHint = false;
 		}
 		const item = this.model.inventory.get();
-		const dropped = item.clone();
-		const amount = (item.strategy.equalsTo(STRATEGY_MINERAL)) ? 1 : item.data.amount;
-		dropped.data.amount = amount;
+		const isMineral = item.strategy.equalsTo(STRATEGY_MINERAL);
+		const amount = isMineral ? 1 : item.data.amount;
 		item.data.amount -= amount;
 		if (item.data.amount <= 0) {
 			this.model.inventory.set(null);
 		}
 		this.updateInventory();
+		const dropped = item.clone();
+		dropped.data.amount = amount;
+		if (isMineral) {
+			dropped.image.scale.set(ObjectStrategy.getObjectScale(amount, MINERAL_MAX_AMOUNT));
+		}
 		this.level.addResource(dropped.image.path.get());
 		const down = this.grid.getNeighbor(this.model.position, NEIGHBOR_TYPE_DOWN);
 		const position = this.level.isPenetrable(down) ? down : this.model.position;

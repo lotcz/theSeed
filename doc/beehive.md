@@ -221,7 +221,10 @@ TODO:
 BETA for friends
 ----------------
 
-- allow taking moving larvas etc.
+- toad
+- carniplant
+- butterflies
+- hornet
 - animate animal aggression
 - no lives, just max. health and healing
 - production mode (exception handling and logging, hide all dev UI)
