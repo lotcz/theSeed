@@ -251,7 +251,9 @@ export default class ToadStrategy extends StaticStrategy {
 			if (!beeHurt) {
 				const beeDistance = this.tongue[i].image.coordinates.distanceTo(this.level.bee.coordinates);
 				if (beeDistance < (this.grid.tileRadius.get() * 2)) {
-					this.game.beeState.hurt(0.5);
+					if (this.game.beeState.isAlive()) {
+						this.game.beeState.hurt(0.4);
+					}
 					if (this.game.beeState.isAlive()) {
 						const push = this.model.image.coordinates.subtract(this.level.bee.coordinates);
 						push.setSize(this.grid.tileRadius.get() * 15);

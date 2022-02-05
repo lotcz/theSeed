@@ -344,7 +344,7 @@ export default class BeeController extends ControllerBase {
 	onHurt(amount) {
 		const sound = Pixies.randomElement(BeeController.ouchSounds);
 		setTimeout(() => sound.play(), 250);
-		if (amount > 0.3 || this.game.beeState.health.get() < 0.5) {
+		if (amount > 0.1 || this.game.beeState.health.get() < 0.5) {
 			this.dropItem();
 		}
 		if (!this.model.starsVisible.get()) {

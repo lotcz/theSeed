@@ -132,8 +132,8 @@ export default class BeeRenderer extends SvgRenderer {
 		}
 
 		if (this.game.beeState.isDead()) {
-			this.imageRenderer.activate();
 			this.starsAnimationRenderer.deactivate();
+			this.imageRenderer.activate();
 		} else if (this.model.isFlying()) {
 			this.imageRenderer.activate();
 			this.leftWingRenderer.activate();

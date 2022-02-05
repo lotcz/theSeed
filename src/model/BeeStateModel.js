@@ -46,10 +46,15 @@ export default class BeeStateModel extends ModelBase {
 	}
 
 	hurt(amount) {
-		this.heal(-amount);
+		if (this.isAlive()) {
+			this.heal(-amount);
+		}
 	}
 
 	heal(amount) {
+		if (amount == 0) {
+			return;
+		}
 		this.health.set(Pixies.between(0, 1, this.health.get() + amount));
 		this.triggerEvent(amount < 0 ? 'hurt' : 'heal', Math.abs(amount));
 	}
