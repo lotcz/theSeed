@@ -20,7 +20,13 @@ import {
 	STRATEGY_OBJECT,
 	STRATEGY_STATIC
 } from "../builder/sprites/SpriteStyleBasic";
-import {STRATEGY_ANT, STRATEGY_BUG, STRATEGY_BUTTERFLY, STRATEGY_TOAD} from "../builder/sprites/SpriteStyleAnimals";
+import {
+	STRATEGY_ANT,
+	STRATEGY_BUG,
+	STRATEGY_BUTTERFLY,
+	STRATEGY_CARNI_PLANT,
+	STRATEGY_TOAD
+} from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_QUEEN} from "../builder/sprites/SpriteStyleBees";
@@ -30,6 +36,7 @@ import AntStrategy from "../strategy/sprites/animals/AntStrategy";
 import ToadStrategy from "../strategy/sprites/animals/ToadStrategy";
 import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
 import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
+import CarniPlantStrategy from "../strategy/sprites/animals/CarniPlantStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -65,6 +72,8 @@ export default class SpriteController extends ControllerBase {
 				return new ButterflyStrategy(this.game, model, this.controls);
 			case STRATEGY_TOAD:
 				return new ToadStrategy(this.game, model, this.controls);
+			case STRATEGY_CARNI_PLANT:
+				return new CarniPlantStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:
 				return new WaterStrategy(this.game, model, this.controls);
 			case STRATEGY_BUBBLE:

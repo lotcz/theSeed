@@ -10,6 +10,12 @@ export default class UpdatedStrategy extends SpriteStrategy {
 	randomizeInitialTimeout;
 	initialTimeoutRandomized;
 
+	/**
+	 * @param {GameModel} game
+	 * @param {SpriteModel} model
+	 * @param {ControlsModel} controls
+	 * @param {number=} timeout
+	 */
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls);
 
@@ -24,6 +30,9 @@ export default class UpdatedStrategy extends SpriteStrategy {
 
 	}
 
+	/**
+	 * @param {number} delta - in millisecs
+	 */
 	update(delta) {
 		this.timeout -= delta;
 		if (this.timeout <= 0) {

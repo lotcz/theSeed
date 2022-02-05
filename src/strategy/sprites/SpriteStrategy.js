@@ -3,9 +3,21 @@ import ControllerBase from "../../class/ControllerBase";
 export default class SpriteStrategy extends ControllerBase {
 	lastVisited;
 
+	/**
+	 * @type SpriteModel
+	 */
+	model;
+
+	/**
+	 *
+	 * @param {GameModel} game
+	 * @param {SpriteModel} model
+	 * @param {ControlsModel=} controls
+	 */
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.model = model;
 		this.lastVisited = null;
 	}
 

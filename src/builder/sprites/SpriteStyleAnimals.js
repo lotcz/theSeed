@@ -127,3 +127,22 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_HEAD_OPEN] = {
 		resource: ToadHeadOpenImage
 	},
 };
+
+export const SPRITE_TYPE_CARNI_PLANT_MOUTH = 'carni-plant-mouth';
+export const IMAGE_CARNI_PLANT_MOUTH  = 'img/carni-plant-mouth.svg';
+import CarniPlantMouthImage from "../../../res/img/carni-plant-mouth.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_CARNI_PLANT_MOUTH,
+		resource: CarniPlantMouthImage
+	},
+};
+
+export const SPRITE_TYPE_CARNI_PLANT = 'carnivorous-plant';
+export const STRATEGY_CARNI_PLANT = 'carnivorous-plant';
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT] = {
+	strategy: STRATEGY_CARNI_PLANT
+};

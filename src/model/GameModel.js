@@ -47,7 +47,12 @@ export const START_LEVEL = 'hatching';
 
 export default class GameModel extends ModelBase {
 	id;
+
+	/**
+	 * @type ControlsModel
+	 */
 	controls;
+
 	levels;
 	level;
 	levelName;

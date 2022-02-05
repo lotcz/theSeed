@@ -1,13 +1,41 @@
 import ActivatedTree from "./ActivatedTree";
 
 export default class ControllerBase extends ActivatedTree {
+	/**
+	 * @type GameModel
+	 */
 	game;
+
+	/**
+	 * @type ModelBase
+	 */
 	model;
+
+	/**
+	 * @type ControlsModel
+	 */
 	controls;
+
+	/**
+	 * @type LevelModel
+	 */
 	level;
+
+	/**
+	 * @type GridModel
+	 */
 	grid;
+
+	/**
+	 * @type Chessboard
+	 */
 	chessboard;
 
+	/**
+	 * @param {GameModel} game
+	 * @param {SpriteModel} model
+	 * @param {ControlsModel=} controls
+	 */
 	constructor(game, model, controls = null) {
 		super();
 		this.game = game;
@@ -19,9 +47,11 @@ export default class ControllerBase extends ActivatedTree {
 			this.grid = this.level.grid;
 			this.chessboard = this.level.grid.chessboard;
 		}
-
 	}
 
+	/**
+	 * @param {number} delta - in millisecs
+	 */
 	update(delta) {
 		if (this.model.isDeleted()) {
 			this.setDeleted(true);
@@ -37,6 +67,9 @@ export default class ControllerBase extends ActivatedTree {
 		this.updateInternal(delta);
 	}
 
+	/**
+	 * @param {number} delta - in millisecs
+	 */
 	updateInternal(delta) {
 
 	}

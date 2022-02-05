@@ -221,7 +221,6 @@ TODO:
 BETA for friends
 ----------------
 
-- toad
 - carniplant
 - butterflies
 - hornet

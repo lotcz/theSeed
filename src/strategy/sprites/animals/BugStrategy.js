@@ -4,7 +4,7 @@ import Sound from "../../../class/Sound";
 import {GROUND_TYPE_WATER} from "../../../builder/GroundStyle";
 import BeeDeathStrategy from "../../bee/BeeDeathStrategy";
 
-const DEBUG_BUG_STRATEGY = true;
+const DEBUG_BUG_STRATEGY = false;
 const BUG_TIMEOUT = 1500;
 const VISIBLE_DISTANCE = 5;
 export const BUG_MAX_AMOUNT = 15;

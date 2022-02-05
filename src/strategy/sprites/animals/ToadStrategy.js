@@ -53,7 +53,6 @@ export default class ToadStrategy extends StaticStrategy {
 
 	activateInternal() {
 		super.activateInternal();
-		this.deflateHead();
 		const positions = this.grid.getAffectedPositions(this.model.position, 3);
 		positions.forEach((p) => this.chessboard.addVisitor(p, this.model));
 	}
