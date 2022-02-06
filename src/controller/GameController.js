@@ -365,7 +365,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	showLevelSelection() {
-		const builder = new MenuBuilder('main');
+		const builder = new MenuBuilder(['main', 'list']);
 		const levelNames = this.model.levels.keys();
 		levelNames.forEach((name) => {
 			builder.addLine(name, (e) => this.onEditorLoadLevelRequestAsync(name));

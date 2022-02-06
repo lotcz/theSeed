@@ -1,5 +1,7 @@
 export const STRATEGY_EMPTY = 'empty';
 export const STRATEGY_STATIC = 'static';
+export const STRATEGY_DOOR_MOUTH = 'door-mouth';
+export const STRATEGY_DOOR_MOUTH_TRIGGER = 'door-mouth-trigger';
 export const STRATEGY_OBJECT = 'object';
 export const STRATEGY_JELLY_MAKER = 'jellymaker';
 export const STRATEGY_FRIEND = 'friend'

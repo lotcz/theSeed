@@ -4,6 +4,14 @@ import Vector2 from "../class/Vector2";
 import LevelEditorModel from "./LevelEditorModel";
 import HashTableModel from "./HashTableModel";
 import ResourceModel, {RESOURCE_TYPE_IMAGE, RESOURCE_TYPE_SOUND} from "./ResourceModel";
+import {
+	IMAGE_BEE,
+	IMAGE_BEE_CRAWL,
+	IMAGE_BEE_CRAWL_1,
+	IMAGE_BEE_WING,
+	IMAGE_STARS_1,
+	IMAGE_STARS_2, IMAGE_STARS_3
+} from "../builder/sprites/SpriteStyleBees";
 import {PARALLAX_STYLES} from "../builder/ParallaxStyle";
 import {SPRITE_STYLES} from "../builder/SpriteStyle";
 import {MUSIC_STYLES} from "../builder/MusicStyle";
@@ -17,6 +25,11 @@ import Stars2Image from "../../res/img/stars-2.svg";
 import Stars3Image from "../../res/img/stars-3.svg";
 import HintBackgroundImage from "../../res/img/hint-background.svg";
 import ControlsModel from "./ControlsModel";
+import BeeStateModel from "./BeeStateModel";
+import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
+import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
+import FallenItemsModel from "./FallenItemsModel";
+
 import LevelIntro from "../../levels/intro.json";
 import LevelHatching from "../../levels/hatching.json";
 import LevelTutorial1 from "../../levels/tutorial-1.json";
@@ -28,19 +41,7 @@ import LevelBeehive from "../../levels/beehive.json";
 import LevelMeadow1 from "../../levels/meadow-1.json";
 import LevelMeadow2 from "../../levels/meadow-2.json";
 import LevelPond from "../../levels/pond.json";
-import BeeStateModel from "./BeeStateModel";
-
-import {
-	IMAGE_BEE,
-	IMAGE_BEE_CRAWL,
-	IMAGE_BEE_CRAWL_1,
-	IMAGE_BEE_WING,
-	IMAGE_STARS_1,
-	IMAGE_STARS_2, IMAGE_STARS_3
-} from "../builder/sprites/SpriteStyleBees";
-import {IMAGE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
-import {IMAGE_HINT_BACKGROUND} from "../builder/sprites/SpriteStyleHints";
-import FallenItemsModel from "./FallenItemsModel";
+import LevelForest from "../../levels/forest.json";
 
 export const EDIT_MODE_ENABLED = true;
 export const START_LEVEL = 'hatching';
@@ -96,6 +97,7 @@ export default class GameModel extends ModelBase {
 		this.levels.set('meadow-1', LevelMeadow1);
 		this.levels.set('meadow-2', LevelMeadow2);
 		this.levels.set('pond', LevelPond);
+		this.levels.set('forest', LevelForest);
 
 		this.fallenItems = new FallenItemsModel();
 

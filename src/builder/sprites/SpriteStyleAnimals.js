@@ -5,7 +5,7 @@ import {
 	SPRITE_TYPE_PURPLE_JELLY,
 	SPRITE_TYPE_YELLOW_JELLY
 } from "./SpriteStyleMinerals";
-import {STRATEGY_LARVA, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {STRATEGY_DOOR_MOUTH, STRATEGY_DOOR_MOUTH_TRIGGER, STRATEGY_LARVA, STRATEGY_STATIC} from "./SpriteStyleBasic";
 
 export const SPRITE_STYLES_ANIMALS = [];
 
@@ -133,7 +133,7 @@ export const IMAGE_CARNI_PLANT_MOUTH  = 'img/carni-plant-mouth.svg';
 import CarniPlantMouthImage from "../../../res/img/carni-plant-mouth.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
-	strategy: STRATEGY_STATIC,
+	strategy: STRATEGY_DOOR_MOUTH,
 	image: {
 		uri: IMAGE_CARNI_PLANT_MOUTH,
 		resource: CarniPlantMouthImage
@@ -141,8 +141,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
 };
 
 export const SPRITE_TYPE_CARNI_PLANT = 'carnivorous-plant';
-export const STRATEGY_CARNI_PLANT = 'carnivorous-plant';
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT] = {
-	strategy: STRATEGY_CARNI_PLANT
+	strategy: STRATEGY_DOOR_MOUTH_TRIGGER
 };

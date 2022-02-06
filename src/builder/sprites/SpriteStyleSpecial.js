@@ -1,4 +1,4 @@
-import {STRATEGY_EMITTER, STRATEGY_EMPTY, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {STRATEGY_DOOR_MOUTH_TRIGGER, STRATEGY_EMITTER, STRATEGY_EMPTY, STRATEGY_STATIC} from "./SpriteStyleBasic";
 import {SPRITE_TYPE_POTASSIUM} from "./SpriteStyleMinerals";
 import {GROUND_TYPE_WAX_DOOR} from "../GroundStyle";
 
@@ -44,6 +44,12 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_SLOT] = {
 		uri: IMAGE_KEYHOLE,
 		resource: KeyholeImage
 	},
+};
+
+export const SPRITE_TYPE_DOOR_MOUTH_TRIGGER = 'door-mouth-trigger';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_MOUTH_TRIGGER] = {
+	strategy: STRATEGY_DOOR_MOUTH_TRIGGER,
 };
 
 export const SPRITE_TYPE_LEVER_ON = 'lever-on';

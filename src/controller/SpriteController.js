@@ -14,6 +14,8 @@ import EmptyStrategy from "../strategy/sprites/EmptyStrategy";
 import ObjectStrategy from "../strategy/sprites/ObjectStrategy";
 import BeeQueenStrategy from "../strategy/sprites/animals/BeeQueenStrategy";
 import {
+	STRATEGY_DOOR_MOUTH,
+	STRATEGY_DOOR_MOUTH_TRIGGER,
 	STRATEGY_EMITTER,
 	STRATEGY_EMPTY, STRATEGY_FRIEND,
 	STRATEGY_JELLY_MAKER, STRATEGY_LARVA,
@@ -24,11 +26,14 @@ import {
 	STRATEGY_ANT,
 	STRATEGY_BUG,
 	STRATEGY_BUTTERFLY,
-	STRATEGY_CARNI_PLANT,
 	STRATEGY_TOAD
 } from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
-import {STRATEGY_DOOR_SLOT, STRATEGY_EXIT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
+import {
+	STRATEGY_DOOR_SLOT,
+	STRATEGY_EXIT,
+	STRATEGY_SWITCH
+} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_QUEEN} from "../builder/sprites/SpriteStyleBees";
 import {STRATEGY_HINT} from "../builder/sprites/SpriteStyleHints";
 import LarvaStrategy from "../strategy/sprites/animals/LarvaStrategy";
@@ -36,7 +41,8 @@ import AntStrategy from "../strategy/sprites/animals/AntStrategy";
 import ToadStrategy from "../strategy/sprites/animals/ToadStrategy";
 import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
 import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
-import CarniPlantStrategy from "../strategy/sprites/animals/CarniPlantStrategy";
+import MouthTriggerStrategy from "../strategy/sprites/special/MouthTriggerStrategy";
+import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -72,8 +78,11 @@ export default class SpriteController extends ControllerBase {
 				return new ButterflyStrategy(this.game, model, this.controls);
 			case STRATEGY_TOAD:
 				return new ToadStrategy(this.game, model, this.controls);
-			case STRATEGY_CARNI_PLANT:
-				return new CarniPlantStrategy(this.game, model, this.controls);
+			case STRATEGY_DOOR_MOUTH_TRIGGER:
+			case 'carnivorous-plant':
+				return new MouthTriggerStrategy(this.game, model, this.controls);
+			case STRATEGY_DOOR_MOUTH:
+				return new DoorMouthStrategy(this.game, model, this.controls);
 			case STRATEGY_WATER:
 				return new WaterStrategy(this.game, model, this.controls);
 			case STRATEGY_BUBBLE:

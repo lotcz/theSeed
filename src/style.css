@@ -59,6 +59,24 @@ html, body {
 	left: 15%;
 }
 
+.menu.main ul {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.menu.main ul li {
+	flex: 1 1 auto;
+}
+
+.menu.list ul {
+	max-height: 600px;
+}
+
+.menu.list ul li {
+	padding-right: 25px;
+}
+
 .menu.play {
 	top: 10px;
 	left: 100px;
