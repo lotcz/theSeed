@@ -90,3 +90,18 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_LEVER] = {
 		imageOff: IMAGE_LEVER_OFF
 	}
 };
+
+export const SPRITE_TYPE_DOOR_LEVER = 'door-lever';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_LEVER] = {
+	strategy: STRATEGY_SWITCH,
+	image: {
+		uri: IMAGE_LEVER_OFF,
+		resource: LeverOffImage
+	},
+	data: {
+		imageOn: IMAGE_LEVER_ON,
+		imageOff: IMAGE_LEVER_OFF,
+		controlDoors: true
+	}
+};
