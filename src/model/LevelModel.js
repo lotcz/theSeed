@@ -335,19 +335,19 @@ export default class LevelModel extends ModelBase {
 		return visitors.length > 0;
 	}
 
-	isPenetrable(position) {
+	isPenetrable(position, exclude = null) {
 		if (!this.isValidPosition(position)) {
 			return false;
 		}
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => (exclude === null || v != exclude) && v._is_penetrable === false);
 		return visitors.length === 0;
 	}
 
-	isAir(position) {
+	isAir(position, exclude = null) {
 		if (!this.isValidPosition(position)) {
 			return false;
 		}
-		const visitors = this.grid.chessboard.getVisitors(position, (v) => v._is_penetrable === false || v.type === GROUND_TYPE_WATER);
+		const visitors = this.grid.chessboard.getVisitors(position, (v) => (exclude === null || v != exclude) && (v._is_penetrable === false || v.type === GROUND_TYPE_WATER));
 		return visitors.length === 0;
 	}
 

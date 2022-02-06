@@ -1,6 +1,6 @@
 import ControllerBase from "../class/ControllerBase";
 import BugStrategy from "../strategy/sprites/animals/BugStrategy";
-import ButterflyStrategy from "../strategy/sprites/animals/ButterflyStrategy";
+import FlyingBugStrategy from "../strategy/sprites/animals/FlyingBugStrategy";
 import StaticStrategy from "../strategy/sprites/StaticStrategy";
 import WaterStrategy from "../strategy/sprites/minerals/WaterStrategy";
 import MineralStrategy from "../strategy/sprites/minerals/MineralStrategy";
@@ -20,12 +20,12 @@ import {
 	STRATEGY_EMPTY, STRATEGY_FRIEND,
 	STRATEGY_JELLY_MAKER, STRATEGY_LARVA,
 	STRATEGY_OBJECT,
-	STRATEGY_STATIC
+	STRATEGY_STATIC,
+	STRATEGY_FLYING_BUG
 } from "../builder/sprites/SpriteStyleBasic";
 import {
 	STRATEGY_ANT,
 	STRATEGY_BUG,
-	STRATEGY_BUTTERFLY,
 	STRATEGY_TOAD
 } from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
@@ -43,9 +43,7 @@ import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
 import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
 import MouthTriggerStrategy from "../strategy/sprites/special/MouthTriggerStrategy";
 import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
-import AnimationRenderer from "../renderer/AnimationRenderer";
 import AnimationController from "./AnimationController";
-import GameModel from "../model/GameModel";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -87,6 +85,7 @@ export default class SpriteController extends ControllerBase {
 			anim.image.coordinates.set(this.model.image.coordinates);
 			anim.image.rotation.set(this.model.image.rotation.get());
 			anim.image.scale.set(this.model.image.scale.get());
+			anim.image.flipped.set(this.model.image.flipped.get());
 		}
 	}
 
@@ -106,8 +105,9 @@ export default class SpriteController extends ControllerBase {
 				return new LarvaStrategy(this.game, model, this.controls);
 			case STRATEGY_ANT:
 				return new AntStrategy(this.game, model, this.controls);
-			case STRATEGY_BUTTERFLY:
-				return new ButterflyStrategy(this.game, model, this.controls);
+			case STRATEGY_FLYING_BUG:
+			case 'butterfly':
+				return new FlyingBugStrategy(this.game, model, this.controls);
 			case STRATEGY_TOAD:
 				return new ToadStrategy(this.game, model, this.controls);
 			case STRATEGY_DOOR_MOUTH_TRIGGER:

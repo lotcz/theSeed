@@ -15,9 +15,6 @@ export default class SpriteRenderer extends SvgRenderer {
 		if (this.model.animations) {
 			this.model.activeAnimation.addOnChangeListener((animation) => this.updateAnimation(animation));
 		}
-		if (this.model.activeAnimation.isSet()) {
-			this.updateAnimation(this.model.activeAnimation.get());
-		}
 	}
 
 	activateInternal() {
@@ -34,6 +31,12 @@ export default class SpriteRenderer extends SvgRenderer {
 		}
 		this.updateAttachedSprite();
 		this.model.attachedSprite.addOnChangeListener(this.attachedSpriteChangedHandler);
+
+		if (this.model.activeAnimation.isSet() && this.model.animations && this.model.animations.exists(this.model.activeAnimation.get())) {
+			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(this.model.activeAnimation.get()), this.draw);
+			this.addChild(this.animationRenderer);
+			this.animationRenderer.activate();
+		}
 	}
 
 	deactivateInternal() {
@@ -62,15 +65,18 @@ export default class SpriteRenderer extends SvgRenderer {
 			this.removeChild(this.animationRenderer);
 		}
 		if (animation && this.model.animations && this.model.animations.exists(animation)) {
-			this.imageRenderer.deactivate();
-			console.log(this.model.animations.get(animation));
+			if (this.imageRenderer) {
+				this.imageRenderer.deactivate();
+			}
 			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(animation), this.draw);
 			this.addChild(this.animationRenderer);
 			if (this.isActivated()) {
 				this.animationRenderer.activate();
 			}
 		} else {
-			this.imageRenderer.activate();
+			if (this.isActivated()) {
+				this.imageRenderer.activate();
+			}
 		}
 	}
 

@@ -5,7 +5,13 @@ import {
 	SPRITE_TYPE_PURPLE_JELLY,
 	SPRITE_TYPE_YELLOW_JELLY
 } from "./SpriteStyleMinerals";
-import {STRATEGY_DOOR_MOUTH, STRATEGY_DOOR_MOUTH_TRIGGER, STRATEGY_LARVA, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {
+	STRATEGY_DOOR_MOUTH,
+	STRATEGY_DOOR_MOUTH_TRIGGER,
+	STRATEGY_FLYING_BUG,
+	STRATEGY_LARVA,
+	STRATEGY_STATIC
+} from "./SpriteStyleBasic";
 
 export const SPRITE_STYLES_ANIMALS = [];
 
@@ -53,25 +59,18 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
 	}
 };
 
-export const SPRITE_TYPE_BUTTERFLY_PROFILE = 'butterfly-profile';
-export const STRATEGY_BUTTERFLY = 'butterfly';
+export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
+import ButterflyImage from "../../../res/img/butterfly.svg";
 export const IMAGE_BUTTERFLY_PROFILE = 'img/butterfly-profile.svg';
 import ButterflyProfileImage from "../../../res/img/butterfly-profile.svg";
 
-SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_PROFILE] = {
-	strategy: STRATEGY_BUTTERFLY,
-	image: {
-		uri: IMAGE_BUTTERFLY_PROFILE,
-		resource: ButterflyProfileImage
-	}
-};
-
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
-export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
-import ButterflyImage from "../../../res/img/butterfly.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
-	strategy: STRATEGY_BUTTERFLY,
+	strategy: STRATEGY_FLYING_BUG,
+	data: {
+		size: 2
+	},
 	image: {
 		uri: IMAGE_BUTTERFLY,
 		resource: ButterflyImage
@@ -81,7 +80,9 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
 			{
 				uri: IMAGE_BUTTERFLY,
 				resource: ButterflyImage
-			},
+			}
+		],
+		landing: [
 			{
 				uri: IMAGE_BUTTERFLY_PROFILE,
 				resource: ButterflyProfileImage

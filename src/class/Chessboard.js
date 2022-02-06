@@ -1,3 +1,5 @@
+const DEBUG_CHESSBOARD = false;
+
 export default class Chessboard {
 	tiles;
 
@@ -34,7 +36,7 @@ export default class Chessboard {
 		position = position.toDiscreteSpace();
 		let tile = this.getTile(position);
 		if (tile.includes(visitor)) {
-			console.log('Visitor already present');
+			if (DEBUG_CHESSBOARD) console.log('Visitor already present');
 		} else {
 			tile.push(visitor);
 		}
@@ -45,7 +47,7 @@ export default class Chessboard {
 		const tile = this.getTile(position);
 		const index = tile.indexOf(visitor);
 		if (index < 0) {
-			console.log('Visitor not present');
+			if (DEBUG_CHESSBOARD) console.log('Visitor not present');
 		} else {
 			tile.splice(index, 1);
 		}
