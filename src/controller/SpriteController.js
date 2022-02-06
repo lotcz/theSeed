@@ -43,19 +43,51 @@ import FriendStrategy from "../strategy/sprites/animals/FriendStrategy";
 import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
 import MouthTriggerStrategy from "../strategy/sprites/special/MouthTriggerStrategy";
 import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
+import AnimationRenderer from "../renderer/AnimationRenderer";
+import AnimationController from "./AnimationController";
+import GameModel from "../model/GameModel";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
 
+	/*
+	@type SpriteModel
+	 */
+	model;
+
+	/**
+	 *
+	 * @param GameModel game
+	 * @param SpriteModel model
+	 * @param ControlsModel controls
+	 */
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.model = model;
 		this.strategy = this.createStrategy(model);
 		if (this.strategy) {
 			this.addChild(this.strategy);
 		}
 
 		model.onClick = (e) => this.onClick(e);
+
+		this.animationController = null;
+		if (this.model.animations) {
+			this.model.activeAnimation.addOnChangeListener((animation) => this.updateAnimation(animation));
+		}
+		if (this.model.activeAnimation.isSet()) {
+			this.updateAnimation(this.model.activeAnimation.get());
+		}
+	}
+
+	updateInternal(delta) {
+		if (this.model.activeAnimation.isSet() && this.animationController) {
+			const anim = this.animationController.model;
+			anim.image.coordinates.set(this.model.image.coordinates);
+			anim.image.rotation.set(this.model.image.rotation.get());
+			anim.image.scale.set(this.model.image.scale.get());
+		}
 	}
 
 	createStrategy(model) {
@@ -79,7 +111,6 @@ export default class SpriteController extends ControllerBase {
 			case STRATEGY_TOAD:
 				return new ToadStrategy(this.game, model, this.controls);
 			case STRATEGY_DOOR_MOUTH_TRIGGER:
-			case 'carnivorous-plant':
 				return new MouthTriggerStrategy(this.game, model, this.controls);
 			case STRATEGY_DOOR_MOUTH:
 				return new DoorMouthStrategy(this.game, model, this.controls);
@@ -112,6 +143,21 @@ export default class SpriteController extends ControllerBase {
 
 	onClick(e) {
 		this.strategy.onClick(e);
+	}
+
+	updateAnimation(animation) {
+		if (this.animationController) {
+			this.removeChild(this.animationController);
+			this.animationController = null;
+		}
+		if (animation && this.model.animations && this.model.animations.exists(animation)) {
+			const animModel = this.model.animations.get(animation);
+			this.animationController = new AnimationController(this.game, animModel);
+			this.addChild(this.animationController);
+			if (this.isActivated()) {
+				this.animationController.activate();
+			}
+		}
 	}
 
 }

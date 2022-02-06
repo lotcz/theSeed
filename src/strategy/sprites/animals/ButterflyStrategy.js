@@ -17,6 +17,8 @@ export default class ButterflyStrategy extends AnimatedStrategy {
 	}
 
 	updateStrategy() {
+		this.model.activeAnimation.set('flying');
+
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 
 		if (this.lastDirection && (Math.random() < 0.95)) {

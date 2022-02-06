@@ -221,7 +221,6 @@ TODO:
 BETA for friends
 ----------------
 
-- carniplant
 - butterflies
 - hornet
 - animate animal aggression

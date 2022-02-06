@@ -164,6 +164,9 @@ export default class GameModel extends ModelBase {
 			if (style.image) {
 				this.addResource(RESOURCE_TYPE_IMAGE, style.image.uri, style.image.resource);
 			}
+			if (style.animations) {
+				Object.keys(style.animations).forEach((animationName) => style.animations[animationName].forEach((image) => this.addResource(RESOURCE_TYPE_IMAGE, image.uri, image.resource)));
+			}
 		}
 
 		for (let type in MUSIC_STYLES) {

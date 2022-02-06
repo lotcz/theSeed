@@ -4,6 +4,11 @@ import DirtyValue from "../class/DirtyValue";
 import Vector2 from "../class/Vector2";
 import Pixies from "../class/Pixies";
 import NullableModelValue from "../class/NullableModelValue";
+import {SPRITE_STYLES_BEES} from "../builder/sprites/SpriteStyleBees";
+import {SPRITE_STYLES} from "../builder/SpriteStyle";
+import CollectionModel from "./CollectionModel";
+import HashTableModel from "./HashTableModel";
+import AnimationModel from "./AnimationModel";
 
 export default class SpriteModel extends ModelBase {
 	position;
@@ -12,6 +17,7 @@ export default class SpriteModel extends ModelBase {
 	strategy;
 	data;
 	type;
+	animations;
 	_is_sprite;
 	_is_penetrable;
 	_is_crawlable;
@@ -36,6 +42,10 @@ export default class SpriteModel extends ModelBase {
 		this.strategy = new DirtyValue();
 		this.addChild(this.strategy);
 
+		this.animations = null;
+		this.activeAnimation = new DirtyValue();
+		this.addChild(this.activeAnimation);
+
 		this.type = '';
 		this.data = {};
 
@@ -53,7 +63,8 @@ export default class SpriteModel extends ModelBase {
 			attachedSprite: (this.attachedSprite.isSet()) ? this.attachedSprite.get().getState() : null,
 			strategy: this.strategy.get(),
 			data: Pixies.clone(this.data),
-			type: this.type
+			type: this.type,
+			activeAnimation: this.activeAnimation.getState()
 		}
 	}
 
@@ -72,6 +83,12 @@ export default class SpriteModel extends ModelBase {
 		if (this.data.penetrable !== undefined) this._is_penetrable = this.data.penetrable;
 		if (this.data.crawlable !== undefined) this._is_crawlable = this.data.crawlable;
 		if (state.type) this.type = state.type;
+		const style = SPRITE_STYLES[state.type];
+		if (style && style.animations) {
+			this.animations = new HashTableModel(style.animations, (animation) => new AnimationModel({image: {path: animation[0].uri}, paths: animation.map((img) => img.uri)}));
+			this.addChild(this.animations);
+		}
+		if (state.activeAnimation) this.activeAnimation.restoreState(state.activeAnimation);
 	}
 
 	clone() {

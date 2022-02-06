@@ -1,5 +1,6 @@
 import SvgRenderer from "./SvgRenderer";
 import ImageRenderer from "./ImageRenderer";
+import AnimationRenderer from "./AnimationRenderer";
 
 export default class SpriteRenderer extends SvgRenderer {
 	constructor(game, model, draw) {
@@ -10,6 +11,13 @@ export default class SpriteRenderer extends SvgRenderer {
 		this.imageRenderer = null;
 		this.group = null;
 		this.backGroup = null;
+		this.animationRenderer = null;
+		if (this.model.animations) {
+			this.model.activeAnimation.addOnChangeListener((animation) => this.updateAnimation(animation));
+		}
+		if (this.model.activeAnimation.isSet()) {
+			this.updateAnimation(this.model.activeAnimation.get());
+		}
 	}
 
 	activateInternal() {
@@ -46,6 +54,23 @@ export default class SpriteRenderer extends SvgRenderer {
 			this.attachedSpriteRenderer = new SpriteRenderer(this.game, this.model.attachedSprite.get(), this.model.attachedSpriteBehind ? this.backGroup : this.group);
 			this.addChild(this.attachedSpriteRenderer);
 			this.attachedSpriteRenderer.activate();
+		}
+	}
+
+	updateAnimation(animation) {
+		if (this.animationRenderer) {
+			this.removeChild(this.animationRenderer);
+		}
+		if (animation && this.model.animations && this.model.animations.exists(animation)) {
+			this.imageRenderer.deactivate();
+			console.log(this.model.animations.get(animation));
+			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(animation), this.draw);
+			this.addChild(this.animationRenderer);
+			if (this.isActivated()) {
+				this.animationRenderer.activate();
+			}
+		} else {
+			this.imageRenderer.activate();
 		}
 	}
 

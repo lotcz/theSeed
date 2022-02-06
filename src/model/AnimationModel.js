@@ -41,4 +41,9 @@ export default class AnimationModel extends ModelBase {
 		if (state.paused) this.paused.restoreState(state.paused);
 	}
 
+	setImageModel(image) {
+		this.removeChild(this.image);
+		this.image = image;
+		this.addChild(this.image);
+	}
 }
