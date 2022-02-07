@@ -1,7 +1,7 @@
 import Pixies from "../../../class/Pixies";
 import AnimatedStrategy from "../AnimatedStrategy";
 
-const FLYING_BUG_TIMEOUT = 220;
+const FLYING_BUG_TIMEOUT = 120;
 const FLYING_BUG_LANDING_TIMEOUT = 700;
 
 const STATE_FLYING = 0;

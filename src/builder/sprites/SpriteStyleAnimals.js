@@ -106,6 +106,11 @@ import HornetLandingt1Image from "../../../res/img/hornet-landing-1.svg";
 export const IMAGE_HORNET_LANDING_2 = 'img/hornet-landing-2.svg';
 import HornetLanding2Image from "../../../res/img/hornet-landing-2.svg";
 
+export const IMAGE_HORNET_ATTACKING_1 = 'img/hornet-attack-1.svg';
+import HornetAttacking1Image from "../../../res/img/hornet-attack-1.svg";
+export const IMAGE_HORNET_ATTACKING_2 = 'img/hornet-attack-2.svg';
+import HornetAttacking2Image from "../../../res/img/hornet-attack-2.svg";
+
 export const SPRITE_TYPE_HORNET = 'hornet';
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
@@ -147,6 +152,17 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
 			{
 				uri: IMAGE_HORNET_LANDING_2,
 				resource: HornetLanding2Image
+			}
+		],
+		attacking: [
+			{
+				uri: IMAGE_HORNET_ATTACKING_1,
+				resource: HornetAttacking1Image,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_HORNET_ATTACKING_2,
+				resource: HornetAttacking2Image
 			}
 		]
 	}

@@ -64,6 +64,7 @@ export default class SpriteRenderer extends SvgRenderer {
 	}
 
 	updateAnimation(animation) {
+		console.log('updating animation')
 		if (this.animationRenderer) {
 			this.removeChild(this.animationRenderer);
 		}

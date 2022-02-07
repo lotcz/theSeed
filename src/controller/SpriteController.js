@@ -77,6 +77,8 @@ export default class SpriteController extends ControllerBase {
 		if (this.model.activeAnimation.isSet()) {
 			this.updateAnimation(this.model.activeAnimation.get());
 		}
+
+		this.animationImageUpdatedHandler = () => this.model.makeDirty();
 	}
 
 	updateInternal(delta) {
@@ -147,13 +149,16 @@ export default class SpriteController extends ControllerBase {
 
 	updateAnimation(animation) {
 		if (this.animationController) {
+			const anim = this.animationController.model;
+			this.model.removeChild(anim);
 			this.removeChild(this.animationController);
 			this.animationController = null;
 		}
 		if (animation && this.model.animations && this.model.animations.exists(animation)) {
-			const animModel = this.model.animations.get(animation);
-			this.animationController = new AnimationController(this.game, animModel);
+			const anim = this.model.animations.get(animation);
+			this.animationController = new AnimationController(this.game, anim);
 			this.addChild(this.animationController);
+			this.model.addChild(anim);
 			if (this.isActivated()) {
 				this.animationController.activate();
 			}
