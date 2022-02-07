@@ -74,9 +74,7 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 			if (this.isDirectionFree(this.lastDirection)) {
 				const next = neighbors[this.lastDirection];
 				this.setTargetPosition(next);
-				if (this.isLanding()) {
-					this.model.image.flipped.set(next.x <= this.model.position.x);
-				}
+				this.model.image.flipped.set(next.x <= this.model.position.x);
 				return;
 			}
 		}
@@ -98,23 +96,25 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 			const next = neighbors[direction];
 			this.lastDirection = direction;
 			this.setTargetPosition(next);
-			if (this.isLanding()) {
-				this.model.image.flipped.set(next.x <= this.model.position.x);
-			}
+			this.model.image.flipped.set(next.x <= this.model.position.x);
 		}
 	}
 
 	isDirectionFree(direction) {
 		const position = this.grid.getNeighbor(this.model.position, direction, this.model.data.size);
 		const affected = this.grid.getAffectedPositions(position, this.model.data.size);
-		const impenetrable = affected.some((p) => !this.level.isAir(p, this.model));
-		return !impenetrable;
+		if (this.level.isPlayable && this.level.bee) {
+			if (affected.some((p) => this.level.bee.position.equalsTo(p))) {
+				return false;
+			}
+		}
+		return !affected.some((p) => !this.level.isAir(p, this.model));
 	}
 
 	fly() {
 		this.state = STATE_FLYING;
 		this.oriented = false;
-		this.turnWhenMoving = true;
+		this.turnWhenMoving = false;
 		this.defaultTimeout = this.flyingTimeout;
 		if (this.model.animations && this.model.animations.exists('flying')) {
 			this.model.activeAnimation.set('flying');

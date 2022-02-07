@@ -1,6 +1,5 @@
 import ModelBase from "../class/ModelBase";
 import DirtyValue from "../class/DirtyValue";
-import CollectionModel from "./CollectionModel";
 import ImageModel from "./ImageModel";
 
 export default class AnimationModel extends ModelBase {

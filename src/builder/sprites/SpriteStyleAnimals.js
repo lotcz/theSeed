@@ -91,6 +91,66 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
 	}
 };
 
+export const IMAGE_HORNET = 'img/hornet.svg';
+import HornetImage from "../../../res/img/hornet.svg";
+
+export const IMAGE_HORNET_FLIGHT_1 = 'img/hornet-flight-1.svg';
+import HornetFlight1Image from "../../../res/img/hornet-flight-1.svg";
+export const IMAGE_HORNET_FLIGHT_2 = 'img/hornet-flight-2.svg';
+import HornetFlight2Image from "../../../res/img/hornet-flight-2.svg";
+export const IMAGE_HORNET_FLIGHT_3 = 'img/hornet-flight-3.svg';
+import HornetFlight3Image from "../../../res/img/hornet-flight-3.svg";
+
+export const IMAGE_HORNET_LANDING_1 = 'img/hornet-landing-1.svg';
+import HornetLandingt1Image from "../../../res/img/hornet-landing-1.svg";
+export const IMAGE_HORNET_LANDING_2 = 'img/hornet-landing-2.svg';
+import HornetLanding2Image from "../../../res/img/hornet-landing-2.svg";
+
+export const SPRITE_TYPE_HORNET = 'hornet';
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
+	strategy: STRATEGY_FLYING_BUG,
+	data: {
+		size: 2
+	},
+	image: {
+		uri: IMAGE_HORNET,
+		resource: HornetImage
+	},
+	animations: {
+		flying: [
+			{
+				uri: IMAGE_HORNET_FLIGHT_1,
+				resource: HornetFlight1Image,
+				frameRate: 60
+			},
+			{
+				uri: IMAGE_HORNET_FLIGHT_2,
+				resource: HornetFlight2Image
+			},
+			{
+				uri: IMAGE_HORNET_FLIGHT_3,
+				resource: HornetFlight3Image
+			},
+			{
+				uri: IMAGE_HORNET_FLIGHT_2,
+				resource: HornetFlight2Image
+			},
+		],
+		landing: [
+			{
+				uri: IMAGE_HORNET_LANDING_1,
+				resource: HornetLandingt1Image,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_HORNET_LANDING_2,
+				resource: HornetLanding2Image
+			}
+		]
+	}
+};
+
 export const SPRITE_TYPE_BUTTERFLY_LARVA = 'butterfly-larva';
 export const IMAGE_BUTTERFLY_LARVA = 'img/butterfly-larva.svg';
 import ButterflyLarvaImage from "../../../res/img/butterfly-larva.svg";

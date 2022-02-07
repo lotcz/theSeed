@@ -10,6 +10,8 @@ import CollectionModel from "./CollectionModel";
 import HashTableModel from "./HashTableModel";
 import AnimationModel from "./AnimationModel";
 
+const DEFAULT_ANIMATION_FRAME_RATE = 2;
+
 export default class SpriteModel extends ModelBase {
 	position;
 	image;
@@ -85,7 +87,7 @@ export default class SpriteModel extends ModelBase {
 		if (state.type) this.type = state.type;
 		const style = SPRITE_STYLES[state.type];
 		if (style && style.animations) {
-			this.animations = new HashTableModel(style.animations, (animation) => new AnimationModel({image: {path: animation[0].uri}, paths: animation.map((img) => img.uri)}));
+			this.animations = new HashTableModel(style.animations, (animation) => new AnimationModel({image: {path: animation[0].uri}, paths: animation.map((img) => img.uri), frameRate: animation[0].frameRate || DEFAULT_ANIMATION_FRAME_RATE}));
 			this.addChild(this.animations);
 		}
 		if (state.activeAnimation) this.activeAnimation.restoreState(state.activeAnimation);

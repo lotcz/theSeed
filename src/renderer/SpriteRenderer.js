@@ -36,6 +36,9 @@ export default class SpriteRenderer extends SvgRenderer {
 			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(this.model.activeAnimation.get()), this.draw);
 			this.addChild(this.animationRenderer);
 			this.animationRenderer.activate();
+			if (this.imageRenderer) {
+				this.imageRenderer.deactivate();
+			}
 		}
 	}
 
