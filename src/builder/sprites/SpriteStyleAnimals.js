@@ -111,7 +111,8 @@ export const SPRITE_TYPE_HORNET = 'hornet';
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
 	strategy: STRATEGY_FLYING_BUG,
 	data: {
-		size: 2
+		size: 2,
+		hurts: 0.3
 	},
 	image: {
 		uri: IMAGE_HORNET,

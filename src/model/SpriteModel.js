@@ -13,10 +13,26 @@ import AnimationModel from "./AnimationModel";
 const DEFAULT_ANIMATION_FRAME_RATE = 2;
 
 export default class SpriteModel extends ModelBase {
+	/**
+	 * @type Vector2
+	 */
 	position;
+
+	/**
+	 * @type ImageModel
+	 */
 	image;
+
+	/**
+	 * @type NullableModelValue
+	 */
 	attachedSprite;
+
+	/**
+	 * @type DirtyValue
+	 */
 	strategy;
+
 	data;
 	type;
 	animations;

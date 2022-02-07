@@ -14,6 +14,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 	offset;
 	turnWhenMoving;
 	oriented;
+	keepHeadUp;
 
 	constructor(game, model, controls, timeout) {
 		super(game, model, controls, timeout);
@@ -24,6 +25,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.offset = null;
 		this.turnWhenMoving = false;
 		this.oriented = false;
+		this.keepHeadUp = false;
 		this.turningDuration = DEFAULT_TURNING_DURATION;
 		this.rotateAttachedSprite = true;
 		this.attachedSpriteOffset = new Vector2();
@@ -51,8 +53,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		if (this.model.image.rotation.equalsTo(rotation)) {
 			this.animatedRotation = null;
 		} else {
+			console.log('from:', this.model.image.rotation.get(), 'to:', rotation);
 			if (timeout === null) timeout = this.turningDuration;
-			if (this.oriented) {
+			if (this.keepHeadUp) {
 				this.animatedRotation = new AnimatedValue(RotationValue.normalizeValue(this.model.image.rotation.get() + 180), RotationValue.normalizeValue(rotation + 180), timeout);
 			} else {
 				this.animatedRotation = new AnimatedRotation(this.model.image.rotation.get(), rotation, timeout);
@@ -96,7 +99,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 
 		if (this.animatedRotation) {
 			let rotation = this.animatedRotation.get(delta);
-			if (this.oriented) {
+			if (this.keepHeadUp) {
 				rotation += 180;
 			}
 			this.model.image.rotation.set(rotation);

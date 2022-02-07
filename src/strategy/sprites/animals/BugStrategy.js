@@ -16,6 +16,7 @@ export default class BugStrategy extends ObjectStrategy {
 		super(game, model, controls, BUG_TIMEOUT);
 
 		this.oriented = true;
+		this.keepHeadUp = true;
 		this.turnWhenMoving = true;
 		this.rotateAttachedSprite = false;
 		this.maxAmount = BUG_MAX_AMOUNT;
