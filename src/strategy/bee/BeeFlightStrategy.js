@@ -18,10 +18,10 @@ const MAX_SPEED = 1500;
 const MAX_CRAWL_SPEED = 1000;
 
 // how quickly will speed drop down, pixels per second
-const SLOWDOWN_SPEED = 400;
+const SLOWDOWN_SPEED = 800;
 
 // how quickly will speed build up, pixels per second
-const SPEEDUP_SPEED = 800;
+const SPEEDUP_SPEED = 1800;
 
 const DEFAULT_HIT_TIMEOUT = 300;
 
@@ -38,9 +38,20 @@ export default class BeeFlightStrategy extends ControllerBase {
 	scaleAnimation;
 	coordinatesAnimation;
 
+	/**
+	 * @type BeeModel
+	 */
+	model;
+
+	/**
+	 * @param {GameModel} game
+	 * @param {BeeModel} model
+	 * @param {ControlsModel} controls
+	 */
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.model = model;
 		this.wingRotation = 0;
 		this.speed = 0;
 		this.dead = false;
@@ -106,13 +117,13 @@ export default class BeeFlightStrategy extends ControllerBase {
 				direction = direction.addX(speedup * secsDelta);
 				this.model.headingLeft.set(false);
 			}
-		} else {
-			//slow down
-			this.speed = direction.size();
-			if (this.speed > 0) {
-				const slowDown = (this.dead) ? SLOWDOWN_SPEED * 4 : SLOWDOWN_SPEED;
-				direction.setSize(Math.max(0, this.speed - (slowDown * secsDelta)));
-			}
+		}
+
+		//slow down
+		this.speed = direction.size();
+		if (this.speed > 0) {
+			const slowDown = (this.dead) ? SLOWDOWN_SPEED * 4 : SLOWDOWN_SPEED;
+			direction.setSize(Math.max(0, this.speed - (slowDown * secsDelta)));
 		}
 
 		if (this.hitTimeout > 0) {

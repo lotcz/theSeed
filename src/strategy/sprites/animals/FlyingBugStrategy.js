@@ -1,14 +1,18 @@
 import Pixies from "../../../class/Pixies";
 import AnimatedStrategy from "../AnimatedStrategy";
 
-const FLYING_BUG_TIMEOUT = 120;
+const FLYING_BUG_TIMEOUT = 150;
+const FLYING_BUG_ATTACK_TIMEOUT = 500;
 const FLYING_BUG_LANDING_TIMEOUT = 700;
+
+const FLYING_BUG_MAX_CHASE = 70;
+const FLYING_BUG_CHASE_TIMEOUT = 5000;
 
 const STATE_FLYING = 0;
 const STATE_LANDING = 1;
 const STATE_ATTACKING = 2;
 
-const DEBUG_FLYING_BUG = true;
+const DEBUG_FLYING_BUG = false;
 
 export default class FlyingBugStrategy extends AnimatedStrategy {
 	lastDirection;
@@ -17,6 +21,7 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		super(game, model, controls, FLYING_BUG_TIMEOUT);
 
 		this.flyingTimeout = this.model.data.timeout || FLYING_BUG_TIMEOUT;
+		this.attackTimeout = this.model.data.attackTimeout || FLYING_BUG_ATTACK_TIMEOUT;
 		this.landingTimeout = this.model.data.landingTimeout || FLYING_BUG_LANDING_TIMEOUT;
 
 		this.model.data.size = this.model.data.size || 1;
@@ -25,9 +30,12 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		this.lastDirection = null;
 		this.model._is_penetrable = false;
 		this.turningDuration = 200;
+		this.chasing = FLYING_BUG_MAX_CHASE;
+		this.chasingTimeout = 0;
 
-		this.noticeDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size + 10.5);
-		this.attackDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size + 0.5);
+		this.noticeDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size + 8.5);
+		this.attackDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size);
+		this.stopChaseDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size + 12);
 
 		this.visitorsPosition = null;
 		this.positionChangedHandler = (p) => this.onPositionChanged(p);
@@ -52,10 +60,10 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 	updateStrategy() {
 		const neighbors = this.level.grid.getNeighbors(this.model.position);
 
-		if (this.model.data.hurts > 0 && this.level.isPlayable && this.level.bee && this.game.beeState.isAlive()) {
+		if (this.model.data.hurts > 0 && this.chasingTimeout <= 0 && this.level.isPlayable && this.level.bee && this.game.beeState.isAlive()) {
 			const beeDistance = this.level.bee.coordinates.distanceTo(this.model.image.coordinates);
 			if (DEBUG_FLYING_BUG) console.log('bee distance', beeDistance);
-			if (beeDistance < this.noticeDistance) {
+			if (beeDistance < this.noticeDistance || (beeDistance < this.stopChaseDistance && this.chasing > 0)) {
 				if (beeDistance < this.attackDistance) {
 					if (DEBUG_FLYING_BUG) console.log('attack bee');
 					this.attack();
@@ -72,25 +80,45 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 						nearestPosition = available[i];
 					}
 				}
-				this.setTargetPosition(nearestPosition);
-				this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
-				if (!this.isFlying()) {
-					this.fly();
+
+				if (this.chasing > 0) {
+					this.chasing -= 1;
+					if (this.chasing <= 0) {
+						this.chasingTimeout = FLYING_BUG_CHASE_TIMEOUT;
+					}
+					this.setTargetPosition(nearestPosition);
+					this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
+					if (!this.isFlying()) {
+						this.fly();
+					}
+					return;
+				} else {
+					this.chasing = FLYING_BUG_MAX_CHASE;
 				}
-				return;
+			} else {
+				this.chasing = 0;
 			}
 		}
 
-		const affected = this.grid.getAffectedPositions(this.model.position, this.model.data.size + 2);
-		const somethingNearby = affected.some((p) => !this.level.isAir(p, this.model));
-		if (DEBUG_FLYING_BUG) console.log('something else near:', somethingNearby);
+		if (this.model.data.hurts > 0) {
+			if (!this.isLanding()) {
+				this.land();
+			}
+			if (this.chasingTimeout > 0) {
+				this.chasingTimeout -= this.defaultTimeout;
+			}
 
-		if (somethingNearby && !this.isLanding()) {
-			this.land();
-		}
+		} else {
+			const affected = this.grid.getAffectedPositions(this.model.position, this.model.data.size + 2);
+			const somethingNearby = affected.some((p) => this.level.bee && p.equalsTo(this.level.bee.position) || !this.level.isAir(p, this.model));
+			if (DEBUG_FLYING_BUG) console.log('something else near:', somethingNearby);
 
-		if ((!this.isFlying()) && !somethingNearby) {
-			this.fly();
+			if (somethingNearby && !this.isLanding()) {
+				this.land();
+			}
+			if ((!this.isFlying()) && !somethingNearby) {
+				this.fly();
+			}
 		}
 
 		if (this.lastDirection && (Math.random() < 0.95)) {
@@ -174,12 +202,13 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		this.state = STATE_ATTACKING;
 		this.oriented = true;
 		this.turnWhenMoving = false;
-		this.defaultTimeout = this.flyingTimeout;
+		this.defaultTimeout = this.attackTimeout;
 		if (this.model.animations && this.model.animations.exists('attacking')) {
 			this.model.activeAnimation.set('attacking');
 		}
 		this.setTargetRotation(this.model.image.coordinates.getRotation(this.level.bee.coordinates));
 		this.game.beeState.hurt(DEBUG_FLYING_BUG ? 0.001 : this.model.data.hurts);
+		this.chasing = FLYING_BUG_MAX_CHASE;
 		if (DEBUG_FLYING_BUG) console.log('attacking');
 	}
 

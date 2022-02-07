@@ -6,7 +6,7 @@ import {START_LEVEL} from "../model/GameModel";
 import {MAX_HEALTH} from "../model/BeeStateModel";
 import {SPRITE_TYPE_BEE_DEAD} from "../builder/sprites/SpriteStyleObjects";
 
-const DEBUG_LEVEL_CONTROLLER = true;
+const DEBUG_LEVEL_CONTROLLER = false;
 
 export default class LevelController extends ControllerBase {
 	isDead;

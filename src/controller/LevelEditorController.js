@@ -8,9 +8,20 @@ import {
 const DEBUG_EDITOR_CONTROLLER = false;
 
 export default class LevelEditorController extends ControllerBase {
+
+	/**
+	 * @type LevelEditorModel
+	 */
+	model;
+
+	/**
+	 * @param {GameModel} game
+	 * @param {LevelEditorModel} model
+	 */
 	constructor(game, model) {
 		super(game, model);
 
+		this.model = model;
 		this.lastMouseCoords = null;
 		this.lastHighlight = null;
 		this.mouseMoveHandler = (coordinates) => this.onMouseMove(coordinates);

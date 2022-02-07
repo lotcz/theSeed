@@ -12,7 +12,7 @@ import {MAX_HEALTH} from "../model/BeeStateModel";
 import Pixies from "../class/Pixies";
 import Sound from "../class/Sound";
 
-const DEBUG_GAME_CONTROLLER = true;
+const DEBUG_GAME_CONTROLLER = false;
 const SAVE_GAME_NAME = 'beehive-save-game';
 const SAVE_LEVEL_NAME_PREFIX = 'beehive-save-game';
 
@@ -453,7 +453,6 @@ export default class GameController extends ControllerBase {
 	}
 
 	playMusic(name = null) {
-		console.log(name);
 		if (name === null) {
 			this.stopMusic();
 			this.music = null;

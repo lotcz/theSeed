@@ -183,6 +183,7 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	reload() {
 		const level = this.game.level.get();
+		this.game.beeState.heal(1);
 		this.model.levelLoadRequest.set(level.name);
 	}
 

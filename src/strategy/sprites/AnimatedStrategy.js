@@ -53,7 +53,6 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		if (this.model.image.rotation.equalsTo(rotation)) {
 			this.animatedRotation = null;
 		} else {
-			console.log('from:', this.model.image.rotation.get(), 'to:', rotation);
 			if (timeout === null) timeout = this.turningDuration;
 			if (this.keepHeadUp) {
 				this.animatedRotation = new AnimatedValue(RotationValue.normalizeValue(this.model.image.rotation.get() + 180), RotationValue.normalizeValue(rotation + 180), timeout);

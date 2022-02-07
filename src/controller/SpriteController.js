@@ -73,12 +73,15 @@ export default class SpriteController extends ControllerBase {
 		this.animationController = null;
 		if (this.model.animations) {
 			this.model.activeAnimation.addOnChangeListener((animation) => this.updateAnimation(animation));
+			this.model.animations.forEach((name, animation) => {
+				animation.paths.forEach((path) => {
+					this.level.addResource(path);
+				});
+			});
 		}
 		if (this.model.activeAnimation.isSet()) {
 			this.updateAnimation(this.model.activeAnimation.get());
 		}
-
-		this.animationImageUpdatedHandler = () => this.model.makeDirty();
 	}
 
 	updateInternal(delta) {
