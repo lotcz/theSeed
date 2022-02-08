@@ -64,6 +64,13 @@ import ButterflyImage from "../../../res/img/butterfly.svg";
 export const IMAGE_BUTTERFLY_PROFILE = 'img/butterfly-profile.svg';
 import ButterflyProfileImage from "../../../res/img/butterfly-profile.svg";
 
+export const IMAGE_BUTTERFLY_FLYING_1 = 'img/butterfly-flight-1.svg';
+import ButterflyFlying1Image from "../../../res/img/butterfly-flight-1.svg";
+export const IMAGE_BUTTERFLY_FLYING_2 = 'img/butterfly-flight-2.svg';
+import ButterflyFlying2Image from "../../../res/img/butterfly-flight-2.svg";
+export const IMAGE_BUTTERFLY_FLYING_3 = 'img/butterfly-flight-3.svg';
+import ButterflyFlying3Image from "../../../res/img/butterfly-flight-3.svg";
+
 export const SPRITE_TYPE_BUTTERFLY = 'butterfly';
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
@@ -78,14 +85,40 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY] = {
 	animations: {
 		flying: [
 			{
-				uri: IMAGE_BUTTERFLY,
-				resource: ButterflyImage
+				uri: IMAGE_BUTTERFLY_FLYING_1,
+				resource: ButterflyFlying1Image,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_2,
+				resource: ButterflyFlying2Image
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_3,
+				resource: ButterflyFlying3Image
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_2,
+				resource: ButterflyFlying2Image
 			}
 		],
 		landing: [
 			{
-				uri: IMAGE_BUTTERFLY_PROFILE,
-				resource: ButterflyProfileImage
+				uri: IMAGE_BUTTERFLY_FLYING_1,
+				resource: ButterflyFlying1Image,
+				frameRate: 3
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_2,
+				resource: ButterflyFlying2Image
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_3,
+				resource: ButterflyFlying3Image
+			},
+			{
+				uri: IMAGE_BUTTERFLY_FLYING_2,
+				resource: ButterflyFlying2Image
 			}
 		]
 	}
