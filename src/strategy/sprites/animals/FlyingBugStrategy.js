@@ -1,5 +1,6 @@
 import Pixies from "../../../class/Pixies";
 import AnimatedStrategy from "../AnimatedStrategy";
+import Vector2 from "../../../class/Vector2";
 
 const FLYING_BUG_TIMEOUT = 150;
 const FLYING_BUG_ATTACK_TIMEOUT = 500;
@@ -37,6 +38,12 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		this.attackDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size);
 		this.stopChaseDistance = this.grid.tileRadius.get() * 2 * (this.model.data.size + 12);
 
+		if (!this.model.data.homePosition) {
+			this.model.data.homePosition = this.model.position.getState();
+		}
+		this.homeCoordinates = this.grid.getCoordinates(new Vector2(this.model.data.homePosition));
+		this.model.data.stayHome = this.model.data.stayHome || false;
+
 		this.visitorsPosition = null;
 		this.positionChangedHandler = (p) => this.onPositionChanged(p);
 
@@ -70,27 +77,15 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 					return;
 				}
 				if (DEBUG_FLYING_BUG) console.log('bee near');
-				const available = neighbors.filter((n) => this.isPositionFree(n));
-				let minDist = null;
-				let nearestPosition = null;
-				for (let i = 0; i < available.length; i++) {
-					const dist = this.level.bee.position.distanceTo(available[i]);
-					if (minDist === null || minDist > dist) {
-						minDist = dist;
-						nearestPosition = available[i];
-					}
-				}
-
 				if (this.chasing > 0) {
 					this.chasing -= 1;
 					if (this.chasing <= 0) {
 						this.chasingTimeout = FLYING_BUG_CHASE_TIMEOUT;
 					}
-					this.setTargetPosition(nearestPosition);
-					this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
 					if (!this.isFlying()) {
 						this.fly();
 					}
+					this.chase(this.level.bee.position);
 					return;
 				} else {
 					this.chasing = FLYING_BUG_MAX_CHASE;
@@ -100,24 +95,22 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 			}
 		}
 
+		if (!this.isLanding()) {
+			this.land();
+		}
+
 		if (this.model.data.hurts > 0) {
-			if (!this.isLanding()) {
-				this.land();
-			}
-			if (this.chasingTimeout > 0) {
-				this.chasingTimeout -= this.defaultTimeout;
-			}
+			this.chasingTimeout -= this.defaultTimeout;
+		}
 
-		} else {
-			const affected = this.grid.getAffectedPositions(this.model.position, this.model.data.size + 2);
-			const somethingNearby = affected.some((p) => this.level.bee && p.equalsTo(this.level.bee.position) || !this.level.isAir(p, this.model));
-			if (DEBUG_FLYING_BUG) console.log('something else near:', somethingNearby);
-
-			if (somethingNearby && !this.isLanding()) {
+		if (this.model.data.stayHome) {
+			const dist = this.model.image.coordinates.distanceTo(this.homeCoordinates);
+			if (dist > this.noticeDistance) {
+				this.lastDirection = null;
+				this.chase(this.grid.getPosition(this.homeCoordinates));
+				return;
+			} else {
 				this.land();
-			}
-			if ((!this.isFlying()) && !somethingNearby) {
-				this.fly();
 			}
 		}
 
@@ -164,6 +157,22 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 			}
 		}
 		return !affected.some((p) => !this.level.isAir(p, this.model));
+	}
+
+	chase(position) {
+		const neighbors = this.level.grid.getNeighbors(this.model.position);
+		const available = neighbors.filter((n) => this.isPositionFree(n));
+		let minDist = null;
+		let nearestPosition = null;
+		for (let i = 0; i < available.length; i++) {
+			const dist = position.distanceTo(available[i]);
+			if (minDist === null || minDist > dist) {
+				minDist = dist;
+				nearestPosition = available[i];
+			}
+		}
+		this.setTargetPosition(nearestPosition);
+		this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
 	}
 
 	fly() {

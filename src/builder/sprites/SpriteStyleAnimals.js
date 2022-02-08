@@ -61,8 +61,6 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
 
 export const IMAGE_BUTTERFLY = 'img/butterfly.svg';
 import ButterflyImage from "../../../res/img/butterfly.svg";
-export const IMAGE_BUTTERFLY_PROFILE = 'img/butterfly-profile.svg';
-import ButterflyProfileImage from "../../../res/img/butterfly-profile.svg";
 
 export const IMAGE_BUTTERFLY_FLYING_1 = 'img/butterfly-flight-1.svg';
 import ButterflyFlying1Image from "../../../res/img/butterfly-flight-1.svg";
