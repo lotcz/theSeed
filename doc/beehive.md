@@ -221,8 +221,6 @@ TODO:
 BETA for friends
 ----------------
 
-- butterflies
-- hornet
 - animate animal aggression
 - no lives, just max. health and healing
 - production mode (exception handling and logging, hide all dev UI)
