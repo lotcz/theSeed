@@ -124,6 +124,8 @@ export default class BugStrategy extends ObjectStrategy {
 			} else {
 				this.walkLeft();
 			}
+		} else {
+			this.model.activeAnimation.set(null);
 		}
 	}
 
@@ -235,6 +237,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.turnWhenMoving = false;
 		const angle = this.model.image.coordinates.getRotation(food.image.coordinates);
 		this.setTargetRotation(angle, 500);
+		this.model.activeAnimation.set(null);
 
 		if (!this.isGrown()) {
 			this.model.data.amount += 1;
@@ -268,6 +271,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.game.beeState.hurt(this.model.data.hurts);
 		const angle = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
 		this.setTargetRotation(angle, 500);
+		this.model.activeAnimation.set('attacking');
 	}
 
 	die() {
@@ -294,6 +298,7 @@ export default class BugStrategy extends ObjectStrategy {
 		taken.image.rotation.set(0);
 		taken.image.coordinates.set(this.model.image.coordinates.add(this.attachedSpriteOffset));
 		this.model.attachedSprite.set(taken);
+		this.model.activeAnimation.set(null);
 	}
 
 	dropItem() {
@@ -354,6 +359,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.defaultTimeout = this.defaultMoveTimeout;
 		this.turnWhenMoving = true;
 		this.setTargetPosition(position);
+		this.model.activeAnimation.set('walking');
 	}
 
 	runLeft() {

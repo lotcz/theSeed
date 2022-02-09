@@ -37,13 +37,60 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUG] = {
 	}
 };
 
+export const SPRITE_TYPE_STAG_BEETLE = 'stag-beetle';
+export const IMAGE_STAG_BEETLE = 'img/stag-beetle.svg';
+import StagBeetleImage from "../../../res/img/stag-beetle.svg";
+
+export const IMAGE_STAG_BEETLE_WALKING_1 = 'img/stag-beetle-walk-1.svg';
+import StagBeetleWalking1Image from "../../../res/img/stag-beetle-walk-1.svg";
+export const IMAGE_STAG_BEETLE_WALKING_2 = 'img/stag-beetle-walk-2.svg';
+import StagBeetleWalking2Image from "../../../res/img/stag-beetle-walk-2.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_STAG_BEETLE] = {
+	strategy: STRATEGY_BUG,
+	image: {
+		uri: IMAGE_STAG_BEETLE,
+		resource: StagBeetleImage
+	},
+	data: {
+		amount: BUG_MAX_AMOUNT,
+		penetrable: false,
+		hurts: 0,
+		deadSprite: SPRITE_TYPE_BUG_DEAD,
+		consumes: [SPRITE_TYPE_POTASSIUM, SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED, SPRITE_TYPE_YELLOW_JELLY],
+		carries: [SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD],
+		repelledBy: [SPRITE_TYPE_YELLOW_JELLY]
+	},
+	animations: {
+		walking: [
+			{
+				uri: IMAGE_STAG_BEETLE,
+				resource: StagBeetleImage,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_1,
+				resource: StagBeetleWalking1Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_2,
+				resource: StagBeetleWalking2Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_1,
+				resource: StagBeetleWalking1Image
+			}
+		]
+	}
+};
+
 export const SPRITE_TYPE_ANT = 'ant';
 export const STRATEGY_ANT = 'ant';
 export const IMAGE_ANT = 'img/ant.svg';
 import AntImage from "../../../res/img/ant.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_ANT] = {
-	strategy: STRATEGY_BUG,
+	strategy: STRATEGY_ANT,
 	image: {
 		uri: IMAGE_ANT,
 		resource: AntImage
@@ -264,6 +311,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_HEAD_OPEN] = {
 export const SPRITE_TYPE_CARNI_PLANT_MOUTH = 'carni-plant-mouth';
 export const IMAGE_CARNI_PLANT_MOUTH  = 'img/carni-plant-mouth.svg';
 import CarniPlantMouthImage from "../../../res/img/carni-plant-mouth.svg";
+import {BUG_MAX_AMOUNT} from "../../strategy/sprites/animals/BugStrategy";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
 	strategy: STRATEGY_DOOR_MOUTH,
