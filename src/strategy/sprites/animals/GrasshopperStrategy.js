@@ -6,6 +6,9 @@ const GRASSHOPPER_TIMEOUT = 2000;
 const GRASSHOPPER_CLOSE_TIMEOUT = 500;
 const GRASSHOPPER_NOTICE_DISTANCE = 2000;
 
+const MIN_ROTATION = 55;
+const MAX_ROTATION = 180;
+
 export default class GrasshopperStrategy extends FriendStrategy {
 	hintController;
 
@@ -32,11 +35,13 @@ export default class GrasshopperStrategy extends FriendStrategy {
 		const bodyPosition = this.grid.getNeighborLowerRight(this.grid.getNeighborDown(this.model.position, 2));
 		this.model.attachedSprite.get().position.set(bodyPosition);
 		this.model.attachedSprite.get().image.coordinates.set(this.grid.getCoordinates(bodyPosition));
-		this.chessboard.addVisitor(bodyPosition, this.model);
+		this.getAdditionalVisitorPositions()
+			.forEach((p) => this.chessboard.addVisitor(p, this.model));
 	}
 
 	deactivateInternal() {
-		this.chessboard.removeVisitor(this.model.attachedSprite.get().position, this.model);
+		this.getAdditionalVisitorPositions()
+			.forEach((p) => this.chessboard.removeVisitor(p, this.model));
 		super.deactivateInternal();
 	}
 
@@ -47,13 +52,29 @@ export default class GrasshopperStrategy extends FriendStrategy {
 			const beeDistance = this.model.image.coordinates.distanceTo(this.level.bee.coordinates);
 			if (beeDistance < GRASSHOPPER_NOTICE_DISTANCE) {
 				this.defaultTimeout = GRASSHOPPER_CLOSE_TIMEOUT;
-				this.setTargetRotation(this.model.image.coordinates.getRotation(this.level.bee.coordinates));
-			} else {
-				this.defaultTimeout = GRASSHOPPER_TIMEOUT;
-				const flipped = this.model.image.flipped.get() ? 1 : -1;
-				this.setTargetRotation(Pixies.random(flipped * 130, flipped * 120));
+				const rotation = this.model.image.coordinates.getRotation(this.level.bee.coordinates);
+				if (Math.abs(rotation) > MIN_ROTATION) {
+					this.setTargetRotation(rotation);
+					return;
+				}
 			}
+
+			this.defaultTimeout = GRASSHOPPER_TIMEOUT;
+			const flipped = this.model.image.flipped.get() ? 1 : -1;
+			this.setTargetRotation(Pixies.random(flipped * 90, flipped * 120));
 		}
+	}
+
+	getAdditionalVisitorPositions() {
+		const positions = [];
+		positions.push(this.grid.getNeighborLowerRight(this.model.position));
+		let vertical = this.model.position;
+		for (let i = 0; i < 6; i++) {
+			vertical = this.grid.getNeighborDown(vertical);
+			//positions.push(vertical);
+			positions.push(this.grid.getNeighborLowerRight(vertical));
+		}
+		return positions;
 	}
 
 }
