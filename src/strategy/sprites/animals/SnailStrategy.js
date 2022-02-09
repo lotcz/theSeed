@@ -8,6 +8,7 @@ const SNAIL_TIMEOUT = 2000;
 const SNAIL_CLOSE_TIMEOUT = 500;
 const SNAIL_NOTICE_DISTANCE = 1000;
 const SNAIL_HIDE_DISTANCE = 500;
+const FALL_TIMEOUT = 2000;
 
 const STATE_ROAMING = 0;
 const STATE_HIDING = 1;
@@ -26,7 +27,7 @@ export default class SnailStrategy extends BugStrategy {
 		this.model._is_crawlable = true;
 		this.state = STATE_ROAMING;
 		this.model.activeAnimation.set(null);
-
+		this.fallTimeout = FALL_TIMEOUT;
 		this.crawlingSound = new Sound(CrawlingSound);
 	}
 
@@ -34,10 +35,34 @@ export default class SnailStrategy extends BugStrategy {
 		const dist = this.level.bee.coordinates.distanceTo(this.model.image.coordinates);
 		this.crawlingSound.playInDistance(dist);
 
+		if (this.fallTimeout > 0) {
+			this.fallTimeout -= delta;
+		}
+
 		super.updateInternal(delta);
 	}
 
 	updateStrategy() {
+		const down = this.grid.getNeighborDown(this.model.position);
+		if (this.level.isPenetrable(down)) {
+			this.hidden();
+			this.fallTimeout = FALL_TIMEOUT;
+			super.updateStrategy();
+			return;
+		}
+
+		if (this.fallTimeout > 0) {
+			if (this.state !== STATE_HIDDEN) {
+				this.hide();
+			}
+			return;
+		}
+
+		if (Math.abs(this.model.image.rotation.get()) < 15) {
+			this.setWatchRotation();
+			return;
+		}
+
 		if (this.state === STATE_HIDING) {
 			this.hidden();
 			return;
@@ -54,7 +79,7 @@ export default class SnailStrategy extends BugStrategy {
 				if (this.state === STATE_HIDDEN) {
 					this.unhide();
 					return;
-				} else {
+				} else if (this.state !== STATE_WATCHING) {
 					this.watch();
 					return;
 				}
@@ -109,7 +134,7 @@ export default class SnailStrategy extends BugStrategy {
 		if (DEBUG_SNAIL) console.log('watching');
 		this.state = STATE_WATCHING;
 		this.defaultTimeout = SNAIL_CLOSE_TIMEOUT;
-		this.model.activeAnimation.set(null);
+		this.model.activeAnimation.set('standing');
 		this.setWatchRotation();
 	}
 

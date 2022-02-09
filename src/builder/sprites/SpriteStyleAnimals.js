@@ -401,6 +401,11 @@ import SnailImage from "../../../res/img/snail.svg";
 
 export const IMAGE_SNAIL_STANDING = 'img/snail-standing.svg';
 import SnailStandingImage from "../../../res/img/snail-standing.svg";
+export const IMAGE_SNAIL_STANDING_2 = 'img/snail-standing-2.svg';
+import SnailStandingImage2 from "../../../res/img/snail-standing-2.svg";
+export const IMAGE_SNAIL_STANDING_3 = 'img/snail-standing-3.svg';
+import SnailStandingImage3 from "../../../res/img/snail-standing-3.svg";
+
 export const IMAGE_SNAIL_WALKING_1 = 'img/snail-walk-1.svg';
 import SnailWalkingImage1 from "../../../res/img/snail-walk-1.svg";
 export const IMAGE_SNAIL_WALKING_2 = 'img/snail-walk-2.svg';
@@ -420,8 +425,8 @@ import SnailHiddenImage1 from "../../../res/img/snail-hidden-1.svg";
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 	strategy: STRATEGY_SNAIL,
 	image: {
-		uri: IMAGE_SNAIL_STANDING,
-		resource: SnailStandingImage
+		uri: IMAGE_SNAIL_HIDDEN_1,
+		resource: SnailHiddenImage1
 	},
 	data: {
 
@@ -448,14 +453,10 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 		],
 		hiding: [
 			{
-				uri: IMAGE_SNAIL_STANDING,
-				resource: SnailStandingImage,
-				frameRate: 5,
-				repeat: false
-			},
-			{
 				uri: IMAGE_SNAIL_HIDING_1,
-				resource: SnailHidingImage1
+				resource: SnailHidingImage1,
+				frameRate: 10,
+				repeat: false
 			},
 			{
 				uri: IMAGE_SNAIL_HIDING_2,
@@ -506,6 +507,26 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 			{
 				uri: IMAGE_SNAIL_HIDDEN_1,
 				resource: SnailHiddenImage1
+			}
+		],
+		standing: [
+			{
+				uri: IMAGE_SNAIL_STANDING,
+				resource: SnailStandingImage,
+				frameRate: 1,
+				repeat: true
+			},
+			{
+				uri: IMAGE_SNAIL_STANDING_2,
+				resource: SnailStandingImage2,
+			},
+			{
+				uri: IMAGE_SNAIL_STANDING_3,
+				resource: SnailStandingImage3,
+			},
+			{
+				uri: IMAGE_SNAIL_STANDING_2,
+				resource: SnailStandingImage2,
 			}
 		]
 	}

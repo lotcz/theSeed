@@ -125,7 +125,7 @@ export default class BugStrategy extends ObjectStrategy {
 				this.walkLeft();
 			}
 		} else {
-			this.model.activeAnimation.set(null);
+			this.model.activeAnimation.set('standing');
 		}
 	}
 

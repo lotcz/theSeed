@@ -26,6 +26,7 @@ import {STRATEGY_DOOR_SLOT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyl
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_LARVA, STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
+import {STRATEGY_SNAIL} from "../builder/sprites/SpriteStyleAnimals";
 
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
@@ -48,9 +49,21 @@ export default class BeeController extends ControllerBase {
 	starsTimeout;
 	lastLever;
 
+	/**
+	 * @type BeeModel
+	 */
+	model;
+
+	/**
+	 *
+	 * @param {GameModel} game
+	 * @param {BeeModel} model
+	 * @param {ControlsModel?} controls
+	 */
 	constructor(game, model, controls) {
 		super(game, model, controls);
 
+		this.model = model;
 		this.dead = false;
 		this.leaving = null;
 		this.dropItemTimeout = 0;
@@ -196,12 +209,16 @@ export default class BeeController extends ControllerBase {
 
 	updateInventory() {
 		if (!this.model.inventory.isEmpty()) {
+			const item = this.model.inventory.get();
 			if (this.model.isFlying()) {
-				this.model.inventory.get().image.coordinates.set(BEE_CENTER.addY(80));
+				item.image.coordinates.set(BEE_CENTER.addY(80));
 			} else {
-				this.model.inventory.get().image.coordinates.set(BEE_CENTER);
+				item.image.coordinates.set(BEE_CENTER);
 			}
-			this.model.inventory.get().image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
+			const isMineral = item.strategy.equalsTo(STRATEGY_MINERAL);
+			if (isMineral) {
+				item.image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
+			}
 		}
 	}
 
@@ -228,7 +245,7 @@ export default class BeeController extends ControllerBase {
 		}
 
 		if (this.carriedAmount() < MAX_INVENTORY_AMOUNT) {
-			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT || v.strategy.get() === STRATEGY_LARVA));
+			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT || v.strategy.get() === STRATEGY_LARVA || v.strategy.get() === STRATEGY_SNAIL));
 			minerals.forEach((m) =>	this.takeItem(m));
 		}
 
