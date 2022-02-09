@@ -390,6 +390,123 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_GRASSHOPPER] = {
 		resource: GrasshopperHeadImage
 	},
 	data: {
-		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
+
+	}
+};
+
+export const SPRITE_TYPE_SNAIL = 'snail';
+export const STRATEGY_SNAIL = 'snail';
+export const IMAGE_SNAIL = 'img/snail.svg';
+import SnailImage from "../../../res/img/snail.svg";
+
+export const IMAGE_SNAIL_STANDING = 'img/snail-standing.svg';
+import SnailStandingImage from "../../../res/img/snail-standing.svg";
+export const IMAGE_SNAIL_WALKING_1 = 'img/snail-walk-1.svg';
+import SnailWalkingImage1 from "../../../res/img/snail-walk-1.svg";
+export const IMAGE_SNAIL_WALKING_2 = 'img/snail-walk-2.svg';
+import SnailWalkingImage2 from "../../../res/img/snail-walk-2.svg";
+
+export const IMAGE_SNAIL_HIDING_1 = 'img/snail-hiding-1.svg';
+import SnailHidingImage1 from "../../../res/img/snail-hiding-1.svg";
+export const IMAGE_SNAIL_HIDING_2 = 'img/snail-hiding-2.svg';
+import SnailHidingImage2 from "../../../res/img/snail-hiding-2.svg";
+export const IMAGE_SNAIL_HIDING_3 = 'img/snail-hiding-3.svg';
+import SnailHidingImage3 from "../../../res/img/snail-hiding-3.svg";
+export const IMAGE_SNAIL_HIDING_4 = 'img/snail-hiding-4.svg';
+import SnailHidingImage4 from "../../../res/img/snail-hiding-4.svg";
+export const IMAGE_SNAIL_HIDDEN_1 = 'img/snail-hidden-1.svg';
+import SnailHiddenImage1 from "../../../res/img/snail-hidden-1.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
+	strategy: STRATEGY_SNAIL,
+	image: {
+		uri: IMAGE_SNAIL_STANDING,
+		resource: SnailStandingImage
+	},
+	data: {
+
+	},
+	animations: {
+		walking: [
+			{
+				uri: IMAGE_SNAIL_STANDING,
+				resource: SnailStandingImage,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_SNAIL_WALKING_1,
+				resource: SnailWalkingImage1
+			},
+			{
+				uri: IMAGE_SNAIL_WALKING_2,
+				resource: SnailWalkingImage2
+			},
+			{
+				uri: IMAGE_SNAIL_WALKING_1,
+				resource: SnailWalkingImage1
+			},
+		],
+		hiding: [
+			{
+				uri: IMAGE_SNAIL_STANDING,
+				resource: SnailStandingImage,
+				frameRate: 5,
+				repeat: false
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_1,
+				resource: SnailHidingImage1
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_2,
+				resource: SnailHidingImage2
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_3,
+				resource: SnailHidingImage3
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_4,
+				resource: SnailHidingImage4
+			},
+			{
+				uri: IMAGE_SNAIL_HIDDEN_1,
+				resource: SnailHiddenImage1
+			}
+		],
+		unhiding: [
+			{
+				uri: IMAGE_SNAIL_HIDDEN_1,
+				resource: SnailHiddenImage1,
+				frameRate: 5,
+				repeat: false
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_4,
+				resource: SnailHidingImage4,
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_3,
+				resource: SnailHidingImage3
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_2,
+				resource: SnailHidingImage2
+			},
+			{
+				uri: IMAGE_SNAIL_HIDING_1,
+				resource: SnailHidingImage1
+			},
+			{
+				uri: IMAGE_SNAIL_STANDING,
+				resource: SnailStandingImage
+			}
+		],
+		hidden: [
+			{
+				uri: IMAGE_SNAIL_HIDDEN_1,
+				resource: SnailHiddenImage1
+			}
+		]
 	}
 };

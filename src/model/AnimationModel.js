@@ -7,6 +7,7 @@ export default class AnimationModel extends ModelBase {
 	paths;
 	frameRate; //frames per second
 	paused;
+	repeat;
 
 	constructor(state) {
 		super();
@@ -18,6 +19,8 @@ export default class AnimationModel extends ModelBase {
 		this.addChild(this.frameRate);
 		this.paused = new DirtyValue(false);
 		this.addChild(this.paused);
+		this.repeat = new DirtyValue(true);
+		this.addChild(this.repeat);
 
 		if (state) {
 			this.restoreState(state);
@@ -29,7 +32,8 @@ export default class AnimationModel extends ModelBase {
 			image: this.image.getState(),
 			paths: this.paths,
 			frameRate: this.frameRate.getState(),
-			paused: this.paused.getState()
+			paused: this.paused.getState(),
+			repeat: this.repeat.getState()
 		}
 	}
 
@@ -37,7 +41,8 @@ export default class AnimationModel extends ModelBase {
 		if (state.image) this.image.restoreState(state.image);
 		if (state.paths) this.paths = state.paths;
 		if (state.frameRate) this.frameRate.restoreState(state.frameRate);
-		if (state.paused) this.paused.restoreState(state.paused);
+		if (state.paused !== undefined) this.paused.restoreState(state.paused);
+		if (state.repeat !== undefined) this.repeat.restoreState(state.repeat);
 	}
 
 	setImageModel(image) {

@@ -103,7 +103,16 @@ export default class SpriteModel extends ModelBase {
 		if (state.type) this.type = state.type;
 		const style = SPRITE_STYLES[state.type];
 		if (style && style.animations) {
-			this.animations = new HashTableModel(style.animations, (animation) => new AnimationModel({image: {path: animation[0].uri}, paths: animation.map((img) => img.uri), frameRate: animation[0].frameRate || DEFAULT_ANIMATION_FRAME_RATE}));
+			this.animations = new HashTableModel(
+				style.animations,
+				(animation) => new AnimationModel(
+					{
+						image: {path: animation[0].uri},
+						paths: animation.map((img) => img.uri),
+						frameRate: animation[0].frameRate || DEFAULT_ANIMATION_FRAME_RATE,
+						repeat: animation[0].repeat === undefined ? true : animation[0].repeat
+					})
+			);
 			this.addChild(this.animations);
 		}
 		if (state.activeAnimation) this.activeAnimation.restoreState(state.activeAnimation);

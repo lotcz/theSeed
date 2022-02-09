@@ -25,7 +25,7 @@ import {
 } from "../builder/sprites/SpriteStyleBasic";
 import {
 	STRATEGY_ANT,
-	STRATEGY_BUG, STRATEGY_GRASSHOPPER,
+	STRATEGY_BUG, STRATEGY_GRASSHOPPER, STRATEGY_SNAIL,
 	STRATEGY_TOAD
 } from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
@@ -45,6 +45,7 @@ import MouthTriggerStrategy from "../strategy/sprites/special/MouthTriggerStrate
 import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
 import AnimationController from "./AnimationController";
 import GrasshopperStrategy from "../strategy/sprites/animals/GrasshopperStrategy";
+import SnailStrategy from "../strategy/sprites/animals/SnailStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -113,6 +114,8 @@ export default class SpriteController extends ControllerBase {
 				return new AntStrategy(this.game, model, this.controls);
 			case STRATEGY_GRASSHOPPER:
 				return new GrasshopperStrategy(this.game, model, this.controls);
+			case STRATEGY_SNAIL:
+				return new SnailStrategy(this.game, model, this.controls);
 			case STRATEGY_FLYING_BUG:
 			case 'butterfly':
 				return new FlyingBugStrategy(this.game, model, this.controls);
@@ -162,6 +165,7 @@ export default class SpriteController extends ControllerBase {
 		}
 		if (animation && this.model.animations && this.model.animations.exists(animation)) {
 			const anim = this.model.animations.get(animation);
+			anim.paused.set(false);
 			this.animationController = new AnimationController(this.game, anim);
 			this.addChild(this.animationController);
 			this.model.addChild(anim);
