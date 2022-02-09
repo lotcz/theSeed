@@ -25,7 +25,7 @@ import {
 } from "../builder/sprites/SpriteStyleBasic";
 import {
 	STRATEGY_ANT,
-	STRATEGY_BUG,
+	STRATEGY_BUG, STRATEGY_GRASSHOPPER,
 	STRATEGY_TOAD
 } from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
@@ -44,6 +44,7 @@ import SwitchStrategy from "../strategy/sprites/special/SwitchStrategy";
 import MouthTriggerStrategy from "../strategy/sprites/special/MouthTriggerStrategy";
 import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
 import AnimationController from "./AnimationController";
+import GrasshopperStrategy from "../strategy/sprites/animals/GrasshopperStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -110,6 +111,8 @@ export default class SpriteController extends ControllerBase {
 				return new LarvaStrategy(this.game, model, this.controls);
 			case STRATEGY_ANT:
 				return new AntStrategy(this.game, model, this.controls);
+			case STRATEGY_GRASSHOPPER:
+				return new GrasshopperStrategy(this.game, model, this.controls);
 			case STRATEGY_FLYING_BUG:
 			case 'butterfly':
 				return new FlyingBugStrategy(this.game, model, this.controls);

@@ -35,9 +35,7 @@ export default class JellyMakerStrategy extends StaticStrategy {
 		this.model.attachedSpriteBehind = true;
 
 		if (this.model.attachedSprite.isEmpty()) {
-			const body = this.level.addSpriteFromStyle(this.grid.getNeighborDown(this.model.position), SPRITE_TYPE_JELLY_MAKER_BODY);
-			this.level.sprites.remove(body);
-			body.setDeleted(false);
+			const body = this.level.createSpriteFromStyle(this.grid.getNeighborDown(this.model.position), SPRITE_TYPE_JELLY_MAKER_BODY);
 			this.model.attachedSprite.set(body);
 		}
 

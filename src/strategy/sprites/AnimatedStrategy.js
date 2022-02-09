@@ -28,6 +28,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.keepHeadUp = false;
 		this.turningDuration = DEFAULT_TURNING_DURATION;
 		this.rotateAttachedSprite = true;
+		this.flipAttachedSprite = true;
 		this.attachedSpriteOffset = new Vector2();
 	}
 
@@ -111,7 +112,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 			if (this.oriented) {
 				const flipped = this.model.image.rotation.get() > 0;
 				this.model.image.flipped.set(flipped);
-				if (this.model.attachedSprite.isSet()) {
+				if (this.flipAttachedSprite && this.model.attachedSprite.isSet()) {
 					this.model.attachedSprite.get().image.flipped.set(flipped);
 				}
 			}

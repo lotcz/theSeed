@@ -275,6 +275,7 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	die() {
+		this.model.activeAnimation.set(null);
 		if (this.model.data.deadSprite === undefined) {
 			return;
 		}
@@ -305,6 +306,7 @@ export default class BugStrategy extends ObjectStrategy {
 		if (!this.hasItem()) {
 			return;
 		}
+		this.model.activeAnimation.set(null);
 		const item = this.model.attachedSprite.get().clone();
 		this.model.attachedSprite.set(null);
 		item.position.set(this.grid.getNeighborUp(this.model.position));
@@ -394,6 +396,7 @@ export default class BugStrategy extends ObjectStrategy {
 		this.defaultTimeout = this.defaultMoveTimeout / 2;
 		this.turnWhenMoving = true;
 		this.setTargetPosition(position);
+		this.model.activeAnimation.set('running');
 	}
 
 }

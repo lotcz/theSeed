@@ -1,4 +1,6 @@
 import {SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "./SpriteStyleObjects";
+import {NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
+
 import {
 	SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED,
 	SPRITE_TYPE_POTASSIUM,
@@ -7,7 +9,6 @@ import {
 } from "./SpriteStyleMinerals";
 import {
 	STRATEGY_DOOR_MOUTH,
-	STRATEGY_DOOR_MOUTH_TRIGGER,
 	STRATEGY_FLYING_BUG,
 	STRATEGY_LARVA,
 	STRATEGY_STATIC
@@ -46,6 +47,11 @@ import StagBeetleWalking1Image from "../../../res/img/stag-beetle-walk-1.svg";
 export const IMAGE_STAG_BEETLE_WALKING_2 = 'img/stag-beetle-walk-2.svg';
 import StagBeetleWalking2Image from "../../../res/img/stag-beetle-walk-2.svg";
 
+export const IMAGE_STAG_BEETLE_ATTACKING_1 = 'img/stag-beetle-attack-1.svg';
+import StagBeetleAttacking1Image from "../../../res/img/stag-beetle-attack-1.svg";
+export const IMAGE_STAG_BEETLE_ATTACKING_2 = 'img/stag-beetle-attack-2.svg';
+import StagBeetleAttacking2Image from "../../../res/img/stag-beetle-attack-2.svg";
+
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_STAG_BEETLE] = {
 	strategy: STRATEGY_BUG,
 	image: {
@@ -67,6 +73,44 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_STAG_BEETLE] = {
 				uri: IMAGE_STAG_BEETLE,
 				resource: StagBeetleImage,
 				frameRate: 5
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_1,
+				resource: StagBeetleWalking1Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_2,
+				resource: StagBeetleWalking2Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_WALKING_1,
+				resource: StagBeetleWalking1Image
+			}
+		],
+		attacking: [
+			{
+				uri: IMAGE_STAG_BEETLE,
+				resource: StagBeetleImage,
+				frameRate: 10
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_ATTACKING_1,
+				resource: StagBeetleAttacking1Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_ATTACKING_2,
+				resource: StagBeetleAttacking2Image
+			},
+			{
+				uri: IMAGE_STAG_BEETLE_ATTACKING_1,
+				resource: StagBeetleAttacking1Image
+			}
+		],
+		running: [
+			{
+				uri: IMAGE_STAG_BEETLE,
+				resource: StagBeetleImage,
+				frameRate: 15
 			},
 			{
 				uri: IMAGE_STAG_BEETLE_WALKING_1,
@@ -180,7 +224,7 @@ export const IMAGE_HORNET_FLIGHT_3 = 'img/hornet-flight-3.svg';
 import HornetFlight3Image from "../../../res/img/hornet-flight-3.svg";
 
 export const IMAGE_HORNET_LANDING_1 = 'img/hornet-landing-1.svg';
-import HornetLandingt1Image from "../../../res/img/hornet-landing-1.svg";
+import HornetLanding1Image from "../../../res/img/hornet-landing-1.svg";
 export const IMAGE_HORNET_LANDING_2 = 'img/hornet-landing-2.svg';
 import HornetLanding2Image from "../../../res/img/hornet-landing-2.svg";
 
@@ -224,7 +268,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
 		landing: [
 			{
 				uri: IMAGE_HORNET_LANDING_1,
-				resource: HornetLandingt1Image,
+				resource: HornetLanding1Image,
 				frameRate: 5
 			},
 			{
@@ -319,4 +363,33 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
 		uri: IMAGE_CARNI_PLANT_MOUTH,
 		resource: CarniPlantMouthImage
 	},
+};
+
+
+export const SPRITE_TYPE_GRASSHOPPER_BODY = 'grasshopper-body';
+export const IMAGE_GRASSHOPPER_BODY = 'img/grasshopper-body.svg';
+import GrasshopperBodyImage from "../../../res/img/grasshopper-body.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_GRASSHOPPER_BODY] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_GRASSHOPPER_BODY,
+		resource: GrasshopperBodyImage
+	}
+};
+
+export const SPRITE_TYPE_GRASSHOPPER = 'grasshopper';
+export const IMAGE_GRASSHOPPER_HEAD = 'img/grasshopper-head.svg';
+import GrasshopperHeadImage from "../../../res/img/grasshopper-head.svg";
+export const STRATEGY_GRASSHOPPER = 'grasshopper';
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_GRASSHOPPER] = {
+	strategy: STRATEGY_GRASSHOPPER,
+	image: {
+		uri: IMAGE_GRASSHOPPER_HEAD,
+		resource: GrasshopperHeadImage
+	},
+	data: {
+		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
+	}
 };
