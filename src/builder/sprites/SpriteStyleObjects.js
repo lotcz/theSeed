@@ -123,3 +123,15 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_BUG_DEAD] = {
 		resource: BugDeadImage
 	}
 };
+
+export const SPRITE_TYPE_JAR_HONEY = 'jar-honey';
+export const IMAGE_JAR_HONEY = 'img/jar-honey.svg';
+import JarHoneyImage from "../../../res/img/jar-honey.svg";
+
+SPRITE_STYLES_OBJECTS[SPRITE_TYPE_JAR_HONEY] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_JAR_HONEY,
+		resource: JarHoneyImage
+	}
+};

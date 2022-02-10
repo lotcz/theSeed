@@ -20,7 +20,7 @@ import Pixies from "../class/Pixies";
 import DoorSlotStrategy from "../strategy/sprites/special/DoorSlotStrategy";
 import {GROUND_TYPE_WAX_BACKGROUND, GROUND_TYPE_WAX_DOOR} from "../builder/GroundStyle";
 import {MAX_HEALTH} from "../model/BeeStateModel";
-import {SPRITE_TYPE_BEE_LIFE} from "../builder/sprites/SpriteStyleObjects";
+import {SPRITE_TYPE_BEE_LIFE, SPRITE_TYPE_JAR_HONEY} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/sprites/SpriteStyleHints";
 import {STRATEGY_DOOR_SLOT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
 import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
@@ -219,6 +219,7 @@ export default class BeeController extends ControllerBase {
 			if (isMineral) {
 				item.image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
 			}
+			this.consumeInventory();
 		}
 	}
 
@@ -414,4 +415,15 @@ export default class BeeController extends ControllerBase {
 		}
 	}
 
+	consumeInventory() {
+		if (this.model.inventory.isEmpty()) {
+			return;
+		}
+		const item = this.model.inventory.get();
+		if (item.type === SPRITE_TYPE_JAR_HONEY) {
+			this.game.beeState.maxHealth.set(this.game.beeState.maxHealth.get() + 0.25);
+			this.game.beeState.heal(0.25);
+			this.model.inventory.set(null);
+		}
+	}
 }

@@ -84,34 +84,38 @@ html, body {
 
 .menu.status-bar {
 	top: 20px;
-	right: 40px;
+	left: 50%;
+	margin-left: -150px;
 	display: flex;
-	justify-content: flex-start;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 
 .menu.status-bar .lives img {
-	max-width: 120px;
-	max-height: 60px;
-	margin-right: 20px;
+	max-width: 35px;
+	max-height: 35px;
+	margin: 10px;
 }
 
 .menu.status-bar .lives img.used {
 	filter: grayscale(1);
+	opacity: 0.5;
 }
 
 .menu.status-bar .health-wrapper {
-	min-width: 250px;
 	max-width: 100%;
 	border: 3px solid black;
-	border-radius: 10px;
-	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	background-color: rgba(0, 0, 0, 0.2);
+	background-position: left center;
 }
 
 .menu.status-bar .health-wrapper .health {
+	background-position: left center;
 	background-color: green;
-	border-radius: 5px;
-	height: 20px;
+	border-radius: 17px;
+	height: 35px;
 }
 
 .menu .text {

@@ -8,6 +8,7 @@ export default class BeeStateModel extends ModelBase {
 	lives;
 	maxLives;
 	health;
+	maxHealth;
 
 	constructor() {
 		super();
@@ -17,6 +18,8 @@ export default class BeeStateModel extends ModelBase {
 		this.addChild(this.maxLives);
 		this.health = new DirtyValue(1);
 		this.addChild(this.health);
+		this.maxHealth = new DirtyValue(MAX_HEALTH);
+		this.addChild(this.maxHealth);
 	}
 
 	getState() {
@@ -24,6 +27,7 @@ export default class BeeStateModel extends ModelBase {
 			lives: this.lives.getState(),
 			maxLives: this.maxLives.getState(),
 			health: this.health.getState(),
+			maxHealth: this.maxHealth.getState(),
 		}
 	}
 
@@ -31,10 +35,11 @@ export default class BeeStateModel extends ModelBase {
 		if (state.lives) this.lives.restoreState(state.lives);
 		if (state.maxLives) this.maxLives.restoreState(state.maxLives);
 		if (state.health) this.health.restoreState(state.health);
+		if (state.maxHealth) this.maxHealth.restoreState(state.maxHealth);
 	}
 
 	isHurt() {
-		return (this.health.get() < MAX_HEALTH);
+		return (this.health.get() < this.maxHealth.get());
 	}
 
 	isDead() {
@@ -52,10 +57,10 @@ export default class BeeStateModel extends ModelBase {
 	}
 
 	heal(amount) {
-		if (amount == 0) {
+		if (amount === 0) {
 			return;
 		}
-		this.health.set(Pixies.between(0, 1, this.health.get() + amount));
+		this.health.set(Pixies.between(0, this.maxHealth.get(), this.health.get() + amount));
 		this.triggerEvent(amount < 0 ? 'hurt' : 'heal', Math.abs(amount));
 	}
 

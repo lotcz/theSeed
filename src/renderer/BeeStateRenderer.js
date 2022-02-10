@@ -1,5 +1,7 @@
 import DomRenderer from "./DomRenderer";
-import BeeLifeImage from "../../res/img/bee-life.svg";
+import LifeImage from "../../res/img/life.svg";
+import HeartImage from "../../res/img/heart.svg";
+
 import {MAX_HEALTH} from "../model/BeeStateModel";
 import {
 	GREEN_DARKEST,
@@ -10,6 +12,7 @@ import {
 	RED_LIGHT,
 	RED_MEDIUM
 } from "../builder/Palette";
+import {EDIT_MODE_ENABLED} from "../model/GameModel";
 
 const HEALTH_COLORS = [
 	{
@@ -29,15 +32,29 @@ const HEALTH_COLORS = [
 	}
 ];
 
+const HEALTH_UNIT_WIDTH = 140;
+const LIFE_WIDTH = 35;
+
 export default class BeeStateRenderer extends DomRenderer {
 	mainElement;
 	livesElement;
 	healthElement;
 	healthWrapperElement;
 
+	/**
+	 * @type BeeStateModel
+	 */
+	model;
+
+	/**
+	 * @param {GameModel} game
+	 * @param {BeeStateModel} model
+	 * @param dom
+	 */
 	constructor(game, model, dom) {
 		super(game, model, dom);
 
+		this.model = model;
 		this.mainElement = null;
 		this.livesElement = null;
 		this.healthElement = null;
@@ -46,9 +63,13 @@ export default class BeeStateRenderer extends DomRenderer {
 
 	activateInternal() {
 		this.mainElement = this.createElement(this.dom, 'div', ['menu', 'status-bar']);
-		this.livesElement = this.createElement(this.mainElement, 'div', ['lives']);
+
 		this.healthWrapperElement = this.createElement(this.mainElement, 'div', ['health-wrapper']);
 		this.healthElement =  this.createElement(this.healthWrapperElement, 'div', ['health']);
+		this.healthWrapperElement.style.backgroundImage = `url('${HeartImage}')`;
+		this.healthElement.style.backgroundImage = `url('${HeartImage}')`;
+
+		this.livesElement = this.createElement(this.mainElement, 'div', ['lives']);
 
 		this.renderLives();
 		this.renderHealth();
@@ -65,14 +86,12 @@ export default class BeeStateRenderer extends DomRenderer {
 			this.model.lives.clean();
 			this.model.maxLives.clean();
 		}
-		if (this.model.health.isDirty()) {
+		if (this.model.health.isDirty() || this.model.maxHealth.isDirty()) {
 			this.renderHealth();
 			this.model.health.clean();
+			this.model.maxHealth.clean();
 		}
 		this.model.clean();
-		if (this.game.isInEditMode.get()) {
-			this.mainElement.style.right = '550px';
-		}
 	}
 
 	renderLives() {
@@ -80,22 +99,31 @@ export default class BeeStateRenderer extends DomRenderer {
 		const max = this.model.maxLives.get();
 		for (let i = 0; i < max; i++) {
 			const img = this.createElement(this.livesElement, 'img', i < this.model.lives.get() ? 'unused' : 'used');
-			img.src = BeeLifeImage;
+			img.src = LifeImage;
 		}
+		this.updateWidth();
 	}
 
 	renderHealth() {
 		const health = this.model.health.get();
-		const state = 100 * health / MAX_HEALTH;
-		this.healthElement.style.width = `${state}%`;
+		const state = health / this.model.maxHealth.get();
+		this.healthElement.style.width = `${state * 100}%`;
 
 		let i = 0;
 		const len = HEALTH_COLORS.length - 1;
-		while (i < len && health > HEALTH_COLORS[i].maxHealth) {
+		while (i < len && state > HEALTH_COLORS[i].maxHealth) {
 			i++;
 		}
 		this.healthElement.style.backgroundColor = HEALTH_COLORS[i].color;
 		this.healthWrapperElement.style.borderColor = HEALTH_COLORS[i].borderColor;
+		this.updateWidth();
 	}
 
+	updateWidth() {
+		const healthWidth = this.model.maxHealth.get() * HEALTH_UNIT_WIDTH;
+		this.healthWrapperElement.style.width = `${healthWidth}px`;
+		const livesWidth = LIFE_WIDTH * this.model.maxLives.get();
+		const totalWidth = Math.max(healthWidth, livesWidth);
+		this.mainElement.style.marginLeft = `-${totalWidth / 2}px`;
+	}
 }

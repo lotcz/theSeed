@@ -105,3 +105,4 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_LEVER] = {
 		controlDoors: true
 	}
 };
+
