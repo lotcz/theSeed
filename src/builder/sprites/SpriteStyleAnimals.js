@@ -531,3 +531,108 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 		]
 	}
 };
+
+
+export const SPRITE_TYPE_TICK = 'tick';
+
+export const IMAGE_TICK_STANDING_1 = 'img/tick.svg';
+import TickStandingImage1 from "../../../res/img/tick.svg";
+
+export const IMAGE_TICK_WALKING_1 = 'img/tick-walk-1.svg';
+import TickWalkingImage1 from "../../../res/img/tick-walk-1.svg";
+export const IMAGE_TICK_WALKING_2 = 'img/tick-walk-2.svg';
+import TickWalkingImage2 from "../../../res/img/tick-walk-2.svg";
+
+export const IMAGE_TICK_HIDING_1 = 'img/tick-hiding-1.svg';
+import TickHidingImage1 from "../../../res/img/tick-hiding-1.svg";
+export const IMAGE_TICK_HIDING_2 = 'img/tick-hiding-2.svg';
+import TickHidingImage2 from "../../../res/img/tick-hiding-2.svg";
+
+export const IMAGE_TICK_HIDDEN = 'img/tick-hidden.svg';
+import TickHiddenImage from "../../../res/img/tick-hidden.svg";
+
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {
+	strategy: STRATEGY_SNAIL,
+	image: {
+		uri: IMAGE_TICK_HIDDEN,
+		resource: TickHiddenImage
+	},
+	data: {
+		amount: BUG_MAX_AMOUNT
+	},
+	animations: {
+		walking: [
+			{
+				uri: IMAGE_TICK_STANDING_1,
+				resource: TickStandingImage1,
+				frameRate: 5
+			},
+			{
+				uri: IMAGE_TICK_WALKING_1,
+				resource: TickWalkingImage1,
+			},
+			{
+				uri: IMAGE_TICK_WALKING_2,
+				resource: TickWalkingImage2,
+			},
+			{
+				uri: IMAGE_TICK_WALKING_1,
+				resource: TickWalkingImage1,
+			},
+		],
+		hiding: [
+			{
+				uri: IMAGE_TICK_STANDING_1,
+				resource: TickStandingImage1,
+				frameRate: 10,
+				repeat: false
+			},
+			{
+				uri: IMAGE_TICK_HIDING_1,
+				resource: TickHidingImage1,
+			},
+			{
+				uri: IMAGE_TICK_HIDING_2,
+				resource: TickHidingImage2,
+			},
+			{
+				uri: IMAGE_TICK_HIDDEN,
+				resource: TickHiddenImage,
+			}
+		],
+		unhiding: [
+			{
+				uri: IMAGE_TICK_HIDDEN,
+				resource: TickHiddenImage,
+				frameRate: 5,
+				repeat: false
+			},
+			{
+				uri: IMAGE_TICK_HIDING_2,
+				resource: TickHidingImage2,
+			},
+			{
+				uri: IMAGE_TICK_HIDING_1,
+				resource: TickHidingImage1,
+			},
+			{
+				uri: IMAGE_TICK_STANDING_1,
+				resource: TickStandingImage1,
+
+			}
+		],
+		hidden: [
+			{
+				uri: IMAGE_TICK_HIDDEN,
+				resource: TickHiddenImage,
+			}
+		],
+		standing: [
+			{
+				uri: IMAGE_TICK_STANDING_1,
+				resource: TickStandingImage1
+			}
+		]
+	}
+};

@@ -221,10 +221,12 @@ TODO:
 BETA for friends
 ----------------
 
-- no lives, just max. health and healing
-- production mode (exception handling and logging, hide all dev UI)
+- finish levels
+- add all sounds
+- add some funny bee speech
 - finish happy tune
 - add some music or ambient sounds to all levels
+- production mode (exception handling and logging, hide all dev UI)
 
 Demo
 ----

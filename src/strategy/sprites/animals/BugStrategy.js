@@ -1,4 +1,4 @@
-import ObjectStrategy from "../ObjectStrategy";
+import ObjectStrategy, {DEFAULT_OBJECT_MAX_AMOUNT} from "../ObjectStrategy";
 import BiteSound from "../../../../res/sound/bite.mp3";
 import Sound from "../../../class/Sound";
 import {GROUND_TYPE_WATER} from "../../../builder/GroundStyle";
@@ -7,7 +7,7 @@ import BeeDeathStrategy from "../../bee/BeeDeathStrategy";
 const DEBUG_BUG_STRATEGY = false;
 const BUG_TIMEOUT = 1500;
 const VISIBLE_DISTANCE = 5;
-export const BUG_MAX_AMOUNT = 15;
+export const BUG_MAX_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT
 
 export default class BugStrategy extends ObjectStrategy {
 	static biteSound = new Sound(BiteSound);
@@ -19,7 +19,6 @@ export default class BugStrategy extends ObjectStrategy {
 		this.keepHeadUp = true;
 		this.turnWhenMoving = true;
 		this.rotateAttachedSprite = false;
-		this.maxAmount = BUG_MAX_AMOUNT;
 		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -1.5);
 
 		this.model._is_penetrable = (this.model.data.penetrable === true);

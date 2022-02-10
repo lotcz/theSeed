@@ -279,14 +279,18 @@ export default class BeeController extends ControllerBase {
 	updateInventory() {
 		if (!this.model.inventory.isEmpty()) {
 			const item = this.model.inventory.get();
-			if (this.model.isFlying()) {
-				item.image.coordinates.set(BEE_CENTER.addY(80));
-			} else {
-				item.image.coordinates.set(BEE_CENTER);
-			}
 			const isMineral = item.strategy.equalsTo(STRATEGY_MINERAL);
 			if (isMineral) {
 				item.image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
+			}
+			if (this.model.isFlying()) {
+				if (item.image.scale.get() >= 1) {
+					item.image.coordinates.set(BEE_CENTER.addY(120));
+				} else {
+					item.image.coordinates.set(BEE_CENTER.addY(80));
+				}
+			} else {
+				item.image.coordinates.set(BEE_CENTER);
 			}
 			this.consumeInventory();
 		}
