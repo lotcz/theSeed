@@ -72,7 +72,6 @@ export default class BeeStateRenderer extends DomRenderer {
 		this.livesElement = this.createElement(this.mainElement, 'div', ['lives']);
 
 		this.renderLives();
-		this.renderHealth();
 	}
 
 	deactivateInternal() {
@@ -101,7 +100,7 @@ export default class BeeStateRenderer extends DomRenderer {
 			const img = this.createElement(this.livesElement, 'img', i < this.model.lives.get() ? 'unused' : 'used');
 			img.src = LifeImage;
 		}
-		this.updateWidth();
+		this.renderHealth();
 	}
 
 	renderHealth() {

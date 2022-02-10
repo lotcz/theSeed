@@ -23,7 +23,7 @@ import {MAX_HEALTH} from "../model/BeeStateModel";
 import {SPRITE_TYPE_BEE_LIFE, SPRITE_TYPE_JAR_HONEY} from "../builder/sprites/SpriteStyleObjects";
 import {IMAGE_HINT_ACTION, IMAGE_HINT_ARROWS, IMAGE_HINT_WASD} from "../builder/sprites/SpriteStyleHints";
 import {STRATEGY_DOOR_SLOT, STRATEGY_SWITCH} from "../builder/sprites/SpriteStyleSpecial";
-import {STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
+import {SPRITE_TYPE_PINK_JELLY, STRATEGY_MINERAL} from "../builder/sprites/SpriteStyleMinerals";
 import {STRATEGY_LARVA, STRATEGY_OBJECT} from "../builder/sprites/SpriteStyleBasic";
 import {MINERAL_MAX_AMOUNT} from "../strategy/sprites/minerals/MineralStrategy";
 import {STRATEGY_SNAIL} from "../builder/sprites/SpriteStyleAnimals";
@@ -207,6 +207,75 @@ export default class BeeController extends ControllerBase {
 		}
 	}
 
+	setStrategy(strategy) {
+		if (this.strategy) this.removeChild(this.strategy);
+		this.strategy = strategy;
+		this.addChild(this.strategy);
+		this.strategy.activate();
+		this.model.triggerOnStrategyChangedEvent();
+	}
+
+	updateMovement() {
+		this.level.centerOnCoordinates(this.model.coordinates);
+		this.level.sanitizeViewBox();
+	}
+
+	onHurt(amount) {
+		const sound = Pixies.randomElement(BeeController.ouchSounds);
+		setTimeout(() => sound.play(), 250);
+		if (amount > 0.1 || this.game.beeState.health.get() < 0.5) {
+			this.dropItem();
+		}
+		if (!this.model.starsVisible.get()) {
+			this.model.starsVisible.set(true);
+		}
+		if (!this.starsAnimationController.isActivated()) {
+			this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
+			this.starsAnimationController.activate();
+		}
+		this.starsTimeout = STARS_TIMEOUT;
+	}
+
+	onHeal(amount) {
+		BeeController.healingSound.play();
+	}
+
+	showControlsHint() {
+		if (!this.showingControlsHint) {
+			this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
+			this.showingControlsHint = true;
+		}
+	}
+
+	showActionHint() {
+		if (!this.showingActionHint) {
+			this.showHint([IMAGE_HINT_ACTION]);
+			this.showingActionHint = true;
+		}
+	}
+
+	showHint(images, size = 3, direction = NEIGHBOR_TYPE_UPPER_RIGHT) {
+		if (this.hintController) {
+			this.hintController.destroy();
+			this.removeChild(this.hintController);
+		}
+		const hintModel = new HintModel();
+		hintModel.position.set(this.grid.getPosition(BEE_CENTER));
+		hintModel.imagePaths = images;
+		hintModel.direction = direction;
+		hintModel.size = size;
+		this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
+		this.addChild(this.hintController);
+		this.hintController.activate();
+		this.hintController.show();
+	}
+
+	hideHint() {
+		if (this.hintController) {
+			this.hintController.hide();
+		}
+	}
+
 	updateInventory() {
 		if (!this.model.inventory.isEmpty()) {
 			const item = this.model.inventory.get();
@@ -221,14 +290,6 @@ export default class BeeController extends ControllerBase {
 			}
 			this.consumeInventory();
 		}
-	}
-
-	setStrategy(strategy) {
-		if (this.strategy) this.removeChild(this.strategy);
-		this.strategy = strategy;
-		this.addChild(this.strategy);
-		this.strategy.activate();
-		this.model.triggerOnStrategyChangedEvent();
 	}
 
 	inspectForMinerals(position, delta = 0) {
@@ -320,7 +381,7 @@ export default class BeeController extends ControllerBase {
 		this.updateInventory();
 	}
 
-	dropItem() {
+	dropItem(amount = null) {
 		if (this.model.inventory.isEmpty()) {
 			return;
 		}
@@ -330,7 +391,9 @@ export default class BeeController extends ControllerBase {
 		}
 		const item = this.model.inventory.get();
 		const isMineral = item.strategy.equalsTo(STRATEGY_MINERAL);
-		const amount = isMineral ? 1 : item.data.amount;
+		if (amount === null) {
+			amount = isMineral ? 1 : item.data.amount;
+		}
 		item.data.amount -= amount;
 		if (item.data.amount <= 0) {
 			this.model.inventory.set(null);
@@ -351,68 +414,7 @@ export default class BeeController extends ControllerBase {
 	}
 
 	emptyInventory() {
-		this.dropItem();
-	}
-
-	updateMovement() {
-		this.level.centerOnCoordinates(this.model.coordinates);
-		this.level.sanitizeViewBox();
-	}
-
-	onHurt(amount) {
-		const sound = Pixies.randomElement(BeeController.ouchSounds);
-		setTimeout(() => sound.play(), 250);
-		if (amount > 0.1 || this.game.beeState.health.get() < 0.5) {
-			this.dropItem();
-		}
-		if (!this.model.starsVisible.get()) {
-			this.model.starsVisible.set(true);
-		}
-		if (!this.starsAnimationController.isActivated()) {
-			this.model.starsAnimation.image.coordinates.set(BEE_CENTER);
-			this.starsAnimationController.activate();
-		}
-		this.starsTimeout = STARS_TIMEOUT;
-	}
-
-	onHeal(amount) {
-		BeeController.healingSound.play();
-	}
-
-	showControlsHint() {
-		if (!this.showingControlsHint) {
-			this.showHint([IMAGE_HINT_WASD, IMAGE_HINT_ARROWS]);
-			this.showingControlsHint = true;
-		}
-	}
-
-	showActionHint() {
-		if (!this.showingActionHint) {
-			this.showHint([IMAGE_HINT_ACTION]);
-			this.showingActionHint = true;
-		}
-	}
-
-	showHint(images, size = 3, direction = NEIGHBOR_TYPE_UPPER_RIGHT) {
-		if (this.hintController) {
-			this.hintController.destroy();
-			this.removeChild(this.hintController);
-		}
-		const hintModel = new HintModel();
-		hintModel.position.set(this.grid.getPosition(BEE_CENTER));
-		hintModel.imagePaths = images;
-		hintModel.direction = direction;
-		hintModel.size = size;
-		this.hintController = new HintController(this.game, hintModel, this.controls, this.model.sprites);
-		this.addChild(this.hintController);
-		this.hintController.activate();
-		this.hintController.show();
-	}
-
-	hideHint() {
-		if (this.hintController) {
-			this.hintController.hide();
-		}
+		this.dropItem(this.carriedAmount());
 	}
 
 	consumeInventory() {
@@ -422,8 +424,17 @@ export default class BeeController extends ControllerBase {
 		const item = this.model.inventory.get();
 		if (item.type === SPRITE_TYPE_JAR_HONEY) {
 			this.game.beeState.maxHealth.set(this.game.beeState.maxHealth.get() + 0.25);
-			this.game.beeState.heal(0.25);
+			this.game.beeState.heal(this.game.beeState.maxHealth.get());
 			this.model.inventory.set(null);
+		}
+		if (item.type === SPRITE_TYPE_PINK_JELLY && this.game.beeState.isHurt()) {
+			item.data.amount -= 1;
+			this.game.beeState.heal(0.2);
+			if (item.data.amount <= 0) {
+				this.model.inventory.set(null);
+			} else {
+				this.updateInventory();
+			}
 		}
 	}
 }
