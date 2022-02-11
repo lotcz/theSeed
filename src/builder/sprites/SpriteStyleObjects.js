@@ -50,19 +50,6 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_BEE_DEAD] = {
 	}
 };
 
-export const SPRITE_TYPE_WATER_CAP = 'water-cap';
-export const IMAGE_WATER_CAP = 'img/water-cap.svg';
-import WaterCapImage from "../../../res/img/water-cap.svg";
-
-SPRITE_STYLES_OBJECTS[SPRITE_TYPE_WATER_CAP] = {
-	strategy: STRATEGY_EMITTER,
-	data: {type:'water', timeout:3000, max:-1, penetrable: false, crawlable: false},
-	image: {
-		uri: IMAGE_WATER_CAP,
-		resource: WaterCapImage,
-	}
-};
-
 export const SPRITE_TYPE_MUSHROOM = 'mushroom';
 export const IMAGE_MUSHROOM = 'img/mushroom.svg';
 import MushroomImage from "../../../res/img/mushroom.svg";

@@ -2,7 +2,7 @@ import CrawlingSound from "../../../../res/sound/larva-crawling.mp3";
 import Sound from "../../../class/Sound";
 import BugStrategy, {BUG_MAX_AMOUNT} from "./BugStrategy";
 
-const DEBUG_SNAIL = true;
+const DEBUG_SNAIL = false;
 
 const SNAIL_TIMEOUT = 2000;
 const SNAIL_CLOSE_TIMEOUT = 500;

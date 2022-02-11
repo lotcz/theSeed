@@ -16,9 +16,9 @@ import {CRAWLING_MATRIX, FALLBACK_FLY, FALLBACK_PROCEED} from "../../builder/Cra
 import WaterStrategy from "../sprites/minerals/WaterStrategy";
 import {SPRITE_TYPE_WATER} from "../../builder/sprites/SpriteStyleMinerals";
 
-const CRAWL_SPEED = 400; //pixels per second
-const ROTATION_SPEED = 180; //angles per second
-const CONTROLS_TIMEOUT = 500;
+const CRAWL_SPEED = 500; //pixels per second
+const ROTATION_SPEED = 220; //angles per second
+const CONTROLS_TIMEOUT = 300;
 const DEFAULT_HIT_TIMEOUT = 300;
 
 export default class BeeCrawlStrategy extends ControllerBase {

@@ -106,3 +106,32 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_LEVER] = {
 	}
 };
 
+export const SPRITE_TYPE_WATER_CAP = 'water-cap';
+export const IMAGE_WATER_CAP = 'img/water-cap.svg';
+import WaterCapImage from "../../../res/img/water-cap.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WATER_CAP] = {
+	strategy: STRATEGY_EMITTER,
+	data: {type:'water', timeout:3000, max:-1, penetrable: false, crawlable: false},
+	image: {
+		uri: IMAGE_WATER_CAP,
+		resource: WaterCapImage,
+	}
+};
+
+export const SPRITE_TYPE_SPIKE_SOIL = 'spike-soil';
+export const IMAGE_SPIKE_SOIL = 'img/spike-soil.svg';
+import SpikeSoilImage from "../../../res/img/spike-soil.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_SPIKE_SOIL] = {
+	strategy: STRATEGY_STATIC,
+	data: {
+		penetrable: false,
+		crawlable: false,
+		hits: 0.5
+	},
+	image: {
+		uri: IMAGE_SPIKE_SOIL,
+		resource: SpikeSoilImage,
+	}
+};

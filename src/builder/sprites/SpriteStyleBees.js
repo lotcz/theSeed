@@ -108,7 +108,7 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_BOY] = {
 		consumesAmount: DEFAULT_OBJECT_MAX_AMOUNT,
 		consumesHint: [IMAGE_BEE_GIRL, IMAGE_HINT_ANTS, IMAGE_HINT_GIRL_TRAPPED],
 		produces: SPRITE_TYPE_PINK_JELLY,
-		defaultHint: [IMAGE_WATER_CAP],
+		defaultHint: [IMAGE_BEE_BOY],
 		hintDirection: NEIGHBOR_TYPE_UP,
 		hintSize: 3
 	}
@@ -127,7 +127,7 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_OLD] = {
 	data: {
 		penetrable: false,
 		crawlable: true,
-		hint: [IMAGE_BEE_BOY, IMAGE_WATER_CAP],
+		hint: [IMAGE_BEE_BOY],
 		hintDirection: NEIGHBOR_TYPE_UP,
 		hintSize: 3
 	}

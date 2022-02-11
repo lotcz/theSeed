@@ -7,7 +7,7 @@
    viewBox="0 0 34.080593 31.178262"
    version="1.1"
    id="svg973"
-   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    sodipodi:docname="stone-soil.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -28,9 +28,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      units="px"
-     inkscape:zoom="1.5287037"
-     inkscape:cx="-97.141127"
-     inkscape:cy="-23.876439"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="-24.039976"
+     inkscape:cy="20.442156"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -62,8 +62,8 @@
        sodipodi:nodetypes="sssss" />
     <path
        id="path7742"
-       style="fill:#666464;stroke-width:1.36453;stroke-linecap:round;stroke-linejoin:bevel;fill-opacity:1"
-       d="m 65.237947,86.933778 c 2.292621,-2.259358 3.304503,-5.649467 2.149327,-8.762471 -0.758332,-2.043571 -1.818889,4.227378 -4.12138,4.558349 -2.302494,0.330971 -5.61887,3.763634 -4.80272,5.792803 0.816151,2.029169 5.244213,-0.08033 6.774773,-1.588681 z"
+       style="fill:#666464;fill-opacity:1;stroke-width:1.36453;stroke-linecap:round;stroke-linejoin:bevel"
+       d="m 66.892834,87.145087 c 1.808259,-2.662896 2.13994,-6.185215 0.400141,-9.013346 -1.142115,-1.856562 -0.960011,4.500829 -3.153827,5.274248 -2.193819,0.77342 -4.777499,4.786664 -3.581482,6.617831 1.196018,1.831166 5.127969,-1.10098 6.335168,-2.878733 z"
        sodipodi:nodetypes="sssss" />
   </g>
 </svg>
