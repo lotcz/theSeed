@@ -42,12 +42,7 @@ export default class DoorMouthStrategy extends AnimatedStrategy {
 		}
 
 		this.model.addEventListener('door-open-signal', (open) => this.onDoorSignal(open))
-
-		if (this.model.attachedSprite.isEmpty()) {
-			this.createAttachedSprites();
-		} else {
-			this.mapAttachedSprites();
-		}
+		this.mapAttachedSprites();
 	}
 
 	activateInternal() {
@@ -101,29 +96,21 @@ export default class DoorMouthStrategy extends AnimatedStrategy {
 
 	// ATTACHED SPRITES
 
-	createAttachedSprites() {
-		let sprite = this.model;
-		for (let i = 0; i <= this.mouthLength; i++) {
-			const m = this.level.createSprite(this.model.position, STRATEGY_STATIC, {}, this.model.image.path.get(), 1, 0, false);
-			sprite.attachedSprite.set(m);
-			sprite = m;
-		}
-		this.mapAttachedSprites();
-	}
-
 	mapAttachedSprites() {
 		this.mouth = [];
 		let sprite = this.model;
 		let position = this.model.position;
 		for (let i = 0; i < this.mouthLength; i++) {
-			const m = sprite.attachedSprite.get();
-			if (m) {
-				position = this.grid.getNeighbor(position, this.currentDirection);
-				m.position.set(position);
-				m.image.coordinates.set(this.grid.getCoordinates(position));
-				this.chessboard.addVisitor(position, this.model);
-				this.mouth[i] = sprite = m;
+			let m = sprite.attachedSprite.get();
+			if (!m) {
+				m = this.level.createSprite(this.model.position, STRATEGY_STATIC, {}, this.model.image.path.get(), 1, 0, false);
+				sprite.attachedSprite.set(m);
 			}
+			position = this.grid.getNeighbor(position, this.currentDirection);
+			m.position.set(position);
+			m.image.coordinates.set(this.grid.getCoordinates(position));
+			this.chessboard.addVisitor(position, this.model);
+			this.mouth[i] = sprite = m;
 		}
 		if (sprite.attachedSprite.isSet()) {
 			sprite.attachedSprite.set(null);

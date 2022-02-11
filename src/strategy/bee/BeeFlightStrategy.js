@@ -201,6 +201,12 @@ export default class BeeFlightStrategy extends ControllerBase {
 					BeeFlightStrategy.hitSound.replay();
 					this.parent.emptyInventory();
 					this.game.beeState.hurt(HIT_HURT * this.speed / MAX_SPEED);
+					if (this.game.beeState.isAlive()) {
+						const hitVisitor = this.chessboard.getVisitors(crashPosition).find((v) => v._is_sprite && v.data !== undefined && v.data.hits !== undefined && v.data.hits > 0);
+						if (hitVisitor) {
+							this.game.beeState.hurt(hitVisitor.data.hits);
+						}
+					}
 					if (this.game.beeState.isDead()) {
 						this.dead = true;
 						this.game.beeState.health.set(0.001);

@@ -1,6 +1,7 @@
 import AnimatedStrategy from "../AnimatedStrategy";
 import DrJonesSound from "../../../../res/sound/door-open.mp3";
 import Sound from "../../../class/Sound";
+import {STRATEGY_DOOR_MOUTH} from "../../../builder/sprites/SpriteStyleBasic";
 
 const DOOR_TIMEOUT = 1000;
 
@@ -26,6 +27,14 @@ export default class DoorSlotStrategy extends AnimatedStrategy {
 							this.level.addGroundTileFromStyle(position, this.model.data.replaceWith);
 						}
 					}
+					const mouths = this.chessboard.getVisitorsMultiple(affected, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_DOOR_MOUTH));
+					mouths.forEach((m) => {
+						if (m.data) {
+							if (!m.data.isOpen) {
+								m.triggerEvent('door-open-signal', true);
+							}
+						}
+					});
 				}
 			);
 

@@ -290,19 +290,6 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
 	}
 };
 
-export const SPRITE_TYPE_BUTTERFLY_LARVA = 'butterfly-larva';
-export const IMAGE_BUTTERFLY_LARVA = 'img/butterfly-larva.svg';
-import ButterflyLarvaImage from "../../../res/img/butterfly-larva.svg";
-
-SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
-	strategy: STRATEGY_LARVA,
-	image: {
-		uri: IMAGE_BUTTERFLY_LARVA,
-		resource: ButterflyLarvaImage
-	},
-	data: {amount: 5, penetrable: false, timeout: 5000}
-};
-
 export const SPRITE_TYPE_TOAD = 'toad';
 export const STRATEGY_TOAD = 'toad';
 export const IMAGE_TOAD_HEAD = 'img/toad-head.svg';
@@ -532,6 +519,124 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 	}
 };
 
+
+export const SPRITE_TYPE_BUTTERFLY_LARVA = 'butterfly-larva';
+export const IMAGE_BUTTERFLY_LARVA = 'img/butterfly-larva.svg';
+import ButterflyLarvaImage from "../../../res/img/butterfly-larva.svg";
+
+export const IMAGE_BUTTERFLY_LARVA_WALKING_1 = 'img/butterfly-larva-walk-1.svg';
+import ButterflyLarvaWalkingImage1 from "../../../res/img/butterfly-larva-walk-1.svg";
+export const IMAGE_BUTTERFLY_LARVA_WALKING_2 = 'img/butterfly-larva-walk-2.svg';
+import ButterflyLarvaWalkingImage2 from "../../../res/img/butterfly-larva-walk-2.svg";
+export const IMAGE_BUTTERFLY_LARVA_WALKING_3 = 'img/butterfly-larva-walk-3.svg';
+import ButterflyLarvaWalkingImage3 from "../../../res/img/butterfly-larva-walk-3.svg";
+export const IMAGE_BUTTERFLY_LARVA_WALKING_4 = 'img/butterfly-larva-walk-4.svg';
+import ButterflyLarvaWalkingImage4 from "../../../res/img/butterfly-larva-walk-4.svg";
+
+export const IMAGE_BUTTERFLY_LARVA_HIDING_1 = 'img/butterfly-larva-hiding-1.svg';
+import ButterflyLarvaHidingImage1 from "../../../res/img/butterfly-larva-hiding-1.svg";
+export const IMAGE_BUTTERFLY_LARVA_HIDING_2 = 'img/butterfly-larva-hiding-2.svg';
+import ButterflyLarvaHidingImage2 from "../../../res/img/butterfly-larva-hiding-2.svg";
+export const IMAGE_BUTTERFLY_LARVA_HIDING_3 = 'img/butterfly-larva-hiding-3.svg';
+import ButterflyLarvaHidingImage3 from "../../../res/img/butterfly-larva-hiding-3.svg";
+
+export const IMAGE_BUTTERFLY_LARVA_HIDDEN = 'img/butterfly-larva-hidden.svg';
+import ButterflyLarvaHiddenImage from "../../../res/img/butterfly-larva-hidden.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
+	strategy: STRATEGY_SNAIL,
+	image: {
+		uri: IMAGE_BUTTERFLY_LARVA_HIDDEN,
+		resource: ButterflyLarvaHiddenImage
+	},
+	data: {amount: 5, penetrable: false, timeout: 2000},
+	animations: {
+		walking: [
+			{
+				uri: IMAGE_BUTTERFLY_LARVA,
+				resource: ButterflyLarvaImage,
+				frameRate: 6
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_WALKING_1,
+				resource: ButterflyLarvaWalkingImage1
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_WALKING_2,
+				resource: ButterflyLarvaWalkingImage2
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_WALKING_3,
+				resource: ButterflyLarvaWalkingImage3
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_WALKING_4,
+				resource: ButterflyLarvaWalkingImage4
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_WALKING_2,
+				resource: ButterflyLarvaWalkingImage2
+			}
+		],
+		hiding: [
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_1,
+				resource: ButterflyLarvaHidingImage1,
+				frameRate: 8,
+				repeat: false
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_2,
+				resource: ButterflyLarvaHidingImage2
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_3,
+				resource: ButterflyLarvaHidingImage3
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDDEN,
+				resource: ButterflyLarvaHiddenImage
+			},
+		],
+		unhiding: [
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDDEN,
+				resource: ButterflyLarvaHiddenImage,
+				frameRate: 5,
+				repeat: false
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_3,
+				resource: ButterflyLarvaHidingImage3
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_2,
+				resource: ButterflyLarvaHidingImage2
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDING_1,
+				resource: ButterflyLarvaHidingImage1
+			},
+			{
+				uri: IMAGE_BUTTERFLY_LARVA,
+				resource: ButterflyLarvaImage,
+			},
+		],
+		hidden: [
+			{
+				uri: IMAGE_BUTTERFLY_LARVA_HIDDEN,
+				resource: ButterflyLarvaHiddenImage
+			}
+		],
+		standing: [
+			{
+				uri: IMAGE_BUTTERFLY_LARVA,
+				resource: ButterflyLarvaImage,
+				repeat: false
+			}
+		]
+	}
+};
 
 export const SPRITE_TYPE_TICK = 'tick';
 

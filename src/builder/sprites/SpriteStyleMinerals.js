@@ -1,3 +1,5 @@
+import {STRATEGY_OBJECT} from "./SpriteStyleBasic";
+
 export const SPRITE_STYLES_MINERALS = [];
 
 export const STRATEGY_MINERAL = 'mineral';
@@ -41,7 +43,7 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_POTASSIUM] = {
 	image: {
 		uri: IMAGE_POTASSIUM,
 		resource: PotassiumImage,
-		scale: 0.01
+		scale: 0.1
 	},
 	data: {amount: 1}
 };
@@ -55,7 +57,7 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR] = {
 	image: {
 		uri: IMAGE_NECTAR,
 		resource: NectarImage,
-		scale: 0.01
+		scale: 0.1
 	},
 	data: {amount: 1}
 };
@@ -79,13 +81,13 @@ export const IMAGE_POLLEN_PURPLE = 'img/pollen-purple.svg';
 import PollenPurpleImage from "../../../res/img/pollen-purple.svg";
 
 SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_PURPLE] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_POLLEN_PURPLE,
 		resource: PollenPurpleImage,
-		scale: 0.01
+		scale: 0.1
 	},
-	data: {amount: 1}
+	data: {amount: 3}
 };
 
 export const SPRITE_TYPE_POLLEN_RED = 'pollen-red';
@@ -93,13 +95,13 @@ export const IMAGE_POLLEN_RED = 'img/pollen-red.svg';
 import PollenRedImage from "../../../res/img/pollen-red.svg";
 
 SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_RED] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_POLLEN_RED,
 		resource: PollenRedImage,
-		scale: 0.01
+		scale: 0.1
 	},
-	data: {amount: 1}
+	data: {amount: 3}
 };
 
 export const SPRITE_TYPE_POLLEN_YELLOW = 'pollen-yellow';
@@ -107,13 +109,13 @@ export const IMAGE_POLLEN_YELLOW = 'img/pollen-yellow.svg';
 import PollenYellowImage from "../../../res/img/pollen-yellow.svg";
 
 SPRITE_STYLES_MINERALS[SPRITE_TYPE_POLLEN_YELLOW] = {
-	strategy: STRATEGY_MINERAL,
+	strategy: STRATEGY_OBJECT,
 	image: {
 		uri: IMAGE_POLLEN_YELLOW,
 		resource: PollenYellowImage,
-		scale: 0.01
+		scale: 0.1
 	},
-	data: {amount: 1}
+	data: {amount: 3}
 };
 
 export const SPRITE_TYPE_PINK_JELLY = 'jelly-pink';
@@ -179,6 +181,7 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_PURPLE_JELLY] = {
 export const SPRITE_TYPE_HONEY = 'honey';
 export const IMAGE_HONEY = 'img/honey.svg';
 import HoneyImage from "../../../res/img/honey.svg";
+import {DEFAULT_OBJECT_MAX_AMOUNT} from "../../strategy/sprites/ObjectStrategy";
 
 SPRITE_STYLES_MINERALS[SPRITE_TYPE_HONEY] = {
 	strategy: STRATEGY_MINERAL,

@@ -83,7 +83,7 @@
      transform="translate(-67.014167,-81.680228)">
     <path
        id="rect3561"
-       style="fill:#ffffff;fill-opacity:0.247086;stroke-width:2.43417;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
+       style="fill:#ffffff;fill-opacity:0.36596736;stroke-width:2.43417;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
        d="m 71.983714,93.409662 c 3.657588,-2.296778 26.778072,-2.247134 30.046116,0 5.352,3.680081 5.43573,32.167508 0,36.581118 -4.286598,3.48056 -25.838455,3.70189 -30.046116,0 -4.459562,-3.9235 -6.117515,-32.73964 0,-36.581118 z"
        sodipodi:nodetypes="sssss" />
     <path
@@ -99,12 +99,12 @@
     <path
        id="path4100"
        style="fill:#4c3d27;fill-opacity:1;stroke-width:2.43417;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="m 100.56952,92.928859 c -0.67871,3.205431 -5.82322,6.233133 -13.31173,6.233118 -7.488518,0 -13.892597,-2.937499 -14.301436,-6.233118 -1.29899,-10.471073 14.301436,-9.38045 14.301436,-9.38045 0,0 15.353,-0.260082 13.31173,9.38045 z"
+       d="m 100.81429,93.414441 c -0.67871,2.70397 -5.823222,5.258014 -13.311732,5.258001 -7.488518,0 -13.892597,-2.477953 -14.301436,-5.258001 -1.29899,-8.832965 14.301436,-7.91296 14.301436,-7.91296 0,0 15.353002,-0.219395 13.311732,7.91296 z"
        sodipodi:nodetypes="ssscs" />
     <path
        id="path3585"
        style="fill:#8d7755;fill-opacity:1;stroke-width:2.43417;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
-       d="M 97.060796,89.609858 A 10.455292,3.276548 0 0 1 86.605499,92.886411 10.455292,3.276548 0 0 1 76.15021,89.609858 10.455292,3.276548 0 0 1 86.605499,86.333314 10.455292,3.276548 0 0 1 97.060796,89.609858 Z" />
+       d="M 97.305564,90.614669 A 10.455292,2.7639607 0 0 1 86.850267,93.378634 10.455292,2.7639607 0 0 1 76.394978,90.614669 10.455292,2.7639607 0 0 1 86.850267,87.850712 10.455292,2.7639607 0 0 1 97.305564,90.614669 Z" />
     <path
        id="path25744"
        style="fill:#786751;fill-opacity:1;stroke:none;stroke-width:1.034;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
