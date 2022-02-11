@@ -1,4 +1,10 @@
-import {STRATEGY_DOOR_MOUTH_TRIGGER, STRATEGY_EMITTER, STRATEGY_EMPTY, STRATEGY_STATIC} from "./SpriteStyleBasic";
+import {
+	STRATEGY_DOOR_MOUTH,
+	STRATEGY_DOOR_MOUTH_TRIGGER,
+	STRATEGY_EMITTER,
+	STRATEGY_EMPTY,
+	STRATEGY_STATIC
+} from "./SpriteStyleBasic";
 import {SPRITE_TYPE_POTASSIUM} from "./SpriteStyleMinerals";
 import {GROUND_TYPE_WAX_DOOR} from "../GroundStyle";
 
@@ -43,6 +49,30 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_SLOT] = {
 	image: {
 		uri: IMAGE_KEYHOLE,
 		resource: KeyholeImage
+	},
+};
+
+export const SPRITE_TYPE_CARNI_PLANT_MOUTH = 'carni-plant-mouth';
+export const IMAGE_CARNI_PLANT_MOUTH  = 'img/carni-plant-mouth.svg';
+import CarniPlantMouthImage from "../../../res/img/carni-plant-mouth.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
+	strategy: STRATEGY_DOOR_MOUTH,
+	image: {
+		uri: IMAGE_CARNI_PLANT_MOUTH,
+		resource: CarniPlantMouthImage
+	},
+};
+
+export const SPRITE_TYPE_WAX_DOOR_MOUTH = 'wax-door-mouth';
+export const IMAGE_WAX_DOOR_MOUTH  = 'img/wax-door-mouth.svg';
+import WaxDoorMouthImage from "../../../res/img/wax-door-mouth.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_DOOR_MOUTH] = {
+	strategy: STRATEGY_DOOR_MOUTH,
+	image: {
+		uri: IMAGE_WAX_DOOR_MOUTH,
+		resource: WaxDoorMouthImage
 	},
 };
 

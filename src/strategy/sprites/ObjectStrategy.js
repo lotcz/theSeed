@@ -44,11 +44,14 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		this.updateAmount();
 		this.defaultTimeout = this.defaultMoveTimeout;
 
+		const lowerLeft = this.grid.getNeighborLowerLeft(this.model.position);
+		const lowerRight = this.grid.getNeighborLowerRight(this.model.position);
 		const down = this.grid.getNeighborDown(this.model.position);
-		if (!this.level.isValidPosition(down)) {
+		const fallingOff = !(this.level.isValidPosition(down) && this.level.isValidPosition(lowerLeft) && this.level.isValidPosition(lowerRight));
+		if (fallingOff) {
 			this.removeMyself();
 			if (this.model.isPersistent) {
-				const exit = this.level.isPossibleExit(down);
+				const exit = this.level.isPossibleExit(down) || this.level.isPossibleExit(lowerLeft) || this.level.isPossibleExit(lowerRight);
 				if (exit) {
 					this.game.fallenItems.addFallenItem(this.level.name, exit, this.model);
 					if (DEBUG_OBJECT_STRATEGY) console.log('Object going to another level:', exit);
@@ -86,13 +89,11 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		}
 
 		const available = [];
-		const ll = this.grid.getNeighborLowerLeft(this.model.position);
-		if (this.level.isPenetrable(ll)) {
-			available.push(ll);
+		if (this.level.isPenetrable(lowerLeft)) {
+			available.push(lowerLeft);
 		}
-		const lr = this.grid.getNeighborLowerRight(this.model.position);
-		if (this.level.isPenetrable(lr)) {
-			available.push(lr);
+		if (this.level.isPenetrable(lowerRight)) {
+			available.push(lowerRight);
 		}
 		if (available.length > 0) {
 			this.defaultTimeout = this.defaultFallTimeout * 2;

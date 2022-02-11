@@ -126,7 +126,8 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_PINK_JELLY] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_PINK_JELLY,
-		resource: PinkJellyImage
+		resource: PinkJellyImage,
+		scale: 0.2
 	},
 	data: {
 		amount: 1
@@ -141,7 +142,8 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_GREEN_JELLY] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_GREEN_JELLY,
-		resource: GreenJellyImage
+		resource: GreenJellyImage,
+		scale: 0.2
 	},
 	data: {
 		amount: 1
@@ -156,7 +158,8 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_YELLOW_JELLY] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_YELLOW_JELLY,
-		resource: YellowJellyImage
+		resource: YellowJellyImage,
+		scale: 0.2
 	},
 	data: {
 		amount: 1
@@ -171,7 +174,8 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_PURPLE_JELLY] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_PURPLE_JELLY,
-		resource: PurpleJellyImage
+		resource: PurpleJellyImage,
+		scale: 0.2
 	},
 	data: {
 		amount: 1
@@ -187,7 +191,8 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_HONEY] = {
 	strategy: STRATEGY_MINERAL,
 	image: {
 		uri: IMAGE_HONEY,
-		resource: HoneyImage
+		resource: HoneyImage,
+		scale: 0.2
 	},
 	data: {
 		amount: 1

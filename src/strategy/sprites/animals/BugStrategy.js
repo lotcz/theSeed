@@ -19,7 +19,8 @@ export default class BugStrategy extends ObjectStrategy {
 		this.keepHeadUp = true;
 		this.turnWhenMoving = true;
 		this.rotateAttachedSprite = false;
-		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -1.5);
+		this.model.attachedSpriteBehind = false;
+		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -0.5);
 
 		this.model._is_penetrable = (this.model.data.penetrable === true);
 		this.model._is_crawlable = false;
@@ -104,6 +105,12 @@ export default class BugStrategy extends ObjectStrategy {
 			}
 			if (item) {
 				this.takeItem(item);
+				if (this.level.isPenetrable(down)) {
+					this.defaultTimeout = this.defaultFallTimeout;
+					this.turnWhenMoving = false;
+					this.setTargetPosition(down);
+					this.setTargetRotation(0);
+				}
 				return;
 			}
 		}
@@ -257,8 +264,8 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	isBeeInRange() {
-		if (this.level.isPlayable && this.level.bee && (this.model.data.hurts > 0) && (this.game.beeState.health.get() > 0)) {
-			return (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 2.5));
+		if (this.level.isPlayable && this.level.bee && (this.model.data.hurts > 0) && (this.game.beeState.isAlive())) {
+			return (this.model.image.coordinates.distanceTo(this.level.bee.coordinates) < (this.grid.tileRadius.get() * 3));
 		} else {
 			return false;
 		}

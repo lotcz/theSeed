@@ -1,4 +1,9 @@
-import {SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD, SPRITE_TYPE_BUG_EGG} from "./SpriteStyleObjects";
+import {
+	SPRITE_TYPE_BEE_DEAD,
+	SPRITE_TYPE_BEE_EGG,
+	SPRITE_TYPE_BUG_DEAD,
+	SPRITE_TYPE_BUG_EGG
+} from "./SpriteStyleObjects";
 import {NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
 
 import {
@@ -15,6 +20,8 @@ import {
 } from "./SpriteStyleBasic";
 
 export const SPRITE_STYLES_ANIMALS = [];
+
+export const SPRITE_TYPE_TICK = 'tick';
 
 export const SPRITE_TYPE_BUG = 'bug';
 export const IMAGE_BUG = 'img/bug.svg';
@@ -61,10 +68,10 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_STAG_BEETLE] = {
 	data: {
 		amount: BUG_MAX_AMOUNT,
 		penetrable: false,
-		hurts: 0,
+		hurts: 0.5,
 		deadSprite: SPRITE_TYPE_BUG_DEAD,
-		consumes: [SPRITE_TYPE_POTASSIUM, SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED, SPRITE_TYPE_YELLOW_JELLY],
-		carries: [SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BUG_DEAD],
+		consumes: [SPRITE_TYPE_POTASSIUM, SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED, SPRITE_TYPE_TICK],
+		carries: [SPRITE_TYPE_BUG_EGG, SPRITE_TYPE_BEE_EGG, SPRITE_TYPE_BEE_DEAD],
 		repelledBy: [SPRITE_TYPE_YELLOW_JELLY]
 	},
 	animations: {
@@ -338,20 +345,6 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TOAD_HEAD_OPEN] = {
 		resource: ToadHeadOpenImage
 	},
 };
-
-export const SPRITE_TYPE_CARNI_PLANT_MOUTH = 'carni-plant-mouth';
-export const IMAGE_CARNI_PLANT_MOUTH  = 'img/carni-plant-mouth.svg';
-import CarniPlantMouthImage from "../../../res/img/carni-plant-mouth.svg";
-import {BUG_MAX_AMOUNT} from "../../strategy/sprites/animals/BugStrategy";
-
-SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT_MOUTH] = {
-	strategy: STRATEGY_DOOR_MOUTH,
-	image: {
-		uri: IMAGE_CARNI_PLANT_MOUTH,
-		resource: CarniPlantMouthImage
-	},
-};
-
 
 export const SPRITE_TYPE_GRASSHOPPER_BODY = 'grasshopper-body';
 export const IMAGE_GRASSHOPPER_BODY = 'img/grasshopper-body.svg';
@@ -638,8 +631,6 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
 	}
 };
 
-export const SPRITE_TYPE_TICK = 'tick';
-
 export const IMAGE_TICK_STANDING_1 = 'img/tick.svg';
 import TickStandingImage1 from "../../../res/img/tick.svg";
 
@@ -655,6 +646,7 @@ import TickHidingImage2 from "../../../res/img/tick-hiding-2.svg";
 
 export const IMAGE_TICK_HIDDEN = 'img/tick-hidden.svg';
 import TickHiddenImage from "../../../res/img/tick-hidden.svg";
+import {BUG_MAX_AMOUNT} from "../../strategy/sprites/animals/BugStrategy";
 
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {

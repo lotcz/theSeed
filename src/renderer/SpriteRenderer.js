@@ -11,6 +11,8 @@ export default class SpriteRenderer extends SvgRenderer {
 		this.imageRenderer = null;
 		this.group = null;
 		this.backGroup = null;
+		this.middleGroup = null;
+		this.frontGroup = null;
 		this.animationRenderer = null;
 		if (this.model.animations) {
 			this.model.activeAnimation.addOnChangeListener((animation) => this.updateAnimation(animation));
@@ -18,11 +20,14 @@ export default class SpriteRenderer extends SvgRenderer {
 	}
 
 	activateInternal() {
-		this.backGroup = this.draw.group();
 		this.group = this.draw.group();
+		this.backGroup = this.group.group();
+		this.middleGroup = this.group.group();
+		this.frontGroup = this.group.group();
+
 		this.imageRenderer = null;
 		if (this.model.image) {
-			this.imageRenderer = new ImageRenderer(this.game, this.model.image, this.group);
+			this.imageRenderer = new ImageRenderer(this.game, this.model.image, this.middleGroup);
 			this.addChild(this.imageRenderer);
 			this.imageRenderer.activate();
 			if (this.model.onClick) {
@@ -33,7 +38,7 @@ export default class SpriteRenderer extends SvgRenderer {
 		this.model.attachedSprite.addOnChangeListener(this.attachedSpriteChangedHandler);
 
 		if (this.model.activeAnimation.isSet() && this.model.animations && this.model.animations.exists(this.model.activeAnimation.get())) {
-			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(this.model.activeAnimation.get()), this.draw);
+			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(this.model.activeAnimation.get()), this.middleGroup);
 			this.addChild(this.animationRenderer);
 			this.animationRenderer.activate();
 			if (this.imageRenderer) {
@@ -57,7 +62,7 @@ export default class SpriteRenderer extends SvgRenderer {
 	updateAttachedSprite() {
 		if (this.attachedSpriteRenderer) this.removeChild(this.attachedSpriteRenderer);
 		if (this.model.attachedSprite.isSet()) {
-			this.attachedSpriteRenderer = new SpriteRenderer(this.game, this.model.attachedSprite.get(), this.model.attachedSpriteBehind ? this.backGroup : this.group);
+			this.attachedSpriteRenderer = new SpriteRenderer(this.game, this.model.attachedSprite.get(), this.model.attachedSpriteBehind ? this.backGroup : this.frontGroup);
 			this.addChild(this.attachedSpriteRenderer);
 			this.attachedSpriteRenderer.activate();
 		}
@@ -71,7 +76,7 @@ export default class SpriteRenderer extends SvgRenderer {
 			if (this.imageRenderer) {
 				this.imageRenderer.deactivate();
 			}
-			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(animation), this.draw);
+			this.animationRenderer = new AnimationRenderer(this.game, this.model.animations.get(animation), this.middleGroup);
 			this.addChild(this.animationRenderer);
 			if (this.isActivated()) {
 				this.animationRenderer.activate();

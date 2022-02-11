@@ -31,7 +31,7 @@ import {STRATEGY_SNAIL} from "../builder/sprites/SpriteStyleAnimals";
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
 const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
-const DROP_ITEM_TIMEOUT = 1000;
+const DROP_ITEM_TIMEOUT = 100;
 const STARS_TIMEOUT = 3000;
 
 export default class BeeController extends ControllerBase {
@@ -299,17 +299,6 @@ export default class BeeController extends ControllerBase {
 	inspectForMinerals(position, delta = 0) {
 		const visitors = this.chessboard.getVisitors(position);
 
-		const lives = visitors.filter((v) => v._is_sprite && v.type === SPRITE_TYPE_BEE_LIFE);
-		if (lives.length > 0) {
-			DoorSlotStrategy.drJonesSound.play();
-			lives.forEach((l) => {
-				this.game.beeState.maxLives.set(this.game.beeState.maxLives.get() + 1);
-				this.game.beeState.lives.set(this.game.beeState.lives.get() + 1);
-				this.game.beeState.health.set(MAX_HEALTH);
-				this.level.sprites.remove(l);
-			});
-		}
-
 		if (this.carriedAmount() < MAX_INVENTORY_AMOUNT) {
 			const minerals = visitors.filter((v) => v._is_sprite && (v.strategy.get() === STRATEGY_MINERAL || v.strategy.get() === STRATEGY_OBJECT || v.strategy.get() === STRATEGY_LARVA || v.strategy.get() === STRATEGY_SNAIL));
 			minerals.forEach((m) =>	this.takeItem(m));
@@ -429,6 +418,13 @@ export default class BeeController extends ControllerBase {
 		if (item.type === SPRITE_TYPE_JAR_HONEY) {
 			this.game.beeState.maxHealth.set(this.game.beeState.maxHealth.get() + 0.25);
 			this.game.beeState.heal(this.game.beeState.maxHealth.get());
+			this.model.inventory.set(null);
+		}
+		if (item.type === SPRITE_TYPE_BEE_LIFE) {
+			DoorSlotStrategy.drJonesSound.play();
+			this.game.beeState.maxLives.set(this.game.beeState.maxLives.get() + 1);
+			this.game.beeState.lives.set(this.game.beeState.lives.get() + 1);
+			this.game.beeState.health.set(MAX_HEALTH);
 			this.model.inventory.set(null);
 		}
 		if (item.type === SPRITE_TYPE_PINK_JELLY && this.game.beeState.isHurt()) {
