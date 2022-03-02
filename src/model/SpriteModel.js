@@ -127,4 +127,16 @@ export default class SpriteModel extends ModelBase {
 		return sprite;
 	}
 
+	addOnDeathListener(listener) {
+		this.addEventListener('death', listener);
+	}
+
+	removeOnDeathListener(listener) {
+		this.removeEventListener('death', listener);
+	}
+
+	triggerOnDeathEvent() {
+		this.triggerEvent('death');
+	}
+
 }

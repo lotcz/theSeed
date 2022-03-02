@@ -77,4 +77,9 @@ export default class Sound {
 		this.play();
 	}
 
+	replayInDistance(distance) {
+		this.stop();
+		this.playInDistance(distance);
+	}
+
 }

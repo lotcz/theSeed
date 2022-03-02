@@ -31,6 +31,9 @@ export default class BugStrategy extends ObjectStrategy {
 		if (!this.model.data.consumes) {
 			this.model.data.consumes = [];
 		}
+		if (!this.model.data.attacks) {
+			this.model.data.attacks = [];
+		}
 		if (!this.model.data.carries) {
 			this.model.data.carries = [];
 		}
@@ -43,15 +46,24 @@ export default class BugStrategy extends ObjectStrategy {
 		if (!this.model.data.poisonedBy) {
 			this.model.data.poisonedBy = [];
 		}
+
+		this.onDeathHandler = () => this.die();
 	}
 
 	activateInternal() {
 		super.activateInternal();
 
+		this.model.addOnDeathListener(this.onDeathHandler);
+
 		// fix bug when bugs fall down through terrain
 		while (this.level.isGround(this.model.position)) {
 			this.model.position.set(this.grid.getNeighborUp(this.model.position));
 		}
+	}
+
+	deactivateInternal() {
+		this.model.removeOnDeathListener(this.onDeathHandler);
+		super.deactivateInternal();
 	}
 
 	updateStrategy() {
@@ -92,9 +104,23 @@ export default class BugStrategy extends ObjectStrategy {
 			return;
 		}
 
+		// ATTACK
+		if (this.model.data.attacks.length > 0) {
+			const victim = neighborVisitors.find((v) => v._is_sprite && this.model.data.attacks.includes(v.type));
+			console.log('attacking', victim);
+			if (victim) {
+				victim.triggerOnDeathEvent();
+				const angle = this.model.image.coordinates.getRotation(victim.image.coordinates);
+				this.setTargetRotation(angle, 500);
+				this.model.activeAnimation.set('attacking');
+				BugStrategy.biteSound.replayInDistance(this.model.image.coordinates.distanceTo(victim.image.coordinates));
+				return;
+			}
+		}
+
 		// TAKE/DROP ITEM
 		if (this.hasItem()) {
-			if (Math.random() < 0.15) {
+			if (Math.random() < 0.07) {
 				this.dropItem();
 				return;
 			}

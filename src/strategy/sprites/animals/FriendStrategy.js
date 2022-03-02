@@ -21,6 +21,10 @@ export default class FriendStrategy extends StaticStrategy {
 		if (!this.model.data.consumedAmount) {
 			this.model.data.consumedAmount = 0;
 		}
+		if (!this.model.data.openDoors) {
+			this.model.data.openDoors = 0;
+			this.model.data.doorsOpened = false;
+		}
 		if (!this.model.data.producesAmount) {
 			this.model.data.producesAmount = MAX_CONSUMED_AMOUNT;
 		}
@@ -72,6 +76,9 @@ export default class FriendStrategy extends StaticStrategy {
 		return this.hasGifts() && !this.isHungry();
 	}
 
+	canOpenDoor() {
+		return !(this.model.data.doorsOpened || this.isHungry());
+	}
 	isHungry() {
 		return (this.model.data.consumedAmount < this.model.data.consumesAmount);
 	}
@@ -86,6 +93,7 @@ export default class FriendStrategy extends StaticStrategy {
 		} else if (this.canProduce()) {
 			this.produce();
 		}
+		this.model.data.openDoors
 	}
 
 	eat() {
