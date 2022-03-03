@@ -22,6 +22,11 @@ export default class SpriteStrategy extends ControllerBase {
 	}
 
 	activateInternal() {
+		if (!this.level.isValidPosition(this.model.position)) {
+			console.warn('Invalid position, removing sprite', this.model);
+			this.removeMyself();
+			return;
+		}
 		this.visit(this.model.position);
 	}
 

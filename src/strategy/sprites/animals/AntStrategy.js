@@ -22,9 +22,12 @@ export default class AntStrategy extends BugStrategy {
 	}
 
 	updateInternal(delta) {
-		const dist = this.level.bee.coordinates.distanceTo(this.model.image.coordinates);
-		this.crawlingSound.playInDistance(dist);
-
+		if (this.model.activeAnimation.equalsTo('walking')) {
+			const dist = this.level.bee.coordinates.distanceTo(this.model.image.coordinates);
+			this.crawlingSound.playInDistance(dist);
+		} else {
+			this.crawlingSound.pause();
+		}
 		super.updateInternal(delta);
 	}
 

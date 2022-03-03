@@ -224,8 +224,9 @@ BETA for friends
 - finish levels
 - add all sounds
 - add some funny bee speech
-- finish happy tune
 - add some music or ambient sounds to all levels
+- finish happy tune
+- add some nice tune into hatching level
 - production mode (exception handling and logging, hide all dev UI)
 
 Demo

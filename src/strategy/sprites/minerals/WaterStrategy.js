@@ -1,5 +1,5 @@
 import MineralStrategy from "./MineralStrategy";
-import DropSound from "../../../../res/sound/water-drop.mp3";
+import DropSound from "../../../../res/sound/water-drop-reverb.mp3";
 import Sound from "../../../class/Sound";
 import {STRATEGY_WATER} from "../../../builder/sprites/SpriteStyleMinerals";
 

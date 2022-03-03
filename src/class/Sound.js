@@ -2,7 +2,7 @@ import Pixies from "./Pixies";
 
 const HAVE_ENOUGH_DATA = 4;
 
-export const MAX_SOUND_DISTANCE = 1000;
+export const MAX_SOUND_DISTANCE = 2000;
 
 export default class Sound {
 	static soundEnabled = true;
@@ -63,7 +63,7 @@ export default class Sound {
 
 	getDistanceVolume(distance) {
 		if (distance > MAX_SOUND_DISTANCE) return 0;
-		return Math.min(1, 1.1 - Pixies.between(0, 0.9, distance/MAX_SOUND_DISTANCE));
+		return Pixies.between(0, 1, 1 - (distance/MAX_SOUND_DISTANCE));
 	}
 
 	playInDistance(distance) {

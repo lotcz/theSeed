@@ -1,7 +1,7 @@
 import AnimatedStrategy from "./AnimatedStrategy";
 import Vector2 from "../../class/Vector2";
 import Pixies from "../../class/Pixies";
-import SplashSound from "../../../res/sound/water-drop-reverb.mp3";
+import SplashSound from "../../../res/sound/splash.mp3";
 import Sound from "../../class/Sound";
 
 export const DEFAULT_OBJECT_MAX_AMOUNT = 5;
@@ -70,16 +70,18 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		}
 
 		if (this.level.isPenetrable(down)) {
-			if (this.falling) {
-				if (this.level.isWater(down)) {
+			if (this.level.isWater(down)) {
+				this.defaultTimeout = this.defaultFloatTimeout;
+				if (this.falling) {
 					this.objectHitWater();
 					this.falling = false;
 				}
+			} else {
+				this.falling = true;
+				this.defaultTimeout = this.defaultFallTimeout;
 			}
-			this.defaultTimeout = this.level.isWater(down) ? this.defaultFloatTimeout * 2: this.defaultFallTimeout;
 			this.setTargetPosition(down);
 			this.setTargetRotation(0);
-			this.falling = true;
 			return;
 		}
 
@@ -139,7 +141,7 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		if (!this.splashSound) {
 			this.splashSound = new Sound(SplashSound);
 		}
-		this.splashSound.replay();
+		this.splashSound.playInDistance(this.model.image.coordinates.distanceTo(this.level.bee.coordinates));
 	}
 
 }
