@@ -33,6 +33,7 @@ const HEALING_SPEED = 0.01; // health per second
 const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
 const DROP_ITEM_TIMEOUT = 100;
 const STARS_TIMEOUT = 3000;
+const HEALTH_HIGHLIGHT_TIMEOUT = 3000;
 
 export default class BeeController extends ControllerBase {
 	static ouchSounds = [new Sound(OuchSound1), new Sound(OuchSound2)];
@@ -47,6 +48,7 @@ export default class BeeController extends ControllerBase {
 	showingActionHint;
 	showingDoorsHint;
 	starsTimeout;
+	healthHighlightTimeout;
 	lastLever;
 
 	/**
@@ -68,6 +70,7 @@ export default class BeeController extends ControllerBase {
 		this.leaving = null;
 		this.dropItemTimeout = 0;
 		this.starsTimeout = 0;
+		this.healthHighlightTimeout = 0;
 		this.showingControlsHint = false;
 		this.showingActionHint = false;
 		this.showingDoorsHint = false;
@@ -92,6 +95,7 @@ export default class BeeController extends ControllerBase {
 		this.onTravelHandler = () => this.leave();
 		this.onHurtHandler = (amount) => this.onHurt(amount);
 		this.onHealHandler = (amount) => this.onHeal(amount);
+		this.onMaxHealthChangedHandler = (amount) => this.onMaxHealthChanged(amount);
 	}
 
 	activateInternal() {
@@ -108,12 +112,14 @@ export default class BeeController extends ControllerBase {
 		this.model.addOnTravelListener(this.onTravelHandler);
 		this.game.beeState.addOnHurtListener(this.onHurtHandler);
 		this.game.beeState.addOnHealListener(this.onHealHandler);
+		this.game.beeState.maxHealth.addOnChangeListener(this.onMaxHealthChangedHandler);
 	}
 
 	deactivateInternal() {
 		this.model.removeOnTravelListener(this.onTravelHandler);
 		this.game.beeState.removeOnHurtListener(this.onHurtHandler);
 		this.game.beeState.removeOnHealListener(this.onHealHandler);
+		this.game.beeState.maxHealth.removeOnChangeListener(this.onMaxHealthChangedHandler);
 	}
 
 	updateInternal(delta) {
@@ -147,6 +153,13 @@ export default class BeeController extends ControllerBase {
 			}
 		} else {
 			this.starsTimeout -= delta;
+		}
+
+		if ((this.healthHighlightTimeout > 0) && this.game.beeState.healthHighlighted.get()) {
+			this.healthHighlightTimeout -= delta;
+			if (this.healthHighlightTimeout <= 0) {
+				this.game.beeState.healthHighlighted.set(false);
+			}
 		}
 
 		if (this.dropItemTimeout > 0) {
@@ -238,6 +251,11 @@ export default class BeeController extends ControllerBase {
 
 	onHeal(amount) {
 		BeeController.healingSound.play();
+	}
+
+	onMaxHealthChanged(value) {
+		this.game.beeState.healthHighlighted.set(true);
+		this.healthHighlightTimeout = HEALTH_HIGHLIGHT_TIMEOUT;
 	}
 
 	showControlsHint() {

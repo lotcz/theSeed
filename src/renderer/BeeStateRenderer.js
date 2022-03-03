@@ -13,6 +13,7 @@ import {
 	RED_MEDIUM
 } from "../builder/Palette";
 import {EDIT_MODE_ENABLED} from "../model/GameModel";
+import Pixies from "../class/Pixies";
 
 const HEALTH_COLORS = [
 	{
@@ -89,6 +90,14 @@ export default class BeeStateRenderer extends DomRenderer {
 			this.renderHealth();
 			this.model.health.clean();
 			this.model.maxHealth.clean();
+		}
+		if (this.model.healthHighlighted.isDirty()) {
+			if (this.model.healthHighlighted.get()) {
+				Pixies.addClass(this.healthWrapperElement, 'highlighted');
+			} else {
+				Pixies.removeClass(this.healthWrapperElement, 'highlighted');
+			}
+			this.model.healthHighlighted.clean();
 		}
 		this.model.clean();
 	}

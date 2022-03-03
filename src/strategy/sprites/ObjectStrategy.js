@@ -71,7 +71,7 @@ export default class ObjectStrategy extends AnimatedStrategy {
 
 		if (this.level.isPenetrable(down)) {
 			if (this.level.isWater(down)) {
-				this.defaultTimeout = this.defaultFloatTimeout;
+				this.defaultTimeout = this.defaultFloatTimeout * 1.5;
 				if (this.falling) {
 					this.objectHitWater();
 					this.falling = false;
