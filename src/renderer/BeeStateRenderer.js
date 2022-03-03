@@ -99,6 +99,14 @@ export default class BeeStateRenderer extends DomRenderer {
 			}
 			this.model.healthHighlighted.clean();
 		}
+		if (this.model.lifeHighlighted.isDirty()) {
+			if (this.model.lifeHighlighted.get()) {
+				setTimeout(() =>	Pixies.addClass(this.livesElement, 'highlighted'), 100);
+			} else {
+				Pixies.removeClass(this.livesElement, 'highlighted');
+			}
+			this.model.lifeHighlighted.clean();
+		}
 		this.model.clean();
 	}
 

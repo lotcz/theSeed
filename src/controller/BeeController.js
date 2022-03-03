@@ -49,6 +49,7 @@ export default class BeeController extends ControllerBase {
 	showingDoorsHint;
 	starsTimeout;
 	healthHighlightTimeout;
+	lifeHighlightTimeout;
 	lastLever;
 
 	/**
@@ -71,6 +72,7 @@ export default class BeeController extends ControllerBase {
 		this.dropItemTimeout = 0;
 		this.starsTimeout = 0;
 		this.healthHighlightTimeout = 0;
+		this.lifeHighlightTimeout = 0;
 		this.showingControlsHint = false;
 		this.showingActionHint = false;
 		this.showingDoorsHint = false;
@@ -96,6 +98,7 @@ export default class BeeController extends ControllerBase {
 		this.onHurtHandler = (amount) => this.onHurt(amount);
 		this.onHealHandler = (amount) => this.onHeal(amount);
 		this.onMaxHealthChangedHandler = (amount) => this.onMaxHealthChanged(amount);
+		this.onMaxLivesChangedHandler = (amount) => this.onMaxLivesChanged(amount);
 	}
 
 	activateInternal() {
@@ -113,6 +116,7 @@ export default class BeeController extends ControllerBase {
 		this.game.beeState.addOnHurtListener(this.onHurtHandler);
 		this.game.beeState.addOnHealListener(this.onHealHandler);
 		this.game.beeState.maxHealth.addOnChangeListener(this.onMaxHealthChangedHandler);
+		this.game.beeState.maxLives.addOnChangeListener(this.onMaxLivesChangedHandler);
 	}
 
 	deactivateInternal() {
@@ -120,6 +124,7 @@ export default class BeeController extends ControllerBase {
 		this.game.beeState.removeOnHurtListener(this.onHurtHandler);
 		this.game.beeState.removeOnHealListener(this.onHealHandler);
 		this.game.beeState.maxHealth.removeOnChangeListener(this.onMaxHealthChangedHandler);
+		this.game.beeState.maxLives.removeOnChangeListener(this.onMaxLivesChangedHandler);
 	}
 
 	updateInternal(delta) {
@@ -159,6 +164,13 @@ export default class BeeController extends ControllerBase {
 			this.healthHighlightTimeout -= delta;
 			if (this.healthHighlightTimeout <= 0) {
 				this.game.beeState.healthHighlighted.set(false);
+			}
+		}
+
+		if ((this.lifeHighlightTimeout > 0) && this.game.beeState.lifeHighlighted.get()) {
+			this.lifeHighlightTimeout -= delta;
+			if (this.lifeHighlightTimeout <= 0) {
+				this.game.beeState.lifeHighlighted.set(false);
 			}
 		}
 
@@ -256,6 +268,11 @@ export default class BeeController extends ControllerBase {
 	onMaxHealthChanged(value) {
 		this.game.beeState.healthHighlighted.set(true);
 		this.healthHighlightTimeout = HEALTH_HIGHLIGHT_TIMEOUT;
+	}
+
+	onMaxLivesChanged(value) {
+		this.game.beeState.lifeHighlighted.set(true);
+		this.lifeHighlightTimeout = HEALTH_HIGHLIGHT_TIMEOUT;
 	}
 
 	showControlsHint() {

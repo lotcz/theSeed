@@ -10,6 +10,7 @@ export default class BeeStateModel extends ModelBase {
 	health;
 	maxHealth;
 	healthHighlighted;
+	lifeHighlighted;
 
 	constructor() {
 		super();
@@ -23,6 +24,8 @@ export default class BeeStateModel extends ModelBase {
 		this.addChild(this.maxHealth);
 		this.healthHighlighted = new DirtyValue(false);
 		this.addChild(this.healthHighlighted);
+		this.lifeHighlighted = new DirtyValue(false);
+		this.addChild(this.lifeHighlighted);
 	}
 
 	getState() {
