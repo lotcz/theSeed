@@ -1,6 +1,7 @@
 import {SPRITE_STYLES} from "../../../builder/SpriteStyle";
 import StaticStrategy from "../StaticStrategy";
 import {NEIGHBOR_TYPE_DOWN} from "../../../model/GridModel";
+import {STRATEGY_DOOR_MOUTH} from "../../../builder/sprites/SpriteStyleBasic";
 
 const FRIEND_TIMEOUT = 2000;
 const MAX_CONSUMED_AMOUNT = 1;
@@ -44,15 +45,14 @@ export default class FriendStrategy extends StaticStrategy {
 		if (!this.model.data.consumes) {
 			return this.model.data.hint;
 		}
-		if (this.canEat()) {
-			if (this.model.data.consumesHint) {
-				return this.model.data.consumesHint;
-			} else {
-				const style = SPRITE_STYLES[this.model.data.consumes];
-				return [style.image.uri];
-			}
-		} else {
+		if (!this.hasGifts()) {
 			return this.model.data.defaultHint;
+		}
+		if (this.model.data.consumesHint) {
+			return this.model.data.consumesHint;
+		} else {
+			const style = SPRITE_STYLES[this.model.data.consumes];
+			return [style.image.uri];
 		}
 	}
 
@@ -73,27 +73,36 @@ export default class FriendStrategy extends StaticStrategy {
 	}
 
 	canProduce() {
-		return this.hasGifts() && !this.isHungry();
+		return this.model.data.produces && this.hasGifts() && !this.isHungry();
 	}
 
-	canOpenDoor() {
-		return !(this.model.data.doorsOpened || this.isHungry());
-	}
 	isHungry() {
 		return (this.model.data.consumedAmount < this.model.data.consumesAmount);
 	}
 
 	hasGifts() {
-		return this.model.data.produces && (this.model.data.producedGifts < this.model.data.producesGifts);
+		return (this.model.data.producedGifts < this.model.data.producesGifts);
 	}
 
 	decision() {
 		if (this.canEat()) {
 			this.eat();
-		} else if (this.canProduce()) {
-			this.produce();
+		} else if (this.hasGifts()) {
+			if (this.model.data.openDoors) {
+				const affectedPositions = this.grid.getAffectedPositions(this.model.position, 10);
+				const mouths = this.chessboard.getVisitorsMultiple(affectedPositions, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_DOOR_MOUTH));
+				mouths.forEach((m) => {
+					if (m.data) {
+						if (m.data.isOpen !== true) {
+							m.triggerEvent('door-open-signal', true);
+						}
+					}
+				});
+			}
+			if (this.canProduce()) {
+				this.produce();
+			}
 		}
-		this.model.data.openDoors
 	}
 
 	eat() {

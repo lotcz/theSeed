@@ -71,9 +71,9 @@ SPRITE_STYLES_BEES[SPRITE_TYPE_BEE_SOLDIER] = {
 	data: {
 		penetrable: false,
 		crawlable: true,
+		openDoors: true,
 		hintDirection: NEIGHBOR_TYPE_UPPER_LEFT,
 		consumes: SPRITE_TYPE_NECTAR,
-		produces: SPRITE_TYPE_HONEY,
 		defaultHint: null
 	}
 };

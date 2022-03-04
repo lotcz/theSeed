@@ -221,6 +221,7 @@ TODO:
 BETA for friends
 ----------------
 
+- heal by eating honey or nectar, packed in doses or feeded from honeymaker
 - finish levels
 - add all sounds
 - add some funny bee speech
@@ -231,9 +232,8 @@ BETA for friends
 
 Demo
 ----
--
+
 - mobile widgets (performance?, improve image rendering?, replace SVG.js?)
-- heal by eating honey, packed in doses or feeded from honeymaker
 - better death (place sprite immediately and then follow it with camera so it behaves the same)
 - rotate objects when rolling and keep rotation
 - when crawling, pull item behind
