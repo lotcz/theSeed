@@ -193,6 +193,44 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_DOOR_LEVER] = {
 	}
 };
 
+export const SPRITE_TYPE_GRASS_LEVER_ON = 'grass-lever-on';
+import GrassLeverOnImage from "../../../res/img/grass-lever-on.svg";
+export const IMAGE_GRASS_LEVER_ON = 'img/grass-lever-on.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_GRASS_LEVER_ON] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_GRASS_LEVER_ON,
+		resource: GrassLeverOnImage
+	}
+};
+
+export const SPRITE_TYPE_GRASS_LEVER_OFF = 'grass-lever-off';
+import GrassLeverOffImage from "../../../res/img/grass-lever-off.svg";
+export const IMAGE_GRASS_LEVER_OFF = 'img/grass-lever-off.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_GRASS_LEVER_OFF] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_GRASS_LEVER_OFF,
+		resource: GrassLeverOffImage
+	}
+};
+
+export const SPRITE_TYPE_GRASS_DOOR_LEVER = 'grass-door-lever';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_GRASS_DOOR_LEVER] = {
+	strategy: STRATEGY_SWITCH,
+	image: {
+		uri: IMAGE_GRASS_LEVER_OFF,
+		resource: GrassLeverOffImage
+	},
+	data: {
+		imageOn: IMAGE_GRASS_LEVER_ON,
+		imageOff: IMAGE_GRASS_LEVER_OFF,
+		controlDoors: true
+	}
+};
 
 export const SPRITE_TYPE_BASIC_LEVER_ON = 'basic-lever-on';
 import BasicLeverOnImage from "../../../res/img/basic-lever-on.svg";
