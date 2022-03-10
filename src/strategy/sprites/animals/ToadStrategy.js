@@ -31,6 +31,7 @@ export default class ToadStrategy extends StaticStrategy {
 		this.model._is_crawlable = true;
 
 		this.rotateAttachedSprite = false;
+		this.flipAttachedSprite = false;
 		this.model.attachedSpriteBehind = true;
 
 		this.tongue = null;

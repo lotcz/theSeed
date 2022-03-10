@@ -122,3 +122,15 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_JAR_HONEY] = {
 		resource: JarHoneyImage
 	}
 };
+
+export const SPRITE_TYPE_SPORE_PURPLE = 'spore-purple';
+export const IMAGE_SPORE_PURPLE = 'img/spore-purple.svg';
+import SporePurpleImage from "../../../res/img/spore-purple.svg";
+
+SPRITE_STYLES_OBJECTS[SPRITE_TYPE_SPORE_PURPLE] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_SPORE_PURPLE,
+		resource: SporePurpleImage
+	}
+};

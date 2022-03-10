@@ -42,6 +42,7 @@ import LevelMeadow1 from "../../levels/meadow-1.json";
 import LevelMeadow2 from "../../levels/meadow-2.json";
 import LevelPond from "../../levels/pond.json";
 import LevelForest from "../../levels/forest.json";
+import LevelHermit from "../../levels/hermit.json";
 
 export const EDIT_MODE_ENABLED = true;
 export const START_LEVEL = 'hatching';
@@ -98,6 +99,7 @@ export default class GameModel extends ModelBase {
 		this.levels.set('meadow-2', LevelMeadow2);
 		this.levels.set('pond', LevelPond);
 		this.levels.set('forest', LevelForest);
+		this.levels.set('hermit', LevelHermit);
 
 		this.fallenItems = new FallenItemsModel();
 

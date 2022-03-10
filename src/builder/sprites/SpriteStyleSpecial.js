@@ -74,6 +74,24 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_DOOR_MOUTH] = {
 		uri: IMAGE_WAX_DOOR_MOUTH,
 		resource: WaxDoorMouthImage
 	},
+	data: {
+		crawlable: true
+	}
+};
+
+export const SPRITE_TYPE_SOIL_DOOR_MOUTH = 'soil-door-mouth';
+export const IMAGE_SOIL_DOOR_MOUTH  = 'img/soil-door-mouth.svg';
+import SoilDoorMouthImage from "../../../res/img/soil-door-mouth.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_SOIL_DOOR_MOUTH] = {
+	strategy: STRATEGY_DOOR_MOUTH,
+	image: {
+		uri: IMAGE_SOIL_DOOR_MOUTH,
+		resource: SoilDoorMouthImage
+	},
+	data: {
+		crawlable: true
+	}
 };
 
 export const SPRITE_TYPE_DOOR_MOUTH_TRIGGER = 'door-mouth-trigger';
@@ -132,6 +150,85 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_LEVER] = {
 	data: {
 		imageOn: IMAGE_LEVER_ON,
 		imageOff: IMAGE_LEVER_OFF,
+		controlDoors: true
+	}
+};
+
+export const SPRITE_TYPE_WAX_LEVER_ON = 'wax-lever-on';
+import WaxLeverOnImage from "../../../res/img/wax-lever-on.svg";
+export const IMAGE_WAX_LEVER_ON = 'img/wax-lever-on.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_LEVER_ON] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_WAX_LEVER_ON,
+		resource: WaxLeverOnImage
+	}
+};
+
+export const SPRITE_TYPE_WAX_LEVER_OFF = 'wax-lever-off';
+import WaxLeverOffImage from "../../../res/img/wax-lever-off.svg";
+export const IMAGE_WAX_LEVER_OFF = 'img/wax-lever-off.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_LEVER_OFF] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_WAX_LEVER_OFF,
+		resource: WaxLeverOffImage
+	}
+};
+
+export const SPRITE_TYPE_WAX_DOOR_LEVER = 'wax-door-lever';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_WAX_DOOR_LEVER] = {
+	strategy: STRATEGY_SWITCH,
+	image: {
+		uri: IMAGE_WAX_LEVER_OFF,
+		resource: WaxLeverOffImage
+	},
+	data: {
+		imageOn: IMAGE_WAX_LEVER_ON,
+		imageOff: IMAGE_WAX_LEVER_OFF,
+		controlDoors: true
+	}
+};
+
+
+export const SPRITE_TYPE_BASIC_LEVER_ON = 'basic-lever-on';
+import BasicLeverOnImage from "../../../res/img/basic-lever-on.svg";
+export const IMAGE_BASIC_LEVER_ON = 'img/basic-lever-on.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_BASIC_LEVER_ON] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_BASIC_LEVER_ON,
+		resource: BasicLeverOnImage
+	}
+};
+
+export const SPRITE_TYPE_BASIC_LEVER_OFF = 'basic-lever-off';
+import BasicLeverOffImage from "../../../res/img/basic-lever-off.svg";
+export const IMAGE_BASIC_LEVER_OFF = 'img/basic-lever-off.svg';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_BASIC_LEVER_OFF] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_BASIC_LEVER_OFF,
+		resource: BasicLeverOffImage
+	}
+};
+
+export const SPRITE_TYPE_BASIC_DOOR_LEVER = 'basic-door-lever';
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_BASIC_DOOR_LEVER] = {
+	strategy: STRATEGY_SWITCH,
+	image: {
+		uri: IMAGE_BASIC_LEVER_OFF,
+		resource: BasicLeverOffImage
+	},
+	data: {
+		imageOn: IMAGE_BASIC_LEVER_ON,
+		imageOff: IMAGE_BASIC_LEVER_OFF,
 		controlDoors: true
 	}
 };

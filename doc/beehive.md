@@ -203,7 +203,7 @@ Story
 - get nectar to access beehive
 - find hermit to learn about bugs
 - bring coccon from rock to butterfly in meadow 2 to access forest
-- get chloroplasts from forest
+- get chloroplasts from forest (win bumblebee race)
 - get nectar from pond
 - bring purple nectar and chloroplasts to activate factory
 - enter queen's lair
@@ -227,6 +227,7 @@ BETA for friends
 - add some funny bee speech
 - add some music or ambient sounds to all levels
 - finish happy tune
+- animate soldier taking nectar
 - add some nice tune into hatching level
 - production mode (exception handling and logging, hide all dev UI)
 

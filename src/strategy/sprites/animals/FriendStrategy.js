@@ -89,19 +89,14 @@ export default class FriendStrategy extends StaticStrategy {
 			this.eat();
 		} else if (this.hasGifts()) {
 			if (this.model.data.openDoors) {
-				const affectedPositions = this.grid.getAffectedPositions(this.model.position, 10);
-				const mouths = this.chessboard.getVisitorsMultiple(affectedPositions, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_DOOR_MOUTH));
-				mouths.forEach((m) => {
-					if (m.data) {
-						if (m.data.isOpen !== true) {
-							m.triggerEvent('door-open-signal', true);
-						}
-					}
-				});
+				this.openDoors();
 			}
 			if (this.canProduce()) {
 				this.produce();
 			}
+			this.model.data.consumedAmount = 0;
+			this.model.data.producedGifts += 1;
+			this.updateHintContent();
 		}
 	}
 
@@ -124,13 +119,18 @@ export default class FriendStrategy extends StaticStrategy {
 	}
 
 	produce() {
-		if (!this.canProduce()) {
-			return;
-		}
-		this.model.data.consumedAmount = 0;
-		this.model.data.producedGifts += 1;
 		this.level.addSpriteFromStyle(this.grid.getNeighbor(this.model.position, this.model.data.producesAt, 1), this.model.data.produces);
-		this.updateHintContent();
 	}
 
+	openDoors() {
+		const affectedPositions = this.grid.getAffectedPositions(this.model.position, 10);
+		const mouths = this.chessboard.getVisitorsMultiple(affectedPositions, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_DOOR_MOUTH));
+		mouths.forEach((m) => {
+			if (m.data) {
+				if (m.data.isOpen !== true) {
+					m.triggerEvent('door-open-signal', true);
+				}
+			}
+		});
+	}
 }
