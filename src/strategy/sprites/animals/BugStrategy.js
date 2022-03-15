@@ -246,8 +246,12 @@ export default class BugStrategy extends ObjectStrategy {
 		return visitor._is_sprite && this.model.data.repelledBy.includes(visitor.type);
 	}
 
+	filterVictims(visitor) {
+		return visitor._is_sprite && this.model.data.attacks.includes(visitor.type);
+	}
+
 	filterAttractions(visitor) {
-		return (this.filterFood(visitor) || this.filterTakeable(visitor) || (visitor._is_sprite && this.model.data.attractedBy.includes(visitor.type)));
+		return (this.filterFood(visitor) || this.filterTakeable(visitor) || this.filterVictims(visitor) || (visitor._is_sprite && this.model.data.attractedBy.includes(visitor.type)));
 	}
 
 	filterPoison(visitor) {

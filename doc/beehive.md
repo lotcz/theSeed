@@ -17,8 +17,6 @@ How to open blocked access?
 Items
 -----
 
-- life (heart?) that extends health
-
 - stone - can block movement or kill a bug when dropped onto it from above
 - water - basis of life, make some flowers grow, prevent movement of bugs
 - potassium (green) - building block of green plants, can be obtained on a meadow and other places
