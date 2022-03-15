@@ -3,6 +3,7 @@ import BiteSound from "../../../../res/sound/bite.mp3";
 import Sound from "../../../class/Sound";
 import {GROUND_TYPE_WATER} from "../../../builder/GroundStyle";
 import BeeDeathStrategy from "../../bee/BeeDeathStrategy";
+import Timeout from "../../../class/Timeout";
 
 const DEBUG_BUG_STRATEGY = false;
 const BUG_TIMEOUT = 1500;
@@ -21,7 +22,6 @@ export default class BugStrategy extends ObjectStrategy {
 		this.rotateAttachedSprite = false;
 		this.model.attachedSpriteBehind = false;
 		this.attachedSpriteOffset.set(0, this.grid.tileRadius.get() * -0.5);
-
 		this.model._is_penetrable = (this.model.data.penetrable === true);
 		this.model._is_crawlable = false;
 
@@ -46,7 +46,9 @@ export default class BugStrategy extends ObjectStrategy {
 		if (!this.model.data.poisonedBy) {
 			this.model.data.poisonedBy = [];
 		}
-
+		if (this.model.data.isDead === undefined) {
+			this.model.data.isDead = false;
+		}
 		this.onDeathHandler = () => this.die();
 	}
 
@@ -67,6 +69,11 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	updateStrategy() {
+		if (this.model.data.isDead) {
+			super.updateStrategy();
+			return;
+		}
+
 		const localVisitors = this.grid.chessboard.getVisitors(this.model.position);
 
 		// DIE
@@ -106,7 +113,7 @@ export default class BugStrategy extends ObjectStrategy {
 
 		// ATTACK
 		if (this.model.data.attacks.length > 0) {
-			const victim = neighborVisitors.find((v) => v._is_sprite && this.model.data.attacks.includes(v.type));
+			const victim = neighborVisitors.find((v) => this.filterVictims(v));
 			console.log('attacking', victim);
 			if (victim) {
 				victim.triggerOnDeathEvent();
@@ -247,7 +254,7 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	filterVictims(visitor) {
-		return visitor._is_sprite && this.model.data.attacks.includes(visitor.type);
+		return visitor._is_sprite && visitor.data.isDead !== true && this.model.data.attacks.includes(visitor.type);
 	}
 
 	filterAttractions(visitor) {
@@ -311,12 +318,29 @@ export default class BugStrategy extends ObjectStrategy {
 	}
 
 	die() {
-		this.model.activeAnimation.set(null);
+		if (this.model.data.isDead) {
+			return;
+		}
+		this.model.data.isDead = true;
+		if (this.model.animations && this.model.animations.exists('dying')) {
+			//this.oriented = false;
+			//this.setTargetRotation(0, 500);
+			this.model.activeAnimation.set('dying');
+			this.addChild(new Timeout(1500, () => this.becomeCorpse()));
+		} else {
+			this.becomeCorpse();
+		}
+	}
+
+	becomeCorpse() {
+		console.log('corpse');
 		if (this.model.data.deadSprite === undefined) {
 			return;
 		}
 		const carcass = this.level.addSpriteFromStyle(this.model.position, this.model.data.deadSprite);
 		carcass.data.amount = this.model.data.amount;
+		carcass.image.rotation.set(this.model.image.rotation.get());
+		//console.log(carcass);
 		if (this.level.isPlayable && this.level.bee) {
 			if (this.model.position.distanceTo(this.level.bee.position) < 10) {
 				BeeDeathStrategy.deathSound.play();

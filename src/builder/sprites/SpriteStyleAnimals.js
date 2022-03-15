@@ -4,8 +4,6 @@ import {
 	SPRITE_TYPE_BUG_DEAD,
 	SPRITE_TYPE_BUG_EGG
 } from "./SpriteStyleObjects";
-import {NEIGHBOR_TYPE_UPPER_LEFT} from "../../model/GridModel";
-
 import {
 	SPRITE_TYPE_NECTAR, SPRITE_TYPE_NECTAR_RED,
 	SPRITE_TYPE_POTASSIUM,
@@ -15,9 +13,10 @@ import {
 import {
 	STRATEGY_DOOR_MOUTH,
 	STRATEGY_FLYING_BUG,
-	STRATEGY_LARVA,
+	STRATEGY_LARVA, STRATEGY_OBJECT,
 	STRATEGY_STATIC
 } from "./SpriteStyleBasic";
+import {BUG_MAX_AMOUNT} from "../../strategy/sprites/animals/BugStrategy";
 
 export const SPRITE_STYLES_ANIMALS = [];
 
@@ -632,6 +631,19 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BUTTERFLY_LARVA] = {
 	}
 };
 
+export const IMAGE_TICK_DEAD = 'img/tick-dead.svg';
+import TickDeadImage from "../../../res/img/tick-dead.svg";
+
+export const SPRITE_TYPE_TICK_DEAD = 'tick-dead';
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK_DEAD] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_TICK_DEAD,
+		resource: TickDeadImage
+	},
+};
+
 export const IMAGE_TICK_STANDING_1 = 'img/tick.svg';
 import TickStandingImage1 from "../../../res/img/tick.svg";
 
@@ -647,8 +659,17 @@ import TickHidingImage2 from "../../../res/img/tick-hiding-2.svg";
 
 export const IMAGE_TICK_HIDDEN = 'img/tick-hidden.svg';
 import TickHiddenImage from "../../../res/img/tick-hidden.svg";
-import {BUG_MAX_AMOUNT} from "../../strategy/sprites/animals/BugStrategy";
 
+export const IMAGE_TICK_DYING_1 = 'img/tick-dying-1.svg';
+import TickDyingImage1 from "../../../res/img/tick-dying-1.svg";
+export const IMAGE_TICK_DYING_2 = 'img/tick-dying-2.svg';
+import TickDyingImage2 from "../../../res/img/tick-dying-2.svg";
+export const IMAGE_TICK_DYING_3 = 'img/tick-dying-3.svg';
+import TickDyingImage3 from "../../../res/img/tick-dying-3.svg";
+export const IMAGE_TICK_DYING_4 = 'img/tick-dying-4.svg';
+import TickDyingImage4 from "../../../res/img/tick-dying-4.svg";
+export const IMAGE_TICK_DYING_5 = 'img/tick-dying-5.svg';
+import TickDyingImage5 from "../../../res/img/tick-dying-5.svg";
 
 SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {
 	strategy: STRATEGY_SNAIL,
@@ -658,7 +679,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {
 	},
 	data: {
 		amount: BUG_MAX_AMOUNT,
-		deadSprite: SPRITE_TYPE_BUG_DEAD,
+		deadSprite: SPRITE_TYPE_TICK_DEAD,
 	},
 	animations: {
 		walking: [
@@ -732,6 +753,38 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {
 				uri: IMAGE_TICK_STANDING_1,
 				resource: TickStandingImage1
 			}
-		]
+		],
+		dying: [
+			{
+				uri: IMAGE_TICK_HIDDEN,
+				resource: TickHiddenImage,
+				frameRate: 5,
+				repeat: false
+			},
+			{
+				uri: IMAGE_TICK_DYING_1,
+				resource: TickDyingImage1,
+			},
+			{
+				uri: IMAGE_TICK_DYING_2,
+				resource: TickDyingImage2,
+			},
+			{
+				uri: IMAGE_TICK_DYING_3,
+				resource: TickDyingImage3,
+			},
+			{
+				uri: IMAGE_TICK_DYING_4,
+				resource: TickDyingImage4,
+			},
+			{
+				uri: IMAGE_TICK_DYING_5,
+				resource: TickDyingImage5,
+			},
+			{
+				uri: IMAGE_TICK_DEAD,
+				resource: TickDeadImage,
+			},
+		],
 	}
 };

@@ -3,9 +3,9 @@ import Tree from "./Tree";
 export default class ActivatedTree extends Tree {
 	activated;
 
-	constructor(activated) {
+	constructor(activated = false) {
 		super();
-		this.activated = (activated > 0);
+		this.activated = activated;
 	}
 
 	isActivated() {

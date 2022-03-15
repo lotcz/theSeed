@@ -35,7 +35,12 @@ export default class SpriteModel extends ModelBase {
 
 	data;
 	type;
+
+	/**
+	 * @type HashTableModel
+	 */
 	animations;
+
 	_is_sprite;
 	_is_penetrable;
 	_is_crawlable;
