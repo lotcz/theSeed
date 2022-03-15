@@ -62,9 +62,9 @@ export default class ObjectStrategy extends AnimatedStrategy {
 		}
 
 		if (this.level.isWater(this.model.position)) {
-			const up = this.grid.getNeighborUp(this.model.position);
+			const next = this.model.data.sinks ? down : this.grid.getNeighborUp(this.model.position);
 			this.defaultTimeout = this.defaultFloatTimeout;
-			this.setTargetPosition(up);
+			this.setTargetPosition(next);
 			this.setTargetRotation(0);
 			return;
 		}

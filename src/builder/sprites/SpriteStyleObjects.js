@@ -12,6 +12,9 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_STONE] = {
 		uri: IMAGE_STONE,
 		resource: StoneImage
 	},
+	data: {
+		sinks: true
+	}
 };
 
 export const SPRITE_TYPE_STONE_SOIL = 'stone-soil';
@@ -24,6 +27,9 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_STONE_SOIL] = {
 		uri: IMAGE_STONE_SOIL,
 		resource: StoneSoilImage
 	},
+	data: {
+		sinks: true
+	}
 };
 
 export const SPRITE_TYPE_BEE_LIFE = 'bee-life';
@@ -132,5 +138,8 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_SPORE_PURPLE] = {
 	image: {
 		uri: IMAGE_SPORE_PURPLE,
 		resource: SporePurpleImage
+	},
+	data: {
+		sinks: true
 	}
 };

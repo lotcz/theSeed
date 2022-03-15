@@ -3,7 +3,6 @@ Basics
 
 Puzzles
 
-- bees presence can trigger levers that might open and close gates
 - save bugs from pit by throwing crawlable stuff inside
 - block road with uncrawlable stuff
 
