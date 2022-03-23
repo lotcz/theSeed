@@ -788,3 +788,46 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_TICK] = {
 		],
 	}
 };
+
+export const SPRITE_TYPE_BAIT_BODY = 'bait-body';
+export const IMAGE_BAIT_BODY = 'img/bait-body.svg';
+import BaitBodyImage from "../../../res/img/bait-body.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BAIT_BODY] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_BAIT_BODY,
+		resource: BaitBodyImage
+	},
+	data: {
+		hurts: 0.5
+	}
+};
+
+export const STRATEGY_BAIT = 'bait';
+export const SPRITE_TYPE_BAIT = 'bait';
+export const IMAGE_BAIT = 'img/bait.svg';
+import BaitImage from "../../../res/img/bait.svg";
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_BAIT] = {
+	strategy: STRATEGY_BAIT,
+	image: {
+		uri: IMAGE_BAIT,
+		resource: BaitImage
+	},
+	data: {
+		hurts: 0.3
+	}
+};
+
+
+export const STRATEGY_CARNI_PLANT = 'carni-plant';
+export const SPRITE_TYPE_CARNI_PLANT = 'carni-plant';
+
+SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT] = {
+	strategy: STRATEGY_CARNI_PLANT,
+	data: {
+		hurts: 0.1,
+		size: 3
+	}
+};

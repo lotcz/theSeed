@@ -17,7 +17,7 @@ export default class GrasshopperStrategy extends FriendStrategy {
 
 		this.oriented = true;
 		this.model._is_penetrable = false;
-		this.model._is_crawlable = false;
+		this.model._is_crawlable = true;
 
 		this.rotateAttachedSprite = false;
 		this.flipAttachedSprite = false;

@@ -24,8 +24,8 @@ import {
 	STRATEGY_FLYING_BUG
 } from "../builder/sprites/SpriteStyleBasic";
 import {
-	STRATEGY_ANT,
-	STRATEGY_BUG, STRATEGY_GRASSHOPPER, STRATEGY_SNAIL,
+	STRATEGY_ANT, STRATEGY_BAIT,
+	STRATEGY_BUG, STRATEGY_CARNI_PLANT, STRATEGY_GRASSHOPPER, STRATEGY_SNAIL,
 	STRATEGY_TOAD
 } from "../builder/sprites/SpriteStyleAnimals";
 import {STRATEGY_BUBBLE, STRATEGY_MINERAL, STRATEGY_WATER} from "../builder/sprites/SpriteStyleMinerals";
@@ -46,6 +46,8 @@ import DoorMouthStrategy from "../strategy/sprites/special/DoorMouthStrategy";
 import AnimationController from "./AnimationController";
 import GrasshopperStrategy from "../strategy/sprites/animals/GrasshopperStrategy";
 import SnailStrategy from "../strategy/sprites/animals/SnailStrategy";
+import BaitStrategy from "../strategy/sprites/animals/BaitStrategy";
+import CarniPlantStrategy from "../strategy/sprites/animals/CarniPlantStrategy";
 
 export default class SpriteController extends ControllerBase {
 	strategy;
@@ -116,6 +118,10 @@ export default class SpriteController extends ControllerBase {
 				return new GrasshopperStrategy(this.game, model, this.controls);
 			case STRATEGY_SNAIL:
 				return new SnailStrategy(this.game, model, this.controls);
+			case STRATEGY_BAIT:
+				return new BaitStrategy(this.game, model, this.controls);
+			case STRATEGY_CARNI_PLANT:
+				return new CarniPlantStrategy(this.game, model, this.controls);
 			case STRATEGY_FLYING_BUG:
 			case 'butterfly':
 				return new FlyingBugStrategy(this.game, model, this.controls);

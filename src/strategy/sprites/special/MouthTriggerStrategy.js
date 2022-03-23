@@ -6,7 +6,6 @@ const MOUTH_TRIGGER_CLOSE_TIMEOUT = 500;
 const MOUTH_TRIGGER_DEFAULT_SIZE  = 2;
 
 export default class MouthTriggerStrategy extends UpdatedStrategy {
-	size;
 	noticeDistance;
 	closeDistance;
 

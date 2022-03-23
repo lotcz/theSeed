@@ -29,6 +29,7 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		this.turningDuration = DEFAULT_TURNING_DURATION;
 		this.rotateAttachedSprite = true;
 		this.flipAttachedSprite = true;
+		this.scaleAttachedSprite = false;
 		this.attachedSpriteOffset = new Vector2();
 	}
 
@@ -36,6 +37,9 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		super.activateInternal();
 		if (this.model.image) {
 			this.model.image.coordinates.set(this.getCoords(this.model.position));
+			if (this.scaleAttachedSprite && this.model.attachedSprite.isSet()) {
+				this.model.attachedSprite.get().image.scale.set(this.model.image.scale.get());
+			}
 		}
 	}
 
@@ -121,11 +125,11 @@ export default class AnimatedStrategy extends UpdatedStrategy {
 		if (this.animatedScale) {
 			const scale = this.animatedScale.get(delta);
 			this.model.image.scale.set(scale);
-			/*
-			if (this.model.attachedSprite.isSet()) {
+
+			if (this.scaleAttachedSprite && this.model.attachedSprite.isSet()) {
 				this.model.attachedSprite.get().image.scale.set(scale);
 			}
-			*/
+
 			if (this.animatedScale.isFinished()) {
 				this.animatedScale = null;
 			}

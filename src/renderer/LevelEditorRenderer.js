@@ -369,12 +369,22 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.coordinates, 'x');
 			imgFolder.add(sprite.image.coordinates, 'y');
 			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation').listen().onChange(() => sprite.image.rotation.makeDirty());
+			imgFolder.add(sprite.image.flipped, 'value').name('flipped').listen().onChange(() => sprite.image.flipped.makeDirty());
 			imgFolder.add(sprite.image.scale, 'value').name('scale').listen().onChange(() => sprite.image.scale.makeDirty());
 			imgFolder.open();
 		}
 
 		if (sprite.data) {
 			this.showJsonEditor(sprite.data, (obj) => sprite.data = obj);
+		}
+
+		if (sprite.attachedSprite.isSet()) {
+			const action = {
+				editAttachedSprite: () => {
+					this.addSpriteGUI(sprite.attachedSprite.get());
+				}
+			}
+			gui.add(action, 'editAttachedSprite').name('Attached Sprite');
 		}
 
 		const actions = {
