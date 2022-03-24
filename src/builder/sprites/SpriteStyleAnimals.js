@@ -376,8 +376,6 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_GRASSHOPPER] = {
 
 export const SPRITE_TYPE_SNAIL = 'snail';
 export const STRATEGY_SNAIL = 'snail';
-export const IMAGE_SNAIL = 'img/snail.svg';
-import SnailImage from "../../../res/img/snail.svg";
 
 export const IMAGE_SNAIL_STANDING = 'img/snail-standing.svg';
 import SnailStandingImage from "../../../res/img/snail-standing.svg";
@@ -828,6 +826,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_CARNI_PLANT] = {
 	strategy: STRATEGY_CARNI_PLANT,
 	data: {
 		hurts: 0.1,
-		size: 3
+		monitoredRange: 3,
+		affectedRange: 4
 	}
 };

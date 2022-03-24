@@ -1,13 +1,15 @@
 import UpdatedStrategy from "../UpdatedStrategy";
 import {STRATEGY_DOOR_MOUTH} from "../../../builder/sprites/SpriteStyleBasic";
+import Pixies from "../../../class/Pixies";
 
 const MOUTH_TRIGGER_TIMEOUT = 1000;
 const MOUTH_TRIGGER_CLOSE_TIMEOUT = 500;
-const MOUTH_TRIGGER_DEFAULT_SIZE  = 2;
+const MOUTH_TRIGGER_DEFAULT_SIZE = 2;
 
 export default class MouthTriggerStrategy extends UpdatedStrategy {
 	noticeDistance;
-	closeDistance;
+	monitoredPositions;
+	affectedPositions;
 
 	/**
 	 * @param {GameModel} game
@@ -17,14 +19,17 @@ export default class MouthTriggerStrategy extends UpdatedStrategy {
 	constructor(game, model, controls) {
 		super(game, model, controls, MOUTH_TRIGGER_TIMEOUT);
 
-		if (!this.model.data.size) {
-			this.model.data.size = this.model.data.size || MOUTH_TRIGGER_DEFAULT_SIZE;
+		if (!this.model.data.monitoredRange) {
+			this.model.data.monitoredRange = MOUTH_TRIGGER_DEFAULT_SIZE;
+		}
+		if (!this.model.data.affectedRange) {
+			this.model.data.affectedRange = this.model.data.monitoredRange;
 		}
 
-		this.closeDistance = this.grid.tileRadius.get() * (this.model.data.size - 1) * 2;
-		this.noticeDistance = this.closeDistance * 3;
+		this.noticeDistance = this.grid.tileRadius.get() * this.model.data.monitoredRange * 2;
 		this.centerCoordinates = this.grid.getCoordinates(this.model.position);
-		this.affectedPositions = this.grid.getAffectedPositions(this.model.position, this.model.data.size);
+		this.monitoredPositions = this.grid.getAffectedPositions(this.model.position, this.model.data.monitoredRange);
+		this.affectedPositions = this.grid.getAffectedPositions(this.model.position, this.model.data.affectedRange);
 	}
 
 	updateStrategy() {
@@ -32,19 +37,20 @@ export default class MouthTriggerStrategy extends UpdatedStrategy {
 			const distance = this.level.bee.coordinates.distanceTo(this.centerCoordinates);
 			if (distance < this.noticeDistance) {
 				this.defaultTimeout = MOUTH_TRIGGER_CLOSE_TIMEOUT;
-				if (distance < this.closeDistance) {
+				if (this.monitoredPositions.some((p) => p.equalsTo(this.level.bee.position))) {
 					this.close();
+				} else {
+					this.open();
 				}
 			} else {
 				this.defaultTimeout = MOUTH_TRIGGER_TIMEOUT;
-				this.open();
 			}
 		}
 	}
 
 	sendSignal(open) {
 		const mouths = this.chessboard.getVisitorsMultiple(this.affectedPositions, (v) => v._is_sprite && v.strategy.equalsTo(STRATEGY_DOOR_MOUTH));
-		mouths.forEach((m) => {
+		Pixies.toUnique(mouths).forEach((m) => {
 			if (m.data) {
 				if (m.data.isOpen !== open) {
 					m.triggerEvent('door-open-signal', open);
