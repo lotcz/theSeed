@@ -319,8 +319,8 @@ export default class BeeController extends ControllerBase {
 				item.image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
 			}
 			if (this.model.isFlying()) {
-				if (item.image.scale.get() >= 1) {
-					item.image.coordinates.set(BEE_CENTER.addY(120));
+				if (item.image.scale.get() >= 1 || item.strategy.equalsTo(STRATEGY_SNAIL)) {
+					item.image.coordinates.set(BEE_CENTER.addY(this.grid.tileRadius.get() * 2));
 				} else {
 					item.image.coordinates.set(BEE_CENTER.addY(80));
 				}
