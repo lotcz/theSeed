@@ -25,8 +25,11 @@ export default class MouthTriggerStrategy extends UpdatedStrategy {
 		if (!this.model.data.affectedRange) {
 			this.model.data.affectedRange = this.model.data.monitoredRange;
 		}
+		if (!this.model.data.triggeredBy) {
+			this.model.data.triggeredBy = [];
+		}
 
-		this.noticeDistance = this.grid.tileRadius.get() * this.model.data.monitoredRange * 2;
+		this.noticeDistance = (this.grid.tileRadius.get() * 2) * this.model.data.monitoredRange * 2;
 		this.centerCoordinates = this.grid.getCoordinates(this.model.position);
 		this.monitoredPositions = this.grid.getAffectedPositions(this.model.position, this.model.data.monitoredRange);
 		this.affectedPositions = this.grid.getAffectedPositions(this.model.position, this.model.data.affectedRange);
@@ -37,10 +40,15 @@ export default class MouthTriggerStrategy extends UpdatedStrategy {
 			const distance = this.level.bee.coordinates.distanceTo(this.centerCoordinates);
 			if (distance < this.noticeDistance) {
 				this.defaultTimeout = MOUTH_TRIGGER_CLOSE_TIMEOUT;
+				const food = this.chessboard.getVisitorsMultiple(this.monitoredPositions, (v) => v._is_sprite && this.model.data.triggeredBy.includes(v.type));
+				if (food.length > 0) {
+					this.triggeredBySprite(food[0]);
+					return;
+				}
 				if (this.monitoredPositions.some((p) => p.equalsTo(this.level.bee.position))) {
-					this.close();
+					this.triggeredByBee();
 				} else {
-					this.open();
+					this.noTriggerPresent();
 				}
 			} else {
 				this.defaultTimeout = MOUTH_TRIGGER_TIMEOUT;
@@ -65,6 +73,19 @@ export default class MouthTriggerStrategy extends UpdatedStrategy {
 
 	close() {
 		this.sendSignal(false);
+	}
+
+	triggeredByBee() {
+		this.close();
+	}
+
+	triggeredBySprite(sprite) {
+		this.close();
+		sprite.triggerOnDeathEvent();
+	}
+
+	noTriggerPresent() {
+		this.open();
 	}
 
 }

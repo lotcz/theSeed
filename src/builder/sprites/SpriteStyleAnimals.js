@@ -407,7 +407,7 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_SNAIL] = {
 		resource: SnailHiddenImage1
 	},
 	data: {
-
+		amount: 3
 	},
 	animations: {
 		walking: [
