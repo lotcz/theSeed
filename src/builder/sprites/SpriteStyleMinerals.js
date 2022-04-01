@@ -76,6 +76,20 @@ SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR_RED] = {
 	data: {amount: 1}
 };
 
+export const SPRITE_TYPE_NECTAR_PURPLE = 'nectar-purple';
+export const IMAGE_NECTAR_PURPLE = 'img/nectar-purple.svg';
+import NectarPurpleImage from "../../../res/img/nectar-purple.svg";
+
+SPRITE_STYLES_MINERALS[SPRITE_TYPE_NECTAR_PURPLE] = {
+	strategy: STRATEGY_MINERAL,
+	image: {
+		uri: IMAGE_NECTAR_PURPLE,
+		resource: NectarPurpleImage,
+		scale: 0.01
+	},
+	data: {amount: 1}
+};
+
 export const SPRITE_TYPE_POLLEN_PURPLE = 'pollen-purple';
 export const IMAGE_POLLEN_PURPLE = 'img/pollen-purple.svg';
 import PollenPurpleImage from "../../../res/img/pollen-purple.svg";

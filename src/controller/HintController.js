@@ -14,9 +14,15 @@ export default class HintController extends ControllerBase {
 	sprites;
 	soundPlayed;
 
+	/**
+	 * @type HintModel
+	 */
+	model;
+
 	constructor(game, model, controls, sprites = null) {
 		super(game, model, controls);
 
+		this.model = model;
 		this.background = [];
 		this.hint = null;
 		this.sprites = sprites || this.level.sprites;
@@ -66,7 +72,7 @@ export default class HintController extends ControllerBase {
 		this.hint = this.addSprite(this.model.position, {targetScale: 2, targetPosition: position, isHiding: false}, defaultImage, 0.3);
 		if (this.model.imagePaths.length > 1) {
 			this.model.imagePaths.forEach((path) => this.level.addResource(path));
-			const anim = new AnimationModel({paths: this.model.imagePaths, frameRate: 0.5});
+			const anim = new AnimationModel({paths: this.model.imagePaths, frameRate: this.model.frameRate});
 			anim.image = this.hint.image;
 			const animationController = new AnimationController(this.game, anim, this.controls);
 			this.addChild(animationController);

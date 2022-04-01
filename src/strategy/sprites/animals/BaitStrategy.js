@@ -58,8 +58,7 @@ export default class BaitStrategy extends FriendStrategy {
 			}
 
 			this.defaultTimeout = BAIT_TIMEOUT;
-			const flipped = this.model.image.flipped.get() ? 1 : -1;
-			this.setTargetRotation(Pixies.random(flipped * 90, flipped * 120));
+			this.setTargetRotation(180 + Pixies.random(-10, 10));
 		}
 	}
 

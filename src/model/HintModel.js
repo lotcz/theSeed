@@ -17,6 +17,7 @@ export default class HintModel extends ModelBase {
 		this.imagePaths = [];
 		this.direction = NEIGHBOR_TYPE_UP;
 		this.size = DEFAULT_HINT_SIZE;
+		this.frameRate = 0.5;
 	}
 
 }

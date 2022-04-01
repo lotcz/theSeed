@@ -230,3 +230,123 @@ SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_GIRL_TRAPPED] = {
 		resource: HintGirlTrappedImage
 	},
 };
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_1 = 'hint-bugs-and-beetles-1';
+export const IMAGE_HINT_BUGS_AND_BEETLES_1 = 'img/hint-bugs-and-beetles-1.svg';
+import HintBugsAndBeetlesImage1 from "../../../res/img/hint-bugs-and-beetles-1.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_1] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_1,
+		resource: HintBugsAndBeetlesImage1
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_2 = 'hint-bugs-and-beetles-2';
+export const IMAGE_HINT_BUGS_AND_BEETLES_2 = 'img/hint-bugs-and-beetles-2.svg';
+import HintBugsAndBeetlesImage2 from "../../../res/img/hint-bugs-and-beetles-2.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_2] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_2,
+		resource: HintBugsAndBeetlesImage2
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_3 = 'hint-bugs-and-beetles-3';
+export const IMAGE_HINT_BUGS_AND_BEETLES_3 = 'img/hint-bugs-and-beetles-3.svg';
+import HintBugsAndBeetlesImage3 from "../../../res/img/hint-bugs-and-beetles-3.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_3] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_3,
+		resource: HintBugsAndBeetlesImage3
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_4 = 'hint-bugs-and-beetles-4';
+export const IMAGE_HINT_BUGS_AND_BEETLES_4 = 'img/hint-bugs-and-beetles-4.svg';
+import HintBugsAndBeetlesImage4 from "../../../res/img/hint-bugs-and-beetles-4.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_4] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_4,
+		resource: HintBugsAndBeetlesImage4
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_5 = 'hint-bugs-and-beetles-5';
+export const IMAGE_HINT_BUGS_AND_BEETLES_5 = 'img/hint-bugs-and-beetles-5.svg';
+import HintBugsAndBeetlesImage5 from "../../../res/img/hint-bugs-and-beetles-5.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_5] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_5,
+		resource: HintBugsAndBeetlesImage5
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_6 = 'hint-bugs-and-beetles-6';
+export const IMAGE_HINT_BUGS_AND_BEETLES_6 = 'img/hint-bugs-and-beetles-6.svg';
+import HintBugsAndBeetlesImage6 from "../../../res/img/hint-bugs-and-beetles-6.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_6] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_6,
+		resource: HintBugsAndBeetlesImage6
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_7 = 'hint-bugs-and-beetles-7';
+export const IMAGE_HINT_BUGS_AND_BEETLES_7 = 'img/hint-bugs-and-beetles-7.svg';
+import HintBugsAndBeetlesImage7 from "../../../res/img/hint-bugs-and-beetles-7.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_7] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_7,
+		resource: HintBugsAndBeetlesImage7
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_8 = 'hint-bugs-and-beetles-8';
+export const IMAGE_HINT_BUGS_AND_BEETLES_8 = 'img/hint-bugs-and-beetles-8.svg';
+import HintBugsAndBeetlesImage8 from "../../../res/img/hint-bugs-and-beetles-8.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_8] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_8,
+		resource: HintBugsAndBeetlesImage8
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_9 = 'hint-bugs-and-beetles-9';
+export const IMAGE_HINT_BUGS_AND_BEETLES_9 = 'img/hint-bugs-and-beetles-9.svg';
+import HintBugsAndBeetlesImage9 from "../../../res/img/hint-bugs-and-beetles-9.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_9] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_9,
+		resource: HintBugsAndBeetlesImage9
+	},
+};
+
+export const SPRITE_TYPE_HINT_BUGS_AND_BEETLES_10 = 'hint-bugs-and-beetles-10';
+export const IMAGE_HINT_BUGS_AND_BEETLES_10 = 'img/hint-bugs-and-beetles-10.svg';
+import HintBugsAndBeetlesImage10 from "../../../res/img/hint-bugs-and-beetles-10.svg";
+
+SPRITE_STYLES_HINTS[SPRITE_TYPE_HINT_BUGS_AND_BEETLES_10] = {
+	strategy: STRATEGY_STATIC,
+	image: {
+		uri: IMAGE_HINT_BUGS_AND_BEETLES_10,
+		resource: HintBugsAndBeetlesImage10
+	},
+};

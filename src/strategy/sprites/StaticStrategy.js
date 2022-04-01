@@ -42,6 +42,9 @@ export default class StaticStrategy extends AnimatedStrategy {
 		if (this.model.data.hintSize !== undefined) {
 			hintModel.size = this.model.data.hintSize;
 		}
+		if (this.model.data.hintFrameRate !== undefined) {
+			hintModel.frameRate = this.model.data.hintFrameRate;
+		}
 		if (this.model.data.hintDirection !== undefined) {
 			hintModel.direction = this.model.data.hintDirection;
 		}
