@@ -29,8 +29,8 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="4.16"
-     inkscape:cx="17.668269"
-     inkscape:cy="55.408654"
+     inkscape:cx="51.081731"
+     inkscape:cy="37.860577"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1272"
@@ -38,46 +38,35 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="ehnPv1x25VC1" />
   <ellipse
-     id="ellipse162680"
-     rx="64.290398"
-     ry="64.288635"
+     id="ellipse162680-0"
+     rx="63.328751"
+     ry="63.327019"
      fill="#284e95"
      stroke="none"
      stroke-width="0"
-     cx="65.131744"
-     cy="65.129982"
-     style="fill:#82528c;fill-opacity:1" />
+     cx="65.625099"
+     cy="64.90377"
+     style="fill:#9d8b05;fill-opacity:1;shape-rendering:geometricPrecision;text-rendering:geometricPrecision" />
   <ellipse
-     id="ehnPv1x25VC2"
-     rx="59.416859"
-     ry="57.373592"
+     id="ehnPv1x25VC2-7"
+     rx="56.014809"
+     ry="54.088535"
      fill="#284e95"
      stroke="none"
      stroke-width="0"
-     cx="21.275824"
-     cy="82.418045"
-     style="fill:#9a61a6;fill-opacity:1"
-     transform="matrix(0.85612405,-0.51677037,0.51850522,0.85507447,0,0)" />
+     cx="21.604568"
+     cy="85.911034"
+     style="fill:#e4cf12;fill-opacity:1;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+     transform="matrix(0.85612405,-0.51677037,0.51850522,0.85507446,0,0)" />
   <ellipse
-     id="ellipse159132"
-     rx="39.993355"
-     ry="34.140465"
+     id="ellipse21453"
+     rx="19.982832"
+     ry="19.295649"
      fill="#284e95"
      stroke="none"
      stroke-width="0"
-     cx="19.659185"
-     cy="59.920395"
-     style="fill:#c281d0;fill-opacity:1"
-     transform="matrix(0.83755319,-0.54635579,0.55023259,0.83501143,0,0)" />
-  <ellipse
-     id="ehnPv1x25VC3"
-     fill="#a7b4cd"
-     stroke="none"
-     stroke-width="0"
-     cx="20.326899"
-     cy="47.040718"
-     style="fill:#cfa1d9;fill-opacity:1"
-     rx="14.208838"
-     ry="12.395134"
-     transform="matrix(0.81981592,-0.57262716,0.57651835,0.8170842,0,0)" />
+     cx="22.81588"
+     cy="57.44931"
+     style="fill:#efe8af;fill-opacity:1"
+     transform="matrix(0.85612405,-0.51677037,0.51850522,0.85507446,0,0)" />
 </svg>

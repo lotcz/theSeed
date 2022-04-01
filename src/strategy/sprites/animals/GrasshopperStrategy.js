@@ -10,7 +10,6 @@ const MIN_ROTATION = 55;
 const MAX_ROTATION = 180;
 
 export default class GrasshopperStrategy extends FriendStrategy {
-	hintController;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, GRASSHOPPER_TIMEOUT);

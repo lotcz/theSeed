@@ -7,7 +7,6 @@ const FRIEND_TIMEOUT = 2000;
 const MAX_CONSUMED_AMOUNT = 1;
 
 export default class FriendStrategy extends StaticStrategy {
-	hintController;
 
 	constructor(game, model, controls) {
 		super(game, model, controls, FRIEND_TIMEOUT);
